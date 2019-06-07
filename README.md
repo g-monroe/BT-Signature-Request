@@ -3,6 +3,10 @@
 ## Project Summary
 It is common in the construction industry for a builder to have documents that require signatures from employees, subcontractors, home owners, etc. Buildertrend currently has a method for facilitating these signature requests by allowing builders to request signatures on PDFs to any user on their account. This system is fairly rudimentary however, it simply gives a signer the ablitity to markup a PDF that the requestor sent to them. This means the signer can sign the document anywhere on the document, and there is no way for signer to save and reuse a signature they created. The goal of this project is to create a proof of concept application that will allow a builder to request that a signer signs specific areas of a pdf and allow a signer to set signtures onto thos locations (and only those locations).
 
+It will be up to you to determine the best library to handle adding signatures to the PDFs, but some initial libraries to look into are iText Community, SautinSoft, and DiTect.
+
+For more context on the eventual use case for this project please see: https://btrnd-my.sharepoint.com/:p:/g/personal/shaun_williams_buildertrend_com/EfQUkuIoejtBvPKxdJlqz_MBAP5cO4i2zUTe2uz20gAiRw?e=9H91uo
+
 ## Deliverables
 A standalone application that allows allows a user to upload pdfs, select areas to be signed and allows a signer to create signatures and place them in the signature areas.
 
