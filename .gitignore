@@ -42,16 +42,9 @@ Generated\ Files/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-<<<<<<< HEAD
-# NUnit
-*.VisualState.xml
-TestResult.xml
-nunit-*.xml
-=======
 # NUNIT
 *.VisualState.xml
 TestResult.xml
->>>>>>> 46b6cf8c23322ddbee78aab77a54e27ef4a9bfdf
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
@@ -281,12 +274,8 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
-<<<<<<< HEAD
-node_modules/
-=======
 **/node_modules/
 **/package-lock.json
->>>>>>> 46b6cf8c23322ddbee78aab77a54e27ef4a9bfdf
 
 # Visual Studio 6 build log
 *.plg
@@ -358,9 +347,5 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
-<<<<<<< HEAD
-BTSuggestions/BTSuggestions.Managers/BTSugggestions.Managers.csproj
-=======
 
 .env
->>>>>>> 46b6cf8c23322ddbee78aab77a54e27ef4a9bfdf
