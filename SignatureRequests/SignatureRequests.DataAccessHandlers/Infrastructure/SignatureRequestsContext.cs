@@ -27,12 +27,12 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
             modelBuilder.Entity<RequestEntity>()
             .HasRequired<UserEntity>(b => b.Signer)
             .WithMany()
-            .WillCascadeOnDelete(true);
+            .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RequestEntity>()
             .HasRequired<UserEntity>(b => b.Requestor)
             .WithMany()
-            .WillCascadeOnDelete(true);
+            .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<BoxEntity>()
             .HasOptional<SignatureEntity>(b => b.Signature)
