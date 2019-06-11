@@ -131,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
+    <Compile Include="Migrations\201906112005350_InitialMigration.cs" />
+    <Compile Include="Migrations\201906112005350_InitialMigration.Designer.cs">
+      <DependentUpon>201906112005350_InitialMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -143,6 +147,11 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201906112005350_InitialMigration.resx">
+      <DependentUpon>201906112005350_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

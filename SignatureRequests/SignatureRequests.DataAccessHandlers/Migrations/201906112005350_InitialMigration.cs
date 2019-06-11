@@ -41,8 +41,8 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
-                .ForeignKey("dbo.UserEntities", t => t.RequestorId, cascadeDelete: true)
-                .ForeignKey("dbo.UserEntities", t => t.SignerId, cascadeDelete: true)
+                .ForeignKey("dbo.UserEntities", t => t.RequestorId, cascadeDelete: false)
+                .ForeignKey("dbo.UserEntities", t => t.SignerId, cascadeDelete: false)
                 .Index(t => t.SignerId)
                 .Index(t => t.RequestorId)
                 .Index(t => t.FormId);
