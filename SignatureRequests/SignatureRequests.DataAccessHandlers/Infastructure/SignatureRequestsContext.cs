@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SignatureRequests.Core.Entities;
 using System.Linq;
 
 namespace SignatureRequestsContext.DataAccessHandlers
@@ -13,7 +14,12 @@ namespace SignatureRequestsContext.DataAccessHandlers
         {
 
         }
-        //public DbSet<PainPointEntity> PainPoints { get; set; }
+        public virtual DbSet<UserEntity> Users { get; set; }
+        public virtual DbSet<FormEntity> Forms { get; set; }
+        public virtual DbSet<SignatureEntity> Signatures { get; set; }
+        public virtual DbSet<RequestEntity> Requests { get; set; }
+        public virtual DbSet<BoxEntity> Boxes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<PainPointTypeEntity>()
