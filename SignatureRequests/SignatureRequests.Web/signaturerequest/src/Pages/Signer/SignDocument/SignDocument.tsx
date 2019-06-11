@@ -12,7 +12,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
     state : ISignDocumentState= {   }
     render() { 
         return ( 
-            <h3>Sign the Document here</h3>
+            <h1  id = 'HeaderText'>Sign the Document here</h1>
          );
     }
 }

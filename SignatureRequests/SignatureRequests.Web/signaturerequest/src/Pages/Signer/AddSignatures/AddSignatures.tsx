@@ -12,7 +12,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
     state : IAddSignatuesState= {   }
     render() { 
         return ( 
-            <h3>Add signatures to your profile</h3>
+            <h1  id = 'HeaderText'>Add signatures to your profile</h1>
          );
     }
 }

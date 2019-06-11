@@ -25,7 +25,7 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
 
 
         let currRoutes:Array<any> = [];
-        let userHome = routes.COMMON._Login;
+        let userHome:any;
         switch(userType){
             case UserType.UNKNOWN:
                 currRoutes = routes.LoggedOut;
@@ -52,7 +52,7 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
                     {
                     currRoutes.map((e) => e.hasNavBar ? 
                     <Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? {backgroundColor: "#1890ff"} : {backgroundColor: "inherit"}}>
-                            <NavLink to={e.link()}>
+                            <NavLink to={e.link}>
                              {e.breadcrumbName}
                             </NavLink>
                         </Menu.Item>
@@ -61,7 +61,7 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
                     }
 
                 </Menu>
-                <NavLink to = {userHome.link()}> <div id="logo"/></NavLink>
+                <NavLink to = {userHome.link}> <div id="logo"/></NavLink>
             </div>
 
 

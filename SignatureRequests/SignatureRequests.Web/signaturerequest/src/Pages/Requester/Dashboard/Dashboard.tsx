@@ -12,7 +12,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     state : IDashboardState= {  }
     render() { 
         return ( 
-            <h3>View DashBoard here</h3>
+            <h1  id = 'HeaderText'>View DashBoard here</h1>
          );
     }
 }

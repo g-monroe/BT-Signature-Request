@@ -12,7 +12,7 @@
      state : IViewState= { }
      render() { 
          return (  
-            <h3>View a Form</h3>
+            <h1  id = 'HeaderText'>View a Form</h1>
          );
      }
  }

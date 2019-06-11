@@ -12,7 +12,7 @@ class SignerDashboard extends React.Component<ISignerDashboardProps, ISignerDash
     state :ISignerDashboardState= {  }
     render() { 
         return (  
-            <h3>Add a signature to your form</h3>
+            <h1  id = 'HeaderText'>Dashboard</h1>
         );
     }
 }

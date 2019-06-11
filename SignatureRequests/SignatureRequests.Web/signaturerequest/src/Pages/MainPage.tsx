@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from 'antd';
 import * as routes from './Routing/routes';
 import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
+import Login from './login/Login';
 
 
 export interface MainPageProps {
@@ -35,22 +36,28 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                         <Navigation userType = {this.state.user}></Navigation>
                     </Layout.Header>
                    <Layout.Content>
-                        <Switch>
                         {
-                        ALL_ROUTES.map((route,i) => {
-                            return (
-                            <Route 
-                            key={i} 
-                            path={route.path} 
-                            exact 
-                            breadcrumbName={route.breadcrumbName}
-                            //component={withAuthenticationComponent} 
-                            component={route.component} 
-                            />
+                            ((this.state.user === UserType.UNKNOWN) ?
+                            <Login userSelected = {this.changeUser}></Login>
+                            :
+                                <Switch>
+                                {
+                                ALL_ROUTES.map((route,i) => {
+                                    return (
+                                    <Route 
+                                    key={i} 
+                                    path={route.path} 
+                                    exact 
+                                    breadcrumbName={route.breadcrumbName}
+                                    //component={withAuthenticationComponent} 
+                                    component={route.component} 
+                                    />
+                                    )
+                                })
+                                }
+                                </Switch> 
                             )
-                        })
                         }
-                        </Switch>
                    </Layout.Content>
                 </Layout>
             </Router>

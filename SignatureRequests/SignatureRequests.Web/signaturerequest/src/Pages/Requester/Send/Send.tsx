@@ -12,7 +12,7 @@ class Send extends React.Component<ISendProps, ISendState> {
     state : ISendState = {   }
     render() { 
         return (  
-            <h3>Send a Form</h3>
+            <h1 id = 'HeaderText'>Send a Form</h1>
         );
     }
 }
