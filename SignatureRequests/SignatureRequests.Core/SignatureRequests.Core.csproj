@@ -137,7 +137,6 @@
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Entities\FormEntity.cs" />
     <Compile Include="Entities\IBaseEntity.cs" />
-    <Compile Include="Entities\InitialEntity.cs" />
     <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\SignatureEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />

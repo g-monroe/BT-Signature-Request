@@ -36,9 +36,10 @@ namespace SignatureRequests.Core.Entities
 
         public int RequestId { get; set; }
 
+        [Required]
         public virtual SignatureEntity Signature { get; set; }
 
-        public int? SignatureId { get; set; }
+        public int SignatureId { get; set; }
 
         
     }

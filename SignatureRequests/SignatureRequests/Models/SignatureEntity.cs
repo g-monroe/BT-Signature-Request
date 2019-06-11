@@ -13,7 +13,7 @@ namespace SignatureRequests.Core.Entities
         [Required]
         public string ImagePath { get; set; }
 
-        [Required] 
+        [Required]
         public string CertificatePath { get; set; }
 
         [MaxLength(255), Required]
@@ -35,8 +35,5 @@ namespace SignatureRequests.Core.Entities
         public virtual UserEntity User { get; set; }
 
         public int UserId { get; set; }
-
-        public DateTime ExpirationDate { get; set; }
-
     }
 }

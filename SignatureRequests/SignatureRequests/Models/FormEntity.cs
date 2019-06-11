@@ -21,10 +21,5 @@ namespace SignatureRequests.Core.Entities
 
         [Required]
         public DateTime CreateDate { get; set; }
-
-        [Required]
-        public virtual UserEntity User { get; set; }
-
-        public int UserId { get; set; }
     }
 }

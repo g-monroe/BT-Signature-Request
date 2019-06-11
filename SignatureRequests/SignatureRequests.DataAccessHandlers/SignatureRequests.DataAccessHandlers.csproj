@@ -130,10 +130,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infastructure\SignatureRequestsContext.cs" />
+    <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SignatureRequests.Core\SignatureRequests.Core.csproj">
+      <Project>{8548C444-E0F0-4F77-A223-3C8A4292550D}</Project>
+      <Name>SignatureRequests.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
