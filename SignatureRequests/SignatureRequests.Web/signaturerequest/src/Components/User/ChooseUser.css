@@ -1,0 +1,29 @@
+#HeaderText {
+    text-align: center;
+    text-shadow: 50%
+}
+
+#flex-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items:center;
+    align-content: space-around;
+}
+
+#categoryBox{
+    background:silver;
+    margin-top: 2vw;
+    margin-right: 3vw;
+    margin-left: 3vw;
+    width:250px;
+    height: 250px;
+    text-align: center;
+
+}
+
+#Button {
+   
+    align-self: baseline;
+}
