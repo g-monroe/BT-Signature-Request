@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestPDF
+namespace SignatureRequests.Core.Items
 {
     public class BoxItem
     {
