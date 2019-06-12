@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestPDF
+namespace SignatureRequests.Core.Items
 {
-    public class X509Entity
+    public class X509Item
     {
         /// <summary>
         /// This Entity class is for the standards of X09 Certification.
@@ -1030,24 +1030,16 @@ namespace TestPDF
         public Country? CountryOfCitizenship { get; set; } //Country of Citizenship
         public Country? CountryOfResidence { get; set; } //Country of Residence
         public Country? C { get; set; }//Country
-        #nullable enable
-        public string? CN { get; set; } //Common Name
+        public string CN { get; set; } //Common Name
         public DateTime? DateAtBirth { get; set; } //Date of Birth
-        #nullable enable
-        public string? E { get; set; } //EmailAddress
-        #nullable enable
-        public string? Gender { get; set; }//Gender
-        #nullable enable
-        public string? Initials { get; set; } //Initials
-        #nullable enable
-        public string? ST { get; set; }//State
-        #nullable enable
-        public string? SN { get; set; } //Serial Number
-        #nullable enable
-        public string? T { get; set; } //Title
-        #nullable enable
-        public string? O { get; set; } //Organization
-        public X509Entity(Country? country_of_citizenship, Country? country_of_residence , Country? country , string? common_name, DateTime? date_of_birth, string? email, string? gender, string? initials, string? state, string? serialnumber, string? title, string? organization)
+        public string E { get; set; } //EmailAddress
+        public string Gender { get; set; }//Gender
+        public string Initials { get; set; } //Initials
+        public string ST { get; set; }//State
+        public string SN { get; set; } //Serial Number
+        public string T { get; set; } //Title
+        public string O { get; set; } //Organization
+        public X509Item(Country? country_of_citizenship, Country? country_of_residence , Country? country , string common_name, DateTime? date_of_birth, string email, string gender, string initials, string state, string serialnumber, string title, string organization)
         {
             CountryOfCitizenship = country_of_citizenship;
             CountryOfResidence = country_of_residence;
@@ -1062,7 +1054,7 @@ namespace TestPDF
             T = title;
             O = organization;
         }
-        public X509Entity()
+        public X509Item()
         {
 
         }

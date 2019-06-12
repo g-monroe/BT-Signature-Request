@@ -534,9 +534,6 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SignatureRequests.DataAccessHandlers\SignatureRequests.DataAccessHandlers.csproj">
       <Project>{d8462be7-76b8-437e-ab8f-1e99db9a778f}</Project>
       <Name>SignatureRequests.DataAccessHandlers</Name>

@@ -10,6 +10,7 @@ using Org.BouncyCastle.X509;
 using SautinSoft.Document;
 using SautinSoft.Document.Drawing;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Items;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,7 +47,7 @@ namespace SignatureRequests.Managers
         /// string contactInfo = "ContactInfo";
         /// </summary>
 #pragma warning disable IDE1006 // Naming Styles
-        private X509Entity _X509Item { get; set; }
+        private X509Item _X509Item { get; set; }
         private SignatureItem _SignItem { get; set; }
         private SecureRandom _Random { get; set; }
         private Pkcs12Store _Store { get; set; }
@@ -59,7 +60,7 @@ namespace SignatureRequests.Managers
             Success = 5
         }
 
-        public SignatureManager(X509Entity x509Item, SignatureItem signature)
+        public SignatureManager(X509Item x509Item, SignatureItem signature)
         {
             _X509Item = x509Item;
             _SignItem = signature;
