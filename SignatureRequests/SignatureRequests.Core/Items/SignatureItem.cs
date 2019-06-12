@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SignatureRequests.Core.Entities
+namespace SignatureRequests.Core.Items
 {
     public class SignatureItem
     {
