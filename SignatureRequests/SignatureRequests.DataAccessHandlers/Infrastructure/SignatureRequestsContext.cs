@@ -11,10 +11,6 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
         {
 
         }
-        //public SignatureRequestsContext(DbContextOptions options) : base(options)
-        //{
-
-        //}
         public System.Data.Entity.DbSet<UserEntity> Users { get; set; }
         public System.Data.Entity.DbSet<FormEntity> Forms { get; set; }
         public System.Data.Entity.DbSet<SignatureEntity> Signatures { get; set; }
