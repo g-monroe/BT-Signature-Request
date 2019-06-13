@@ -1,4 +1,5 @@
-﻿using SignatureRequests.DataAccessHandlers.Repositories;
+﻿using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.DataAccessHandlers.Repositories;
 using SignatureRequests.Models;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -11,7 +12,7 @@ namespace SignatureRequests.Controllers
         private IUserRepository _repository;
         #endregion
 
-        #region C'tor
+        #region Constructor
         public UserController()
         {
         }

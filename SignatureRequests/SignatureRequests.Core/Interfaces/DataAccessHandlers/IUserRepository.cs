@@ -2,7 +2,7 @@
 using SignatureRequests.Models;
 using System.Collections.Generic;
 
-namespace SignatureRequests.DataAccessHandlers.Repositories
+namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
 {
     public interface IUserRepository
     {

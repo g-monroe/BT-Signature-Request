@@ -172,6 +172,7 @@
   <ItemGroup>
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
+    <Compile Include="Interfaces\DataAccessHandlers\IUserRepository.cs" />
     <Compile Include="Items\BoxItem.cs" />
     <Compile Include="Entities\FormEntity.cs" />
     <Compile Include="Entities\IBaseEntity.cs" />
@@ -181,6 +182,8 @@
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Items\X509Item.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBaseHandler.cs" />
+    <Compile Include="Models\SignatureJSON.cs" />
+    <Compile Include="Models\UserJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

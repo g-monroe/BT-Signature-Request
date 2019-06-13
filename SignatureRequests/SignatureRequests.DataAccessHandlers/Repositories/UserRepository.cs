@@ -9,7 +9,6 @@ using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 
 namespace SignatureRequests.DataAccessHandlers.Repositories
 {
-    [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository
     {
         private readonly SignatureRequestsContext _context;
