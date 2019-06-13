@@ -1,10 +1,11 @@
 ﻿
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Models;
 using SignatureRequests.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 
-namespace Angular4WebApi.Controllers
+namespace SignatureRequests.Controllers
 {
     public class UserController : ApiController
     {
@@ -15,52 +16,30 @@ namespace Angular4WebApi.Controllers
         #region C'tor
         public UserController()
         {
-            //_repository = new ProductRepository();
         }
         public UserController(IUserRepository repository)
         {
             _repository = repository;
-
-            //if (repository == null)
-            //{
-            //    _repository = new ProductRepository();
-            //}
-            //else
-            //{
-            //    _repository = repository;
-            //}
         }
         #endregion
 
         #region API Methods
         // GET api/<controller>
         [Route("api/User/GetUsers")]
-        public IList<UserEntity> GetUsers()
+        public IList<UserJSON> GetUsers()
         {
             return _repository.GetUsers();
         }
-        // POST api/<controller>
-        //public Product Post([FromBody]Product product)
-        //{
-        //    return _repository.Post(product);
-        //}
         [Route("api/User/AddUser")]
         [HttpPost]
-        /*
-         {
-	        "Name":"Milk",
-	        "Category":"Dairy",
-	        "Price":44
-         }
-        */
-        public bool AddUser([FromBody]UserEntity product)
+        public bool AddUser([FromBody]UserJSON product)
         {
             return _repository.AddUser(product);
         }
         [Route("api/User/UpdateUser")]
         [HttpPost]
         //POST:api/Product/UpdateProduct
-        public bool UpdateUser([FromBody]UserEntity p)
+        public bool UpdateUser([FromBody]UserJSON p)
         {
             return _repository.UpdateUser(p);
         }

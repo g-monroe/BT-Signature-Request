@@ -5,8 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using SignatureRequests.DataAccessHandlers.Infrastructure;
 using SignatureRequests.Repositories;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Models;
 
-namespace Angular4WebApi.Repositories
+namespace SignatureRequests.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository
@@ -26,29 +27,32 @@ namespace Angular4WebApi.Repositories
                 return rowsAffected > 0 ? true : false;
             }
         }
-        public IList<UserEntity> GetUsers()
+        public IList<UserJSON> GetUsers()
         {
-            IQueryable<UserEntity> products = _context.Users.Select(
-                    p => new UserEntity
+            IQueryable<UserJSON> products = _context.Users.Select(
+                    p => new UserJSON
                     {
                         Id = p.Id,
                         Name = p.Name
                     });
             return products.ToList();
         }
-        public bool AddUser(UserEntity product)
+        public bool AddUser(UserJSON product)
         {
             if (product == null)
             {
                 throw new ArgumentNullException("product");
             }
 
-            UserEntity newProduct = new UserEntity();
+            UserJSON newProduct = new UserJSON();
 
             try
             {
-                newProduct.Name = product.Name;
-                _context.Users.Add(newProduct);
+                UserEntity user = new UserEntity
+                {
+                    Name = product.Name
+                };
+                _context.Users.Add(user);
                 int rowsAffected = _context.SaveChanges();
 
                 return rowsAffected > 0 ? true : false;
@@ -58,7 +62,7 @@ namespace Angular4WebApi.Repositories
                 throw e;
             }
         }
-        public bool UpdateUser(UserEntity p)
+        public bool UpdateUser(UserJSON p)
         {
             if (p == null)
             {

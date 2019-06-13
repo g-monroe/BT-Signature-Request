@@ -6,9 +6,9 @@ namespace SignatureRequests.Repositories
 {
     public interface IUserRepository
     {
-        IList<UserEntity> GetUsers();
-        bool AddUser(UserEntity product);
-        bool UpdateUser(UserEntity p);
+        IList<UserJSON> GetUsers();
+        bool AddUser(UserJSON product);
+        bool UpdateUser(UserJSON p);
         bool Delete(int id);
     }
 }

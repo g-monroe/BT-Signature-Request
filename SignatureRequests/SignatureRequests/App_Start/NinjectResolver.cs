@@ -1,5 +1,4 @@
-﻿using Angular4WebApi.Repositories;
-using Ninject;
+﻿using Ninject;
 using Ninject.Extensions.ChildKernel;
 using SignatureRequests.Repositories;
 using System;

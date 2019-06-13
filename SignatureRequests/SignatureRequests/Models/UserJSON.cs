@@ -1,4 +1,5 @@
 ﻿using BTSuggestions.Core.Entities;
+using SignatureRequests.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,9 @@ namespace SignatureRequests.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public virtual SignatureJSON Signature { get; set; }
         public int? SignatureId { get; set; }
+        public virtual SignatureJSON Initial { get; set; }
         public int? InitialId { get; set; }
     }
 }
