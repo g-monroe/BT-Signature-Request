@@ -12,9 +12,9 @@ namespace SignatureRequests.DataAccessHandlers.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly SignatureRequestsContext _context;
-        public UserRepository()
-        {
+        public UserRepository()        {
             _context = new SignatureRequestsContext();
+
         }
         public bool Delete(int id)
         {
