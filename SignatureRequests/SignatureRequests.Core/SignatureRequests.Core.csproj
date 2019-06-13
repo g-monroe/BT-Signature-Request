@@ -172,7 +172,7 @@
   <ItemGroup>
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
-    <Compile Include="Interfaces\DataAccessHandlers\IUserRepository.cs" />
+    <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
     <Compile Include="Items\BoxItem.cs" />
     <Compile Include="Entities\FormEntity.cs" />
     <Compile Include="Entities\IBaseEntity.cs" />

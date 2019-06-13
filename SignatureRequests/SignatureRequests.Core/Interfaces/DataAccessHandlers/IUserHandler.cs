@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
 {
-    public interface IUserRepository
+    public interface IUserHandler
     {
         IList<UserJSON> GetUsers();
         bool AddUser(UserJSON product);

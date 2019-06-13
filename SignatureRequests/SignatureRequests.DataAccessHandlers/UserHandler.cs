@@ -9,10 +9,10 @@ using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 
 namespace SignatureRequests.DataAccessHandlers.Repositories
 {
-    public class UserRepository : IUserHandler
+    public class UserHandler : IUserHandler
     {
         private readonly SignatureRequestsContext _context;
-        public UserRepository()        {
+        public UserHandler()        {
             _context = new SignatureRequestsContext();
 
         }
