@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BTSuggestions.Core.Interfaces.DataAccessHandlers
+namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
 {
     public interface IBaseHandler<T> where T : IBaseEntity
     {
