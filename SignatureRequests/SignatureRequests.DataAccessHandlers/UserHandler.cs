@@ -6,85 +6,43 @@ using SignatureRequests.DataAccessHandlers.Infrastructure;
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Models;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using System.Threading.Tasks;
 
-namespace SignatureRequests.DataAccessHandlers.Repositories
+namespace SignatureRequests.DataAccessHandlers
 {
-    public class UserHandler : IUserHandler
+    public class UserHandler : BaseHandler<UserEntity>, IUserHandler
     {
-        private readonly SignatureRequestsContext _context;
-        public UserHandler()        {
-            _context = new SignatureRequestsContext();
-
-        }
-        public bool Delete(int id)
+        public UserHandler(SignatureRequestsContext context) : base(context)
         {
-            using (var ctx = new SignatureRequestsContext())
-            {
-                UserEntity products = ctx.Users.Find(id);
-                ctx.Users.Remove(products);
-                int rowsAffected = ctx.SaveChanges();
-                return rowsAffected > 0 ? true : false;
-            }
         }
-        public IList<UserJSON> GetUsers()
+        public async Task<string> GetEmail(int id)
         {
-            IQueryable<UserJSON> products = _context.Users.Select(
-                    p => new UserJSON
-                    {
-                        Id = p.Id,
-                        Name = p.Name
-                    });
-            return products.ToList();
+            var user = await GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user.Email;
         }
-        public bool AddUser(UserJSON product)
+
+        public async Task<string> GetRole(int id)
         {
-            if (product == null)
+            var user = await GetById(id);
+            if (user == null)
             {
-                throw new ArgumentNullException("product");
+                return "";
             }
-
-            UserJSON newProduct = new UserJSON();
-
-            try
-            {
-                UserEntity user = new UserEntity
-                {
-                    Name = product.Name
-                };
-                _context.Users.Add(user);
-                int rowsAffected = _context.SaveChanges();
-
-                return rowsAffected > 0 ? true : false;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return user.Role;
         }
-        public bool UpdateUser(UserJSON p)
+        public async Task<string> GetName(int id)
         {
-            if (p == null)
+            var user = await GetById(id);
+            if (user == null)
             {
-                throw new ArgumentNullException("product");
+                return null;
             }
-
-            using (var ctx = new SignatureRequestsContext())
-            {
-                var product = _context.Users.Single(a => a.Id == p.Id);
-
-                if (product != null)
-                {
-                    product.Name = p.Name;
-
-                    int rowsAffected = _context.SaveChanges();
-
-                    return rowsAffected > 0 ? true : false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            return user.Name;
         }
     }
 }

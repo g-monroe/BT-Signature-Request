@@ -1,4 +1,5 @@
 ﻿using BTSuggestions.Core.Entities;
+using SignatureRequests.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         Task<bool> Contains(T entity);
         Task<long> Count();
         Task<long> Count(Expression<Func<T, bool>> where);
-        Task<T> Insert(T entity);
-        Task InsertMany(IEnumerable<T> entities);
+        T Insert(T entity);
+        void InsertMany(IEnumerable<T> entities);
         Task<T> Update(T entity);
         Task Delete(T entity);
         Task SaveChanges();

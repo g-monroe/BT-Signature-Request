@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace SignatureRequests.Managers
 {
-    public class SignatureManager
+    public class SignatureLib
     {
         /// <summary>
         /// This handler is to handle the certification making and signature control.
@@ -59,7 +59,7 @@ namespace SignatureRequests.Managers
             Success = 5
         }
 
-        public SignatureManager(X509Item x509Item, SignatureItem signature)
+        public SignatureLib(X509Item x509Item, SignatureItem signature)
         {
             _X509Item = x509Item;
             _SignItem = signature;
@@ -144,7 +144,6 @@ namespace SignatureRequests.Managers
         {
             try
             {
-
                 var stream = CreateCertificate();
                 _Store.Save(stream, _SignItem.Password.ToCharArray(), _Random);
                 File.WriteAllBytes(_SignItem.PfxPath, stream.ToArray());
