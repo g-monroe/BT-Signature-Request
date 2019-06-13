@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using SignatureRequests.DataAccessHandlers.Infrastructure;
-using SignatureRequests.Models;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Models;
+using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 
 namespace SignatureRequests.DataAccessHandlers.Repositories
 {
