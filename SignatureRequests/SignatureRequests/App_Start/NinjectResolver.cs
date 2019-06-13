@@ -1,6 +1,6 @@
 ﻿using Ninject;
 using Ninject.Extensions.ChildKernel;
-using SignatureRequests.Repositories;
+using SignatureRequests.DataAccessHandlers.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;

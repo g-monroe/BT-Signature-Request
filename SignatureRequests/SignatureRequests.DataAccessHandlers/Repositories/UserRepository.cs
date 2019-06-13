@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using SignatureRequests.DataAccessHandlers.Infrastructure;
-using SignatureRequests.Repositories;
-using SignatureRequests.Core.Entities;
 using SignatureRequests.Models;
+using SignatureRequests.Core.Entities;
 
-namespace SignatureRequests.Repositories
+namespace SignatureRequests.DataAccessHandlers.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository

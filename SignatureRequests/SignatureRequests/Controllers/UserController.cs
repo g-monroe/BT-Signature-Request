@@ -1,7 +1,5 @@
-﻿
-using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.DataAccessHandlers.Repositories;
 using SignatureRequests.Models;
-using SignatureRequests.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 
