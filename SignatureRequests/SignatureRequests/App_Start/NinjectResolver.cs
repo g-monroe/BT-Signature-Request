@@ -30,7 +30,7 @@ namespace SignatureRequests.App_Start
         }
         private IKernel AddRequestBindings(IKernel kernel)
         {
-            kernel.Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
+            kernel.Bind<IUserHandler>().To<UserHandler>().InSingletonScope();
 
             return kernel;
         }

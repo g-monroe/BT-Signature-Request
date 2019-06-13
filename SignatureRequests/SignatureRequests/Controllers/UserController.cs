@@ -9,14 +9,14 @@ namespace SignatureRequests.Controllers
     public class UserController : ApiController
     {
         #region GlobalVariables
-        private IUserRepository _repository;
+        private IUserHandler _repository;
         #endregion
 
         #region Constructor
         public UserController()
         {
         }
-        public UserController(IUserRepository repository)
+        public UserController(IUserHandler repository)
         {
             _repository = repository;
         }

@@ -9,7 +9,7 @@ using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 
 namespace SignatureRequests.DataAccessHandlers.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserHandler
     {
         private readonly SignatureRequestsContext _context;
         public UserRepository()        {
