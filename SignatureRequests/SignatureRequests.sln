@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Engines",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Managers", "SignatureRequests.Managers\SignatureRequests.Managers.csproj", "{8483DF64-F1F9-4013-8536-21DF22E4E74D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Webs", "SignatureRequests.Webs\SignatureRequests.Webs.csproj", "{FD578248-A76E-4D0D-B130-95F2FADF33F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD578248-A76E-4D0D-B130-95F2FADF33F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD578248-A76E-4D0D-B130-95F2FADF33F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD578248-A76E-4D0D-B130-95F2FADF33F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD578248-A76E-4D0D-B130-95F2FADF33F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
