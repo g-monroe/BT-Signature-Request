@@ -31,6 +31,10 @@ namespace SignatureRequests.Managers
         public async Task<string> GetEmail(int id)
         {
             UserEntity result = await GetUser(id);
+            if (result == null)
+            {
+                return "";
+            }
             return result.Email;
         }
 
@@ -48,7 +52,8 @@ namespace SignatureRequests.Managers
 
         public async Task<UserEntity> GetUser(int id)
         {
-            return await _userHandler.GetById(id);
+            var result = await _userHandler.GetById(id);
+            return result;
         }
 
         public IEnumerable<UserEntity> GetUsers()

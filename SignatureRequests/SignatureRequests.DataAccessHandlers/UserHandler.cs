@@ -17,33 +17,29 @@ namespace SignatureRequests.DataAccessHandlers
             return _context.Users.Include("Signature");
             
         }
-        public async Task<string> GetEmail(int id)
+        private async Task<UserEntity> GetUserProperty(int id)
         {
             var user = await GetById(id);
             if (user == null)
             {
                 return null;
             }
-
+            return user;
+        }
+        public async Task<string> GetEmail(int id)
+        {
+            var user = await GetUserProperty(id);
             return user.Email;
         }
 
         public async Task<string> GetRole(int id)
         {
-            var user = await GetById(id);
-            if (user == null)
-            {
-                return "";
-            }
+            var user = await GetUserProperty(id);
             return user.Role;
         }
         public async Task<string> GetName(int id)
         {
-            var user = await GetById(id);
-            if (user == null)
-            {
-                return null;
-            }
+            var user = await GetUserProperty(id);
             return user.Name;
         }
     }
