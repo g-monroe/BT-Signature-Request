@@ -1,6 +1,6 @@
 ﻿using BTSuggestions.Core.Entities;
 using SignatureRequests.Core.Entities;
-using SignatureRequests.Managers.REquestObjects;
+using SignatureRequests.Managers.RequestObjects;
 using SignatureRequests.Managers.ResponseObjects;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace SignatureRequests.Managers.Extensions
                 ExpirationDate = me.ExpirationDate,
                 ContactInfo = me.ContactInfo,
                 Reason = me.Reason,
-                isInitial = me.isInitial,
+                IsInitial = me.isInitial,
                 Location = me.Location
             };
         }
@@ -52,7 +52,7 @@ namespace SignatureRequests.Managers.Extensions
             updating.ExpirationDate = me.ExpirationDate;
             updating.ContactInfo = me.ContactInfo;
             updating.Reason = me.Reason;
-            updating.isInitial = me.isInitial;
+            updating.isInitial = me.IsInitial;
             updating.Location = me.Location;
             return updating;
         }

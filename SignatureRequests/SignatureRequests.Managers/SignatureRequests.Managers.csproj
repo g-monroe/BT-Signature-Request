@@ -179,7 +179,7 @@
     <Compile Include="ResponseObjects\SignatureResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponse.cs" />
     <Compile Include="ResponseObjects\UserResponse.cs" />
-    <Compile Include="SignatureLib.cs" />
+    <Compile Include="SignatureLibManager.cs" />
     <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>

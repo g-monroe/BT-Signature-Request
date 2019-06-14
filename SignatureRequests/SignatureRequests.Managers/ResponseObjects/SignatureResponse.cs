@@ -15,8 +15,8 @@ namespace SignatureRequests.Managers.ResponseObjects
         public string Location { get; set; }
         public string Reason { get; set; }
         public string ContactInfo { get; set; }
-        public Boolean isInitial { get; set; }
-        public virtual UserEntity User { get; set; }
+        public Boolean IsInitial { get; set; }
+        public UserEntity User { get; set; }
         public int UserId { get; set; }
         public DateTime ExpirationDate { get; set; }
 

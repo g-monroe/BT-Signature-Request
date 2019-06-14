@@ -7,19 +7,13 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
-using SautinSoft.Document;
-using SautinSoft.Document.Drawing;
-using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.Items;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SignatureRequests.Managers
+namespace SignatureRequests.Core
 {
     public class SignatureLib
     {
@@ -46,10 +40,11 @@ namespace SignatureRequests.Managers
         /// string contactInfo = "ContactInfo";
         /// </summary>
 #pragma warning disable IDE1006 // Naming Styles
-        private X509Item _X509Item { get; set; }
-        private SignatureItem _SignItem { get; set; }
-        private SecureRandom _Random { get; set; }
-        private Pkcs12Store _Store { get; set; }
+        private X509Item _x509Item { get; set; }
+        private SignatureItem _signItem { get; set; }
+        private SecureRandom _random { get; set; }
+        private Pkcs12Store _store { get; set; }
+        private ISignatureLibManager _manager { get; set; }
         public enum _InitializeCertificationStatus
         {
             Initialize = 1,
@@ -59,18 +54,19 @@ namespace SignatureRequests.Managers
             Success = 5
         }
 
-        public SignatureLib(X509Item x509Item, SignatureItem signature)
+        public SignatureLib(X509Item x509Item, SignatureItem signature, ISignatureLibManager lib)
         {
-            _X509Item = x509Item;
-            _SignItem = signature;
-            var result = InitializeCertification();
+            _x509Item = x509Item;
+            _signItem = signature;
+            _manager = lib;
+            var result = InitializeCertification(lib);
             if (result.Key != _InitializeCertificationStatus.Success)
             {
                 throw new Exception(result.Value);
             }
         }
 
-        public KeyValuePair<_InitializeCertificationStatus, string> InitializeCertification()
+        public KeyValuePair<_InitializeCertificationStatus, string> InitializeCertification(ISignatureLibManager lib)
         {
             var certificateGenerator = new X509V3CertificateGenerator();
             try
@@ -79,7 +75,7 @@ namespace SignatureRequests.Managers
                 ///Start Generators
                 var randomGenerator = new CryptoApiRandomGenerator();
                 var random = new SecureRandom(randomGenerator);
-                _Random = random;
+                _random = random;
             }
             catch (Exception e)
             {
@@ -90,9 +86,9 @@ namespace SignatureRequests.Managers
                 ////Pt 2: Seralize.
                 ///Select Encryption level, and create serialNumber
                 var serialNumber = BigIntegers.CreateRandomInRange(
-                BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), _Random);
+                BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), _random);
                 certificateGenerator.SetSerialNumber(serialNumber);
-                certificateGenerator.SetSignatureAlgorithm(_SignItem.SignatureAlgorithm);
+                certificateGenerator.SetSignatureAlgorithm(_signItem.SignatureAlgorithm);
             }
             catch (Exception e)
             {
@@ -101,12 +97,12 @@ namespace SignatureRequests.Managers
             try
             {
                 //Pt 3: Seed Data.
-                var subjectDN = new X509Name(_X509Item.Get());
+                var subjectDN = new X509Name(_x509Item.Get());
                 var issuerDN = subjectDN;
                 certificateGenerator.SetIssuerDN(issuerDN);
                 certificateGenerator.SetSubjectDN(subjectDN);
-                certificateGenerator.SetNotBefore(_SignItem.NotBefore);
-                certificateGenerator.SetNotAfter(_SignItem.NotAfter);
+                certificateGenerator.SetNotBefore(_signItem.NotBefore);
+                certificateGenerator.SetNotAfter(_signItem.NotAfter);
             }
             catch (Exception e)
             {
@@ -115,14 +111,14 @@ namespace SignatureRequests.Managers
             try
             {
                 //Pt 4: Set Certification
-                var keyGenerationParameters = new KeyGenerationParameters(_Random, _SignItem.Strength);
+                var keyGenerationParameters = new KeyGenerationParameters(_random, _signItem.Strength);
                 var keyPairGenerator = new RsaKeyPairGenerator();
                 keyPairGenerator.Init(keyGenerationParameters);
 
                 var subjectKeyPair = keyPairGenerator.GenerateKeyPair();
                 certificateGenerator.SetPublicKey(subjectKeyPair.Public);
                 var issuerKeyPair = subjectKeyPair;
-                var certificate = certificateGenerator.Generate(issuerKeyPair.Private, _Random);
+                var certificate = certificateGenerator.Generate(issuerKeyPair.Private, _random);
 
                 //Pt 5: Create Version for .net usage of cert.
                 var store = new Pkcs12Store();
@@ -131,7 +127,8 @@ namespace SignatureRequests.Managers
 
                 store.SetCertificateEntry(friendlyName, certificateEntry);
                 store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(subjectKeyPair.Private), new[] { certificateEntry });
-                _Store = store;
+                _store = store;
+                
             }
             catch (Exception e)
             {
@@ -139,81 +136,17 @@ namespace SignatureRequests.Managers
             }
             return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Success, "Success");
         }
-
-        public bool SaveCertificate()
+        public MemoryStream CreateCertificate(SecureRandom random, SignatureItem signItem)
         {
-            try
-            {
-                var stream = CreateCertificate();
-                _Store.Save(stream, _SignItem.Password.ToCharArray(), _Random);
-                File.WriteAllBytes(_SignItem.PfxPath, stream.ToArray());
-            }
-            catch (Exception e)
-            {
-                Debug.Write(e.Message);
-                return false;
-            }
-            return true;
+            return _manager.CreateCertificate(_store, random, signItem);
         }
-        public MemoryStream CreateCertificate()
+        public void SignDocument(BoxItem[] boxes, SignatureItem signItem)
         {
-            try
-            {
-                //Pt 6: Finish and Save Pfx 
-                var stream = new MemoryStream();
-                _Store.Save(stream, _SignItem.Password.ToCharArray(), _Random);
-                return stream;
-            }
-            catch (Exception e)
-            {
-                Debug.Write(e.Message);
-                return null;
-            }
+            _manager.SignDocument(boxes, signItem);
         }
-        public void SignDocument(BoxItem[] boxes)
+        public bool SaveCertificate(SecureRandom random, SignatureItem signItem)
         {
-            //Signature add to document part.
-            DocumentCore dc = DocumentCore.Load(_SignItem.LoadPath);
-            Shape signatureShape = new Shape(dc, Layout.Floating(new HorizontalPosition(0f, LengthUnit.Millimeter, HorizontalPositionAnchor.LeftMargin),
-                            new VerticalPosition(0f, LengthUnit.Millimeter, VerticalPositionAnchor.TopMargin), new Size(1, 1)));
-            ((FloatingLayout)signatureShape.Layout).WrappingStyle = WrappingStyle.InFrontOfText;
-            signatureShape.Outline.Fill.SetEmpty();
-
-            // Find a first paragraph and insert our Shape inside it.
-            Paragraph firstPar = dc.GetChildElements(true).OfType<Paragraph>().FirstOrDefault();
-            firstPar.Inlines.Add(signatureShape);
-            foreach (BoxItem box in boxes)
-            {
-                Picture signaturePict = new Picture(dc, _SignItem.SignPath)
-                {
-                    // Signature picture will be positioned:
-                    Layout = Layout.Floating(
-                   new HorizontalPosition(box.X, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
-                   new VerticalPosition(box.Y, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
-                   new Size(box.Width, box.Height, LengthUnit.Millimeter)) //Size
-                };
-                PdfSaveOptions options = new PdfSaveOptions();
-
-                // Path to the certificate (*.pfx).
-                options.DigitalSignature.CertificatePath = _SignItem.PfxPath;
-
-                // The password for the certificate.
-                // Each certificate is protected by a password.
-                // The reason is to prevent unauthorized the using of the certificate.
-                options.DigitalSignature.CertificatePassword = _SignItem.Password;
-
-                // Additional information about the certificate.
-                options.DigitalSignature.Location = _SignItem.Location;
-                options.DigitalSignature.Reason = _SignItem.Reason;
-                options.DigitalSignature.ContactInfo = _SignItem.ContactInfo;
-
-                // Placeholder where signature should be visualized.
-                options.DigitalSignature.SignatureLine = signatureShape;
-                // Visual representation of digital signature.
-                options.DigitalSignature.Signature = signaturePict;
-
-                dc.Save(_SignItem.SavePath, options);
-            }
+            return _manager.SaveCertificate(_store, random, signItem);
         }
     }
 }
