@@ -1,10 +1,7 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics.CodeAnalysis;
 using SignatureRequests.DataAccessHandlers.Infrastructure;
 using SignatureRequests.Core.Entities;
-using SignatureRequests.Models;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using System.Threading.Tasks;
 
@@ -14,6 +11,11 @@ namespace SignatureRequests.DataAccessHandlers
     {
         public UserHandler(SignatureRequestsContext context) : base(context)
         {
+        }
+        public IEnumerable<UserEntity> GetAllInclude()
+        {
+            return _context.Users.Include("Signature");
+            
         }
         public async Task<string> GetEmail(int id)
         {

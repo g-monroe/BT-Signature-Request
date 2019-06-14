@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infastructure\" />
@@ -178,6 +179,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SignatureRequests.Core\SignatureRequests.Core.csproj">
+      <Project>{8548C444-E0F0-4F77-A223-3C8A4292550D}</Project>
+      <Name>SignatureRequests.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

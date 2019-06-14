@@ -4,9 +4,9 @@ using System.Text;
 
 namespace SignatureRequests.Managers.ResponseObjects
 {
-    public class SignatureResponseList
+    public class UserResponseList
     {
         public int TotalResults { get; set; }
-        public List<SignatureResponse> SignaturesList { get; set; }
+        public List<UserResponse> UsersList { get; set; }
     }
 }

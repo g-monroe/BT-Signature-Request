@@ -59,9 +59,9 @@ namespace SignatureRequests.DataAccessHandlers
             return await _dbSet.Where(where).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return _dbSet.ToList();
         }
 
         public async Task<T> GetById(int id)

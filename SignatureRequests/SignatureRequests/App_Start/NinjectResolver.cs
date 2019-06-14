@@ -1,7 +1,11 @@
 ﻿using Ninject;
 using Ninject.Extensions.ChildKernel;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
-using SignatureRequests.DataAccessHandlers.Repositories;
+using SignatureRequests.Core.Interfaces.Engines;
+using SignatureRequests.Core.Interfaces.Managers;
+using SignatureRequests.DataAccessHandlers;
+using SignatureRequests.Engines;
+using SignatureRequests.Managers;
 using System;
 using System.Collections.Generic;
 using System.Web.Http.Dependencies;
@@ -31,7 +35,8 @@ namespace SignatureRequests.App_Start
         private IKernel AddRequestBindings(IKernel kernel)
         {
             kernel.Bind<IUserHandler>().To<UserHandler>().InSingletonScope();
-
+            kernel.Bind<IUserEngine>().To<UserEngine>().InSingletonScope();
+            kernel.Bind<IUserManager>().To<UserManager>().InSingletonScope();
             return kernel;
         }
 

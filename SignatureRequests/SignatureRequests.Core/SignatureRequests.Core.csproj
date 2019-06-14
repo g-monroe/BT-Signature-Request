@@ -173,6 +173,8 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
+    <Compile Include="Interfaces\Engines\IUserEngine.cs" />
+    <Compile Include="Interfaces\Managers\IUserManager.cs" />
     <Compile Include="Items\BoxItem.cs" />
     <Compile Include="Entities\FormEntity.cs" />
     <Compile Include="Entities\IBaseEntity.cs" />
@@ -186,10 +188,7 @@
     <Compile Include="Models\UserJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\Engines\" />
-    <Folder Include="Interfaces\Managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

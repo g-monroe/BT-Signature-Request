@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SignatureRequests.Core.Interfaces.Engines
+namespace SignatureRequests.Core.Interfaces.Managers
 {
-    public interface IUserEngine
+    public interface IUserManager
     {
         IEnumerable<UserEntity> GetUsers();
         Task<UserEntity> GetUser(int id);

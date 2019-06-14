@@ -12,7 +12,7 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
     public interface IBaseHandler<T> where T : IBaseEntity
     {
         Task<IQueryable<T>> AsQueryable();
-        Task<IEnumerable<T>> GetAll();
+        IEnumerable<T> GetAll();
         Task<IEnumerable<T>> Get(Expression<Func<T, bool>> where);
         Task<T> GetById(int id);
         Task<IEnumerable<T>> GetByIds(IEnumerable<int> ids);
