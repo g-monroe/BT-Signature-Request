@@ -173,6 +173,7 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
+    <Compile Include="Interfaces\Managers\ISignatureLibManager.cs" />
     <Compile Include="Interfaces\Managers\IUserManager.cs" />
     <Compile Include="Items\BoxItem.cs" />
     <Compile Include="Entities\FormEntity.cs" />

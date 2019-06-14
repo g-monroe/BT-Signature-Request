@@ -22,7 +22,7 @@ namespace SignatureRequests.DataAccessHandlers
             var user = await GetById(id);
             if (user == null)
             {
-                return null;
+                return null; 
             }
             return user;
         }
