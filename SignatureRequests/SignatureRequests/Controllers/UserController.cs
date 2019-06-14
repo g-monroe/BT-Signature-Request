@@ -16,13 +16,13 @@ namespace SignatureRequests.Controllers
     public class UserController : ApiController
     {
         #region GlobalVariables
-        private readonly IUserManager _manager;
+        private readonly IUserManager _userManager;
         #endregion
-
+       
         #region Constructor
         public UserController(IUserManager manager)
         {
-            _manager = manager;
+            _userManager = manager;
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace SignatureRequests.Controllers
         [Route("api/User/GetUsers")]
         public UserResponseList GetUsers()
         {
-            var users = _manager.GetAllInclude();
+            var users = _userManager.GetAllInclude();
             var resp = UserExtension.UserToListResponse(users);
             return resp;
         }
@@ -40,28 +40,28 @@ namespace SignatureRequests.Controllers
         public UserResponse AddUser([FromBody]UserRequest me)
         {
             var user =  UserExtension.UserToDbItem(me);
-            var result = _manager.CreateUserEntity(user);
+            var result = _userManager.CreateUserEntity(user);
             var resultValue = UserExtension.UserToListItem(result);
             return resultValue;
         }
         [Route("api/User/UpdateUser/{id}")]
         [HttpPost]
         //POST:api/Product/UpdateProduct
-        public async Task<UserResponse> UpdateUser([FromRoute]int id, [FromBody]UserRequest me)
+        public UserResponse UpdateUser([FromRoute]int id, [FromBody]UserRequest me)
         {
             var user = UserExtension.UserToDbItem(me);
-            var currentUser = await _manager.GetUser(id);
-            var result =  _manager.UpdateUser(currentUser, user);
+            var currentUser = _userManager.GetUser(id);
+            var result =  _userManager.UpdateUser(currentUser, user);
             var resultValue = UserExtension.UserToListItem(result);
             return resultValue;
         }
         //// DELETE api/<controller>/5
         [Route("api/User/DeleteUser/{id}")]
         [HttpDelete]
-        public async Task<bool> Delete([FromRoute]int id)
+        public void Delete([FromRoute]int id)
         {
-            var currentUser = await _manager.GetUser(id);
-            return _manager.Delete(currentUser);
+            var currentUser =  _userManager.GetUser(id);
+           _userManager.Delete(currentUser);
         }
         #endregion
     }

@@ -21,42 +21,41 @@ namespace SignatureRequests.DataAccessHandlers
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IQueryable<T>> AsQueryable()
+        public IQueryable<T> AsQueryable()
         {
             var result = _dbSet.AsQueryable();
-            return await Task.FromResult(result);
-        }
-
-        public async Task<bool> Contains(T entity)
-        {
-            return await _dbSet.ContainsAsync(entity);
-        }
-
-        public async Task<long> Count()
-        {
-            return await _dbSet.CountAsync();
-        }
-
-        public async Task<long> Count(Expression<Func<T, bool>> where)
-        {
-            var result = await _dbSet.CountAsync(where);
             return result;
         }
 
-        public Task Delete(T entity)
+        public bool Contains(T entity)
+        {
+            return _dbSet.Contains(entity);
+        }
+
+        public long Count()
+        {
+            return _dbSet.Count();
+        }
+
+        public long Count(Expression<Func<T, bool>> where)
+        {
+            var result = _dbSet.Count(where);
+            return result;
+        }
+
+        public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            return Task.CompletedTask;
         }
 
-        public async Task<T> First(Expression<Func<T, bool>> where)
+        public  T First(Expression<Func<T, bool>> where)
         {
-            return await _dbSet.FirstAsync(where);
+            return  _dbSet.First(where);
         }
 
-        public async Task<IEnumerable<T>> Get(Expression<Func<T, bool>> where)
+        public IEnumerable<T> Get(Expression<Func<T, bool>> where)
         {
-            return await _dbSet.Where(where).ToListAsync();
+            return _dbSet.Where(where).ToList();
         }
 
         public IEnumerable<T> GetAll()
@@ -64,14 +63,14 @@ namespace SignatureRequests.DataAccessHandlers
             return _dbSet.ToList();
         }
 
-        public async Task<T> GetById(int id)
+        public T GetById(int id)
         {
-            return await _dbSet.FirstAsync(e => e.Id == id);
+            return _dbSet.First(e => e.Id == id);
         }
 
-        public async Task<IEnumerable<T>> GetByIds(IEnumerable<int> ids)
+        public IEnumerable<T> GetByIds(IEnumerable<int> ids)
         {
-            return await _dbSet.Where(e => ids.Contains(e.Id)).ToListAsync();
+            return _dbSet.Where(e => ids.Contains(e.Id)).ToList();
         }
 
         public T Insert(T entity)
@@ -85,15 +84,15 @@ namespace SignatureRequests.DataAccessHandlers
             _dbSet.AddRange(entities);
         }
 
-        public Task<T> Update(T entity)
+        public T Update(T entity)
         {
             _context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
-            return Task.FromResult(entity);
+            return entity;
         }
 
-        public async Task SaveChanges()
+        public void SaveChanges()
         {
-           await _context.SaveChangesAsync();
+           _context.SaveChanges();
         }
     }
 }

@@ -10,13 +10,13 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IUserManager
     {
         IEnumerable<UserEntity> GetUsers();
-        Task<UserEntity> GetUser(int id);
+        UserEntity GetUser(int id);
         UserEntity CreateUserEntity(UserEntity newUser);
         UserEntity UpdateUser(UserEntity user, UserEntity newUser);
-        Task<string> GetName(int id);
-        Task<string> GetEmail(int id);
-        Task<string> GetRole(int id);
-        bool Delete(UserEntity user);
+        string GetName(int id);
+        string GetEmail(int id);
+        string GetRole(int id);
+        void Delete(UserEntity user);
         IEnumerable<UserEntity> GetAllInclude();
     }
 }

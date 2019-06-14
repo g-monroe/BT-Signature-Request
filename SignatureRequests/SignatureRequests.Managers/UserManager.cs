@@ -23,14 +23,14 @@ namespace SignatureRequests.Managers
             return newUser;
         }
 
-        public bool Delete(UserEntity user)
+        public void Delete(UserEntity user)
         {
-            return _userHandler.Delete(user).IsCompleted;
+            _userHandler.Delete(user);
         }
 
-        public async Task<string> GetEmail(int id)
+        public string GetEmail(int id)
         {
-            UserEntity result = await GetUser(id);
+            UserEntity result =  GetUser(id);
             if (result == null)
             {
                 return "";
@@ -38,21 +38,21 @@ namespace SignatureRequests.Managers
             return result.Email;
         }
 
-        public async Task<string> GetName(int id)
+        public string GetName(int id)
         {
-            UserEntity result = await GetUser(id);
+            UserEntity result = GetUser(id);
             return result.Name;
         }
 
-        public async Task<string> GetRole(int id)
+        public string GetRole(int id)
         {
-            UserEntity result = await GetUser(id);
+            UserEntity result = GetUser(id);
             return result.Role;
         }
 
-        public async Task<UserEntity> GetUser(int id)
+        public UserEntity GetUser(int id)
         {
-            var result = await _userHandler.GetById(id);
+            var result = _userHandler.GetById(id);
             return result;
         }
 

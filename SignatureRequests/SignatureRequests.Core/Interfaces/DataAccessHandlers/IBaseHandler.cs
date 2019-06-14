@@ -11,19 +11,19 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
 {
     public interface IBaseHandler<T> where T : IBaseEntity
     {
-        Task<IQueryable<T>> AsQueryable();
+        IQueryable<T> AsQueryable();
         IEnumerable<T> GetAll();
-        Task<IEnumerable<T>> Get(Expression<Func<T, bool>> where);
-        Task<T> GetById(int id);
-        Task<IEnumerable<T>> GetByIds(IEnumerable<int> ids);
-        Task<T> First(Expression<Func<T, bool>> where);
-        Task<bool> Contains(T entity);
-        Task<long> Count();
-        Task<long> Count(Expression<Func<T, bool>> where);
+        IEnumerable<T> Get(Expression<Func<T, bool>> where);
+        T GetById(int id);
+        IEnumerable<T> GetByIds(IEnumerable<int> ids);
+        T First(Expression<Func<T, bool>> where);
+        bool Contains(T entity);
+        long Count();
+        long Count(Expression<Func<T, bool>> where);
         T Insert(T entity);
         void InsertMany(IEnumerable<T> entities);
-        Task<T> Update(T entity);
-        Task Delete(T entity);
-        Task SaveChanges();
+        T Update(T entity);
+        void Delete(T entity);
+        void SaveChanges();
     }
 }
