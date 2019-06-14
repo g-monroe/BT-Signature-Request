@@ -12,8 +12,10 @@ namespace SignatureRequests.Core.Interfaces.Managers
 {
     public interface ISignatureLibManager
     {
-        MemoryStream CreateCertificate(Pkcs12Store _store, SecureRandom _random, SignatureItem _signItem);
-        void SignDocument(BoxItem[] boxes, SignatureItem _signItem);
-        bool SaveCertificate(Pkcs12Store _store, SecureRandom _random, SignatureItem _signItem);
+        
+        SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item);
+        MemoryStream CreateCertificate(SignatureLibItem result, SignatureItem signItem);
+        void SignDocument(BoxItem[] boxes, SignatureItem signItem);
+        bool SaveCertificate(SignatureLibItem resultm, SignatureItem signItem);
     }
 }
