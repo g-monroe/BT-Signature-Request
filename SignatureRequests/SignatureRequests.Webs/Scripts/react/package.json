@@ -1,0 +1,30 @@
+{
+  "name": "signatures",
+  "version": "1.0.0",
+  "description": "proof of concept application that will allow a builder to request that a signer signs specific areas of a pdf and allow a signer to set signtures onto those locations (and only those locations)",
+  "main": "app.js",
+  "scripts": {
+    "webpack": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nerf Darts",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "16.8.17",
+    "@types/react-dom": "16.8.4",
+    "antd": "^3.19.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "8.0.5",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4"
+  }
+}
