@@ -17,7 +17,7 @@ namespace SignatureRequests.Controllers
         #region GlobalVariables
         private readonly IUserManager _userManager;
         #endregion
-       
+
         #region Constructor
         public UserController(IUserManager manager)
         {
@@ -45,7 +45,7 @@ namespace SignatureRequests.Controllers
         //POST:api/Product/UpdateProduct
         public UserResponse UpdateUser([FromRoute]int id, [FromBody]UserRequest me)
         {
-            var result =  _userManager.UpdateUser(id, me);
+            var result = _userManager.UpdateUser(id, me);
             return result;
         }
         //// DELETE api/<controller>/5
@@ -53,7 +53,7 @@ namespace SignatureRequests.Controllers
         [HttpDelete]
         public void Delete([FromRoute]int id)
         {
-           _userManager.Delete(id);
+            _userManager.Delete(id);
         }
         #endregion
     }
