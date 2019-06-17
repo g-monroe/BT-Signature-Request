@@ -31,36 +31,29 @@ namespace SignatureRequests.Controllers
         public UserResponseList GetUsers()
         {
             var users = _userManager.GetAllInclude();
-            var resp = _userManager.UserToListResponse(users);
-            return resp;
+            return users;
         }
         [Route("api/User/AddUser")]
         [HttpPost]
         public UserResponse AddUser([FromBody]UserRequest me)
         {
-            var user =  _userManager.UserToDbItem(me);
-            var result = _userManager.CreateUserEntity(user);
-            var resultValue = _userManager.UserToListItem(result);
-            return resultValue;
+            var result = _userManager.CreateUserEntity(me);
+            return result;
         }
         [Route("api/User/UpdateUser/{id}")]
         [HttpPost]
         //POST:api/Product/UpdateProduct
         public UserResponse UpdateUser([FromRoute]int id, [FromBody]UserRequest me)
         {
-            var user = _userManager.UserToDbItem(me);
-            var currentUser = _userManager.GetUser(id);
-            var result =  _userManager.UpdateUser(currentUser, user);
-            var resultValue = _userManager.UserToListItem(result);
-            return resultValue;
+            var result =  _userManager.UpdateUser(id, me);
+            return result;
         }
         //// DELETE api/<controller>/5
         [Route("api/User/DeleteUser/{id}")]
         [HttpDelete]
         public void Delete([FromRoute]int id)
         {
-            var currentUser =  _userManager.GetUser(id);
-           _userManager.Delete(currentUser);
+           _userManager.Delete(id);
         }
         #endregion
     }

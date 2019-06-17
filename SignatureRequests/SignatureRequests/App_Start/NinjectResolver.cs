@@ -40,6 +40,9 @@ namespace SignatureRequests.App_Start
             kernel.Bind<ISignatureLibManager>().To<SignatureLibManager>().InSingletonScope();
             kernel.Bind<IFormManager>().To<FormManager>().InSingletonScope();
             kernel.Bind<IFormHandler>().To<FormHandler>().WithConstructorArgument("context", context);
+            kernel.Bind<ISignatureManager>().To<SignatureManager>().InSingletonScope();
+            kernel.Bind<ISignatureHandler>().To<SignatureHandler>().InSingletonScope();
+
             return kernel;
         }
 
