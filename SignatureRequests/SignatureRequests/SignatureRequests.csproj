@@ -505,6 +505,14 @@
       <Project>{d8462be7-76b8-437e-ab8f-1e99db9a778f}</Project>
       <Name>SignatureRequests.DataAccessHandlers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SignatureRequests.Engines\SignatureRequests.Engines.csproj">
+      <Project>{11B48125-61C4-4D2F-9F77-B374B553BF63}</Project>
+      <Name>SignatureRequests.Engines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SignatureRequests.Managers\SignatureRequests.Managers.csproj">
+      <Project>{8483DF64-F1F9-4013-8536-21DF22E4E74D}</Project>
+      <Name>SignatureRequests.Managers</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

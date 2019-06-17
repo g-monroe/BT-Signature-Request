@@ -168,14 +168,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="BaseHandler.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
-    <Compile Include="Migrations\201906112005350_InitialMigration.cs" />
-    <Compile Include="Migrations\201906112005350_InitialMigration.Designer.cs">
-      <DependentUpon>201906112005350_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201906132022405_test.cs" />
+    <Compile Include="Migrations\201906132022405_test.Designer.cs">
+      <DependentUpon>201906132022405_test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="UserHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SignatureRequests.Core\SignatureRequests.Core.csproj">
@@ -188,8 +189,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906112005350_InitialMigration.resx">
-      <DependentUpon>201906112005350_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906132022405_test.resx">
+      <DependentUpon>201906132022405_test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

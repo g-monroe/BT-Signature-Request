@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BTSuggestions.Core.Entities
+namespace SignatureRequests.Core.Entities
 {
     public interface IBaseEntity
     {

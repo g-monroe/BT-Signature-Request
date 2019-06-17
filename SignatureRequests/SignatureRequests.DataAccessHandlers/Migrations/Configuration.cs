@@ -5,7 +5,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Infrastructure.SignatureRequestsContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<SignatureRequests.DataAccessHandlers.Infrastructure.SignatureRequestsContext>
     {
         public Configuration()
         {

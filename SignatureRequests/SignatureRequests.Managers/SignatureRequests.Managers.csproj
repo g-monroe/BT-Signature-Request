@@ -171,12 +171,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignatureManager.cs" />
+    <Compile Include="SignatureLibManager.cs" />
+    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infastructure\" />
-    <Folder Include="RequestObjects\" />
-    <Folder Include="ResponseObjects\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
