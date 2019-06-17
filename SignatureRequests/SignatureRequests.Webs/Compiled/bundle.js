@@ -22,182 +22,7 @@ define("Util/Enums/UserTypes", ["require", "exports"], function (require, export
     })(UserType || (UserType = {}));
     exports["default"] = UserType;
 });
-define("Pages/Routing/routes", ["require", "exports", "../../Pages", "Util/Enums/UserTypes"], function (require, exports, Pages, UserTypes_1) {
-    "use strict";
-    exports.__esModule = true;
-    //===================Common Routes===================
-    exports.COMMON = {
-        "_Login": {
-            path: "/login",
-            link: "/login",
-            breadcrumbName: "Login",
-            component: Pages.Login,
-            hasNavBar: true,
-            condition: function (User) { return true; }
-        },
-        "_Error": {
-            path: "/error",
-            link: "/error",
-            breadcrumbName: "Error",
-            component: Pages.Error,
-            hasNavBar: false,
-            condition: function (User) { return true; }
-        }
-    };
-    //===================Requester Routes================
-    exports.REQUESTER = {
-        "_Dashboard": {
-            path: "/request/dashboard",
-            link: "/request/dashboard",
-            breadcrumbName: "Dashboard",
-            component: Pages.DashBoard,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
-        },
-        "_Create": {
-            path: "/request/create",
-            link: "/request/create",
-            breadcrumbName: "Create",
-            component: Pages.Create,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
-        },
-        "_Send": {
-            path: "/request/send",
-            link: "/request/send",
-            breadcrumbName: "Send",
-            component: Pages.Send,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
-        },
-        "_View": {
-            path: "/request/view",
-            link: "/request/view",
-            breadcrumbName: "View",
-            component: Pages.View,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
-        }
-    };
-    //===================Signer Routes===================
-    exports.SIGNER = {
-        "_Dashboard": {
-            path: "/response/dashboard",
-            link: "/response/dashboard",
-            breadcrumbName: "Dashboard",
-            component: Pages.SignerDashboard,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
-        },
-        "_AddSignature": {
-            path: "/response/add",
-            link: "/response/add",
-            breadcrumbName: "Add",
-            component: Pages.AddSignatures,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
-        },
-        "_SignDocument": {
-            path: "/response/sign",
-            link: "/response/sign",
-            breadcrumbName: "Sign",
-            component: Pages.SignDocument,
-            hasNavBar: true,
-            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
-        }
-    };
-    exports.LoggedOut = [exports.COMMON._Login, exports.COMMON._Error];
-    exports.Request = [exports.REQUESTER._Create, exports.REQUESTER._Dashboard, exports.REQUESTER._Send, exports.REQUESTER._View];
-    exports.Response = [exports.SIGNER._AddSignature, exports.SIGNER._Dashboard, exports.SIGNER._SignDocument];
-    exports.All = [exports.REQUESTER._Create, exports.REQUESTER._Dashboard, exports.REQUESTER._Send, exports.REQUESTER._View,
-        exports.SIGNER._AddSignature, exports.SIGNER._Dashboard, exports.SIGNER._SignDocument, exports.COMMON._Login, exports.COMMON._Error];
-});
-define("Components/User/ChooseUser", ["require", "exports", "react", "../../node_modules/antd/dist/antd", "Util/Enums/UserTypes", "Pages/Routing/routes", "../../node_modules/react-router-dom/Link"], function (require, exports, React, antd_1, UserTypes_2, routes, Link_1) {
-    "use strict";
-    exports.__esModule = true;
-    var ChooseUser = /** @class */ (function (_super) {
-        __extends(ChooseUser, _super);
-        function ChooseUser() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.chooseUserType = function (newUser) {
-                _this.props.changeUser(newUser);
-            };
-            return _this;
-        }
-        ChooseUser.prototype.render = function () {
-            var _this = this;
-            return (<div id='flex-container'>
-                <antd_1.Card id='categoryBox' title='Requester'>
-                    <p>Choose this option to view the app as a user able to send out documents</p>
-                    <antd_1.Button id='Button' onClick={function () { return _this.chooseUserType(UserTypes_2["default"].SENDER); }}>
-                        <Link_1.Link to={routes.REQUESTER._Dashboard.link}> 
-                            Select
-                        </Link_1.Link>
-                    </antd_1.Button>
-                </antd_1.Card>
-                <antd_1.Card id='categoryBox' title='Signer'>
-                    <p>Choose this option to view the app as a user able to receive/sign the documents</p>
-                    <antd_1.Button id='Button' onClick={function () { return _this.chooseUserType(UserTypes_2["default"].SIGNER); }}>
-                        <Link_1.Link to={routes.SIGNER._Dashboard.link}> 
-                            Select
-                        </Link_1.Link>
-                    </antd_1.Button>
-                </antd_1.Card>
-
-
-            </div>);
-        };
-        return ChooseUser;
-    }(React.Component));
-    exports["default"] = ChooseUser;
-});
-define("Pages/Navigation", ["require", "exports", "react", "antd", "Pages/Routing/routes", "react-router-dom", "Util/Enums/UserTypes"], function (require, exports, React, antd_2, routes, react_router_dom_1, UserTypes_3) {
-    "use strict";
-    exports.__esModule = true;
-    var Navigation = /** @class */ (function (_super) {
-        __extends(Navigation, _super);
-        function Navigation() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
-        }
-        Navigation.prototype.render = function () {
-            var _a = this.props, location = _a.location, userType = _a.userType;
-            var currRoutes = [];
-            var userHome;
-            switch (userType) {
-                case UserTypes_3["default"].UNKNOWN:
-                    currRoutes = routes.LoggedOut;
-                    userHome = routes.COMMON._Login;
-                    break;
-                case UserTypes_3["default"].SENDER:
-                    currRoutes = routes.Request;
-                    userHome = routes.REQUESTER._Dashboard;
-                    break;
-                case UserTypes_3["default"].SIGNER:
-                    currRoutes = routes.Response;
-                    userHome = routes.SIGNER._Dashboard;
-                    break;
-            }
-            return (<div className="navigation">
-                <antd_2.Menu className="navigation__menu" theme="dark" mode="horizontal" style={{ lineHeight: '64px' }}>
-                    {currRoutes.map(function (e) { return e.hasNavBar ?
-                <antd_2.Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? { backgroundColor: "#1890ff" } : { backgroundColor: "inherit" }}>
-                            <react_router_dom_1.NavLink to={e.link}>
-                             {e.breadcrumbName}
-                            </react_router_dom_1.NavLink>
-                        </antd_2.Menu.Item>
-                : <div></div>; })}
-
-                </antd_2.Menu>
-                <react_router_dom_1.NavLink to={userHome.link}> <div id="logo"/></react_router_dom_1.NavLink>
-            </div>);
-        };
-        return Navigation;
-    }(React.Component));
-    exports["default"] = react_router_dom_1.withRouter(Navigation);
-});
-define("Pages/login/Login", ["require", "exports", "react", "antd", "Components/User/ChooseUser"], function (require, exports, React, antd_3, ChooseUser_1) {
+define("Pages/login/Login", ["require", "exports", "react", "../../node_modules/antd/dist/antd", "Components/User/ChooseUser"], function (require, exports, React, antd_1, ChooseUser_1) {
     "use strict";
     exports.__esModule = true;
     var Login = /** @class */ (function (_super) {
@@ -210,57 +35,16 @@ define("Pages/login/Login", ["require", "exports", "react", "antd", "Components/
         Login.prototype.render = function () {
             return (<div>
                 <h1 id='HeaderText'>Choose User Type</h1>
-                <antd_3.Layout>
+                <antd_1.Layout>
                     <ChooseUser_1.default changeUser={this.props.userSelected}></ChooseUser_1.default>
    
                 
-                </antd_3.Layout>
+                </antd_1.Layout>
             </div>);
         };
         return Login;
     }(React.Component));
     exports["default"] = Login;
-});
-define("Pages/MainPage", ["require", "exports", "react", "react-router-dom", "../node_modules/antd/dist/antd", "Pages/Routing/routes", "Pages/Navigation", "Util/Enums/UserTypes", "Pages/login/Login"], function (require, exports, React, react_router_dom_2, antd_4, routes, Navigation_1, UserTypes_4, Login_1) {
-    "use strict";
-    exports.__esModule = true;
-    var ALL_ROUTES = routes.All;
-    var MainPage = /** @class */ (function (_super) {
-        __extends(MainPage, _super);
-        function MainPage() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {
-                user: UserTypes_4["default"].UNKNOWN
-            };
-            _this.changeUser = function (User) {
-                _this.setState({
-                    user: User
-                });
-            };
-            return _this;
-        }
-        MainPage.prototype.render = function () {
-            return (<react_router_dom_2.BrowserRouter>
-                <antd_4.Layout>
-                    <antd_4.Layout.Header>
-                        <Navigation_1.default userType={this.state.user}></Navigation_1.default>
-                    </antd_4.Layout.Header>
-                   <antd_4.Layout.Content>
-                        {((this.state.user === UserTypes_4["default"].UNKNOWN) ?
-                <Login_1.default userSelected={this.changeUser}></Login_1.default>
-                :
-                    <react_router_dom_2.Switch>
-                                {ALL_ROUTES.map(function (route, i) {
-                        return (<react_router_dom_2.Route key={i} path={route.path} exact breadcrumbName={route.breadcrumbName} component={route.component}/>);
-                    })}
-                                </react_router_dom_2.Switch>)}
-                   </antd_4.Layout.Content>
-                </antd_4.Layout>
-            </react_router_dom_2.BrowserRouter>);
-        };
-        return MainPage;
-    }(React.Component));
-    exports["default"] = MainPage;
 });
 define("Pages/Requester/Create/Create", ["require", "exports", "react"], function (require, exports, React) {
     "use strict";
@@ -398,10 +182,10 @@ define("Pages/Error/Error", ["require", "exports", "react"], function (require, 
     }(React.Component));
     exports["default"] = Error;
 });
-define("Pages/index", ["require", "exports", "Pages/login/Login", "Pages/Requester/Create/Create", "Pages/Requester/Dashboard/Dashboard", "Pages/Requester/Send/Send", "Pages/Requester/View/View", "Pages/Signer/AddSignatures/AddSignatures", "Pages/Signer/Dashboard/SignerDashboad", "Pages/Signer/SignDocument/SignDocument", "Pages/Error/Error"], function (require, exports, Login_2, Create_1, Dashboard_1, Send_1, View_1, AddSignatures_1, SignerDashboad_1, SignDocument_1, Error_1) {
+define("Pages/index", ["require", "exports", "Pages/login/Login", "Pages/Requester/Create/Create", "Pages/Requester/Dashboard/Dashboard", "Pages/Requester/Send/Send", "Pages/Requester/View/View", "Pages/Signer/AddSignatures/AddSignatures", "Pages/Signer/Dashboard/SignerDashboad", "Pages/Signer/SignDocument/SignDocument", "Pages/Error/Error"], function (require, exports, Login_1, Create_1, Dashboard_1, Send_1, View_1, AddSignatures_1, SignerDashboad_1, SignDocument_1, Error_1) {
     "use strict";
     exports.__esModule = true;
-    exports.Login = Login_2["default"];
+    exports.Login = Login_1["default"];
     exports.Create = Create_1["default"];
     exports.DashBoard = Dashboard_1["default"];
     exports.Send = Send_1["default"];
@@ -410,4 +194,220 @@ define("Pages/index", ["require", "exports", "Pages/login/Login", "Pages/Request
     exports.SignerDashboard = SignerDashboad_1["default"];
     exports.SignDocument = SignDocument_1["default"];
     exports.Error = Error_1["default"];
+});
+define("Pages/Routing/routes", ["require", "exports", "Pages/index", "Util/Enums/UserTypes"], function (require, exports, Pages, UserTypes_1) {
+    "use strict";
+    exports.__esModule = true;
+    //===================Common Routes===================
+    exports.COMMON = {
+        "_Login": {
+            path: "/login",
+            link: "/login",
+            breadcrumbName: "Login",
+            component: Pages.Login,
+            hasNavBar: true,
+            condition: function (User) { return true; }
+        },
+        "_Error": {
+            path: "/error",
+            link: "/error",
+            breadcrumbName: "Error",
+            component: Pages.Error,
+            hasNavBar: false,
+            condition: function (User) { return true; }
+        }
+    };
+    //===================Requester Routes================
+    exports.REQUESTER = {
+        "_Dashboard": {
+            path: "/request/dashboard",
+            link: "/request/dashboard",
+            breadcrumbName: "Dashboard",
+            component: Pages.DashBoard,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
+        },
+        "_Create": {
+            path: "/request/create",
+            link: "/request/create",
+            breadcrumbName: "Create",
+            component: Pages.Create,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
+        },
+        "_Send": {
+            path: "/request/send",
+            link: "/request/send",
+            breadcrumbName: "Send",
+            component: Pages.Send,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
+        },
+        "_View": {
+            path: "/request/view",
+            link: "/request/view",
+            breadcrumbName: "View",
+            component: Pages.View,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SENDER); }
+        }
+    };
+    //===================Signer Routes===================
+    exports.SIGNER = {
+        "_Dashboard": {
+            path: "/response/dashboard",
+            link: "/response/dashboard",
+            breadcrumbName: "Dashboard",
+            component: Pages.SignerDashboard,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
+        },
+        "_AddSignature": {
+            path: "/response/add",
+            link: "/response/add",
+            breadcrumbName: "Add",
+            component: Pages.AddSignatures,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
+        },
+        "_SignDocument": {
+            path: "/response/sign",
+            link: "/response/sign",
+            breadcrumbName: "Sign",
+            component: Pages.SignDocument,
+            hasNavBar: true,
+            condition: function (User) { return !!User && !!(User === UserTypes_1["default"].SIGNER); }
+        }
+    };
+    exports.LoggedOut = [exports.COMMON._Login, exports.COMMON._Error];
+    exports.Request = [exports.REQUESTER._Create, exports.REQUESTER._Dashboard, exports.REQUESTER._Send, exports.REQUESTER._View];
+    exports.Response = [exports.SIGNER._AddSignature, exports.SIGNER._Dashboard, exports.SIGNER._SignDocument];
+    exports.All = [exports.REQUESTER._Create, exports.REQUESTER._Dashboard, exports.REQUESTER._Send, exports.REQUESTER._View,
+        exports.SIGNER._AddSignature, exports.SIGNER._Dashboard, exports.SIGNER._SignDocument, exports.COMMON._Login, exports.COMMON._Error];
+});
+define("Components/User/ChooseUser", ["require", "exports", "react", "../../node_modules/antd/dist/antd", "Util/Enums/UserTypes", "Pages/Routing/routes", "../../node_modules/react-router-dom/index"], function (require, exports, React, antd_2, UserTypes_2, routes, index_1) {
+    "use strict";
+    exports.__esModule = true;
+    var ChooseUser = /** @class */ (function (_super) {
+        __extends(ChooseUser, _super);
+        function ChooseUser() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.chooseUserType = function (newUser) {
+                _this.props.changeUser(newUser);
+            };
+            return _this;
+        }
+        ChooseUser.prototype.render = function () {
+            var _this = this;
+            return (<div id='flex-container'>
+                <antd_2.Card id='categoryBox' title='Requester'>
+                    <p>Choose this option to view the app as a user able to send out documents</p>
+                    <antd_2.Button id='Button' onClick={function () { return _this.chooseUserType(UserTypes_2["default"].SENDER); }}>
+                        <index_1.Link to={routes.REQUESTER._Dashboard.link}> 
+                            Select
+                        </index_1.Link>
+                    </antd_2.Button>
+                </antd_2.Card>
+                <antd_2.Card id='categoryBox' title='Signer'>
+                    <p>Choose this option to view the app as a user able to receive/sign the documents</p>
+                    <antd_2.Button id='Button' onClick={function () { return _this.chooseUserType(UserTypes_2["default"].SIGNER); }}>
+                        <index_1.Link to={routes.SIGNER._Dashboard.link}> 
+                            Select
+                        </index_1.Link>
+                    </antd_2.Button>
+                </antd_2.Card>
+
+
+            </div>);
+        };
+        return ChooseUser;
+    }(React.Component));
+    exports["default"] = ChooseUser;
+});
+define("Pages/Navigation", ["require", "exports", "react", "../node_modules/antd/dist/antd", "Pages/Routing/routes", "../node_modules/react-router-dom/index", "Util/Enums/UserTypes"], function (require, exports, React, antd_3, routes, index_2, UserTypes_3) {
+    "use strict";
+    exports.__esModule = true;
+    var Navigation = /** @class */ (function (_super) {
+        __extends(Navigation, _super);
+        function Navigation() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.state = {};
+            return _this;
+        }
+        Navigation.prototype.render = function () {
+            var _a = this.props, location = _a.location, userType = _a.userType;
+            var currRoutes = [];
+            var userHome;
+            switch (userType) {
+                case UserTypes_3["default"].UNKNOWN:
+                    currRoutes = routes.LoggedOut;
+                    userHome = routes.COMMON._Login;
+                    break;
+                case UserTypes_3["default"].SENDER:
+                    currRoutes = routes.Request;
+                    userHome = routes.REQUESTER._Dashboard;
+                    break;
+                case UserTypes_3["default"].SIGNER:
+                    currRoutes = routes.Response;
+                    userHome = routes.SIGNER._Dashboard;
+                    break;
+            }
+            return (<div className="navigation">
+                <antd_3.Menu className="navigation__menu" theme="dark" mode="horizontal" style={{ lineHeight: '64px' }}>
+                    {currRoutes.map(function (e) { return e.hasNavBar ?
+                <antd_3.Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? { backgroundColor: "#1890ff" } : { backgroundColor: "inherit" }}>
+                            <index_2.NavLink to={e.link}>
+                             {e.breadcrumbName}
+                            </index_2.NavLink>
+                        </antd_3.Menu.Item>
+                : <div></div>; })}
+
+                </antd_3.Menu>
+                <index_2.NavLink to={userHome.link}> <div id="logo"/></index_2.NavLink>
+            </div>);
+        };
+        return Navigation;
+    }(React.Component));
+    exports["default"] = index_2.withRouter(Navigation);
+});
+define("Pages/MainPage", ["require", "exports", "react", "../node_modules/react-router-dom/index", "../node_modules/antd/dist/antd", "Pages/Routing/routes", "Pages/Navigation", "Util/Enums/UserTypes", "Pages/login/Login"], function (require, exports, React, index_3, antd_4, routes, Navigation_1, UserTypes_4, Login_2) {
+    "use strict";
+    exports.__esModule = true;
+    var ALL_ROUTES = routes.All;
+    var MainPage = /** @class */ (function (_super) {
+        __extends(MainPage, _super);
+        function MainPage() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.state = {
+                user: UserTypes_4["default"].UNKNOWN
+            };
+            _this.changeUser = function (User) {
+                _this.setState({
+                    user: User
+                });
+            };
+            return _this;
+        }
+        MainPage.prototype.render = function () {
+            return (<index_3.BrowserRouter>
+                <antd_4.Layout>
+                    <antd_4.Layout.Header>
+                        <Navigation_1.default userType={this.state.user}></Navigation_1.default>
+                    </antd_4.Layout.Header>
+                   <antd_4.Layout.Content>
+                        {((this.state.user === UserTypes_4["default"].UNKNOWN) ?
+                <Login_2.default userSelected={this.changeUser}></Login_2.default>
+                :
+                    <index_3.Switch>
+                                {ALL_ROUTES.map(function (route, i) {
+                        return (<index_3.Route key={i} path={route.path} exact breadcrumbName={route.breadcrumbName} component={route.component}/>);
+                    })}
+                                </index_3.Switch>)}
+                   </antd_4.Layout.Content>
+                </antd_4.Layout>
+            </index_3.BrowserRouter>);
+        };
+        return MainPage;
+    }(React.Component));
+    exports["default"] = MainPage;
 });

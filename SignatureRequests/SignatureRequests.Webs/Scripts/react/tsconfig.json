@@ -3,7 +3,13 @@
     "module": "amd",
     "jsx": "preserve",
     "lib": [ "es2015", "dom" ],
-    "outFile": "../../Compiled/bundle.js"
+    "outFile": "../../Compiled/bundle.js",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "antd": [ "node_modules/antd/dist/antd" ],
+      "csstype": ["node_modules/csstype/index"]
+    }
   }
   
 }

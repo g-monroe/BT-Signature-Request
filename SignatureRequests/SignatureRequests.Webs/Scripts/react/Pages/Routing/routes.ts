@@ -1,4 +1,4 @@
-import * as Pages from '../../Pages';
+import * as Pages from '../../Pages/index';
 import UserType from '../../Util/Enums/UserTypes';
 
 

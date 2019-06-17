@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Layout } from 'antd';
+import { Layout } from '../../node_modules/antd/dist/antd';
 import ChooseUser from '../../Components/User/ChooseUser';
 import UserType from '../../Util/Enums/UserTypes';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "../node_modules/react-router-dom/index";
 import { Layout } from '../node_modules/antd/dist/antd';
 
 import * as routes from './Routing/routes';
