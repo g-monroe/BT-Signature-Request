@@ -83,7 +83,8 @@ namespace SignatureRequests.Managers
         {
             var resp = new UserResponseList
             {
-                TotalResults = me.Count()
+                TotalResults = me.Count(),
+                UsersList = new List<UserResponse>()
             };
             
             foreach(UserEntity user in me)
