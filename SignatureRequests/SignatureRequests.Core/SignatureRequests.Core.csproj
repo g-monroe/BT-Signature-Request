@@ -189,6 +189,12 @@
     <Compile Include="Models\UserJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Items\SignatureLibItem.cs" />
+    <Compile Include="RequestObjects\SignatureResquest.cs" />
+    <Compile Include="RequestObjects\UserRequest.cs" />
+    <Compile Include="ResponseObjects\SignatureResponse.cs" />
+    <Compile Include="ResponseObjects\SignatureResponseList.cs" />
+    <Compile Include="ResponseObjects\UserResponse.cs" />
+    <Compile Include="ResponseObjects\UserResponseList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\Engines\" />
