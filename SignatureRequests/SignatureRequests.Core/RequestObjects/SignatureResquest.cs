@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SignatureRequests.Managers.RequestObjects
+namespace SignatureRequests.Core.RequestObjects
 {
     public class SignatureRequest
     {

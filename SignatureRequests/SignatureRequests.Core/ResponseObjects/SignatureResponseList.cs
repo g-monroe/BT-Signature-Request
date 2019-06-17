@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SignatureRequests.Managers.ResponseObjects
+namespace SignatureRequests.Core.ResponseObjects
 {
     public class SignatureResponseList
     {

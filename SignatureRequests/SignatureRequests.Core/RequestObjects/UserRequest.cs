@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SignatureRequests.Managers.ResponseObjects
+namespace SignatureRequests.Core.RequestObjects
 {
-    public class UserResponse
+    public class UserRequest
     {
         public int Id { get; set; }
         public string Role { get; set; }

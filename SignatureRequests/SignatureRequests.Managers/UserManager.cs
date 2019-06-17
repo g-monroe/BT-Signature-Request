@@ -1,6 +1,8 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Managers;
+using SignatureRequests.Core.RequestObjects;
+using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +78,51 @@ namespace SignatureRequests.Managers
             user.Role = newUser.Role;
             _userHandler.Update(user);
             return user;
+        }
+        public UserResponseList UserToListResponse(IEnumerable<UserEntity> me)
+        {
+            var resp = new UserResponseList
+            {
+                TotalResults = me.Count()
+            };
+            
+            foreach(UserEntity user in me)
+            {
+                resp.UsersList.Add(UserToListItem(user));
+            }
+            return resp;
+        }
+        public UserResponse UserToListItem(UserEntity me)
+        {
+            return new UserResponse()
+            {
+                Id = me.Id,
+                Signature = me.Signature,
+                SignatureId = me.SignatureId,
+                Email = me.Email,
+                Name = me.Name,
+                Initial = me.Initial,
+                InitialId = me.InitialId,
+                Password = me.Password,
+                Role = me.Role
+            };
+        }
+        public UserEntity UserToDbItem(UserRequest me, UserEntity updating = null)
+        {
+            if (updating == null)
+            {
+                updating = new UserEntity();
+            }
+            updating.Id = me.Id;
+            updating.Signature = me.Signature;
+            updating.SignatureId = me.SignatureId;
+            updating.Email = me.Email;
+            updating.Name = me.Name;
+            updating.Initial = me.Initial;
+            updating.InitialId = me.InitialId;
+            updating.Password = me.Password;
+            updating.Role = me.Role;
+            return updating;
         }
     }
 }

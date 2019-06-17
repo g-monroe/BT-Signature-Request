@@ -2,14 +2,13 @@
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Managers;
-using SignatureRequests.Managers.RequestObjects;
-using SignatureRequests.Managers.ResponseObjects;
+using SignatureRequests.Core.RequestObjects;
+using SignatureRequests.Core.ResponseObjects;
 using SignatureRequests.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using UserRequests.Managers.Extensions;
 
 namespace SignatureRequests.Controllers
 {
@@ -32,16 +31,16 @@ namespace SignatureRequests.Controllers
         public UserResponseList GetUsers()
         {
             var users = _userManager.GetAllInclude();
-            var resp = UserExtension.UserToListResponse(users);
+            var resp = _userManager.UserToListResponse(users);
             return resp;
         }
         [Route("api/User/AddUser")]
         [HttpPost]
         public UserResponse AddUser([FromBody]UserRequest me)
         {
-            var user =  UserExtension.UserToDbItem(me);
+            var user =  _userManager.UserToDbItem(me);
             var result = _userManager.CreateUserEntity(user);
-            var resultValue = UserExtension.UserToListItem(result);
+            var resultValue = _userManager.UserToListItem(result);
             return resultValue;
         }
         [Route("api/User/UpdateUser/{id}")]
@@ -49,10 +48,10 @@ namespace SignatureRequests.Controllers
         //POST:api/Product/UpdateProduct
         public UserResponse UpdateUser([FromRoute]int id, [FromBody]UserRequest me)
         {
-            var user = UserExtension.UserToDbItem(me);
+            var user = _userManager.UserToDbItem(me);
             var currentUser = _userManager.GetUser(id);
             var result =  _userManager.UpdateUser(currentUser, user);
-            var resultValue = UserExtension.UserToListItem(result);
+            var resultValue = _userManager.UserToListItem(result);
             return resultValue;
         }
         //// DELETE api/<controller>/5

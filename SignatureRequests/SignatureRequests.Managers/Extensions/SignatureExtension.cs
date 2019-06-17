@@ -1,7 +1,7 @@
 ﻿using BTSuggestions.Core.Entities;
 using SignatureRequests.Core.Entities;
-using SignatureRequests.Managers.RequestObjects;
-using SignatureRequests.Managers.ResponseObjects;
+using SignatureRequests.Core.RequestObjects;
+using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
