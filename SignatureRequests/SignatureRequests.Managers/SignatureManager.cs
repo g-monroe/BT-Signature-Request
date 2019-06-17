@@ -18,46 +18,57 @@ namespace SignatureRequests.Managers
         {
             _signatureHandler = signatureHandler;
         }
-        public SignatureEntity CreateSignatureEntity(SignatureEntity newSignature)
+        public SignatureResponse CreateSignatureEntity(SignatureRequest newSignature)
         {
-            _signatureHandler.Insert(newSignature);
+            var result = SignatureToDbItem(newSignature);
+            _signatureHandler.Insert(result);
             _signatureHandler.SaveChanges();
-            return newSignature;
+            var resp = SignatureToListItem(result);
+            return resp;
         }
 
-        public void Delete(SignatureEntity signature)
+        public void Delete(int id)
         {
+            var signature = _signatureHandler.GetById(id);
             _signatureHandler.Delete(signature);
         }
 
-        public SignatureEntity GetSignature(int id)
+        public SignatureResponse GetSignature(int id)
         {
             var result = _signatureHandler.GetById(id);
-            return result;
+            var resp = SignatureToListItem(result);
+            return resp;
         }
 
-        public IEnumerable<SignatureEntity> GetSignatures()
+        public SignatureResponseList GetSignatures()
         {
-            return _signatureHandler.GetAll();
+           var result = _signatureHandler.GetAll();
+           var resp = SignatureToListResponse(result);
+           return resp;
         }
-        public IEnumerable<SignatureEntity> GetAllInclude()
+        public SignatureResponseList GetAllInclude()
         {
-            return _signatureHandler.GetAllInclude();
+            var result = _signatureHandler.GetAllInclude();
+            var resp = SignatureToListResponse(result);
+            return resp;
         }
-        public SignatureEntity UpdateSignature(SignatureEntity signature, SignatureEntity newSignature)
+        public SignatureResponse UpdateSignature(int id, SignatureRequest newSignature)
         {
-            signature.User = newSignature.User;
-            signature.UserId = newSignature.UserId;
-            signature.CertificatePassword = newSignature.CertificatePassword;
-            signature.CertificatePath = newSignature.CertificatePath;
-            signature.ImagePath = newSignature.ImagePath;
-            signature.ExpirationDate = newSignature.ExpirationDate;
-            signature.ContactInfo = newSignature.ContactInfo;
-            signature.Reason = newSignature.Reason;
-            signature.isInitial = newSignature.isInitial;
-            signature.Location = newSignature.Location;
+            var signature = _signatureHandler.GetById(id);
+            var reqSignature = SignatureToDbItem(newSignature);
+            signature.User = reqSignature.User;
+            signature.UserId = reqSignature.UserId;
+            signature.CertificatePassword = reqSignature.CertificatePassword;
+            signature.CertificatePath = reqSignature.CertificatePath;
+            signature.ImagePath = reqSignature.ImagePath;
+            signature.ExpirationDate = reqSignature.ExpirationDate;
+            signature.ContactInfo = reqSignature.ContactInfo;
+            signature.Reason = reqSignature.Reason;
+            signature.isInitial = reqSignature.isInitial;
+            signature.Location = reqSignature.Location;
             _signatureHandler.Update(signature);
-            return signature;
+            var resp = SignatureToListItem(signature); 
+            return resp;
         }
         public SignatureResponseList SignatureToListResponse(IEnumerable<SignatureEntity> me)
         {

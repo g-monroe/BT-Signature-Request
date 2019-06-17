@@ -29,36 +29,29 @@ namespace SignatureRequests.Controllers
         public SignatureResponseList GetSignatures()
         {
             var signs = _signatureManager.GetSignatures();
-            var resp = _signatureManager.SignatureToListResponse(signs);
-            return resp;
+            return signs;
         }
         [Route("api/Signature/AddSignature")]
         [HttpPost]
         public SignatureResponse AddSignature([FromBody]SignatureRequest me)
         {
-            var user = _signatureManager.SignatureToDbItem(me);
-            var result = _signatureManager.CreateSignatureEntity(user);
-            var resultValue = _signatureManager.SignatureToListItem(result);
-            return resultValue;
+            var result = _signatureManager.CreateSignatureEntity(me);
+            return result;
         }
         [Route("api/Signature/UpdateSignature/{id}")]
         [HttpPost]
         //POST:api/Product/UpdateProduct
         public SignatureResponse UpdateSignature([FromRoute]int id, [FromBody]SignatureRequest me)
         {
-            var user = _signatureManager.SignatureToDbItem(me);
-            var currentSignature = _signatureManager.GetSignature(id);
-            var result = _signatureManager.UpdateSignature(currentSignature, user);
-            var resultValue = _signatureManager.SignatureToListItem(result);
-            return resultValue;
+            var result = _signatureManager.UpdateSignature(id, me);
+            return result;
         }
         //// DELETE api/<controller>/5
         [Route("api/Signature/DeleteSignature/{id}")]
         [HttpDelete]
         public void Delete([FromRoute]int id)
         {
-            var currentSignature = _signatureManager.GetSignature(id);
-            _signatureManager.Delete(currentSignature);
+            _signatureManager.Delete(id);
         }
         #endregion
     }

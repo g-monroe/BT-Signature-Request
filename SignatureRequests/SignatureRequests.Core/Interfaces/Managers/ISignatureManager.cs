@@ -11,12 +11,12 @@ namespace SignatureRequests.Core.Interfaces.Managers
 {
     public interface ISignatureManager
     {
-        IEnumerable<SignatureEntity> GetSignatures();
-        SignatureEntity GetSignature(int id);
-        SignatureEntity CreateSignatureEntity(SignatureEntity newSignature);
-        SignatureEntity UpdateSignature(SignatureEntity signature, SignatureEntity newSignature);
-        void Delete(SignatureEntity signature);
-        IEnumerable<SignatureEntity> GetAllInclude();
+        SignatureResponseList GetSignatures();
+        SignatureResponse GetSignature(int id);
+        SignatureResponse CreateSignatureEntity(SignatureRequest newSignature);
+        SignatureResponse UpdateSignature(int id, SignatureRequest newSignature);
+        void Delete(int id);
+        SignatureResponseList GetAllInclude();
         SignatureResponseList SignatureToListResponse(IEnumerable<SignatureEntity> me);
         SignatureEntity SignatureToDbItem(SignatureRequest me, SignatureEntity updating = null);
         SignatureResponse SignatureToListItem(SignatureEntity me);

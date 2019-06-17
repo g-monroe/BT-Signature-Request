@@ -18,21 +18,23 @@ namespace SignatureRequests.Managers
         {
             _userHandler = userHandler;
         }
-        public UserEntity CreateUserEntity(UserEntity newUser)
+        public UserResponse CreateUserEntity(UserEntity newUser)
         {
             _userHandler.Insert(newUser);
             _userHandler.SaveChanges();
-            return newUser;
+            var result = UserToListItem(newUser);
+            return result;
         }
 
-        public void Delete(UserEntity user)
+        public void Delete(int id)
         {
+            var user = _userHandler.GetById(id);
             _userHandler.Delete(user);
         }
 
         public string GetEmail(int id)
         {
-            UserEntity result =  GetUser(id);
+            UserResponse result =  GetUser(id);
             if (result == null)
             {
                 return "";
@@ -42,42 +44,50 @@ namespace SignatureRequests.Managers
 
         public string GetName(int id)
         {
-            UserEntity result = GetUser(id);
+            UserResponse result = GetUser(id);
             return result.Name;
         }
 
         public string GetRole(int id)
         {
-            UserEntity result = GetUser(id);
+            UserResponse result = GetUser(id);
             return result.Role;
         }
 
-        public UserEntity GetUser(int id)
+        public UserResponse GetUser(int id)
         {
             var result = _userHandler.GetById(id);
-            return result;
+            var resp = UserToListItem(result);
+            return resp;
         }
 
-        public IEnumerable<UserEntity> GetUsers()
+        public UserResponseList GetUsers()
         {
-            return _userHandler.GetAll();
+            var result = _userHandler.GetAll();
+            var resp = UserToListResponse(result);
+            return resp;
         }
-        public IEnumerable<UserEntity> GetAllInclude()
+        public UserResponseList GetAllInclude()
         {
-            return _userHandler.GetAllInclude();
+            var result =  _userHandler.GetAllInclude();
+            var resp = UserToListResponse(result);
+            return resp;
         }
-        public UserEntity UpdateUser(UserEntity user, UserEntity newUser)
+        public UserResponse UpdateUser(int id, UserRequest newUser)
         {
-            user.Signature = newUser.Signature;
-            user.SignatureId = newUser.SignatureId;
-            user.Email = newUser.Email;
-            user.Name = newUser.Name;
-            user.Initial = newUser.Initial;
-            user.InitialId = newUser.InitialId;
-            user.Password = newUser.Password;
-            user.Role = newUser.Role;
+            var user = _userHandler.GetById(id);
+            var reqUser = UserToDbItem(newUser);
+            user.Signature = reqUser.Signature;
+            user.SignatureId = reqUser.SignatureId;
+            user.Email = reqUser.Email;
+            user.Name = reqUser.Name;
+            user.Initial = reqUser.Initial;
+            user.InitialId = reqUser.InitialId;
+            user.Password = reqUser.Password;
+            user.Role = reqUser.Role;
             _userHandler.Update(user);
-            return user;
+            var result = UserToListItem(user);
+            return result;
         }
         public UserResponseList UserToListResponse(IEnumerable<UserEntity> me)
         {
