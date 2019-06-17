@@ -170,13 +170,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\UserExtension.cs" />
+    <Compile Include="Extensions\SignatureExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignatureManager.cs" />
+    <Compile Include="RequestObjects\SignatureResquest.cs" />
+    <Compile Include="RequestObjects\UserRequest.cs" />
+    <Compile Include="ResponseObjects\UserResponseList.cs" />
+    <Compile Include="ResponseObjects\SignatureResponseList.cs" />
+    <Compile Include="ResponseObjects\SignatureResponse.cs" />
+    <Compile Include="ResponseObjects\UserResponse.cs" />
+    <Compile Include="SignatureLibManager.cs" />
+    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infastructure\" />
-    <Folder Include="RequestObjects\" />
-    <Folder Include="ResponseObjects\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

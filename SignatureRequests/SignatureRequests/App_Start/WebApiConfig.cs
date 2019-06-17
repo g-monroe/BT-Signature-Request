@@ -13,10 +13,11 @@ namespace SignatureRequests
         {
             // Web API configuration and services
             config.DependencyResolver = new NinjectResolver();
+
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.Formatters.JsonFormatter.SupportedMediaTypes
-                .Add(new MediaTypeHeaderValue("text/html"));
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

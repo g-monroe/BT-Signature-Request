@@ -9,19 +9,20 @@ using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
 using SautinSoft.Document;
 using SautinSoft.Document.Drawing;
-using SignatureRequests.Core.Entities;
+using SignatureRequests.Core;
+using SignatureRequests.Core.Enums;
+using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.Items;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace SignatureRequests.Managers
 {
-    public class SignatureManager
+    public class SignatureLibManager : ISignatureLibManager
     {
         /// <summary>
         /// This handler is to handle the certification making and signature control.
@@ -45,84 +46,65 @@ namespace SignatureRequests.Managers
         /// string reason = "reason";
         /// string contactInfo = "ContactInfo";
         /// </summary>
-#pragma warning disable IDE1006 // Naming Styles
-        private X509Item _X509Item { get; set; }
-        private SignatureItem _SignItem { get; set; }
-        private SecureRandom _Random { get; set; }
-        private Pkcs12Store _Store { get; set; }
-        public enum _InitializeCertificationStatus
-        {
-            Initialize = 1,
-            Seralize = 2,
-            Seed = 3,
-            Finialze = 4,
-            Success = 5
-        }
 
-        public SignatureManager(X509Item x509Item, SignatureItem signature)
-        {
-            _X509Item = x509Item;
-            _SignItem = signature;
-            var result = InitializeCertification();
-            if (result.Key != _InitializeCertificationStatus.Success)
-            {
-                throw new Exception(result.Value);
-            }
-        }
 
-        public KeyValuePair<_InitializeCertificationStatus, string> InitializeCertification()
+        public SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item)
         {
             var certificateGenerator = new X509V3CertificateGenerator();
+            SignatureLibItem result = new SignatureLibItem();
             try
             {
                 ////Pt 1: Initialize.
                 ///Start Generators
                 var randomGenerator = new CryptoApiRandomGenerator();
                 var random = new SecureRandom(randomGenerator);
-                _Random = random;
+                result.Random = random;
             }
             catch (Exception e)
             {
-                return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Initialize, e.Message);
+                result.InitializeCertificationStatus =  new KeyValuePair<InitializeCertifcation.Error, string>(InitializeCertifcation.Error.Initialize, e.Message);
+                return result;
             }
             try
             {
                 ////Pt 2: Seralize.
                 ///Select Encryption level, and create serialNumber
                 var serialNumber = BigIntegers.CreateRandomInRange(
-                BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), _Random);
+                Org.BouncyCastle.Math.BigInteger.One, Org.BouncyCastle.Math.BigInteger.ValueOf(Int64.MaxValue), result.Random);
                 certificateGenerator.SetSerialNumber(serialNumber);
-                certificateGenerator.SetSignatureAlgorithm(_SignItem.SignatureAlgorithm);
+                certificateGenerator.SetSignatureAlgorithm(signItem.SignatureAlgorithm);
             }
             catch (Exception e)
             {
-                return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Seralize, e.Message);
+                result.InitializeCertificationStatus = new KeyValuePair<InitializeCertifcation.Error, string>(InitializeCertifcation.Error.Seralize, e.Message);
+                return result;
             }
             try
             {
                 //Pt 3: Seed Data.
-                var subjectDN = new X509Name(_X509Item.Get());
+                var subjectDN = new X509Name(x509Item.Get());
                 var issuerDN = subjectDN;
                 certificateGenerator.SetIssuerDN(issuerDN);
                 certificateGenerator.SetSubjectDN(subjectDN);
-                certificateGenerator.SetNotBefore(_SignItem.NotBefore);
-                certificateGenerator.SetNotAfter(_SignItem.NotAfter);
+                certificateGenerator.SetNotBefore(signItem.NotBefore);
+                certificateGenerator.SetNotAfter(signItem.NotAfter);
             }
             catch (Exception e)
             {
-                return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Seed, e.Message);
+                result.InitializeCertificationStatus = new KeyValuePair<InitializeCertifcation.Error, string>(InitializeCertifcation.Error.Seed, e.Message);
+                return result;
             }
             try
             {
                 //Pt 4: Set Certification
-                var keyGenerationParameters = new KeyGenerationParameters(_Random, _SignItem.Strength);
+                var keyGenerationParameters = new KeyGenerationParameters(result.Random, signItem.Strength);
                 var keyPairGenerator = new RsaKeyPairGenerator();
                 keyPairGenerator.Init(keyGenerationParameters);
 
                 var subjectKeyPair = keyPairGenerator.GenerateKeyPair();
                 certificateGenerator.SetPublicKey(subjectKeyPair.Public);
                 var issuerKeyPair = subjectKeyPair;
-                var certificate = certificateGenerator.Generate(issuerKeyPair.Private, _Random);
+                var certificate = certificateGenerator.Generate(issuerKeyPair.Private, result.Random);
 
                 //Pt 5: Create Version for .net usage of cert.
                 var store = new Pkcs12Store();
@@ -131,23 +113,24 @@ namespace SignatureRequests.Managers
 
                 store.SetCertificateEntry(friendlyName, certificateEntry);
                 store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(subjectKeyPair.Private), new[] { certificateEntry });
-                _Store = store;
+                result.Store = store;
+
             }
             catch (Exception e)
             {
-                return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Finialze, e.Message);
+                result.InitializeCertificationStatus = new KeyValuePair<InitializeCertifcation.Error, string>(InitializeCertifcation.Error.Finialze, e.Message);
+                return result;
             }
-            return new KeyValuePair<_InitializeCertificationStatus, string>(_InitializeCertificationStatus.Success, "Success");
+            result.InitializeCertificationStatus = new KeyValuePair<InitializeCertifcation.Error, string>(InitializeCertifcation.Error.Success, "Success");
+            return result;
         }
-
-        public bool SaveCertificate()
+        public bool SaveCertificate(SignatureLibItem result, SignatureItem signItem)
         {
             try
             {
-
-                var stream = CreateCertificate();
-                _Store.Save(stream, _SignItem.Password.ToCharArray(), _Random);
-                File.WriteAllBytes(_SignItem.PfxPath, stream.ToArray());
+                var stream = CreateCertificate(result, signItem);
+                result.Store.Save(stream, signItem.Password.ToCharArray(), result.Random);
+                File.WriteAllBytes(signItem.PfxPath, stream.ToArray());
             }
             catch (Exception e)
             {
@@ -156,13 +139,13 @@ namespace SignatureRequests.Managers
             }
             return true;
         }
-        public MemoryStream CreateCertificate()
+        public MemoryStream CreateCertificate(SignatureLibItem result, SignatureItem signItem)
         {
             try
             {
                 //Pt 6: Finish and Save Pfx 
                 var stream = new MemoryStream();
-                _Store.Save(stream, _SignItem.Password.ToCharArray(), _Random);
+               result.Store.Save(stream, signItem.Password.ToCharArray(), result.Random);
                 return stream;
             }
             catch (Exception e)
@@ -171,10 +154,10 @@ namespace SignatureRequests.Managers
                 return null;
             }
         }
-        public void SignDocument(BoxItem[] boxes)
+        public void SignDocument(BoxItem[] boxes, SignatureItem signItem)
         {
             //Signature add to document part.
-            DocumentCore dc = DocumentCore.Load(_SignItem.LoadPath);
+            DocumentCore dc = DocumentCore.Load(signItem.LoadPath);
             Shape signatureShape = new Shape(dc, Layout.Floating(new HorizontalPosition(0f, LengthUnit.Millimeter, HorizontalPositionAnchor.LeftMargin),
                             new VerticalPosition(0f, LengthUnit.Millimeter, VerticalPositionAnchor.TopMargin), new Size(1, 1)));
             ((FloatingLayout)signatureShape.Layout).WrappingStyle = WrappingStyle.InFrontOfText;
@@ -185,7 +168,7 @@ namespace SignatureRequests.Managers
             firstPar.Inlines.Add(signatureShape);
             foreach (BoxItem box in boxes)
             {
-                Picture signaturePict = new Picture(dc, _SignItem.SignPath)
+                Picture signaturePict = new Picture(dc, signItem.SignPath)
                 {
                     // Signature picture will be positioned:
                     Layout = Layout.Floating(
@@ -196,24 +179,24 @@ namespace SignatureRequests.Managers
                 PdfSaveOptions options = new PdfSaveOptions();
 
                 // Path to the certificate (*.pfx).
-                options.DigitalSignature.CertificatePath = _SignItem.PfxPath;
+                options.DigitalSignature.CertificatePath = signItem.PfxPath;
 
                 // The password for the certificate.
                 // Each certificate is protected by a password.
                 // The reason is to prevent unauthorized the using of the certificate.
-                options.DigitalSignature.CertificatePassword = _SignItem.Password;
+                options.DigitalSignature.CertificatePassword = signItem.Password;
 
                 // Additional information about the certificate.
-                options.DigitalSignature.Location = _SignItem.Location;
-                options.DigitalSignature.Reason = _SignItem.Reason;
-                options.DigitalSignature.ContactInfo = _SignItem.ContactInfo;
+                options.DigitalSignature.Location = signItem.Location;
+                options.DigitalSignature.Reason = signItem.Reason;
+                options.DigitalSignature.ContactInfo = signItem.ContactInfo;
 
                 // Placeholder where signature should be visualized.
                 options.DigitalSignature.SignatureLine = signatureShape;
                 // Visual representation of digital signature.
                 options.DigitalSignature.Signature = signaturePict;
 
-                dc.Save(_SignItem.SavePath, options);
+                dc.Save(signItem.SavePath, options);
             }
         }
     }

@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class test : DbMigration
     {
         public override void Up()
         {
@@ -41,8 +41,8 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
-                .ForeignKey("dbo.UserEntities", t => t.RequestorId, cascadeDelete: false)
-                .ForeignKey("dbo.UserEntities", t => t.SignerId, cascadeDelete: false)
+                .ForeignKey("dbo.UserEntities", t => t.RequestorId)
+                .ForeignKey("dbo.UserEntities", t => t.SignerId)
                 .Index(t => t.SignerId)
                 .Index(t => t.RequestorId)
                 .Index(t => t.FormId);
