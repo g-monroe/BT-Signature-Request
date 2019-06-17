@@ -31,6 +31,7 @@ namespace SignatureRequests.Managers
         {
             var signature = _signatureHandler.GetById(id);
             _signatureHandler.Delete(signature);
+            _signatureHandler.SaveChanges();
         }
 
         public SignatureResponse GetSignature(int id)
@@ -67,6 +68,7 @@ namespace SignatureRequests.Managers
             signature.isInitial = reqSignature.isInitial;
             signature.Location = reqSignature.Location;
             _signatureHandler.Update(signature);
+            _signatureHandler.SaveChanges();
             var resp = SignatureToListItem(signature); 
             return resp;
         }

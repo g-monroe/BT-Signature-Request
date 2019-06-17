@@ -31,6 +31,7 @@ namespace SignatureRequests.Managers
         {
             var user = _userHandler.GetById(id);
             _userHandler.Delete(user);
+            _userHandler.SaveChanges();
         }
 
         public string GetEmail(int id)
@@ -87,6 +88,7 @@ namespace SignatureRequests.Managers
             user.Password = reqUser.Password;
             user.Role = reqUser.Role;
             _userHandler.Update(user);
+            _userHandler.SaveChanges();
             var result = UserToListItem(user);
             return result;
         }
