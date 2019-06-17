@@ -34,6 +34,7 @@ namespace SignatureRequests.App_Start
         {
             kernel.Bind<IUserHandler>().To<UserHandler>().InSingletonScope();
             kernel.Bind<IUserManager>().To<UserManager>().InSingletonScope();
+            kernel.Bind<ISignatureLibManager>().To<SignatureLibManager>().InSingletonScope();
             return kernel;
         }
 
