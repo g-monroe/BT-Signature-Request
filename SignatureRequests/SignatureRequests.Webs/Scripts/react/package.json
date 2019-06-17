@@ -10,8 +10,8 @@
   "author": "Nerf Darts",
   "license": "ISC",
   "dependencies": {
-    "@types/react": "16.8.17",
-    "@types/react-dom": "16.8.4",
+    "@types/react": "^16.8.20",
+    "@types/react-dom": "^16.8.4",
     "antd": "^3.19.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -19,8 +19,10 @@
     "typescript": "^3.4.5"
   },
   "devDependencies": {
+    "babel": "6.5.2",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
+    "babel-preset-es2015": "6.9.0",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "8.0.5",

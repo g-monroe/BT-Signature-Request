@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "jsx": "preserve",
+    "lib": [ "es2015", "dom" ],
+    "outFile": "../../Compiled/bundle.js"
+  }
+  
+}

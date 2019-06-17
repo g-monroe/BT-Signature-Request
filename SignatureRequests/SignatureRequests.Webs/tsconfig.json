@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "jsx": "preserve",
-    "lib": [ "es2015", "dom" ]
-  }
-
-}
