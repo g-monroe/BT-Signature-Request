@@ -18,11 +18,12 @@ namespace SignatureRequests.Managers
         {
             _userHandler = userHandler;
         }
-        public UserResponse CreateUserEntity(UserEntity newUser)
+        public UserResponse CreateUserEntity(UserRequest newUser)
         {
-            _userHandler.Insert(newUser);
+            var user = UserToDbItem(newUser);
+            _userHandler.Insert(user);
             _userHandler.SaveChanges();
-            var result = UserToListItem(newUser);
+            var result = UserToListItem(user);
             return result;
         }
 

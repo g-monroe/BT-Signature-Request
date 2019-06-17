@@ -37,8 +37,7 @@ namespace SignatureRequests.Controllers
         [HttpPost]
         public UserResponse AddUser([FromBody]UserRequest me)
         {
-            var user =  _userManager.UserToDbItem(me);
-            var result = _userManager.CreateUserEntity(user);
+            var result = _userManager.CreateUserEntity(me);
             return result;
         }
         [Route("api/User/UpdateUser/{id}")]

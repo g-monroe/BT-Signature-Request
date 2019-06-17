@@ -13,7 +13,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         UserResponseList GetUsers();
         UserResponse GetUser(int id);
-        UserResponse CreateUserEntity(UserEntity newUser);
+        UserResponse CreateUserEntity(UserRequest newUser);
         UserResponse UpdateUser(int id, UserRequest newUser);
         string GetName(int id);
         string GetEmail(int id);
