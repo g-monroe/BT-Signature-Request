@@ -1,6 +1,6 @@
 #HeaderText {
     text-align: center;
-    text-shadow: 50%
+    margin-top:7%;
 }
 
 #flex-container{
@@ -10,7 +10,7 @@
     justify-content: space-evenly;
     align-items:center;
     align-content: space-around;
-    height:inherit;
+    height:-webkit-fill-available;
 }
 
 #categoryBox{

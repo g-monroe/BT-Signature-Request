@@ -28,9 +28,7 @@ define("Pages/login/Login", ["require", "exports", "react", "../../node_modules/
     var Login = /** @class */ (function (_super) {
         __extends(Login, _super);
         function Login() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Login.prototype.render = function () {
             return (<div>
@@ -52,9 +50,7 @@ define("Pages/Requester/Create/Create", ["require", "exports", "react"], functio
     var Create = /** @class */ (function (_super) {
         __extends(Create, _super);
         function Create() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Create.prototype.render = function () {
             return (<h1 id='HeaderText'>Create a Form</h1>);
@@ -69,9 +65,7 @@ define("Pages/Requester/Dashboard/Dashboard", ["require", "exports", "react"], f
     var Dashboard = /** @class */ (function (_super) {
         __extends(Dashboard, _super);
         function Dashboard() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Dashboard.prototype.render = function () {
             return (<h1 id='HeaderText'>View DashBoard here</h1>);
@@ -86,9 +80,7 @@ define("Pages/Requester/Send/Send", ["require", "exports", "react"], function (r
     var Send = /** @class */ (function (_super) {
         __extends(Send, _super);
         function Send() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Send.prototype.render = function () {
             return (<h1 id='HeaderText'>Send a Form</h1>);
@@ -103,9 +95,7 @@ define("Pages/Requester/View/View", ["require", "exports", "react"], function (r
     var View = /** @class */ (function (_super) {
         __extends(View, _super);
         function View() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         View.prototype.render = function () {
             return (<h1 id='HeaderText'>View a Form</h1>);
@@ -120,9 +110,7 @@ define("Pages/Signer/AddSignatures/AddSignatures", ["require", "exports", "react
     var AddSignatues = /** @class */ (function (_super) {
         __extends(AddSignatues, _super);
         function AddSignatues() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         AddSignatues.prototype.render = function () {
             return (<h1 id='HeaderText'>Add signatures to your profile</h1>);
@@ -137,9 +125,7 @@ define("Pages/Signer/Dashboard/SignerDashboad", ["require", "exports", "react"],
     var SignerDashboard = /** @class */ (function (_super) {
         __extends(SignerDashboard, _super);
         function SignerDashboard() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         SignerDashboard.prototype.render = function () {
             return (<h1 id='HeaderText'>Dashboard</h1>);
@@ -154,9 +140,7 @@ define("Pages/Signer/SignDocument/SignDocument", ["require", "exports", "react"]
     var SignDocument = /** @class */ (function (_super) {
         __extends(SignDocument, _super);
         function SignDocument() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         SignDocument.prototype.render = function () {
             return (<h1 id='HeaderText'>Sign the Document here</h1>);
@@ -171,9 +155,7 @@ define("Pages/Error/Error", ["require", "exports", "react"], function (require, 
     var Error = /** @class */ (function (_super) {
         __extends(Error, _super);
         function Error() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            _this.state = {};
-            return _this;
+            return _super !== null && _super.apply(this, arguments) || this;
         }
         Error.prototype.render = function () {
             return (<h3>You have found an issue</h3>);

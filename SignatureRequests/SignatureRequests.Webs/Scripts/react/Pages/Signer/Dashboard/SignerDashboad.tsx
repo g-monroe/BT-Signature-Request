@@ -9,7 +9,7 @@ export interface ISignerDashboardState {
 }
  
 class SignerDashboard extends React.Component<ISignerDashboardProps, ISignerDashboardState> {
-    state :ISignerDashboardState= {  }
+
     render() { 
         return (  
             <h1  id = 'HeaderText'>Dashboard</h1>

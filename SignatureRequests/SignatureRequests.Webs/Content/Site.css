@@ -1,12 +1,11 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 0px;
     padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -21,4 +20,16 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.fullScreen {
+    position: fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+}
+
+.reactApp {
+    height:93%;
 }

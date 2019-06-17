@@ -9,7 +9,7 @@ export interface ICreateState {
 }
  
 class Create extends React.Component<ICreateProps, ICreateState> {
-    state : ICreateState = {  }
+
     render() { 
         return ( 
             <h1  id = 'HeaderText'>Create a Form</h1>

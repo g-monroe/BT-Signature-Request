@@ -9,7 +9,7 @@
  }
   
  class View extends React.Component<IViewProps, IViewState> {
-     state : IViewState= { }
+
      render() { 
          return (  
             <h1  id = 'HeaderText'>View a Form</h1>

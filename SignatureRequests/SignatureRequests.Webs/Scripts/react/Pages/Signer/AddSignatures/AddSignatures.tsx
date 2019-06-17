@@ -9,7 +9,7 @@ export interface IAddSignatuesState {
 }
  
 class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesState> {
-    state : IAddSignatuesState= {   }
+
     render() { 
         return ( 
             <h1  id = 'HeaderText'>Add signatures to your profile</h1>

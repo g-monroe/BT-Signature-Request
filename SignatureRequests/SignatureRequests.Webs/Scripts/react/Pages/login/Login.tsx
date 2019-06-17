@@ -12,7 +12,7 @@ export interface ILoginState {
 }
  
 class Login extends React.Component<ILoginProps, ILoginState> {
-    state = {  }
+
 
     render() { 
         return ( 
