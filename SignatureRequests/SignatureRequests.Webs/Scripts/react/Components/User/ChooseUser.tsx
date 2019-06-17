@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Card, Button } from '../../node_modules/antd/dist/antd';
 import UserType from '../../Util/Enums/UserTypes';
 import * as routes from '../../Pages/Routing/routes'
-import { Link } from '../../node_modules/react-router-dom/Link';
+import { Link } from '../../node_modules/react-router-dom/index';
 
 
 export interface IChooseUserProps {
