@@ -181,6 +181,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureLibManager.cs" />
     <Compile Include="SignatureManager.cs" />
