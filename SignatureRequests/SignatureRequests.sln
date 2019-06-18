@@ -13,6 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Engines",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Managers", "SignatureRequests.Managers\SignatureRequests.Managers.csproj", "{8483DF64-F1F9-4013-8536-21DF22E4E74D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Webs", "SignatureRequests.Webs\SignatureRequests.Webs.csproj", "{E556E57D-18AB-494A-B957-09047B4757BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11B48125-61C4-4D2F-9F77-B374B553BF63} = {11B48125-61C4-4D2F-9F77-B374B553BF63}
+		{8548C444-E0F0-4F77-A223-3C8A4292550D} = {8548C444-E0F0-4F77-A223-3C8A4292550D}
+		{8483DF64-F1F9-4013-8536-21DF22E4E74D} = {8483DF64-F1F9-4013-8536-21DF22E4E74D}
+		{D8462BE7-76B8-437E-AB8F-1E99DB9A778F} = {D8462BE7-76B8-437E-AB8F-1E99DB9A778F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +47,10 @@ Global
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8483DF64-F1F9-4013-8536-21DF22E4E74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E556E57D-18AB-494A-B957-09047B4757BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E556E57D-18AB-494A-B957-09047B4757BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E556E57D-18AB-494A-B957-09047B4757BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E556E57D-18AB-494A-B957-09047B4757BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
