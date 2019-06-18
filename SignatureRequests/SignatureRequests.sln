@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests", "SignatureRequests\SignatureRequests.csproj", "{7D3B8B45-FB02-4E26-8D61-56EB79F36CD0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.Core", "SignatureRequests.Core\SignatureRequests.Core.csproj", "{8548C444-E0F0-4F77-A223-3C8A4292550D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignatureRequests.DataAccessHandlers", "SignatureRequests.DataAccessHandlers\SignatureRequests.DataAccessHandlers.csproj", "{D8462BE7-76B8-437E-AB8F-1E99DB9A778F}"
@@ -27,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D3B8B45-FB02-4E26-8D61-56EB79F36CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D3B8B45-FB02-4E26-8D61-56EB79F36CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D3B8B45-FB02-4E26-8D61-56EB79F36CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D3B8B45-FB02-4E26-8D61-56EB79F36CD0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8548C444-E0F0-4F77-A223-3C8A4292550D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8548C444-E0F0-4F77-A223-3C8A4292550D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8548C444-E0F0-4F77-A223-3C8A4292550D}.Release|Any CPU.ActiveCfg = Release|Any CPU

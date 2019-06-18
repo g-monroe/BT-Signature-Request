@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class SecondMigration : DbMigration
+    public partial class NextMigration : DbMigration
     {
         public override void Up()
         {

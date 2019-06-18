@@ -180,9 +180,9 @@
   <ItemGroup>
     <Compile Include="BaseHandler.cs" />
     <Compile Include="FormHandler.cs" />
-    <Compile Include="Migrations\201906171837441_SecondMigration.cs" />
-    <Compile Include="Migrations\201906171837441_SecondMigration.Designer.cs">
-      <DependentUpon>201906171837441_SecondMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201906181458560_NextMigration.cs" />
+    <Compile Include="Migrations\201906181458560_NextMigration.Designer.cs">
+      <DependentUpon>201906181458560_NextMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,13 +200,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906171837441_SecondMigration.resx">
-      <DependentUpon>201906171837441_SecondMigration.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="App_Start\" />
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-    <Folder Include="App_Start\" />
+    <EmbeddedResource Include="Migrations\201906181458560_NextMigration.resx">
+      <DependentUpon>201906181458560_NextMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
