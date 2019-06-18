@@ -184,9 +184,12 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Enums\InitializeCertifcation.cs" />
+    <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
+    <Compile Include="Interfaces\DataAccessHandlers\IFormHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\ISignatureHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
+    <Compile Include="Interfaces\Managers\IFormManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureLibManager.cs" />
     <Compile Include="Interfaces\Managers\IBoxManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureManager.cs" />
@@ -205,9 +208,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Items\SignatureLibItem.cs" />
     <Compile Include="RequestObjects\BoxRequest.cs" />
+    <Compile Include="ResponseObjects\BoxResponse.cs" />
+    <Compile Include="RequestObjects\FormRequest.cs" />
     <Compile Include="RequestObjects\SignatureResquest.cs" />
     <Compile Include="RequestObjects\UserRequest.cs" />
-    <Compile Include="ResponseObjects\BoxResponse.cs" />
+    <Compile Include="ResponseObjects\FormResponse.cs" />
+    <Compile Include="ResponseObjects\FormResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponse.cs" />
     <Compile Include="ResponseObjects\BoxResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponseList.cs" />
@@ -229,6 +235,7 @@
     if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
     xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
   </PropertyGroup>
+
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
