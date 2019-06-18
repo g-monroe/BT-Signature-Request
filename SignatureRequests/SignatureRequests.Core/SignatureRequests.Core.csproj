@@ -178,7 +178,9 @@
     <Compile Include="Enums\InitializeCertifcation.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\ISignatureHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
+    <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
     <Compile Include="Interfaces\Managers\ISignatureLibManager.cs" />
+    <Compile Include="Interfaces\Managers\IBoxManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureManager.cs" />
     <Compile Include="Interfaces\Managers\IUserManager.cs" />
     <Compile Include="Items\BoxItem.cs" />
@@ -194,9 +196,12 @@
     <Compile Include="Models\UserJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Items\SignatureLibItem.cs" />
+    <Compile Include="RequestObjects\BoxRequest.cs" />
     <Compile Include="RequestObjects\SignatureResquest.cs" />
     <Compile Include="RequestObjects\UserRequest.cs" />
+    <Compile Include="ResponseObjects\BoxResponse.cs" />
     <Compile Include="ResponseObjects\SignatureResponse.cs" />
+    <Compile Include="ResponseObjects\BoxResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponseList.cs" />
     <Compile Include="ResponseObjects\UserResponse.cs" />
     <Compile Include="ResponseObjects\UserResponseList.cs" />

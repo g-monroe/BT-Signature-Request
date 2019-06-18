@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BoxHandler.cs" />
     <Compile Include="SignatureHandler.cs" />
     <Compile Include="UserHandler.cs" />
   </ItemGroup>
