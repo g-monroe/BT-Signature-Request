@@ -90,7 +90,7 @@ namespace SignatureRequests.Managers
             var result = UpdateRequest(currentRequest, updating);
             return RequestToListItem(result);
         }
-        public RequestResponse RequestToListItem(RequestEntity request)
+        private RequestResponse RequestToListItem(RequestEntity request)
         {
             return new RequestResponse()
             {
@@ -105,7 +105,7 @@ namespace SignatureRequests.Managers
                 SentDate = request.SentDate
             };
         }
-        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
+        private RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
         {
             if (updating == null)
             {

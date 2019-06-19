@@ -86,7 +86,7 @@ namespace SignatureRequests.Managers
             var result = UpdateForm(currentForm, updating);
             return FormToListItem(result);
         }
-        public FormResponse FormToListItem(FormEntity form)
+        private FormResponse FormToListItem(FormEntity form)
         {
             return new FormResponse()
             {
@@ -99,7 +99,7 @@ namespace SignatureRequests.Managers
                 UserId = form.UserId
             };
         }
-        public FormEntity RequestToEntity(FormRequest form, FormEntity updating)
+        private FormEntity RequestToEntity(FormRequest form, FormEntity updating)
         {
             if (updating == null)
             {
