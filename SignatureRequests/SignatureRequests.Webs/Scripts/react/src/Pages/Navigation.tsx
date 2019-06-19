@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Menu} from '../node_modules/antd/dist/antd';
+import { Menu} from 'antd';
 import * as routes from './Routing/routes';
-import { NavLink, withRouter, RouteComponentProps } from '../node_modules/react-router-dom/index';
+import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 import UserType from '../Util/Enums/UserTypes'
 
 export interface INavigationProps {
