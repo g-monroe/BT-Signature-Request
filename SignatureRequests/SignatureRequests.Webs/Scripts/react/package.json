@@ -137,5 +137,9 @@
       "react-app"
     ]
   },
-  "-vs-binding": { "AfterBuild": [ "node scripts/build.js" ] }
+  "-vs-binding": {
+    "AfterBuild": [
+      "node scripts/build.js"
+    ]
+  }
 }
