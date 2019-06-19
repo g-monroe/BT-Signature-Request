@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="FormManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestManager.cs" />
     <Compile Include="SignatureLibManager.cs" />
     <Compile Include="SignatureManager.cs" />
     <Compile Include="UserManager.cs" />
