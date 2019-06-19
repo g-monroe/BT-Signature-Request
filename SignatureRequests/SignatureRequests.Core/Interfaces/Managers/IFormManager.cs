@@ -20,6 +20,5 @@ namespace SignatureRequests.Core.Interfaces.Managers
         FormResponseList FormToListResponse(IEnumerable<FormEntity> forms);
         FormResponse EditForm(int id, FormRequest form, FormEntity updating = null);
         FormResponse AddForm(FormRequest form, FormEntity updating = null);
-        FormResponse FormToListItem(FormEntity form);
     }
 }

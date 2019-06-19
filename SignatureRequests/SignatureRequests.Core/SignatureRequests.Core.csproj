@@ -186,10 +186,12 @@
     <Compile Include="Enums\InitializeCertifcation.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IFormHandler.cs" />
+    <Compile Include="Interfaces\DataAccessHandlers\IRequestHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\ISignatureHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
     <Compile Include="Interfaces\Managers\IFormManager.cs" />
+    <Compile Include="Interfaces\Managers\IRequestManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureLibManager.cs" />
     <Compile Include="Interfaces\Managers\IBoxManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureManager.cs" />
@@ -210,10 +212,13 @@
     <Compile Include="RequestObjects\BoxRequest.cs" />
     <Compile Include="ResponseObjects\BoxResponse.cs" />
     <Compile Include="RequestObjects\FormRequest.cs" />
+    <Compile Include="RequestObjects\RequestRequest.cs" />
     <Compile Include="RequestObjects\SignatureResquest.cs" />
     <Compile Include="RequestObjects\UserRequest.cs" />
     <Compile Include="ResponseObjects\FormResponse.cs" />
     <Compile Include="ResponseObjects\FormResponseList.cs" />
+    <Compile Include="ResponseObjects\RequestResponse.cs" />
+    <Compile Include="ResponseObjects\RequestResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponse.cs" />
     <Compile Include="ResponseObjects\BoxResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponseList.cs" />
