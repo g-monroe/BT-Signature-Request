@@ -1,4 +1,5 @@
 import * as React from 'react';
+import SendForm from '../../../Components/Form/SendForm';
 
 export interface ISendProps {
     
@@ -12,7 +13,10 @@ class Send extends React.Component<ISendProps, ISendState> {
 
     render() { 
         return (  
+            <>
             <h1 id = 'HeaderText'>Send a Form</h1>
+            <SendForm ></SendForm>
+            </>
         );
     }
 }
