@@ -34,9 +34,9 @@ export interface ISendFormProps {
 }
 
 export interface ISendFormState {
-    forms?: FormResponseList;
     tableData?: any[];
     users?: UserResponseList;
+    selectedUsers?: number[]; //A collection of selected user ID's. Backend will use these to assign foreign keys of request objects. 
 }
 
 
@@ -49,15 +49,13 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   state: ISendFormState = {};
   async componentDidMount() {
     this.setState({
-        forms: (await this.props.formHandler!.getAllByUser(1)),
         tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
-        users: (await this.props.userHandler!.getAll())
+        users: (await this.props.userHandler!.getAll()),
+        selectedUsers: []
     });
-    console.log(this.state.forms!);
-    console.log(this.state.users!);
   }
 
-  getForms = (forms: any) : any[] => {
+  getForms = (forms: FormResponseList) : any[] => {
     const data = [];
     for(let i=0; i<forms.count; i++){
         data.push({
@@ -70,14 +68,46 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     return data;
   }
 
+  createUserOptions = () : any[] => {
+    const data = [];
+    for(let i=0; i<this.state.users!.count; i++){
+      data.push(<Option key={this.state.users!.collection[i].id}>{this.state.users!.collection[i].name}</Option>)
+    }
+    return data;
+  }
+
+  onSelect = (value: any) => {
+    let newSelected = this.state.selectedUsers!;
+    newSelected.push(value);
+    this.setState({
+      selectedUsers: newSelected
+    });
+  }
+
+  onDeselect = async (value: any) => {
+    let newSelected = this.state.selectedUsers!.filter(function(id){
+      return id != value;
+    });
+    (await this.setState({
+      selectedUsers: newSelected
+    }));
+  }
+
   render() {
     if (!this.state.users) {
       return <div>Loading...</div>;
     }else{
       return (
         <>
+          <Select
+            mode="multiple"
+            style={{ width: '100%' }}
+            placeholder="Please select"
+            onSelect={this.onSelect}
+            onDeselect={this.onDeselect}>
+            {this.createUserOptions()}
+          </Select>
           
-
           <Table columns={columns} dataSource={this.state.tableData}></Table>
         </>
       );
