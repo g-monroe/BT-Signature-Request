@@ -17,19 +17,16 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    }
   
    handleMultiSelect = (e: any) =>{
-    if (this.state.checked){
-      this.setState(state => ({
-        checked: false
-      }))
-    }else{
-      this.setState(state => ({
-        checked: true
-      }))
-    }
+      this.setState({
+        checked: !this.state.checked
+      });
    }
   render() {
     const { checked } = this.state;
-    if (!checked) {
+    let iconCheck = faSquare;
+    if (checked){
+      iconCheck = faCheckSquare;
+    }
     return (
       <div style={{display: "inline-block"}} className="DashItem">
         <div className="activity-block">
@@ -46,7 +43,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="content-right">
             <button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
             <button style={{color:'#222'}} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
-            <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={faSquare} /></button>
+            <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={ iconCheck } /></button>
         </div>
         <ul className="tag-list">
             <li><span className="badge badge-success ml">Signed: 0/5</span></li>
@@ -56,34 +53,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         </div>
       </div>
     );
-    }else{
-      return (
-        <div className="DashItem">
-          <div className="activity-block">
-          
-          <div className="preview">
-              <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"/>
-          </div>
-          <div className="activity-content header-item">
-          <label className="ribbon right danger "><span>Billing</span></label>
-          <h5 className="block-head">Billing Order Section W5-0988</h5>
-          <div className="content-left">
-          <p className="description">This is awesome product and, I am very happy with delivery &amp; product packaging. Overall experience is good &amp; I prefer to buy it again from this portals and like more orders.</p>
-          </div>
-          <div className="content-right">
-              <button className="btn-outline-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
-              <button className="btn-outline-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
-              <button onClick={this.handleMultiSelect} className="btn-outline-primary action-btn"><FontAwesomeIcon icon={faCheckSquare} /></button>
-          </div>
-          <ul className="tag-list">
-              <li><span className="badge badge-success ml">Signed: 0/5</span></li>
-              <li><span className="badge badge-warning ml">Signed: 0/5</span></li>
-          </ul>
-          </div>
-          </div>
-        </div>
-      );
-    }
+   
   }
 }
 
