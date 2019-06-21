@@ -1,0 +1,121 @@
+.overlay{
+    height: 120px;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    right: 0;
+    top: 0px;
+    display: block;
+    opacity: 1;
+    text-align: center;
+    background: rgba(46,199,203,0.8);
+    background: linear-gradient(to top, #2dc1c9 0%, #2194c1 30%, #252d47 100%);
+    color: #ffffff;
+    -webkit-box-shadow: 0 0 1px 3px #000 inset;
+    -moz-box-shadow: 0 0 1px 3px #000 inset;
+    box-shadow: 0 0 9px -2px #000 inset;
+}
+
+h3{
+    color:#fff;
+    text-shadow: 1px 1px 2px #222;
+}
+.bar{
+ width:80%;
+ margin:auto;
+}
+.logo{
+    height:50px;
+    padding-bottom:0.45em;
+}
+.optionbar{
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: #fff;
+    border:none;
+    display:inline;
+    float:left;
+    color:#878A8F;
+    padding:8px;
+    font-size: 18px;
+    -webkit-box-shadow: 0 0 1px 3px #000 ;
+    -moz-box-shadow: 0 0 1px 3px #000 ;
+    box-shadow: 0 0 9px -2px #000 ;
+    background: url(arrow.png) 90% / 5% no-repeat #eee;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    min-width: 50px;
+    width:15%;
+}
+.optionbar option{
+    border:none;
+    border-radius: 8px;
+}
+.optionbar:active, option:focus{
+    border:none;
+    background-color: #474e55;
+}
+.optionbar:active, option:hover{
+    border:none;
+    outline:none;
+    color:white;
+    background-color: #474e55;
+}
+select option:hover,
+    select option:focus,
+    select option:active {
+        background: linear-gradient(#000000, #000000);
+        background-color: #000000 !important; /* for IE */
+        color: #ffed00 !important;
+    }
+    select option:hover{
+        background-color: #d6d6d6 !important; /* for IE */
+        color: #000000 !important;
+    }
+    select option:checked {
+        background: linear-gradient(#d6d6d6, #d6d6d6);
+        background-color: #d6d6d6 !important; /* for IE */
+        color: #000000 !important;
+    }
+    
+.barbtn{
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    -webkit-box-shadow: 0 4px 6px -6px black;
+    -moz-box-shadow: 0 4px 6px -6px black;
+         box-shadow: 0 4px 6px -6px black;
+    display:inline;
+    padding:8.4px;
+    float:left;
+    width:15%;
+    background-color: #00567b;
+    border-color: #00567b;
+    
+}
+*:focus {
+    outline: none;
+}
+.searchbar{
+    background-color: #fff;
+    -webkit-box-shadow: 0 4px 6px -6px black;
+	   -moz-box-shadow: 0 4px 6px -6px black;
+	        box-shadow: 0 4px 6px -6px black;
+    font-size: 18px;
+    float:left;
+    color:#878A8F;
+    padding:8px;
+    border:none;
+    width:70%;
+    border-left: 1px #B1B4b5 solid;
+    border-right: 1px #B1B4b5 solid;
+    display:inline;
+    
+}
+.searchbar:focus{
+    border:none;
+}
+
+  

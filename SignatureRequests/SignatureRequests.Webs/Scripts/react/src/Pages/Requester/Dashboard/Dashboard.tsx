@@ -1,5 +1,6 @@
 import * as React from 'react';
-
+import DashItem from '../../../Components/Dashboard/DashItem';
+import '../../../Components/Dashboard/SearchHeader.css';
 export interface IDashboardProps {
     
 }
@@ -12,7 +13,33 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
     render() { 
         return ( 
-            <h1  id = 'HeaderText'>View DashBoard here</h1>
+            <div className="Page">
+                <div className="overlay">
+                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'}/>
+                <div className="bar">
+                <div className="customs">
+                <select className="optionbar">
+                    <option>All</option>
+                    <option>Billing</option>
+                    <option>Order</option>
+                    <option>Business</option>
+                </select>
+                </div>
+                <input placeholder="Order Summary, Purchase, etc" className="searchbar" type="text"/>
+                <button style={{borderTopRightRadius: "8px", borderBottomRightRadius: "8px",borderTopLeftRadius: "0px",borderBottomLeftRadius: "0px", padding:"8.4px",boxShadow: "0 4px 6px -6px black"}}className="btn btn-info barbtn">Search</button>
+                </div>
+                </div>
+                <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "inline-block", textAlign:"center"}}className="page-items">
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                    <DashItem/>
+                </div>
+          </div>
          );
     }
 }
