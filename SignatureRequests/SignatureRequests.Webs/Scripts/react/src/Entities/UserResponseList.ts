@@ -1,5 +1,4 @@
 import UserEntity from "./UserEntity";
-import FormEntity from "./FormEntity";
 
 class UserResponseList {
   count: number;

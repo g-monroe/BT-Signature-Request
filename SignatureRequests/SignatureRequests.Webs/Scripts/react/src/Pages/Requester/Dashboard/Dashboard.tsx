@@ -15,7 +15,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         return ( 
             <div className="Page">
                 <div className="overlay">
-                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'}/>
+                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'} alt = "Logo"/>
                 <div className="bar">
                 <div className="customs">
                 <select className="optionbar">

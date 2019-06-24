@@ -1,5 +1,4 @@
 import { APIHandler } from "./apiHandler";
-import FormEntity from "../Entities/FormEntity";
 import UserResponseList from "../Entities/UserResponseList";
 
 export interface IUserHandler {
