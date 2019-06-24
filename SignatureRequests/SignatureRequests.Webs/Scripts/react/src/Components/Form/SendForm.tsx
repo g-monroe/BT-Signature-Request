@@ -1,12 +1,12 @@
-import React from "react";
-import { Select, Table } from 'antd';
-import "antd/dist/antd.css";
+import * as React from "react";
+import { Select, Table, Button } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
 import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
-import FormEntity from "../../Entities/FormEntity";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
+import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
 import UserResponseList from "../../Entities/UserResponseList";
+import RequestRequest from "../../Entities/RequestRequest";
 const { Option } = Select;
 const columns = [
     {
@@ -30,6 +30,7 @@ const columns = [
 export interface ISendFormProps {
    formHandler?: IFormHandler; 
    userHandler?: IUserHandler;
+   requestHandler?: IRequestHandler;
    currentUser?: UserEntity;
 }
 
@@ -44,12 +45,13 @@ export interface ISendFormState {
 export default class SendForm extends React.PureComponent<ISendFormProps, ISendFormState> {
   static defaultProps = {
      formHandler: new FormHandler(),
-     userHandler: new UserHandler()
+     userHandler: new UserHandler(),
+     requestHandler: new RequestHandler()
   };
   state: ISendFormState = {};
   async componentDidMount() {
     this.setState({
-        tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
+        tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))), //change to current user
         users: (await this.props.userHandler!.getAll()),
         selectedUsers: []
     });
@@ -86,11 +88,19 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
 
   onDeselect = async (value: any) => {
     let newSelected = this.state.selectedUsers!.filter(function(id){
-      return id != value;
+      return id !== value;
     });
     (await this.setState({
       selectedUsers: newSelected
     }));
+  }
+
+  onSend = async () => {
+    this.state.selectedUsers!.map(x => {
+      let request: RequestRequest = {signerId: x, requestorId: 1, formId: 1, status: "Waiting", sentDate: new Date() };
+      this.props.requestHandler!.createRequest(request); 
+    
+    }) //change to current user, change to selected form
   }
 
   render() {
@@ -109,6 +119,12 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
           </Select>
           
           <Table columns={columns} dataSource={this.state.tableData}></Table>
+
+          <Button
+            type={"primary"}
+            onClick={this.onSend}>
+            Send
+          </Button>
         </>
       );
     }

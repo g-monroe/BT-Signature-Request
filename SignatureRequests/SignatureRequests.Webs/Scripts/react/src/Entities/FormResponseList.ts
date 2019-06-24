@@ -1,4 +1,3 @@
-import UserEntity from "./UserEntity";
 import FormEntity from "./FormEntity";
 
 class FormResponseList {

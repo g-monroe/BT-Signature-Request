@@ -14,9 +14,11 @@ namespace SignatureRequests.Managers
     public class SignatureManager : ISignatureManager
     {
         private readonly ISignatureHandler _signatureHandler;
-        public SignatureManager(ISignatureHandler signatureHandler)
+        private readonly IUserHandler _userHandler;
+        public SignatureManager(ISignatureHandler signatureHandler, IUserHandler userHandler)
         {
             _signatureHandler = signatureHandler;
+            _userHandler = userHandler;
         }
         public SignatureResponse CreateSignatureEntity(SignatureRequest newSignature)
         {
@@ -110,7 +112,7 @@ namespace SignatureRequests.Managers
                 updating = new SignatureEntity();
             }
             updating.Id = me.Id;
-            updating.User = me.User;
+            updating.User = _userHandler.GetById(me.UserId);
             updating.UserId = me.UserId;
             updating.CertificatePassword = me.CertificatePassword;
             updating.CertificatePath = me.CertificatePath;

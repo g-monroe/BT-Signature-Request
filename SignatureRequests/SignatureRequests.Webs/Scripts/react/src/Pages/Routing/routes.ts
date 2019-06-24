@@ -39,7 +39,7 @@ export const REQUESTER = {
     "_Create":{
         path: "/request/create",
         link: "/request/create",
-        breadcrumbName:"Create",
+        breadcrumbName:"Create a From",
         component:Pages.Create,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
@@ -48,7 +48,7 @@ export const REQUESTER = {
     "_Send":{
         path: "/request/send",
         link:"/request/send",
-        breadcrumbName:"Send",
+        breadcrumbName:"Send Forms",
         component:Pages.Send,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
@@ -57,7 +57,7 @@ export const REQUESTER = {
     "_View":{
         path: "/request/view",
         link:"/request/view",
-        breadcrumbName:"View",
+        breadcrumbName:"View your Forms",
         component:Pages.View,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
@@ -79,7 +79,7 @@ export const SIGNER = {
     "_AddSignature":{
         path: "/response/add",
         link:"/response/add",
-        breadcrumbName:"Add",
+        breadcrumbName:"Create Signature",
         component:Pages.AddSignatures,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)
@@ -88,7 +88,7 @@ export const SIGNER = {
     "_SignDocument":{
         path: "/response/sign",
         link:"/response/sign",
-        breadcrumbName:"Sign",
+        breadcrumbName:"Sign Active Documents",
         component:Pages.SignDocument,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)
