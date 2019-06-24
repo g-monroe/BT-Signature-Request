@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare, faFlagCheckered  } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons'
 export interface IDashItemProps {
   
 }
@@ -32,7 +32,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-            <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"/>
+            <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" alt = "Preview"/>
         </div>
         <div className="activity-content header-item">
         <label className="ribbon right success "><span>Billing</span></label>
