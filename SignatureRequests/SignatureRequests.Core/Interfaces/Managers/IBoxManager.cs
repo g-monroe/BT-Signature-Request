@@ -12,6 +12,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IBoxManager
     {
         BoxResponseList GetBoxes();
+        BoxResponseList GetBoxesByRequestId(int id);
         BoxResponse GetBox(int id);
         BoxResponse CreateBoxEntity(BoxRequest newBox);
         BoxResponse UpdateBox(int id, BoxRequest newBox);

@@ -16,5 +16,9 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return _context.Boxes.Include("Request").Include("Signature");
         }
+        public IEnumerable<BoxEntity> GetBoxesByRequestId(int id)
+        {
+            return Get(x =>x.RequestId == id);
+        }
     }
 }

@@ -126,5 +126,9 @@ namespace SignatureRequests.Managers
             return updating;
         }
 
+        public BoxResponseList GetBoxesByRequestId(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -26,12 +26,17 @@ namespace SignatureRequests.Managers
 
         public RequestResponseList GetRequests()
         {
-            var requests = _requestHandler.GetAll();
+            var requests = _requestHandler.GetAllInclude();
             return RequestToListResponse(requests);
         }
         public RequestResponseList GetRequestsById(int id)
         {
             var requests = _requestHandler.GetAllById(id);
+            return RequestToListResponse(requests);
+        }
+        public RequestResponseList GetRequestsByFormId(int id)
+        {
+            var requests = _requestHandler.GetAllByFormId(id);
             return RequestToListResponse(requests);
         }
         public RequestEntity GetRequest(int id)
@@ -92,6 +97,30 @@ namespace SignatureRequests.Managers
         }
         private RequestResponse RequestToListItem(RequestEntity request)
         {
+            var respBoxes = new BoxResponseList
+            {
+                TotalResults = 0,
+                BoxesList = new List<BoxResponse>()
+            };
+            foreach (BoxEntity box in request.BoxEntities)
+            {
+                var item = new BoxResponse()
+                {
+                    Id = box.Id,
+                    X = box.X,
+                    Y = box.Y,
+                    Width = box.Width,
+                    Length = box.Length,
+                    Type = box.Type,
+                    SignerType = box.SignerType,
+                    SignedStatus = box.SignedStatus,
+                    Request = null,
+                    RequestId = box.RequestId,
+                    Signature = box.Signature,
+                    SignatureId = box.SignatureId,
+                };
+                respBoxes.BoxesList.Add(item);
+            }
             return new RequestResponse()
             {
                 Id = request.Id,
@@ -102,7 +131,8 @@ namespace SignatureRequests.Managers
                 Form = request.Form,
                 FormId = request.FormId,
                 Status = request.Status,
-                SentDate = request.SentDate
+                SentDate = request.SentDate,
+                Boxes = respBoxes
             };
         }
         private RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
