@@ -10,7 +10,6 @@ import FormEntity from '../../../Entities/FormEntity';
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userHandler?: IUserHandler;
-    currentUser?: UserEntity;
 }
  
 export interface IDashboardState {

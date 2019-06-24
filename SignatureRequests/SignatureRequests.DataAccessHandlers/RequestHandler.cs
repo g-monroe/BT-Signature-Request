@@ -20,11 +20,11 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public IEnumerable<RequestEntity> GetAllByFormId(int id)
         {
-            return GetIncludes(s => s.FormId == id, "BoxEntities");
+            return GetSelectIncludes(s => s.FormId == id, "BoxEntities");
         }
         public IEnumerable<RequestEntity> GetAllInclude()
         {
-            return GetJustIncludes("BoxEntities");
+            return GetIncludes("BoxEntities");
         }
     }
 }

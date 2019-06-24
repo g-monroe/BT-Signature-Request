@@ -57,11 +57,11 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return _dbSet.Where(where).ToList();
         }
-        public IEnumerable<T> GetIncludes(Expression<Func<T, bool>> where, string col)
+        public IEnumerable<T> GetSelectIncludes(Expression<Func<T, bool>> where, string col)
         {
             return _dbSet.Where(where).Include(col).ToList();
         }
-        public IEnumerable<T> GetJustIncludes(string col)
+        public IEnumerable<T> GetIncludes(string col)
         {
             return _dbSet.Include(col).ToList();
         }

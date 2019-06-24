@@ -215,8 +215,6 @@
     <Compile Include="RequestObjects\RequestRequest.cs" />
     <Compile Include="RequestObjects\SignatureResquest.cs" />
     <Compile Include="RequestObjects\UserRequest.cs" />
-    <Compile Include="ResponseObjects\FormRequestResponse.cs" />
-    <Compile Include="ResponseObjects\FormRequestResponseList.cs" />
     <Compile Include="ResponseObjects\FormResponse.cs" />
     <Compile Include="ResponseObjects\FormResponseList.cs" />
     <Compile Include="ResponseObjects\RequestResponse.cs" />

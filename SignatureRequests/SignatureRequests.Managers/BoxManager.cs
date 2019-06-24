@@ -103,7 +103,7 @@ namespace SignatureRequests.Managers
                 RequestId = me.RequestId,
                 Signature = me.Signature,
                 SignatureId = me.SignatureId,
-        };
+            };
         }
         public BoxEntity BoxToDbItem(BoxRequest me, BoxEntity updating = null)
         {
@@ -125,10 +125,6 @@ namespace SignatureRequests.Managers
             updating.SignatureId = me.SignatureId;
             return updating;
         }
-
-        public BoxResponseList GetBoxesByRequestId(int id)
-        {
-            throw new NotImplementedException();
-        }
+    
     }
 }

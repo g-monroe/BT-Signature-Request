@@ -286,6 +286,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="assets\v1\documents\" />
+    <Folder Include="assets\v1\images\intials\" />
+    <Folder Include="assets\v1\images\signatures\" />
     <Folder Include="Compiled\" />
     <Folder Include="Models\" />
   </ItemGroup>
