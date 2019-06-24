@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

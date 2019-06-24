@@ -36,7 +36,7 @@ namespace SignatureRequests.Managers
 
         public string GetEmail(int id)
         {
-            UserResponse result =  GetUser(id);
+            UserResponse result = GetUser(id);
             if (result == null)
             {
                 return "";
@@ -71,7 +71,7 @@ namespace SignatureRequests.Managers
         }
         public UserResponseList GetAllInclude()
         {
-            var result =  _userHandler.GetAllInclude();
+            var result = _userHandler.GetAllInclude();
             var resp = UserToListResponse(result);
             return resp;
         }
@@ -99,8 +99,8 @@ namespace SignatureRequests.Managers
                 TotalResults = me.Count(),
                 UsersList = new List<UserResponse>()
             };
-            
-            foreach(UserEntity user in me)
+
+            foreach (UserEntity user in me)
             {
                 resp.UsersList.Add(UserToListItem(user));
             }
@@ -138,5 +138,39 @@ namespace SignatureRequests.Managers
             updating.Role = me.Role;
             return updating;
         }
+
+        public SignatureResponse GetSignatureObject(int id)
+        {
+            var signature = _userHandler.GetSignature(id);
+            return SignaturetoSignatureResponse(signature);
+            
+        }
+
+        public  string GetSignaturePath(int id)
+        {
+            var signature = _userHandler.GetSignature(id);
+            return SignaturetoSignatureResponse(signature).ImagePath;
+        }
+
+        public SignatureResponse SignaturetoSignatureResponse(SignatureEntity data)
+        {
+            var response = new SignatureResponse();
+            if (data != null)
+            {
+                response.Id = data.Id;
+                response.ImagePath = data.ImagePath;
+                response.CertificatePath = data.CertificatePath;
+                response.CertificatePassword = data.CertificatePassword;
+                response.Location = data.Location;
+                response.Reason = data.Reason;
+                response.ContactInfo = data.ContactInfo;
+                response.IsInitial = data.isInitial;
+                response.User = data.User;
+                response.UserId = data.UserId;
+                response.ExpirationDate = data.ExpirationDate;
+            }
+            return response;
+        }
+       
     }
 }

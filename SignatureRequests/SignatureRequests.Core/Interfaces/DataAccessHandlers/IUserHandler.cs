@@ -11,5 +11,6 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         string GetRole(int id);
         string GetName(int id);
         IEnumerable<UserEntity> GetAllInclude();
+        SignatureEntity GetSignature(int id);
     }
 }
