@@ -15,13 +15,11 @@ namespace SignatureRequests.Managers
     {
         private readonly IFormHandler _formHandler;
         private readonly IUserHandler _userHandler;
-
         public FormManager(IFormHandler formHandler, IUserHandler userHandler)
         {
             _formHandler = formHandler;
             _userHandler = userHandler;
         }
-
         public FormResponseList GetForms()
         {
             var forms = _formHandler.GetAllInclude();
