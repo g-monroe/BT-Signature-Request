@@ -5,8 +5,12 @@ using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using SignatureRequests.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -58,7 +62,24 @@ namespace SignatureRequests.Controllers
             return _formManager.EditForm(id, form);
             
         }
+        [HttpPost, Route("api/Form/Upload")]
+        public async Task<IHttpActionResult> Upload()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
+            var provider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(provider);
+            foreach (var file in provider.Contents)
+            {
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                var buffer = await file.ReadAsByteArrayAsync();
+                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                File.WriteAllBytes(workingDirectory + "../assets/v1/documents/" + filename, buffer);
+            }
+
+            return Ok();
+        }
         [Route("api/Form/DeleteForm/{id}")]
         [HttpDelete]
         public void DeleteForm([FromRoute]int id)
