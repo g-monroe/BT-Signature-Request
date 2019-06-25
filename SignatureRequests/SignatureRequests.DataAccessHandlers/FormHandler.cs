@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace SignatureRequests.DataAccessHandlers
 {
@@ -18,10 +19,14 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return Get(s => s.Id == id);
         }
+        public IEnumerable<FormEntity> GetAllByUserId(int id)
+        {
+            return _context.Forms.Where(x =>x.UserId == id).Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
+        }
 
         public IEnumerable<FormEntity> GetAllInclude()
         {
-            return _context.Forms.Include("User");
+            return _context.Forms.Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
 
         }
     }

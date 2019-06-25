@@ -1,5 +1,6 @@
 .DashItem{
     display: inline-block;
+    min-width: 660px;
 }
 .header-item{
     background: #111;

@@ -15,21 +15,24 @@ namespace SignatureRequests.Managers
     {
         private readonly IFormHandler _formHandler;
         private readonly IUserHandler _userHandler;
-
         public FormManager(IFormHandler formHandler, IUserHandler userHandler)
         {
             _formHandler = formHandler;
             _userHandler = userHandler;
         }
-
         public FormResponseList GetForms()
         {
-            var forms = _formHandler.GetAll();
+            var forms = _formHandler.GetAllInclude();
             return FormToListResponse(forms);
         }
         public FormResponseList GetFormsById(int id)
         {
             var forms = _formHandler.GetAllById(id);
+            return FormToListResponse(forms);
+        }
+        public FormResponseList GetFormsByUserId(int id)
+        {
+            var forms = _formHandler.GetAllByUserId(id);
             return FormToListResponse(forms);
         }
         public FormEntity GetForm(int id)
@@ -67,6 +70,7 @@ namespace SignatureRequests.Managers
                 TotalResults = forms.Count(),
                 FormsList = new List<FormResponse>()
             };
+
             foreach (FormEntity form in forms)
             {
                 resp.FormsList.Add(FormToListItem(form));
@@ -88,7 +92,51 @@ namespace SignatureRequests.Managers
         }
         private FormResponse FormToListItem(FormEntity form)
         {
-            return new FormResponse()
+            var resp = new RequestResponseList
+            {
+                TotalResults = 0,
+                RequestsList = new List<RequestResponse>()
+            };
+
+            foreach (RequestEntity request in form.RequestEntities)
+            {
+                var respBoxes = new BoxResponseList
+                {
+                    TotalResults = 0,
+                    BoxesList = new List<BoxResponse>()
+                };
+                foreach (BoxEntity box in request.BoxEntities)
+                {
+                    var item = new BoxResponse()
+                    {
+                        Id = box.Id,
+                        X = box.X,
+                        Y = box.Y,
+                        Width = box.Width,
+                        Length = box.Length,
+                        Type = box.Type,
+                        SignerType = box.SignerType,
+                        SignedStatus = box.SignedStatus,
+                        RequestId = box.RequestId,
+                        Signature = box.Signature,
+                        SignatureId = box.SignatureId,
+                    };
+                    respBoxes.BoxesList.Add(item);
+                }
+                resp.RequestsList.Add(new RequestResponse()
+                {
+                    Id = request.Id,
+                    Signer = request.Signer,
+                    SignerId = request.SignerId,
+                    Requestor = request.Requestor,
+                    RequestorId = request.RequestorId,
+                    FormId = request.FormId,
+                    Status = request.Status,
+                    SentDate = request.SentDate,
+                    Boxes = respBoxes
+                });
+            }
+             return new FormResponse()
             {
                 Id = form.Id,
                 CreateDate = form.CreateDate,
@@ -96,7 +144,8 @@ namespace SignatureRequests.Managers
                 FilePath = form.FilePath,
                 Title = form.Title,
                 User = form.User,
-                UserId = form.UserId
+                UserId = form.UserId,
+                RequestEntities = resp
             };
         }
         private FormEntity RequestToEntity(FormRequest form, FormEntity updating)

@@ -38,7 +38,12 @@ namespace SignatureRequests.Controllers
         {
             return _formManager.GetFormsById(id);
         }
-
+        [Route("api/Form/GetFormsByUserId/{id}")]
+        [HttpGet]
+        public FormResponseList GetFormsByUserId([FromRoute] int id)
+        {
+            return _formManager.GetFormsByUserId(id);
+        }
         [Route("api/Form/AddForm")]
         [HttpPost]
         public FormResponse AddForm([FromBody]FormRequest form)

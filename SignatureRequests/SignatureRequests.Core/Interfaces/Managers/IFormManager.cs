@@ -13,6 +13,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         FormResponseList GetForms();
         FormResponseList GetFormsById(int id);
+        FormResponseList GetFormsByUserId(int id);
         FormEntity GetForm(int id);
         FormEntity CreateFormEntity(FormEntity newForm);
         FormEntity UpdateForm(FormEntity form, FormEntity newForm);

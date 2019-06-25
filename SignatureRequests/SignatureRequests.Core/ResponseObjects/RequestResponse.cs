@@ -18,5 +18,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public int FormId { get; set; }
         public string Status { get; set; }
         public DateTime SentDate { get; set; }
+        public BoxResponseList Boxes { get; set; }
     }
 }

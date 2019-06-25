@@ -7,7 +7,7 @@ export interface IFormHandler {
 
 export class FormHandler implements IFormHandler {
     async getAllByUser(id: number) : Promise<FormResponseList> {
-        const collection = await APIHandler(`/api/Form/GetFormsById/${id}`, {
+        const collection = await APIHandler(`/api/Form/GetFormsByUserId/${id}`, {
             method: "GET",
             responseType: FormResponseList
         });
