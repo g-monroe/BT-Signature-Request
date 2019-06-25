@@ -4,9 +4,11 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace SignatureRequests.Controllers
@@ -45,6 +47,44 @@ namespace SignatureRequests.Controllers
         {
             var result = _signatureManager.UpdateSignature(id, me);
             return result;
+        }
+        [HttpPost, Route("api/Signature/UploadSignature")]
+        public async Task<IHttpActionResult> Upload()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+
+            var provider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(provider);
+            foreach (var file in provider.Contents)
+            {
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                var buffer = await file.ReadAsByteArrayAsync();
+                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\images\signatures\" + filename,
+                  buffer);
+            }
+
+            return Ok();
+        }
+        [HttpPost, Route("api/Signature/UploadIntials")]
+        public async Task<IHttpActionResult> UploadIntials()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+
+            var provider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(provider);
+            foreach (var file in provider.Contents)
+            {
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                var buffer = await file.ReadAsByteArrayAsync();
+                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\images\intials\" + filename,
+                  buffer);
+            }
+
+            return Ok();
         }
         //// DELETE api/<controller>/5
         [Route("api/Signature/DeleteSignature/{id}")]
