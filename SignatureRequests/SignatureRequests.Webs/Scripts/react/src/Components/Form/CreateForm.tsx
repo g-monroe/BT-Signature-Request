@@ -9,6 +9,7 @@ import FormEntity from "../../Entities/FormEntity";
 import * as yup from 'yup';
 import { StringLiteral } from "@babel/types";
 import TextArea from "antd/lib/input/TextArea";
+const FileViewer = require('react-file-viewer');
 const { Option } = Select;
 const FormItem = AntForm.Item;
 
@@ -29,8 +30,9 @@ interface ICreateState {
 interface ICreateFormState {
   fileInput?: any;
   loading: boolean;
+  numPages: any;
+  pageNumber: number;
 }
-
 
 const yupValidation = yup.object().shape<ICreateState>({
   FilePath: yup
@@ -57,18 +59,14 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     
   };
   state: ICreateFormState = {
-    loading: false
+    loading: false,
+    numPages: null,
+    pageNumber: 1
   };
   async componentDidMount() {
     this.setState({
     });
   }
-  
-  // handleDelete = async () => {
-  //   if (this.props.data.id) {
-  //     await this.props.handleDelete(this.props.data.id);
-  //   }
-  // };
  
   getValidateStatus = (value: any) => {
     return !!value ? "error" :"success";
@@ -79,18 +77,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
   }
-  
-  beforeUpload = (file: any) => {
-    const isJPG = file.type === 'image/jpeg';
-    if (!isJPG) {
-      message.error('You can only upload JPG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
-    }
-    return isJPG && isLt2M;
-  }
 
   handleChange = (info: any) => {
     if (info.file.status === 'uploading') {
@@ -98,7 +84,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       this.getBase64(info.file.originFileObj, 
         this.setState({
           fileInput: this.state.fileInput,
@@ -120,6 +105,11 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     }
     
   };
+
+  onDocumentLoadSuccess = (numPages: any) => {
+    this.setState({ numPages: numPages });
+  };
+
   render() {
     
     const {
@@ -129,12 +119,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       handleChange,
       isSubmitting
     } = this.props;
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
     
     const props = {
       name: 'file',
@@ -187,6 +171,13 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
                 <Icon type="upload" /> Click to Upload
               </Button>
             </Upload>
+            </FormItem>
+
+            <FormItem>
+             <FileViewer
+             fileType={'pdf'}
+             filePath={"https://file.io/4mAMJp"}
+             />
             </FormItem>
 
             <FormItem
