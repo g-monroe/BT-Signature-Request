@@ -7,15 +7,13 @@ import UserEntity from '../../../Entities/UserEntity';
 import UserResponseList from '../../../Entities/UserResponseList';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
+
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
-    userHandler?: IUserHandler;
 }
  
 export interface IDashboardState {
     tableData?: FormEntity[];
-    users?: UserResponseList;
-    selectedUsers?: number[]; 
     loading: boolean;
 }
  
@@ -30,8 +28,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      async componentDidMount() {
        this.setState({
            tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
-           users: (await this.props.userHandler!.getAll()),
-           selectedUsers: [],
            loading: false
        });
      }
@@ -56,7 +52,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         return ( 
             <div className="Page">
                 <div className="overlay">
-                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'}/>
+                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'} alt = "Logo"/>
                 <div className="bar">
                 <div className="customs">
                 <select className="optionbar">
