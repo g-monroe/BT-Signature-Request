@@ -5,7 +5,7 @@ class FormEntity {
   filePath: string;
   title: string;
   description? : string;
-  createDate: Date;
+  createDate: string;
   user: UserEntity;
 
   constructor(data: any) {

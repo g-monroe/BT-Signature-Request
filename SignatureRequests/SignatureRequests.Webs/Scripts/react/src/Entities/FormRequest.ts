@@ -3,7 +3,7 @@ class FormRequest {
   filePath: string;
   title: string;
   description? : string;
-  createDate: Date;
+  createDate: string;
   userId: number;
 
   constructor(data: any) {
