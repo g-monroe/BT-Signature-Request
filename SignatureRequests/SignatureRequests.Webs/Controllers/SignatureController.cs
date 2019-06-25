@@ -56,14 +56,7 @@ namespace SignatureRequests.Controllers
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            foreach (var file in provider.Contents)
-            {
-                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-                var buffer = await file.ReadAsByteArrayAsync();
-                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\images\signatures\" + filename,
-                  buffer);
-            }
+            await _signatureManager.SaveSignatureAsync(provider, @"\assets\v1\images\signatures\");
 
             return Ok();
         }
@@ -75,15 +68,7 @@ namespace SignatureRequests.Controllers
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            foreach (var file in provider.Contents)
-            {
-                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-                var buffer = await file.ReadAsByteArrayAsync();
-                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\images\intials\" + filename,
-                  buffer);
-            }
-
+            await _signatureManager.SaveSignatureAsync(provider, @"\assets\v1\images\intials\");
             return Ok();
         }
         //// DELETE api/<controller>/5

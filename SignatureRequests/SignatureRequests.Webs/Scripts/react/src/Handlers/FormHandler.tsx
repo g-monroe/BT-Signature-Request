@@ -3,6 +3,7 @@ import FormResponseList from "../Entities/FormResponseList";
 
 export interface IFormHandler {
     getAllByUser(id: number): Promise<FormResponseList>;
+    uploadForm(files: FileList): Promise<String>;
 }
 
 export class FormHandler implements IFormHandler {
@@ -13,4 +14,12 @@ export class FormHandler implements IFormHandler {
         });
         return collection;
     }
+    async uploadForm(files: FileList) : Promise<String> {
+        const collection = await APIHandler(`/api/Form/Upload`, {
+            method: "POST",
+            data: files,
+            responseType: String
+        });
+        return collection;
+    }    
 }

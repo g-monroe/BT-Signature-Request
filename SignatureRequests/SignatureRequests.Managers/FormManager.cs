@@ -5,7 +5,9 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +46,17 @@ namespace SignatureRequests.Managers
             var result = _formHandler.Insert(newForm);
             _formHandler.SaveChanges();
             return result;
+        }
+        public async Task SaveDocumentAsync(MultipartMemoryStreamProvider provider)
+        {
+            foreach (var file in provider.Contents)
+            {
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                var buffer = await file.ReadAsByteArrayAsync();
+                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
+                    buffer);
+            }
         }
         public FormEntity UpdateForm(FormEntity form, FormEntity newForm)
         {

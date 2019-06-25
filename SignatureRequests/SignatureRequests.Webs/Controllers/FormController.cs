@@ -70,15 +70,7 @@ namespace SignatureRequests.Controllers
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            foreach (var file in provider.Contents)
-            {
-                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-                var buffer = await file.ReadAsByteArrayAsync();
-                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
-                  buffer);
-            }
-
+            _formManager.SaveDocumentAsync(provider);
             return Ok();
         }
         [Route("api/Form/DeleteForm/{id}")]
