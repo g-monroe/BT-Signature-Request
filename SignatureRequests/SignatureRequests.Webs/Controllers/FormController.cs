@@ -70,7 +70,7 @@ namespace SignatureRequests.Controllers
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            _formManager.SaveDocumentAsync(provider);
+            await _formManager.SaveDocumentAsync(provider);
             return Ok();
         }
         [Route("api/Form/DeleteForm/{id}")]
