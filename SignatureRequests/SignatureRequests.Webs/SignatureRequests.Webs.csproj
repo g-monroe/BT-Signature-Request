@@ -18,8 +18,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>61806</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -264,6 +263,12 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\react\public\index.html" />
     <TypeScriptCompile Include="Scripts\react\src\app.tsx" />
+    <Content Include="Scripts\react\src\Components\Dashboard\arrow.png" />
+    <Content Include="Scripts\react\src\Components\Dashboard\bootstrap.css" />
+    <Content Include="Scripts\react\src\Components\Dashboard\DashItem.css" />
+    <Content Include="Scripts\react\src\Components\Dashboard\Logo2.png" />
+    <Content Include="Scripts\react\src\Components\Dashboard\placeholder.jpg" />
+    <Content Include="Scripts\react\src\Components\Dashboard\SearchHeader.css" />
     <Content Include="Scripts\react\src\Components\User\ChooseUser.css" />
     <Content Include="Scripts\react\dist\bundle.js" />
     <Content Include="Scripts\react\scripts\build.js" />
@@ -293,6 +298,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\react\src\Components\Dashboard\DashItem.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Form\SendForm.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\User\ChooseUser.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Error\Error.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\index.ts" />
@@ -348,9 +355,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>63863</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:61806/</IISUrl>
+          <IISUrl>http://localhost:64445/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
