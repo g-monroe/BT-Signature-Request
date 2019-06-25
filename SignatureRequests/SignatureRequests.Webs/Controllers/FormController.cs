@@ -75,7 +75,8 @@ namespace SignatureRequests.Controllers
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(workingDirectory + "../assets/v1/documents/" + filename, buffer);
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
+                  buffer);
             }
 
             return Ok();
