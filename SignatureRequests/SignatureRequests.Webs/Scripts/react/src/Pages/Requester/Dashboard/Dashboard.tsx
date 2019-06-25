@@ -19,8 +19,7 @@ export interface IDashboardState {
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
     static defaultProps = {
-        formHandler: new FormHandler(),
-        userHandler: new UserHandler()
+        formHandler: new FormHandler()
      };
      state: IDashboardState = {
          loading: true
