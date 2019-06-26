@@ -3,6 +3,7 @@
     height: 100%;
     width: 100%;
     display: flex;
+    color: gray;
     flex-direction: column;
     background: #00567b;
 }
@@ -11,6 +12,8 @@
     height: 100%;
     width: 100%;
     display: flex;
+    justify-content: space-around;
+    text-align: center;
     color: aliceblue;
     background: #878a8f;
 }
@@ -20,12 +23,37 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 5px;
     color: aliceblue;
     background: #878a8f;
     box-shadow: 1px 8px 50px 0px black;
 }
 
-#Nav {
-    box-shadow: 1px 8px 50px 0px black;
-   
+#SigPageText {
+    margin-top: 10vh;
+    margin-right: 8vw;
+    margin-left: 8vw;
+  
+}
+
+#SigPara {
+    font-weight: 100;
+    color:lightgray;
+    margin-top: 5px;
+    margin-bottom: 5vh;
+}
+#ViewSigButtons {
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 13%;
+    margin-bottom: 60%;
+}
+
+#SigExample {
+    display: flex;
+    flex-direction: column;
+    
 }
