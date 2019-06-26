@@ -1,6 +1,5 @@
 import * as React from 'react';
 import './DrawTest.css'
-import {Typography} from 'antd';
 
 
 export interface ITypedSignatureProps {

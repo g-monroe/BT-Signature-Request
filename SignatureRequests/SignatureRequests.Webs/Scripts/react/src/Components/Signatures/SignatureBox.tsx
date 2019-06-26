@@ -108,8 +108,8 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                 {
                     !!this.state.canvasRef ? 
                         <div id = 'EditCanvasButtons'>
-                            <Button onClick = {this.resetCanvas}>Reset Signature</Button>{" "}
-                            <Button type = 'primary' onClick = {this.saveCanvas}>Save Signature</Button>
+                            <Button onClick = {this.resetCanvas}>Reset {this.state.type}</Button>{" "}
+                            <Button type = 'primary' onClick = {this.saveCanvas}>Save {this.state.type}</Button>
                         </div> :
                         <></>
                 }

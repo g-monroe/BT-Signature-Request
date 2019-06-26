@@ -1,0 +1,31 @@
+
+#signaturePageContent {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #00567b;
+}
+
+#signaturePageHeader {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    color: aliceblue;
+    background: #878a8f;
+}
+
+#signaturePageSider {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: aliceblue;
+    background: #878a8f;
+    box-shadow: 1px 8px 50px 0px black;
+}
+
+#Nav {
+    box-shadow: 1px 8px 50px 0px black;
+   
+}

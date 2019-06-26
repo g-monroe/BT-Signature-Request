@@ -72,9 +72,9 @@
 
 #signaturePage {
     position:absolute;
-    height: 150%;
+    height: 100%;
     width: 100%;
-    background: #00567b;
+    background: inherit;
     display: flex;
     flex-direction: column;
     align-content: center;
