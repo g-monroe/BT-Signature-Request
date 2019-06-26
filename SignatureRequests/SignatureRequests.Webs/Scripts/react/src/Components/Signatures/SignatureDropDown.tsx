@@ -7,7 +7,6 @@ import { manualInputTypes } from '../../Util/Enums/SelectTypes';
 export interface ISignatureDropDownProps {
     type:TypesOfBoxes  
     existing?:boolean
-
 }
  
 export interface ISignatureDropDownState {
@@ -54,8 +53,6 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
-
-
     render() { 
         const menu = 
             <Menu>
@@ -90,9 +87,9 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         return ( 
             <div>
                 <Dropdown overlay = {menu} trigger = {['click']} onVisibleChange = {this.handleVisChange} visible = {this.state.menuVisible}>
-                    <a href = '#'>Fill in the Box {" "}
+                    <Button href = '#' size = "small">Add {TypesOfBoxes[this.props.type]} {" "}
                         <Icon type="plus-circle"/>
-                    </a>
+                    </Button>
                 </Dropdown>
                 {console.log(this.state.status)}
                 {   
