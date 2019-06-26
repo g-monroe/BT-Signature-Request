@@ -3,6 +3,7 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,6 +15,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         SignatureResponseList GetSignatures();
         SignatureResponse GetSignature(int id);
+        FileStream GetSignatureImage(int id, string filePath);
         SignatureResponse CreateSignatureEntity(SignatureRequest newSignature);
         Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath);
         SignatureResponse UpdateSignature(int id, SignatureRequest newSignature);

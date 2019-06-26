@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -32,6 +33,26 @@ namespace SignatureRequests.Controllers
         {
             var signs = _signatureManager.GetSignatures();
             return signs;
+        }
+        [Route("api/Signature/GetSignatureImage/{id}")]
+        [HttpGet]
+        public HttpResponseMessage GetSignatureImage(int id)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var stream = _signatureManager.GetSignatureImage(id, @"\assets\v1\images\signatures\");
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
+        }
+        [Route("api/Signature/GetIntialsImage/{id}")]
+        [HttpGet]
+        public HttpResponseMessage GetIntialsImage(int id)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            var stream = _signatureManager.GetSignatureImage(id, @"\assets\v1\images\intials\");
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
         }
         [Route("api/Signature/AddSignature")]
         [HttpPost]

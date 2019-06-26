@@ -30,6 +30,21 @@ namespace SignatureRequests.Managers
             var resp = SignatureToListItem(result);
             return resp;
         }
+        public FileStream GetSignatureImage(int id, string filePath)
+        {
+            SignatureEntity sign = _signatureHandler.First(x => x.UserId == id);
+            string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = AppDomain.CurrentDomain.BaseDirectory + filePath + sign.ImagePath;
+            try
+            {
+               var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return stream;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
         public async Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath)
         {
             foreach (var file in provider.Contents)
