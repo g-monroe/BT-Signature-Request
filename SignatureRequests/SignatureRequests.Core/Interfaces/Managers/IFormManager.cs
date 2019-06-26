@@ -4,6 +4,7 @@ using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         FormResponseList GetForms();
         FormResponseList GetFormsById(int id);
+        FormResponseList GetFormsByUserId(int id);
+        Task SaveDocumentAsync(MultipartMemoryStreamProvider provider);
         FormEntity GetForm(int id);
         FormEntity CreateFormEntity(FormEntity newForm);
         FormEntity UpdateForm(FormEntity form, FormEntity newForm);

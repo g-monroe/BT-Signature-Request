@@ -1,10 +1,8 @@
-import React from "react";
+import * as React from "react";
 import { Select, Table, Button } from 'antd';
-import "antd/dist/antd.css";
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
 import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
-import FormEntity from "../../Entities/FormEntity";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
 import UserResponseList from "../../Entities/UserResponseList";
@@ -90,7 +88,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
 
   onDeselect = async (value: any) => {
     let newSelected = this.state.selectedUsers!.filter(function(id){
-      return id != value;
+      return id !== value;
     });
     (await this.setState({
       selectedUsers: newSelected
@@ -98,7 +96,11 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   }
 
   onSend = async () => {
-    this.state.selectedUsers!.map(x => {let request: RequestRequest = {signerId: x, requestorId: 1, formId: 1, status: "Waiting", sentDate: new Date() }; this.props.requestHandler!.createRequest(request); }) //change to current user, change to selected form
+    this.state.selectedUsers!.map(x => {
+      let request: RequestRequest = {signerId: x, requestorId: 1, formId: 1, status: "Waiting", sentDate: new Date() };
+      this.props.requestHandler!.createRequest(request); 
+    
+    }) //change to current user, change to selected form
   }
 
   render() {

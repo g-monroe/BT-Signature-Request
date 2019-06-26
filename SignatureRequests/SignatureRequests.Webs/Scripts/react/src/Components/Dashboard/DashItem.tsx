@@ -2,9 +2,10 @@ import * as React from 'react';
 import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare, faFlagCheckered  } from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
+import FormEntity from '../../Entities/FormEntity';
 export interface IDashItemProps {
-  
+    formEntity: FormEntity;
 }
  
 export interface IDashItemState {
@@ -23,6 +24,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    }
   render() {
     const { checked } = this.state;
+    const {formEntity} = this.props;
     let iconCheck = faSquare;
     if (checked){
       iconCheck = faCheckSquare;
@@ -32,13 +34,13 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-            <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"/>
+            <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" alt = "Preview"/>
         </div>
         <div className="activity-content header-item">
-        <label className="ribbon right success "><span>Billing</span></label>
-        <h5 className="block-head">Billing Order Section W5-0988</h5>
+        <label className="ribbon right success"><span>Billing</span></label>
+        <h5 className="block-head">{formEntity.title}</h5>
         <div className="content-left">
-        <p className="description">This is awesome product and, I am very happy with delivery &amp; product packaging. Overall experience is good &amp; I prefer to buy it again from this portals and like more orders.</p>
+        <p className="description">{formEntity.description}</p>
         </div>
         <div className="content-right">
             <button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
