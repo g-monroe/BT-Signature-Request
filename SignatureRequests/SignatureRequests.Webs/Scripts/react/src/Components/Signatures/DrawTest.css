@@ -1,0 +1,98 @@
+@import url(https://fonts.googleapis.com/css?family=Pinyon+Script&display=swap);
+
+#drawCanvas {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+    background: #00567b;
+    padding:30px;
+}
+
+#SignatureBox {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    background: #00567b;
+    padding:30px;
+}
+
+#TypedSignature {
+    display: flex;
+    height: 25vh;
+    width: 40vw;
+    background: whitesmoke;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Pinyon Script', cursive;
+    font-stretch: expanded;
+    font-size: 30px;
+    border: none
+}
+
+#SignatureHeader{
+    color:whitesmoke;
+    font-weight: 500;
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-bottom: 1.5%;
+    align-self: center;
+    align-content: center;
+   
+}
+
+#SignatureFooter{
+    display: flex;
+    margin-top: 1.5%;
+    align-self: flex-start;
+}
+
+#SignatureButtons{
+    display:flex;
+    flex-direction: column;
+}
+
+#EditCanvasButtons {
+    align-self: flex-end;
+}
+
+#text {
+    border-width: 0px;
+    border-color: whitesmoke;
+    background: whitesmoke;
+    text-align: center;
+    outline: none;
+    width: 530px;
+    height: 150px;
+}
+
+#signaturePage {
+    position:absolute;
+    height: 150%;
+    width: 100%;
+    background: #00567b;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+   
+}
+
+#imageView {
+    background: inherit;
+    color: whitesmoke;
+    text-align: center;
+    width:50%;
+}
+
+#imageContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#signatureModal {
+    width:90vw;
+}
