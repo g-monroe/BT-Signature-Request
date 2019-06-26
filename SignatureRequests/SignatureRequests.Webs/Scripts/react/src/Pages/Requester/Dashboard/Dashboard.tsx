@@ -2,12 +2,11 @@ import * as React from 'react';
 import DashItem from '../../../Components/Dashboard/DashItem';
 import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
-import { IUserHandler, UserHandler } from '../../../Handlers/UserHandler';
-import UserEntity from '../../../Entities/UserEntity';
-import UserResponseList from '../../../Entities/UserResponseList';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
-
+import { Input, Select, Icon, Button } from 'antd';
+import Search from 'antd/lib/input/Search';
+const { Option } = Select;
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
 }
@@ -43,27 +42,27 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{
                 let displayedForms = tableData;
+                console.log(tableData);
                 return displayedForms.map((comment, index) => (<DashItem key={index} formEntity={comment}/>));
             }
         }
      }
     render() { 
+        const selectBefore = (
+            <Select defaultValue="Http://">
+              <Option value="Http://">Http://</Option>
+              <Option value="Https://">Https://</Option>
+            </Select>
+          );
         return ( 
             <div className="Page">
                 <div className="overlay">
-                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'} alt = "Logo"/>
+                <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")}/>
                 <div className="bar">
-                <div className="customs">
-                <select className="optionbar">
-                    <option>All</option>
-                    <option>Billing</option>
-                    <option>Order</option>
-                    <option>Business</option>
-                </select>
-                </div>
-                <input placeholder="Order Summary, Purchase, etc" className="searchbar" type="text"/>
-                <button style={{borderTopRightRadius: "8px", borderBottomRightRadius: "8px",borderTopLeftRadius: "0px",borderBottomLeftRadius: "0px", padding:"8.4px",boxShadow: "0 4px 6px -6px black"}}className="btn btn-info barbtn">Search</button>
-                </div>
+                <div style={{ marginBottom: 16 }}>
+                    <Search style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
+                    </div>
+               </div>
                 </div>
                 <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "inline-block", textAlign:"center"}}className="page-items">
                     {
