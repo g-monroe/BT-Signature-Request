@@ -5,7 +5,9 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +30,17 @@ namespace SignatureRequests.Managers
             var resp = SignatureToListItem(result);
             return resp;
         }
-
+        public async Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath)
+        {
+            foreach (var file in provider.Contents)
+            {
+                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+                var buffer = await file.ReadAsByteArrayAsync();
+                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory +  filePath + filename,
+                    buffer);
+            }
+        }
         public void Delete(int id)
         {
             var signature = _signatureHandler.GetById(id);

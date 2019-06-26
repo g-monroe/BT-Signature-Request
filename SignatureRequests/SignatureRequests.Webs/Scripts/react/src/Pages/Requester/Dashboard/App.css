@@ -1,14 +1,14 @@
 .Page{
   text-align: center;
-  background-color: #343a40;
+  background-color: rgb(177, 180, 181);
   width:100%;
   height:100%;
 }
 body{
-  background-color: #343a40;
+  background-color:rgb(177, 180, 181);
 }
 html{
-  background-color: #343a40;
+  background-color: rgb(177, 180, 181);
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

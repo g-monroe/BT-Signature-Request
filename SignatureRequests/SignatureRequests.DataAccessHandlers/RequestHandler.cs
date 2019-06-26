@@ -18,10 +18,13 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return Get(s => s.Id == id);
         }
-
+        public IEnumerable<RequestEntity> GetAllByFormId(int id)
+        {
+            return GetSelectIncludes(s => s.FormId == id, "BoxEntities");
+        }
         public IEnumerable<RequestEntity> GetAllInclude()
         {
-            return _context.Requests.Include("Form").Include("Signer").Include("Requestor");
+            return GetIncludes("BoxEntities");
         }
     }
 }
