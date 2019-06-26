@@ -275,6 +275,7 @@
     <Content Include="Scripts\react\scripts\build.js" />
     <Content Include="Scripts\react\scripts\start.js" />
     <Content Include="Scripts\react\scripts\test.js" />
+    <Content Include="Scripts\react\src\FakeMaterials\testMadison.jpeg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -348,6 +349,7 @@
     <TypeScriptCompile Include="Scripts\react\src\Pages\Signer\SignDocument\SignDocument.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\index.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Util\Enums\colors.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Util\Enums\declaration.d.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Util\Enums\SelectTypes.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Util\Enums\SignatureDropDown.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Util\Enums\UserTypes.ts" />

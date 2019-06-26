@@ -3,7 +3,6 @@ import {SignatureColors} from '../../Util/Enums/colors';
 import CanvasDraw from 'react-canvas-draw';
 import './DrawTest.css'
 import { manualInputTypes } from '../../Util/Enums/SelectTypes';
-import { Button } from 'antd';
 
 export interface IDrawCanvasProps {
     color?:SignatureColors

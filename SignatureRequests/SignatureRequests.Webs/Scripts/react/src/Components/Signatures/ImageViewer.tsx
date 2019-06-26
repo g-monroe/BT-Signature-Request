@@ -1,5 +1,5 @@
 import * as React from 'react';
-import test from '../../TestImages/testMadison.jpeg'
+import test from '../../FakeMaterials/testMadison.jpeg';
 
 export interface IImageViewerProps {
     title?:string

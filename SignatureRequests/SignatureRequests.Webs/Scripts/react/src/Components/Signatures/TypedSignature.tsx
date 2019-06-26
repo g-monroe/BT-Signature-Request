@@ -2,7 +2,6 @@ import * as React from 'react';
 import './DrawTest.css'
 import {Typography} from 'antd';
 
-const {Paragraph} = Typography
 
 export interface ITypedSignatureProps {
     
@@ -29,7 +28,6 @@ class TypedSignature extends React.Component<ITypedSignatureProps, ITypedSignatu
         return ( 
             <div id = 'TypedSignature'>
                 <input id = "text"></input>
-                {/* <Paragraph editable = {{onChange: (str) => this.onChange(str)}}>{this.state.text}</Paragraph> */}
             </div>
          );
     }

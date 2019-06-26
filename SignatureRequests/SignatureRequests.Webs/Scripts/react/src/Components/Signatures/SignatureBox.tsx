@@ -64,7 +64,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         const can = this.state.canvasRef.current;
         let anchor;
         if(true){
-            html2canvas(document.getElementById("ThingToSave")!).then((canvas)=>{
+            html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
                         //file = new File([blob],"uploaded_signature.jpeg",{type: "image/jpeg", lastModified:Date.now() });
