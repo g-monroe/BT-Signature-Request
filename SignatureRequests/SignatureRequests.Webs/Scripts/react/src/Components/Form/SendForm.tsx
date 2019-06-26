@@ -8,7 +8,6 @@ import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
 import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
 import { Link } from "react-router-dom";
-import ImageForm from "./Image";
 const { Option } = Select;
 const columns = [
     {
@@ -86,6 +85,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     }
     return data;
   }
+  
 
   onSelect = (value: any) => {
     let newSelected = this.state.selectedUsers!;

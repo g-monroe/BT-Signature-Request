@@ -7,7 +7,7 @@ import { Form, InjectedFormikProps, withFormik } from "formik";
 import FormRequest from "../../Entities/FormRequest";
 import FormEntity from "../../Entities/FormEntity";
 import * as yup from 'yup';
-import { StringLiteral } from "@babel/types";
+import { StringLiteral, file } from "@babel/types";
 import TextArea from "antd/lib/input/TextArea";
 const FileViewer = require('react-file-viewer');
 const { Option } = Select;
@@ -30,11 +30,11 @@ interface ICreateState {
 interface ICreateFormState {
   fileInput?: any;
   loading: boolean;
-  numPages: any;
+  numPages?: number;
   pageNumber: number;
 }
 
-const yupValidation = yup.object().shape<ICreateState>({
+const yupValidation = yup.object().shape<ICreateState>({ //change requirements
   FilePath: yup
     .string()
     .required()
@@ -55,21 +55,14 @@ const yupValidation = yup.object().shape<ICreateState>({
 });
 
 export default class Create extends React.PureComponent<InjectedFormikProps<ICreateProps, ICreateState>, ICreateFormState> {
-  static defaultProps = {
-    
-  };
+  
   state: ICreateFormState = {
     loading: false,
-    numPages: null,
     pageNumber: 1
   };
-  async componentDidMount() {
-    this.setState({
-    });
-  }
- 
+  
   getValidateStatus = (value: any) => {
-    return !!value ? "error" :"success";
+    return value ? "error" :"success";
   };
 
   getBase64 = (img: any, callback: any) => {
@@ -86,23 +79,27 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     if (info.file.status === 'done') {
       this.getBase64(info.file.originFileObj, 
         this.setState({
-          fileInput: this.state.fileInput,
           loading: false,
         }),
       );
     }
   };
   
-  onChange = (info: any) => {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-      this.setState({fileInput: info.file })
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
+  onChange = async (info: any) => {
+    
+    let fileList = [...info.fileList];
+    fileList=fileList.slice(-1);
+    
+    fileList = fileList.map(file => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+    
+    (await this.setState({ fileInput : fileList }));
+    console.log(this.state.fileInput!);
     
   };
 
@@ -111,7 +108,8 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
   };
 
   render() {
-    
+    const fileInput = this.state.fileInput;
+
     const {
       values,
       errors,
@@ -121,12 +119,19 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     } = this.props;
     
     const props = {
-      name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      headers: {
-        authorization: 'authorization-text',
-      },
+      // name: 'file',
+      // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76', //add upload url
+      // headers: {
+      //   authorization: 'authorization-text',
+      // },
       onChange: this.onChange,
+      beforeUpload: (file: any) : boolean => {
+        this.setState({
+          fileInput: file
+        });
+        return false;
+      },
+      fileInput
     };
       return (
         <>
@@ -158,7 +163,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
                   name="Title"
                   value={values.Title}
                   placeholder="Title"
-                  onChange={this.handleChange}
+                  onChange={handleChange}
                 />
               </FormItem>
 
@@ -166,9 +171,10 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
             <FormItem>
             <Upload 
             {...props}
+            fileList={this.state.fileInput!}
             >
               <Button>
-                <Icon type="upload" /> Click to Upload
+                <Icon type="upload" /> Select File
               </Button>
             </Upload>
             </FormItem>
@@ -176,7 +182,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
             <FormItem>
              <FileViewer
              fileType={'pdf'}
-             filePath={"https://file.io/4mAMJp"}
+             filePath={this.state.fileInput ? this.state.fileInput[0].name :"../Scripts/react/src/Components/Form/Thisisatestpdf.pdf"}
              />
             </FormItem>
 
