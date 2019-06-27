@@ -1,6 +1,5 @@
 import * as React from 'react';
 import SignatureBox from './SignatureBox';
-import ImageViewer from './ImageViewer';
 
 export interface ISignaturePageProps {
     
@@ -15,9 +14,9 @@ class SignaturePage extends React.Component<ISignaturePageProps, ISignaturePageS
     render() { 
         return ( 
             <div id = 'signaturePage'>
-            <div id = 'imageContainer'>
-                <ImageViewer title = "Current Signature"></ImageViewer>
-                <ImageViewer title = "Current Initials"></ImageViewer>
+                <div id='imageContainer'>
+                    <h1>Current Signature</h1>
+                    <h1>Current Initials</h1>
             </div>
                 <SignatureBox></SignatureBox>
             </div>

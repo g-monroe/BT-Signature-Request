@@ -308,7 +308,6 @@
     <TypeScriptCompile Include="Scripts\react\src\Components\Form\SendForm.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\ButtonSelect.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\DrawCanvas.tsx" />
-    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\ImageViewer.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\imageViewModal.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignatureBox.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignatureDropDown.tsx" />

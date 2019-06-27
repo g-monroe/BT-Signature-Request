@@ -28,7 +28,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                         View your:
                             <div id = "ViewSigButtons">
                                 <ImageViewModal title = "Your Signature" button = "Signature" content = {
-                                        <img src = {require("../../../FakeMaterials/testMadison.jpeg")}></img>
+                                        <img src = {"../../../FakeMaterials/testMadison.jpeg"}></img>
                                 }></ImageViewModal>
                                 <ImageViewModal title = "Your Initials" button = "Initials"></ImageViewModal>
                             </div>
