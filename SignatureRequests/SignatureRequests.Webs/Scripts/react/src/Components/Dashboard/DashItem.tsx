@@ -4,6 +4,7 @@ import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
 import FormEntity from '../../Entities/FormEntity';
+import TagItem from './TagItem';
 import { Tabs, Progress, Tag } from 'antd';
 import '../../../node_modules/antd/dist/antd.css';
 const TabPane = Tabs.TabPane;
@@ -16,12 +17,7 @@ export interface IDashItemState {
     checked:boolean;
     isAdmin: boolean;
 }
-export class TagItem{
-  data:string[];
-  constructor(data:string[]){
-    this.data = data;
-  }
-}
+
 class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    state:IDashItemState = {
      checked: false,
@@ -60,7 +56,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         tags.push(newTag);
       })
     }
-    console.log(tags, "--", this.props.formEntity.requests, "--", this.state);
     return (
       <div style={{display: "inline-block"}} className="DashItem">
         <div className="activity-block">

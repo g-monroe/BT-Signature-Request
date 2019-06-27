@@ -45,9 +45,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{
                 let displayedForms = tableData;
-                console.log(tableData);
                 if (searchTerm.length > 2 && !loading){
-                    console.log("1");
                     let filteredForms = [];
                     for(var i = 0; i<displayedForms.length-1; i++){
                         if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
@@ -57,12 +55,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                      return filteredForms.map((form, index) => (
                           <DashItem key={index} formEntity={form}/>
                 ));
-                }else if (searchTerm.length < 2 && !loading){
-                    console.log("2", this.props, this.state);
-                    return displayedForms.map((form, index) => 
-                            (<DashItem key={index} formEntity={form}/>));
                 }else{
-                    console.log("3");
                     return displayedForms.map((form, index) => 
                             (<DashItem key={index} formEntity={form}/>));
                 }
@@ -71,7 +64,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
      save  = ( target:any ) => {
         if (target.length > 2){
-            console.log(target);
             this.setState({
                 searchTerm: target.toLowerCase()
             })
