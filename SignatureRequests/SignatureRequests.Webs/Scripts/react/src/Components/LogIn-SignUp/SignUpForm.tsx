@@ -26,15 +26,7 @@ const yupValidation = yup.object().shape<ISignUpFormState>({
      email: yup.string().required().label("Email").typeError("Must be a valid email").email() ,
      passwordOne: yup.string().required().label("Password").typeError("This is a required field"),
      passwordTwo: yup.string().required().label("Password").typeError("This is a required field").oneOf([yup.ref('passwordOne'),null], "Passwords must match")
-})
-
-// object().shape<ISignUpFormState>({
-//     userName: yup.string().required().label("Username").typeError("This is a required field") ,
-//     role: yup.string().required().label("Role").typeError("This is a required field") ,
-//     email: yup.string().required().label("Email").typeError("Must be a valid email").email() ,
-//     passwordOne: yup.string().required().label("Password").typeError("This is a required field"),
-//     passwordTwo: yup.string().required().label("Password").typeError("This is a required field")
-// });
+});
 
 class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, ISignUpFormState>> {
     

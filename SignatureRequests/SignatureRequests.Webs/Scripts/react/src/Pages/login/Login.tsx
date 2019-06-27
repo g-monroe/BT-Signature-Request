@@ -30,9 +30,3 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 }
  
 export default Login;
-
-//<Layout>
-   // <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
-
-
-//</Layout>

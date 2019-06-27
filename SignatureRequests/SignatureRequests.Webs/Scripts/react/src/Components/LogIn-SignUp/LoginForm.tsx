@@ -9,7 +9,6 @@ export interface ILoginFormState {
 }
  
 class LoginForm extends React.Component<ILoginFormProps, ILoginFormState> {
-    state = {   }
     render() { 
         return ( 
             <div>
