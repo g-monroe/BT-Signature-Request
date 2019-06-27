@@ -17,12 +17,13 @@ class Send extends React.Component<ISendProps, ISendState> {
             <>
             <h1 id = 'HeaderText'>Send a Form</h1>
             <SendForm currentUser={new UserEntity ({
-      Id: 1,
-      Role: "role",
-      Name: "name",
-      Email: "email",
-      Password: "password"
-    })} ></SendForm>
+                Id: 1,
+                Role: "role",
+                Name: "name",
+                Email: "email",
+                Password: "password"
+                })} >
+            </SendForm>
             </>
         );
     }

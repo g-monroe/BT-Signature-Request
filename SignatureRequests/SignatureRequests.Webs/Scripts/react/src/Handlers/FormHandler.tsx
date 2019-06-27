@@ -6,12 +6,13 @@ import FormEntity from "../Entities/FormEntity";
 export interface IFormHandler {
     getAllByUser(id: number): Promise<FormResponseList>;
     createForm(entity: FormRequest) : Promise<FormEntity>;
-    uploadForm(files: FileList): Promise<String>;
+    uploadForm(file: FormData) : Promise<String>;
 }
 
 export class FormHandler implements IFormHandler {
     async getAllByUser(id: number) : Promise<FormResponseList> {
         const collection = await APIHandler(`/api/Form/GetFormsByUserId/${id}`, {
+            headers: {"Content-Type" : "application/json"},
             method: "GET",
             responseType: FormResponseList
         });
@@ -20,18 +21,19 @@ export class FormHandler implements IFormHandler {
 
     async createForm(entity: FormRequest) : Promise<FormEntity> {
         return await APIHandler(`/api/Form/AddForm`, {
+            headers: {"Content-Type" : "application/json"},
             method: "POST",
             data: entity,
             responseType: FormEntity
         });
     }
-
-    async uploadForm(files: FileList) : Promise<String> {
-        const collection = await APIHandler(`/api/Form/Upload`, {
-            method: "POST",
-            data: files,
-            responseType: String
+    
+    async uploadForm(file: FormData) : Promise<String> {
+        return await new Promise((resolve, reject) => {
+          const req = new XMLHttpRequest();
+          req.open("POST", "http://localhost:64445/api/Form/Upload");
+          req.send(file);
+          resolve(req.response);
         });
-        return collection;
-    }    
+      }
 }

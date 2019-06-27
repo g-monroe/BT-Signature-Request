@@ -9,16 +9,18 @@ import FormEntity from "../../Entities/FormEntity";
 import * as yup from 'yup';
 import { StringLiteral, file } from "@babel/types";
 import TextArea from "antd/lib/input/TextArea";
+import { Link, Redirect } from "react-router-dom";
 const FileViewer = require('react-file-viewer');
 const { Option } = Select;
 const FormItem = AntForm.Item;
 
 interface ICreateProps {
    currentUser?: UserEntity;
-   handleSave: (data: FormRequest) => Promise<FormEntity>;
+   handleSave: (data: any) => Promise<void>;
 }
 
 interface ICreateState {
+    FileList?: FormData;
     FilePath: string;
     Title: string;
     Description: string;
@@ -34,23 +36,21 @@ interface ICreateFormState {
   pageNumber: number;
 }
 
-const yupValidation = yup.object().shape<ICreateState>({ //change requirements
+const yupValidation = yup.object().shape<ICreateState>({ 
   FilePath: yup
     .string()
     .required()
-    .max(45)
     .label("FilePath"),
   Title: yup
     .string()
     .required()
-    .max(45)
+    .max(255)
     .label("Title"),
   Description: yup
     .string()
     .required()
-    .label("Description"),
-  CreateDate: yup
-    .string()
+    .max(400)
+    .label("Description")
  
 });
 
@@ -84,30 +84,14 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       );
     }
   };
-  
-  onChange = async (info: any) => {
-    
-    let fileList = [...info.fileList];
-    fileList=fileList.slice(-1);
-    
-    fileList = fileList.map(file => {
-      if (file.response) {
-        // Component will show file.url as link
-        file.url = file.response.url;
-      }
-      return file;
-    });
-    
-    (await this.setState({ fileInput : fileList }));
-    console.log(this.state.fileInput!);
-    
-  };
 
   onDocumentLoadSuccess = (numPages: any) => {
     this.setState({ numPages: numPages });
   };
 
+  
   render() {
+    
     const fileInput = this.state.fileInput;
 
     const {
@@ -117,40 +101,39 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       handleChange,
       isSubmitting
     } = this.props;
-    
+   
     const props = {
-      // name: 'file',
-      // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76', //add upload url
-      // headers: {
-      //   authorization: 'authorization-text',
-      // },
-      onChange: this.onChange,
+
+      onChange: async (info: any) => {
+        let fileList = [...info.fileList];
+        fileList=fileList.slice(-1);
+        fileList = fileList.map(file => {
+          if (file.response) {
+            file.url = file.response.url;
+          }
+          return file;
+        });
+        let path: string = '../assets/v1/documents/'
+        values.FilePath= path.concat(fileList[0].name);
+        values.FileList= fileList[0];
+        this.setState({ fileInput : fileList });
+      },
+
       beforeUpload: (file: any) : boolean => {
         this.setState({
           fileInput: file
         });
         return false;
       },
+
       fileInput
+      
     };
+    
       return (
         <>
         <Form onSubmitCapture={handleSubmit}>
             <div className="inline-flex-container">
-              <FormItem
-                className="inline-item"
-                label="FilePath"
-                validateStatus={this.getValidateStatus(errors.FilePath)}
-                help={errors.FilePath}
-                required
-              >
-                <Input
-                  name="FilePath"
-                  value={values.FilePath}
-                  placeholder="Filepath"
-                  onChange={handleChange}
-                />
-              </FormItem>
               
               <FormItem
                 className="inline-item"
@@ -179,13 +162,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
             </Upload>
             </FormItem>
 
-            <FormItem>
-             <FileViewer
-             fileType={'pdf'}
-             filePath={this.state.fileInput ? this.state.fileInput[0].name :"../Scripts/react/src/Components/Form/Thisisatestpdf.pdf"}
-             />
-            </FormItem>
-
             <FormItem
               label="Description"
               validateStatus={this.getValidateStatus(errors.Description)}
@@ -207,11 +183,9 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
                 loading={isSubmitting}
                 htmlType="submit"
               >
-                Save
+                Upload
               </Button>
             </FormItem>
-            
-            
           </Form>
           </>
       );
@@ -224,7 +198,7 @@ export const CreateForm = withFormik<
   ICreateState
 >({
   mapPropsToValues: props => ({
-
+    FileList: new FormData(),
     FilePath: "",
     Title:  "",
     Description:  "",
@@ -234,7 +208,7 @@ export const CreateForm = withFormik<
   validationSchema: yupValidation,
   handleSubmit: async (values, { setSubmitting, props }) => {
     setSubmitting(true);
-    props.handleSave(new FormRequest(values));
+    (await props.handleSave(values));
     setSubmitting(false);
   }
 })(Create);

@@ -4,6 +4,7 @@ import UserEntity from '../../../Entities/UserEntity';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
+import { resolve } from 'path';
 
 export interface ICreateProps {
     currentUser?: UserEntity;
@@ -25,7 +26,8 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             Password: "password"
           })
      };
-     state: ICreateState = {
+
+    state: ICreateState = {
          form: new FormRequest({
             filePath: "",
             title: "",
@@ -34,6 +36,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             userId: 1
         })
      };
+
     async componentDidMount() {
         this.setState({
             form: new FormRequest({
@@ -46,11 +49,19 @@ class Create extends React.Component<ICreateProps, ICreateState> {
         })
     };
 
-    handleSave = async (data: FormRequest) : Promise<FormEntity> => {
-        return (await this.props.formHandler!.createForm(data));
-    };
-    handleDelete = async () => {
-
+    handleSave = async (data: any) : Promise<void> => {
+        let request= new FormRequest({
+            FilePath: data.FilePath,
+            Title: data.Title,
+            Description: data.Description,
+            CreateDate: data.CreateDate,
+            UserId: data.UserId
+        });
+        let form = new FormData();
+        form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );
+        
+        this.props.formHandler!.createForm(request);
+        this.props.formHandler!.uploadForm(form);
     };
 
     render() { 
@@ -60,7 +71,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
         return (
             
             <> 
-            <h1  id = 'HeaderText'>test</h1>
+            <h1  id = 'HeaderText'>Create a Form</h1>
                 <CreateForm
                 handleSave={this.handleSave}
                 currentUser={this.props.currentUser!}

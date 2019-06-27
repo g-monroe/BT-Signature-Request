@@ -43,7 +43,7 @@ namespace SignatureRequests.Managers
         }
         public FormEntity CreateFormEntity(FormEntity newForm)
         {
-            var result = _formHandler.Insert(newForm);
+            FormEntity result = _formHandler.Insert(newForm);
             _formHandler.SaveChanges();
             return result;
         }
@@ -110,7 +110,10 @@ namespace SignatureRequests.Managers
                 TotalResults = 0,
                 RequestsList = new List<RequestResponse>()
             };
-
+            if (form.RequestEntities == null)
+            {
+                form.RequestEntities = new List<RequestEntity>();
+            }
             foreach (RequestEntity request in form.RequestEntities)
             {
                 var respBoxes = new BoxResponseList

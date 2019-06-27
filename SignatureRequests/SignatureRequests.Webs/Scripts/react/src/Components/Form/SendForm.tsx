@@ -12,8 +12,7 @@ const { Option } = Select;
 const columns = [
     {
         title: 'FilePath',
-        dataIndex: 'filePath',
-        render: () => (<img src='C:\Code\signature-request-replacement\SignatureRequests\SignatureRequests.Webs\Scripts\react\src\Components\Form'></img>)
+        dataIndex: 'filePath'
     },
     {
         title: 'Title',
@@ -106,7 +105,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
 
   onSend = async () => {
     for(let i=0; i<this.state.selectedForms!.length; i++){
-      for(let j=0; j<this.state.selectedUsers!.length; j++){ //change to current user for requestorId 
+      for(let j=0; j<this.state.selectedUsers!.length; j++){ 
         let request: RequestRequest = {signerId: this.state.selectedUsers![j], requestorId: this.props.currentUser!.id, formId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id, status: "Pending", sentDate: new Date() };
         this.props.requestHandler!.createRequest(request);
       }

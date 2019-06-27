@@ -17,7 +17,7 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public IEnumerable<FormEntity> GetAllById(int id)
         {
-            return Get(s => s.UserId == id);
+            return _context.Forms.Where(x => x.UserId == id).Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
         }
         public IEnumerable<FormEntity> GetAllByUserId(int id)
         {
