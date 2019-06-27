@@ -107,7 +107,7 @@ namespace SignatureRequests.Managers
         {
             var resp = new RequestResponseList
             {
-                TotalResults = 0,
+                TotalResults = form.RequestEntities.Count(),
                 RequestsList = new List<RequestResponse>()
             };
 
@@ -115,7 +115,7 @@ namespace SignatureRequests.Managers
             {
                 var respBoxes = new BoxResponseList
                 {
-                    TotalResults = 0,
+                    TotalResults = request.BoxEntities.Count(),
                     BoxesList = new List<BoxResponse>()
                 };
                 foreach (BoxEntity box in request.BoxEntities)
