@@ -11,7 +11,7 @@ export interface ISignaturePageState {
 }
  
 class SignaturePage extends React.Component<ISignaturePageProps, ISignaturePageState> {
-    state = {   }
+
     render() { 
         return ( 
             <div id = 'signaturePage'>

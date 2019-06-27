@@ -23,9 +23,5 @@ namespace SignatureRequests.Core.Interfaces.Managers
         UserResponseList UserToListResponse(IEnumerable<UserEntity> me);
         UserEntity UserToDbItem(UserRequest me, UserEntity updating = null);
         UserResponse UserToListItem(UserEntity me);
-        SignatureResponse GetSignatureObject(int id);
-        string GetSignaturePath(int id);
-        SignatureResponse SignaturetoSignatureResponse(SignatureEntity data);
-
     }
 }

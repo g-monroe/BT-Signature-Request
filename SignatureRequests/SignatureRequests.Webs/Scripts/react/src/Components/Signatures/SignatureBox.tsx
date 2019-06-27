@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DrawCanvas from './DrawCanvas';
-import {manualInputTypes} from '../../Util/Enums/SelectTypes';
+import {manualInputTypeEnum, manualInputTypes, inputMethodEnum} from '../../Util/Enums/SelectTypes';
 import {inputMethods} from '../../Util/Enums/SelectTypes';
 import ButtonSelect from './ButtonSelect';
 import TypedSignature from './TypedSignature';
@@ -8,21 +8,21 @@ import { Button, message } from 'antd';
 import html2canvas from 'html2canvas';
 
 export interface ISignatureBoxProps {
-    signType?: String
+    signType?: manualInputTypeEnum
 }
  
 export interface ISignatureBoxState {
-    method: String,
-    type: String,
+    method: inputMethodEnum,
+    type: manualInputTypeEnum,
     canvasRef: any;
 }
  
 class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxState> {
 
     state :ISignatureBoxState = {
-        method: inputMethods[0],
-        type: this.props.signType || manualInputTypes[0],
-        canvasRef: undefined
+        method: inputMethodEnum.Draw,
+        type: this.props.signType || manualInputTypeEnum.Signature,
+        canvasRef: null
     }
 
     success = () =>{
@@ -30,17 +30,17 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     }
 
     manualInputTypeChanged = (e:string) =>{
+        const en : manualInputTypeEnum = (manualInputTypeEnum as any)[e];
         this.setState({
-            type:e
+            type:en
         })
-        console.log(e);
     }
 
     inputMethodChanged = (e:string)=>{
+        const en : inputMethodEnum = (inputMethodEnum as any)[e];
         this.setState({
-            method:e
+            method:en
         })
-        console.log(e);
     }
 
     setCanvasRef = (canvas:any) =>{
@@ -54,20 +54,15 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         if(can){
             can.clear();
         }
-        console.log("Cleared");
-        this.setState({
-
-        })
     }
 
     saveCanvas = () => {
         const can = this.state.canvasRef.current;
         let anchor;
-        if(true){
+        
             html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
-                        //file = new File([blob],"uploaded_signature.jpeg",{type: "image/jpeg", lastModified:Date.now() });
                         anchor = document.createElement('a');
                         anchor.download = "test.png";
                         anchor.href = (window.URL).createObjectURL(blob);
@@ -76,9 +71,9 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                     }
                 },"image/png");
             })
-        }
+        
         setTimeout(()=> {
-            this.success()
+            this.success() //Wait allows animation to play before success pops up
         }, 1000);
     }
 
@@ -95,7 +90,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                 } 
                 <div id = "ThingToSave">
                 {
-                this.state.method === inputMethods[0] ? 
+                this.state.method === inputMethodEnum.Draw ? 
                 <DrawCanvas type = {this.state.type} getCanvas = {this.setCanvasRef}></DrawCanvas> :
                 <TypedSignature></TypedSignature>
 
@@ -106,15 +101,13 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                     <ButtonSelect options = {inputMethods} onChange = {this.inputMethodChanged}></ButtonSelect>
                 </div>
                 {
-                    !!this.state.canvasRef ? 
+                    this.state.canvasRef ? 
                         <div id = 'EditCanvasButtons'>
-                            <Button onClick = {this.resetCanvas}>Reset {this.state.type}</Button>{" "}
+                            <Button onClick = {this.resetCanvas} style = {{marginLeft:'2px'}}>Reset {this.state.type}</Button>
                             <Button type = 'primary' onClick = {this.saveCanvas}>Save {this.state.type}</Button>
                         </div> :
                         <></>
                 }
-                
-                
             </div>
             </div>
          );

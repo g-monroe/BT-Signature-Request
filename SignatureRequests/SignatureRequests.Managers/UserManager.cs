@@ -139,20 +139,8 @@ namespace SignatureRequests.Managers
             return updating;
         }
 
-        public SignatureResponse GetSignatureObject(int id)
-        {
-            var signature = _userHandler.GetSignature(id);
-            return SignaturetoSignatureResponse(signature);
-            
-        }
 
-        public  string GetSignaturePath(int id)
-        {
-            var signature = _userHandler.GetSignature(id);
-            return SignaturetoSignatureResponse(signature).ImagePath;
-        }
-
-        public SignatureResponse SignaturetoSignatureResponse(SignatureEntity data)
+        private SignatureResponse SignaturetoSignatureResponse(SignatureEntity data)
         {
             var response = new SignatureResponse();
             if (data != null)

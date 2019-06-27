@@ -10,7 +10,7 @@ export interface IImageViewerState {
 }
  
 class ImageViewer extends React.Component<IImageViewerProps, IImageViewerState> {
-    state = {   }
+    
     render() { 
         return ( 
             <div id = 'imageView'>

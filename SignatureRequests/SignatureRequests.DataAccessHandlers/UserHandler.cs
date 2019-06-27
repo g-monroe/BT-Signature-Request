@@ -42,11 +42,5 @@ namespace SignatureRequests.DataAccessHandlers
             var user = GetUserProperty(id);
             return user.Name;
         }
-
-        public SignatureEntity GetSignature(int id)
-        {
-            var user = GetUserProperty(id);
-            return user.Signature;
-        }
     }
 }

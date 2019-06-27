@@ -34,21 +34,6 @@ namespace SignatureRequests.Controllers
             return users;
         }
 
-        [Route("api/User/GetSignature/{id}")]
-        [HttpGet]
-        public SignatureResponse GetUsersSignature([FromRoute]int id)
-        {
-            var users = _userManager.GetSignatureObject(id);
-            return users;
-        }
-
-        [Route("api/User/GetSignatureImage/{id}")]
-        [HttpGet]
-        public string GetUsersSignatureImage([FromRoute]int id)
-        {
-            var users = _userManager.GetSignaturePath(id);
-            return users;
-        }
 
         [Route("api/User/AddUser")]
         [HttpPost]

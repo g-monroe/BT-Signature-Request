@@ -2,11 +2,11 @@ import * as React from 'react';
 import {SignatureColors} from '../../Util/Enums/colors';
 import CanvasDraw from 'react-canvas-draw';
 import './DrawTest.css'
-import { manualInputTypes } from '../../Util/Enums/SelectTypes';
+import { manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
 
 export interface IDrawCanvasProps {
     color?:SignatureColors
-    type: String
+    type: manualInputTypeEnum
     getCanvas:(canvas:any) => void
     
 }
@@ -30,7 +30,7 @@ class DrawCanvas extends React.Component<IDrawCanvasProps, IDrawCanvasState> {
     
 
     determineWidth = () =>{
-        const width = (this.props.type === manualInputTypes[0]) ? //Equal to signature
+        const width = (this.props.type === manualInputTypeEnum.Signature) ? //Equal to signature
             '70vw' : '25vw';
         this.clearCanvas();
         return width
@@ -46,7 +46,7 @@ class DrawCanvas extends React.Component<IDrawCanvasProps, IDrawCanvasState> {
 
     render() { 
         return (
-            <div>
+            <>
                 <CanvasDraw
                     ref = {this.canvasRef}
                     lazyRadius = {2}
@@ -58,7 +58,7 @@ class DrawCanvas extends React.Component<IDrawCanvasProps, IDrawCanvasState> {
                     hideGrid = {true}
                     >
                 </CanvasDraw>
-            </div> 
+            </> 
          );
     }
     componentDidMount(){

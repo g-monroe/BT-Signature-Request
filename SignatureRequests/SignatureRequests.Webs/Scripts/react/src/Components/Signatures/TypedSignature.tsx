@@ -7,7 +7,7 @@ export interface ITypedSignatureProps {
 }
  
 export interface ITypedSignatureState {
-    text:String
+    text:string
     
 }
  
@@ -16,7 +16,7 @@ class TypedSignature extends React.Component<ITypedSignatureProps, ITypedSignatu
         text:"Sign Here"
      }
 
-    onChange = (str:String) =>{
+    onChange = (str:string) =>{
         this.setState({
             text:str
         })

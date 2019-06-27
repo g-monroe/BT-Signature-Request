@@ -14,5 +14,14 @@ export const inputTypes : string [] = [
 export const manualInputTypes : string [] = [
     'Signature',
     'Initial',
-
 ]
+
+export enum manualInputTypeEnum  {
+    'Signature' = "Signature",
+    'Initial' = "Initial",
+}
+
+export enum inputMethodEnum {
+    'Draw' = "Draw",
+    'Type' = "Type",
+}
