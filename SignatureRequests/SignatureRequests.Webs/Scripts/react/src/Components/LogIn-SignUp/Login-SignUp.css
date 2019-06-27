@@ -1,0 +1,23 @@
+
+
+
+#SignUpButtons {
+    margin-top: 1%;
+    height: 100%;
+    width:100%;
+    justify-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#SignUpContent{
+    height: 100%;
+    width:100%;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-between;
+}

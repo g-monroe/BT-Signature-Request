@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Layout } from 'antd';
 import ChooseUser from '../../Components/User/ChooseUser';
 import UserType from '../../Util/Enums/UserTypes';
+import Signup from '../../Components/LogIn-SignUp/SignUpPage';
 
 export interface ILoginProps {
     userSelected: (user: UserType) => void
@@ -19,13 +20,19 @@ class Login extends React.Component<ILoginProps, ILoginState> {
             <div>
                 <h1 id = 'HeaderText'>Choose User Type</h1>
                 <Layout>
-                    <ChooseUser changeUser = {this.props.userSelected}></ChooseUser>
-   
-                
+                    <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
+                    <Signup></Signup>
                 </Layout>
+             
             </div>
          );
     }
 }
  
 export default Login;
+
+//<Layout>
+   // <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
+
+
+//</Layout>

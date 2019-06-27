@@ -2,9 +2,6 @@ import * as React from 'react';
 import DashItem from '../../../Components/Dashboard/DashItem';
 import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
-import { IUserHandler, UserHandler } from '../../../Handlers/UserHandler';
-import UserEntity from '../../../Entities/UserEntity';
-import UserResponseList from '../../../Entities/UserResponseList';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
 
