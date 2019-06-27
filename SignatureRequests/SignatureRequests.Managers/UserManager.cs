@@ -138,27 +138,6 @@ namespace SignatureRequests.Managers
             updating.Role = me.Role;
             return updating;
         }
-
-
-        private SignatureResponse SignaturetoSignatureResponse(SignatureEntity data)
-        {
-            var response = new SignatureResponse();
-            if (data != null)
-            {
-                response.Id = data.Id;
-                response.ImagePath = data.ImagePath;
-                response.CertificatePath = data.CertificatePath;
-                response.CertificatePassword = data.CertificatePassword;
-                response.Location = data.Location;
-                response.Reason = data.Reason;
-                response.ContactInfo = data.ContactInfo;
-                response.IsInitial = data.isInitial;
-                response.User = data.User;
-                response.UserId = data.UserId;
-                response.ExpirationDate = data.ExpirationDate;
-            }
-            return response;
-        }
        
     }
 }
