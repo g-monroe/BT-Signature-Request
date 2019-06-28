@@ -15,9 +15,7 @@ class FormEntity {
     this.description = data.Description;
     this.createDate = data.CreateDate;
     this.user = data.User;
-    this.requests = data.RequestEntities;
-    this.requests.count = data.RequestEntities.TotalResults;
-    this.requests.collection = data.RequestEntities.RequestsList;
+    this.requests = new RequestResponseList(data.RequestEntities);
   }
 }
 

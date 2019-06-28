@@ -15,13 +15,11 @@ export interface IDashItemProps {
  
 export interface IDashItemState {
     checked:boolean;
-    isAdmin: boolean;
 }
 
 class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    state:IDashItemState = {
-     checked: false,
-     isAdmin: true
+     checked: false
    }
   
    handleMultiSelect = (e: any) =>{
@@ -47,6 +45,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (checked){
       iconCheck = faCheckSquare;
     }
+    console.log(formEntity);
     if (formEntity.requests.count === 0){
       const newTag = new TagItem(["No Requests found.", "#fff", "#000"])
       tags.push(newTag);
