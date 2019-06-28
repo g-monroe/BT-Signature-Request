@@ -4,7 +4,10 @@ import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
-
+import { Input, Select, Icon, Button } from 'antd';
+import Search from 'antd/lib/input/Search';
+import { format } from 'path';
+const { Option } = Select;
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
 }
@@ -12,6 +15,7 @@ export interface IDashboardProps {
 export interface IDashboardState {
     tableData?: FormEntity[];
     loading: boolean;
+    searchTerm: string;
 }
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -19,7 +23,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         formHandler: new FormHandler()
      };
      state: IDashboardState = {
-         loading: true
+         loading: true,
+         searchTerm: ""
      };
      async componentDidMount() {
        this.setState({
@@ -32,7 +37,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
        return forms.collection;
      }
      renderForms = () =>{
-         const {tableData, loading} = this.state;
+         const {tableData, loading, searchTerm} = this.state;
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
@@ -40,29 +45,54 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{
                 let displayedForms = tableData;
-                return displayedForms.map((comment, index) => (<DashItem key={index} formEntity={comment}/>));
+                if (searchTerm.length > 2 && !loading){
+                    let filteredForms = [];
+                    for(var i = 0; i<displayedForms.length; i++){
+                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
+                            filteredForms.push(displayedForms[i]);
+                        }
+                    }
+                     return filteredForms.map((form, index) => (
+                          <DashItem key={index} formEntity={form}/>
+                ));
+                }else{
+                    return displayedForms.map((form, index) => 
+                            (<DashItem key={index} formEntity={form}/>));
+                }
             }
         }
      }
+     save  = ( target:any ) => {
+        if (target.length > 2){
+            this.setState({
+                searchTerm: target.toLowerCase()
+            })
+        }else{
+            this.setState({
+                searchTerm: ""
+            })
+        }
+        
+     }
     render() { 
+        const selectBefore = (
+            <Select defaultValue="completed">
+              <Option value="completed">Completed</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="refused">Refused</Option>
+            </Select>
+          );
         return ( 
             <div className="Page">
                 <div className="overlay">
-                <img className="logo" src={'../../../Components/Dashboard/Logo2.png'} alt = "Logo"/>
+                <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")}/>
                 <div className="bar">
-                <div className="customs">
-                <select className="optionbar">
-                    <option>All</option>
-                    <option>Billing</option>
-                    <option>Order</option>
-                    <option>Business</option>
-                </select>
+                <div style={{ marginBottom: 16 }}>
+                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
+                    </div>
+               </div>
                 </div>
-                <input placeholder="Order Summary, Purchase, etc" className="searchbar" type="text"/>
-                <button style={{borderTopRightRadius: "8px", borderBottomRightRadius: "8px",borderTopLeftRadius: "0px",borderBottomLeftRadius: "0px", padding:"8.4px",boxShadow: "0 4px 6px -6px black"}}className="btn btn-info barbtn">Search</button>
-                </div>
-                </div>
-                <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "inline-block", textAlign:"center"}}className="page-items">
+                <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", textAlign:"center"}}className="page-items">
                     {
                        this.renderForms() 
                     }
