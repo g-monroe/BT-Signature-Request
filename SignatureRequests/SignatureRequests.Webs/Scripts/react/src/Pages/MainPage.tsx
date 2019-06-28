@@ -38,9 +38,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                     </Layout.Header>
                    <Layout.Content>
                         {
-                            ((this.state.user === UserType.UNKNOWN) ?
-                            <Login userSelected = {this.changeUser}></Login>
-                            :
+   
                                 <Switch>
                                 {
                                 ALL_ROUTES.map((route,i) => {
@@ -56,7 +54,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 })
                                 }
                                 </Switch> 
-                            )
+                            
                         }
                    </Layout.Content>
                 </Layout>

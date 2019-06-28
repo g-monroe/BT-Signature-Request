@@ -14,7 +14,6 @@ class SignUp extends React.Component<ISignUpProps, ISignUpState> {
     render() { 
         return ( 
             <Layout>
-                <h1 id = 'HeaderText'>Sign Up</h1>
                 <SignupPage></SignupPage>
             </Layout>
 
