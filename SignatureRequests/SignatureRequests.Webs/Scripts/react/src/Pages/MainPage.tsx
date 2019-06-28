@@ -32,7 +32,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     render() { 
         return ( 
             <Router >
-                <Layout>
+                <Layout style = {{height:'100%'}}>
                     <Layout.Header>
                         <Navigation userType = {this.state.user}></Navigation>
                     </Layout.Header>
