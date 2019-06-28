@@ -17,16 +17,16 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public FormEntity GetByFormId(int id)
         {
-            return _context.Forms.Where(x => x.Id == id).Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities)).First();
+            return _context.Forms.Where(x => x.Id == id).Include(form => form.User).Include(form => form.GroupEntities.Select(r => r.RequestEntities)).First();
         }
         public IEnumerable<FormEntity> GetAllByUserId(int id)
         {
-            return _context.Forms.Where(x =>x.UserId == id).Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
+            return _context.Forms.Where(x =>x.UserId == id).Include(form => form.User).Include(form => form.GroupEntities.Select(r => r.RequestEntities));
         }
 
         public IEnumerable<FormEntity> GetAllInclude()
         {
-            return _context.Forms.Include(form => form.User).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
+            return _context.Forms.Include(form => form.User).Include(form => form.GroupEntities.Select(r => r.RequestEntities));
 
         }
     }
