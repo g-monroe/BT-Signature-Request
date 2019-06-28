@@ -24,7 +24,7 @@ interface ICreateState {
     FilePath: string;
     Title: string;
     Description: string;
-    CreateDate?: string;
+    CreateDate?: Date;
     UserId?: number;
     
 }
@@ -197,7 +197,7 @@ export const CreateForm = withFormik<
     FilePath: "",
     Title:  "",
     Description:  "",
-    CreateDate:  new Date().toLocaleString(),
+    CreateDate:  new Date(),
     UserId:  props.currentUser!.id
   }),
   validationSchema: yupValidation,
