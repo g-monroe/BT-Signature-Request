@@ -21,6 +21,7 @@ export class UserHandler implements IUserHandler {
 
     async createUser(newUser:UserRequest) : Promise<UserEntity> {
         const user = await APIHandler(`api/User/AddUser`, {
+            headers: {"Content-Type" : "application/json"},
             method: "POST",
             responseType: UserEntity,
             data:newUser
