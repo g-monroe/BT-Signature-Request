@@ -6,7 +6,6 @@ import SignatureBox from '../../../Components/Signatures/SignatureBox';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import ImageViewModal from '../../../Components/Signatures/ImageViewModal';
 import {HowToSign} from '../../../Util/Text';
-import { Button } from 'antd/lib/radio';
 import { TypesOfBoxes } from '../../../Util/Enums/SignatureDropDown';
 
 export interface IAddSignatuesProps {
@@ -28,7 +27,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                         View your:
                             <div id = "ViewSigButtons">
                                 <ImageViewModal title = "Your Signature" button = "Signature" content = {
-                                        <img src = {"../../../FakeMaterials/testMadison.jpeg"}></img>
+                                        <img src = {"../../../FakeMaterials/testMadison.jpeg"} alt = "Signature"></img>
                                 }></ImageViewModal>
                                 <ImageViewModal title = "Your Initials" button = "Initials"></ImageViewModal>
                             </div>

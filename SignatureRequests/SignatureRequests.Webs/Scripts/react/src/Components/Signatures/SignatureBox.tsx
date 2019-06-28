@@ -56,7 +56,6 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     }
 
     saveCanvas = () => {
-        const can = this.state.canvasRef.current;
         let anchor;
         
             html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
