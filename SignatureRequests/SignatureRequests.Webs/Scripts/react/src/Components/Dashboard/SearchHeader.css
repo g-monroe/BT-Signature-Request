@@ -27,6 +27,8 @@ h3{
 .logo{
     height:50px;
     padding-bottom:0.45em;
+    -webkit-filter: drop-shadow(2px 2px 2px #000);
+    filter: drop-shadow(2px 2px 2px #000);
 }
 .optionbar{
     border-top-left-radius: 8px;

@@ -9,6 +9,7 @@ import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
 import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
+import BoxResponseList from "../../Entities/BoxResponseList";
 const { Option } = Select;
 const columns = [
     {
@@ -106,7 +107,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   onSend = async () => {
     for(let i=0; i<this.state.selectedForms!.length; i++){
       for(let j=0; j<this.state.selectedUsers!.length; j++){ 
-        let request: RequestRequest = {signerId: this.state.selectedUsers![j], requestorId: this.props.currentUser!.id, formId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id, status: FormProgress.PENDING, sentDate: new Date() };
+        let request: RequestRequest = {signerId: this.state.selectedUsers![j], requestorId: this.props.currentUser!.id, formId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id, status: FormProgress.PENDING, sentDate: new Date(), boxes: new BoxResponseList({}) };
         this.props.requestHandler!.createRequest(request);
       }
     }

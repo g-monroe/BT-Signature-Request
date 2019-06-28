@@ -77,9 +77,9 @@ export const SIGNER = {
     },
 
     "_AddSignature":{
-        path: "/response/add",
-        link:"/response/add",
-        breadcrumbName:"Create Signature",
+        path: "/response/signatures",
+        link:"/response/signatures",
+        breadcrumbName:"View Signature",
         component:Pages.AddSignatures,
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)

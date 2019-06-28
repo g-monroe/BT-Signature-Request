@@ -182,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Enums\InitializeCertifcation.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />

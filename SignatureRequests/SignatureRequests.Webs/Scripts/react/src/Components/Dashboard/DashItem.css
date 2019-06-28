@@ -7,6 +7,19 @@
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
 }
+.ant-tabs-nav .ant-tabs-tab {
+  padding:0px;
+}
+.ant-tabs{
+  width:90%;
+  float:left;
+}
+
+.ant-progress{
+  width:10%;
+  margin-top:25px;
+  float:left;
+}
 .activity-block{
     width: 100%;
     display: block;
