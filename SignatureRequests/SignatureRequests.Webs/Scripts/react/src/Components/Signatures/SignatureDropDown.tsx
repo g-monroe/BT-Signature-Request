@@ -2,7 +2,7 @@ import * as React from 'react';
 import { TypesOfBoxes, DropDownState } from '../../Util/Enums/SignatureDropDown';
 import { Menu, Dropdown, Icon, DatePicker, Button, Modal } from 'antd';
 import SignatureBox from './SignatureBox';
-import { manualInputTypes, manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
+import {manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
 
 export interface ISignatureDropDownProps {
     type:TypesOfBoxes  

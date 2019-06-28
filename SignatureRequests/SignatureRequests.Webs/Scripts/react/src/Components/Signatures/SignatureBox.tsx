@@ -1,7 +1,6 @@
 import * as React from 'react';
 import DrawCanvas from './DrawCanvas';
-import {manualInputTypeEnum, manualInputTypes, inputMethodEnum} from '../../Util/Enums/SelectTypes';
-import {inputMethods} from '../../Util/Enums/SelectTypes';
+import {manualInputTypeEnum, inputMethodEnum} from '../../Util/Enums/SelectTypes';
 import ButtonSelect from './ButtonSelect';
 import TypedSignature from './TypedSignature';
 import { Button, message } from 'antd';
@@ -85,7 +84,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                     this.props.signType ? 
                     <></>:
                     <div id = "SignatureHeader">
-                        <ButtonSelect options = {manualInputTypes} onChange = {this.manualInputTypeChanged}></ButtonSelect>
+                        <ButtonSelect options = {manualInputTypeEnum} onChange = {this.manualInputTypeChanged}></ButtonSelect>
                     </div>
                 } 
                 <div id = "ThingToSave">
@@ -98,7 +97,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                 </div>
                 
                 <div id = "SignatureFooter">
-                    <ButtonSelect options = {inputMethods} onChange = {this.inputMethodChanged}></ButtonSelect>
+                    <ButtonSelect options = {inputMethodEnum} onChange = {this.inputMethodChanged}></ButtonSelect>
                 </div>
                 {
                     this.state.canvasRef ? 
