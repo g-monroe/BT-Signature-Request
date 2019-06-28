@@ -45,7 +45,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (checked){
       iconCheck = faCheckSquare;
     }
-    console.log(formEntity);
     if (formEntity.requests.count === 0){
     const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);

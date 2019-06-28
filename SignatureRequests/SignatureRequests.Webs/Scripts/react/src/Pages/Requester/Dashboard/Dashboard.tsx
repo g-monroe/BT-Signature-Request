@@ -47,7 +47,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 let displayedForms = tableData;
                 if (searchTerm.length > 2 && !loading){
                     let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length-1; i++){
+                    for(var i = 0; i<displayedForms.length; i++){
                         if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
                             filteredForms.push(displayedForms[i]);
                         }
