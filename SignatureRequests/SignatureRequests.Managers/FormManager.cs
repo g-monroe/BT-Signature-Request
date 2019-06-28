@@ -25,17 +25,17 @@ namespace SignatureRequests.Managers
         public FormResponseList GetForms()
         {
             var forms = _formHandler.GetAllInclude();
-            return FormToListResponse(forms);
+            return FormsToListResponse(forms);
         }
-        public FormResponseList GetFormsById(int id)
+        public FormResponseList GetFormById(int id)
         {
-            var forms = _formHandler.GetAllById(id);
-            return FormToListResponse(forms);
+            var form = _formHandler.GetByFormId(id);
+            return FormToListResponse(form);
         }
         public FormResponseList GetFormsByUserId(int id)
         {
             var forms = _formHandler.GetAllByUserId(id);
-            return FormToListResponse(forms);
+            return FormsToListResponse(forms);
         }
         public FormEntity GetForm(int id)
         {
@@ -76,7 +76,7 @@ namespace SignatureRequests.Managers
             _formHandler.Delete(form);
             _formHandler.SaveChanges();
         }
-        public FormResponseList FormToListResponse(IEnumerable<FormEntity> forms)
+        public FormResponseList FormsToListResponse(IEnumerable<FormEntity> forms)
         {
             var resp = new FormResponseList
             {
@@ -88,6 +88,18 @@ namespace SignatureRequests.Managers
             {
                 resp.FormsList.Add(FormToListItem(form));
             }
+            return resp;
+        }
+        public FormResponseList FormToListResponse(FormEntity form)
+        {
+            var resp = new FormResponseList
+            {
+                TotalResults = 1,
+                FormsList = new List<FormResponse>()
+            };
+            
+            resp.FormsList.Add(FormToListItem(form));
+            
             return resp;
         }
         public FormResponse AddForm(FormRequest form, FormEntity updating = null)

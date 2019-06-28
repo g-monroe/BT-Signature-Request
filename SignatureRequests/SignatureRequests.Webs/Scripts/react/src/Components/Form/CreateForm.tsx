@@ -84,11 +84,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       );
     }
   };
-
-  onDocumentLoadSuccess = (numPages: any) => {
-    this.setState({ numPages: numPages });
-  };
-
   
   render() {
     
@@ -127,7 +122,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       },
 
       fileInput
-      
+
     };
     
       return (

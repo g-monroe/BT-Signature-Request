@@ -102,6 +102,10 @@ namespace SignatureRequests.Managers
                 TotalResults = 0,
                 BoxesList = new List<BoxResponse>()
             };
+            if (request.BoxEntities == null)
+            {
+                request.BoxEntities = new List<BoxEntity>();
+            }
             foreach (BoxEntity box in request.BoxEntities)
             {
                 var item = new BoxResponse()

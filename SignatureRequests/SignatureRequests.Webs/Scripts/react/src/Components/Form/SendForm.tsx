@@ -54,7 +54,6 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   };
   state: ISendFormState = {};
   async componentDidMount() {
-    console.log(this.props.currentUser!.id);
     this.setState({
         forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id)),
         tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id))), //change to current user
@@ -112,7 +111,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     }
   }
 
-  onSelectChange = async (selectedForms: any[]) => {
+  onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
   }
 
@@ -120,13 +119,10 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     if (!this.state.users) {
       return <div>Loading...</div>;
     }else{
-      let selectedForms: any[] = this.state.selectedForms!;
       const rowSelection = {
-        selectedRowKeys: selectedForms,
+        selectedRowKeys: this.state.selectedForms!,
         onChange : this.onSelectChange
       };
-      
-      
       
       return (
         <>

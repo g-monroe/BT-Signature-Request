@@ -14,9 +14,7 @@ function checkApiForErrors(response: Response) {
 
   // verify the response is in json
   const contentType = response.headers.get("content-type");
-  // if (contentType && contentType.indexOf("application/json") === -1) {
-  //   throw Error(response as any);
-  // }
+  
 
   return response.json();
 }
@@ -45,9 +43,6 @@ export async function APIHandler<T>(
   const requestOptions: RequestInit = {
     method: props.method,
     credentials: "same-origin",
-    // headers: {
-    //   "Content-Type": "application/json"
-    // }
     headers: props.headers,
     
   };

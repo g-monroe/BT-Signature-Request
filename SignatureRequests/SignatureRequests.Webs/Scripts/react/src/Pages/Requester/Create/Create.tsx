@@ -37,18 +37,6 @@ class Create extends React.Component<ICreateProps, ICreateState> {
         })
      };
 
-    async componentDidMount() {
-        this.setState({
-            form: new FormRequest({
-                filePath: "",
-                title: "",
-                description: "",
-                createDate: "",
-                userId: 1
-            })
-        })
-    };
-
     handleSave = async (data: any) : Promise<void> => {
         let request= new FormRequest({
             FilePath: data.FilePath,
