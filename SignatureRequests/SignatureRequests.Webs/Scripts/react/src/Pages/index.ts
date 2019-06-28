@@ -9,6 +9,6 @@ import SignDocument from './Signer/SignDocument/SignDocument';
 import Error from './Error/Error'
 
 
-export {Login, Create, DashBoard, Send, View, AddSignatures, SignDocument, Error, SignUp}
+export {Login, SignUp, Create, DashBoard, Send, View, AddSignatures, SignDocument, Error}
 
 
