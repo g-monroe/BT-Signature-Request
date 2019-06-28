@@ -76,9 +76,10 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
     render() { 
         const selectBefore = (
-            <Select defaultValue="Http://">
-              <Option value="Http://">Http://</Option>
-              <Option value="Https://">Https://</Option>
+            <Select defaultValue="completed">
+              <Option value="completed">Completed</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="refused">Refused</Option>
             </Select>
           );
         return ( 
