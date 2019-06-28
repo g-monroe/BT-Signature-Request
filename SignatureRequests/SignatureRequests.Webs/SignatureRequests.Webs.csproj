@@ -269,6 +269,7 @@
     <Content Include="Scripts\react\src\Components\Dashboard\Logo2.png" />
     <Content Include="Scripts\react\src\Components\Dashboard\placeholder.jpg" />
     <Content Include="Scripts\react\src\Components\Dashboard\SearchHeader.css" />
+    <Content Include="Scripts\react\src\Components\LogIn-SignUp\Login-SignUp.css" />
     <Content Include="Scripts\react\src\Components\Signatures\DrawTest.css" />
     <Content Include="Scripts\react\src\Components\User\ChooseUser.css" />
     <Content Include="Scripts\react\dist\bundle.js" />
@@ -306,6 +307,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\react\src\Components\Dashboard\DashItem.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Form\SendForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\LoginForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpPage.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\ButtonSelect.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\DrawCanvas.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\imageViewModal.tsx" />
