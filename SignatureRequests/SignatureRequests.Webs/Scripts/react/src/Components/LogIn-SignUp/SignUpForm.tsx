@@ -40,11 +40,11 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
 
     getValidateStatus = (Value:any)=>{
         return !! Value ?  'error' : 'success'
-      }
+    }
       
       public clearForm = () =>{
         this.props.resetForm();
-      }
+    }
 
     render() { 
 
@@ -57,7 +57,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     >
                     <Input autoFocus
                         name = "userName"
-                        prefix = {<Icon type = "user" style = {{color:'#b1b4b5'}}/>}
+                        prefix = {<Icon type = "user" className = "loginFormIcons"/>}
                         placeholder = "Username"
                         defaultValue = {this.state.userName} 
                         value = {values.userName} 
@@ -71,7 +71,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     >
                     <Input 
                         name = "email"
-                        prefix = {<Icon type = "mail" style = {{color:'#b1b4b5'}}/>}
+                        prefix = {<Icon type = "mail" className = "loginFormIcons"/>}
                         placeholder = "Email"
                         defaultValue = {this.state.email} 
                         value = {values.email} 
@@ -84,7 +84,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     >
                     <Input 
                         name = "role"
-                        prefix = {<Icon type = "appstore" style = {{color:'#b1b4b5'}}/>}
+                        prefix = {<Icon type = "appstore" className = "loginFormIcons"/>}
                         placeholder = "Role"
                         defaultValue = {this.state.role} 
                         value = {values.role} 
@@ -95,28 +95,28 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                 <Form.Item required hasFeedback help = {errors.passwordOne}
                     validateStatus = {this.getValidateStatus(touched.passwordOne && errors.passwordOne)}
                     >
-                    <Input 
+                    <Input.Password 
                         name = "passwordOne"
-                        prefix = {<Icon type = "lock" style = {{color:'#b1b4b5'}}/>}
+                        prefix = {<Icon type = "lock" className = "loginFormIcons"/>}
                         placeholder = "Password"
                         defaultValue = {this.state.passwordOne} 
                         value = {values.passwordOne} 
                         onChange = {handleChange}
                         >
-                    </Input>
+                    </Input.Password>
                 </Form.Item>
                 <Form.Item required hasFeedback help = {errors.passwordTwo}
                     validateStatus = {this.getValidateStatus(touched.passwordTwo && errors.passwordTwo)}
                     >
-                    <Input 
+                    <Input.Password
                         name = "passwordTwo"
-                        prefix = {<Icon type = "lock" style = {{color:'#b1b4b5'}}/>}
+                        prefix = {<Icon type = "lock" className = "loginFormIcons"/>}
                         placeholder = "Password"
                         defaultValue = {this.state.passwordTwo} 
                         value = {values.passwordTwo} 
                         onChange = {handleChange}
                         >
-                    </Input>
+                    </Input.Password>
                 </Form.Item>
                 <Form.Item>
                     <div id = "SignUpButtons">
@@ -146,9 +146,9 @@ const Signup = withFormik<ISignUpFormProps, ISignUpFormState>({
             Name: values.userName,
             Email: values.email,
             Password: values.passwordOne,
-        }));
-        console.log("submitted");
-        setTimeout(()=> setSubmitting(false),1000)
+        })).then(()=>
+            setSubmitting(false)
+        );
     }
 })(SignUpForm);
 
