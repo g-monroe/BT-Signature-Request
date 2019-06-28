@@ -117,52 +117,60 @@ namespace SignatureRequests.Managers
         }
         private FormResponse FormToListItem(FormEntity form)
         {
-            var resp = new RequestResponseList
+            var resp = new GroupResponseList
             {
-                TotalResults = form.RequestEntities.Count(),
-                RequestsList = new List<RequestResponse>()
+                TotalResults = form.GroupEntities.Count(),
+                GorupsList = new List<GroupResponse>()
             };
-            if (form.RequestEntities == null)
+            if (form.GroupEntities == null)
             {
-                form.RequestEntities = new List<RequestEntity>();
+                form.GroupEntities = new List<GroupEntity>();
             }
-            foreach (RequestEntity request in form.RequestEntities)
+            foreach (GroupEntity group in form.GroupEntities)
             {
-                var respBoxes = new BoxResponseList
+                var respRequest = new RequestResponseList
                 {
-                    TotalResults = request.BoxEntities.Count(),
-                    BoxesList = new List<BoxResponse>()
+                    TotalResults = group.RequestEntities.Count(),
+                    RequestsList = new List<RequestResponse>()
                 };
-                foreach (BoxEntity box in request.BoxEntities)
+                foreach (RequestEntity request in group.RequestEntities)
                 {
-                    var item = new BoxResponse()
+                    var respBoxes = new BoxResponseList
                     {
-                        Id = box.Id,
-                        X = box.X,
-                        Y = box.Y,
-                        Width = box.Width,
-                        Length = box.Length,
-                        Type = box.Type,
-                        SignerType = box.SignerType,
-                        SignedStatus = box.SignedStatus,
-                        RequestId = box.RequestId,
-                        Signature = box.Signature,
-                        SignatureId = box.SignatureId,
+                        TotalResults = request.BoxEntities.Count(),
+                        BoxesList = new List<BoxResponse>()
                     };
-                    respBoxes.BoxesList.Add(item);
+                    foreach (BoxEntity box in request.BoxEntities)
+                    {
+                        var item = new BoxResponse()
+                        {
+                            Id = box.Id,
+                            X = box.X,
+                            Y = box.Y,
+                            Width = box.Width,
+                            Length = box.Length,
+                            Type = box.Type,
+                            SignerType = box.SignerType,
+                            SignedStatus = box.SignedStatus,
+                            RequestId = box.RequestId,
+                            Signature = box.Signature,
+                            SignatureId = box.SignatureId,
+                        };
+                        respBoxes.BoxesList.Add(item);
+                    }
+                    respRequest.RequestsList.Add(new RequestResponse()
+                    {
+                        Id = request.Id,
+                        Signer = request.Signer,
+                        SignerId = request.SignerId,
+                        Requestor = request.Requestor,
+                        RequestorId = request.RequestorId,
+                        FormId = request.FormId,
+                        Status = request.Status,
+                        SentDate = request.SentDate,
+                        Boxes = respBoxes
+                    });
                 }
-                resp.RequestsList.Add(new RequestResponse()
-                {
-                    Id = request.Id,
-                    Signer = request.Signer,
-                    SignerId = request.SignerId,
-                    Requestor = request.Requestor,
-                    RequestorId = request.RequestorId,
-                    FormId = request.FormId,
-                    Status = request.Status,
-                    SentDate = request.SentDate,
-                    Boxes = respBoxes
-                });
             }
              return new FormResponse()
             {
@@ -173,7 +181,7 @@ namespace SignatureRequests.Managers
                 Title = form.Title,
                 User = form.User,
                 UserId = form.UserId,
-                RequestEntities = resp
+                GroupEntities = resp
             };
         }
         private FormEntity RequestToEntity(FormRequest form, FormEntity updating)

@@ -212,6 +212,10 @@
     <Compile Include="Migrations\201906281406528_db.Designer.cs">
       <DependentUpon>201906281406528_db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906281953374_db1.cs" />
+    <Compile Include="Migrations\201906281953374_db1.Designer.cs">
+      <DependentUpon>201906281953374_db1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SignatureJSON.cs" />
     <Compile Include="Models\UserJSON.cs" />
@@ -246,6 +250,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201906281406528_db.resx">
       <DependentUpon>201906281406528_db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906281953374_db1.resx">
+      <DependentUpon>201906281953374_db1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
