@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
 import FormEntity from '../../Entities/FormEntity';
 import TagItem from './TagItem';
-import { Tabs, Progress, Tag } from 'antd';
+import { Tabs, Progress } from 'antd';
 import '../../../node_modules/antd/dist/antd.css';
 const TabPane = Tabs.TabPane;
 
@@ -30,8 +30,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    renderTags = (e:TagItem[]) =>{
     return e.map((tag, index) =>
       (<li key={index}>
-        <span style={{color:tag.data[1], backgroundColor:tag.data[2]}} className="badge badge-success ml">
-          {tag.data[0]}
+        <span style={{color:tag.color, backgroundColor:tag.backgroundColor}} className="badge badge-success ml">
+          {tag.text}
         </span>
       </li>)
     );
@@ -45,13 +45,12 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (checked){
       iconCheck = faCheckSquare;
     }
-    console.log(formEntity);
     if (formEntity.requests.count === 0){
-      const newTag = new TagItem(["No Requests found.", "#fff", "#000"])
+    const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
     }else{
-      formEntity.requests.collection.map((request, index) => {
-        const newTag = new TagItem([request.status, "#fff", "#000"]);
+      formEntity.requests.collection.map((request) => {
+        const newTag = new TagItem("#000", "#fff", request.status);
         tags.push(newTag);
       })
     }

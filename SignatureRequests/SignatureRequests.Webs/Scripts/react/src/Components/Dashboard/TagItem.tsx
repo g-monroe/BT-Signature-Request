@@ -1,6 +1,10 @@
 export default class TagItem{
-    data:string[];
-    constructor(data:string[]){
-      this.data = data;
+    color:string;
+    backgroundColor:string;
+    text:string;
+    constructor(color:string, backgroundColor:string, text:string){
+      this.color = color;
+      this.backgroundColor = backgroundColor;
+      this.text = text;
     }
   }

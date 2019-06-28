@@ -13,14 +13,14 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IFormManager
     {
         FormResponseList GetForms();
-        FormResponseList GetFormsById(int id);
+        FormResponseList GetFormById(int id);
         FormResponseList GetFormsByUserId(int id);
         Task SaveDocumentAsync(MultipartMemoryStreamProvider provider);
         FormEntity GetForm(int id);
         FormEntity CreateFormEntity(FormEntity newForm);
         FormEntity UpdateForm(FormEntity form, FormEntity newForm);
         void Delete(int id);
-        FormResponseList FormToListResponse(IEnumerable<FormEntity> forms);
+        FormResponseList FormsToListResponse(IEnumerable<FormEntity> forms);
         FormResponse EditForm(int id, FormRequest form, FormEntity updating = null);
         FormResponse AddForm(FormRequest form, FormEntity updating = null);
     }

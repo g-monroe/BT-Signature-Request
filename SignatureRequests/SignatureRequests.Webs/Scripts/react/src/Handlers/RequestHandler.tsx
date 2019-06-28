@@ -9,6 +9,7 @@ export interface IRequestHandler {
 export class RequestHandler implements IRequestHandler {
     async createRequest(entity: RequestRequest) : Promise<RequestEntity> {
         return await APIHandler(`/api/Request/AddRequest`, {
+            headers: {"Content-Type" : "application/json"},
             method: "POST",
             data: entity,
             responseType: RequestEntity

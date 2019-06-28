@@ -269,11 +269,15 @@
     <Content Include="Scripts\react\src\Components\Dashboard\Logo2.png" />
     <Content Include="Scripts\react\src\Components\Dashboard\placeholder.jpg" />
     <Content Include="Scripts\react\src\Components\Dashboard\SearchHeader.css" />
+    <Content Include="Scripts\react\src\Components\LogIn-SignUp\Login-SignUp.css" />
+    <Content Include="Scripts\react\src\Components\Signatures\DrawTest.css" />
     <Content Include="Scripts\react\src\Components\User\ChooseUser.css" />
     <Content Include="Scripts\react\dist\bundle.js" />
     <Content Include="Scripts\react\scripts\build.js" />
     <Content Include="Scripts\react\scripts\start.js" />
     <Content Include="Scripts\react\scripts\test.js" />
+    <Content Include="Scripts\react\src\FakeMaterials\testMadison.jpeg" />
+    <Content Include="Scripts\react\src\Pages\Signer\AddSignatures\AddSignatures.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -303,7 +307,38 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\react\src\Components\Dashboard\DashItem.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Form\SendForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\LoginForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpForm.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpPage.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\ButtonSelect.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\DrawCanvas.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\imageViewModal.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignatureBox.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignatureDropDown.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignaturePage.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\TypedSignature.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\User\ChooseUser.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\BoxEntity.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\BoxRequest.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\BoxResponseList.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\FormEntity.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\FormRequest.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\FormResponseList.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\RequestEntity.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\RequestRequest.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\RequestResponseList.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\SignatureEntity.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\SignatureRequest.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\SignatureResponseList.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\UserEntity.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\UserRequest.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Entities\UserResponseList.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\apiHandler.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\BoxHandler.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\FormHandler.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\RequestHandler.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\SignatureHandler.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Handlers\UserHandler.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Error\Error.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\index.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\login\Login.tsx" />
@@ -318,6 +353,10 @@
     <TypeScriptCompile Include="Scripts\react\src\Pages\Signer\Dashboard\SignerDashboad.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Signer\SignDocument\SignDocument.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\index.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Util\Enums\colors.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Util\Enums\declaration.d.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Util\Enums\SelectTypes.ts" />
+    <TypeScriptCompile Include="Scripts\react\src\Util\Enums\SignatureDropDown.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Util\Enums\UserTypes.ts" />
   </ItemGroup>
   <ItemGroup>

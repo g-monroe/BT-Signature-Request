@@ -9,6 +9,7 @@ export interface ISignatureHandler {
 export class SignatureHandler implements ISignatureHandler {
     async createSignature(entity: SignatureRequest) : Promise<SignatureEntity> {
         return await APIHandler(`/api/Signature/AddSignature`, {
+            headers: {"Content-Type" : "application/json"},
             method: "POST",
             data: entity,
             responseType: SignatureEntity
