@@ -16,7 +16,7 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
         public System.Data.Entity.DbSet<SignatureEntity> Signatures { get; set; }
         public System.Data.Entity.DbSet<RequestEntity> Requests { get; set; }
         public System.Data.Entity.DbSet<BoxEntity> Boxes { get; set; }
-
+        public System.Data.Entity.DbSet<GroupEntity> Groups { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
@@ -27,6 +27,11 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
 
             modelBuilder.Entity<RequestEntity>()
             .HasRequired<UserEntity>(b => b.Requestor)
+            .WithMany()
+            .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<GroupEntity>()
+            .HasRequired<FormEntity>(b => b.FormEntity)
             .WithMany()
             .WillCascadeOnDelete(false);
 

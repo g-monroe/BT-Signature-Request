@@ -7,6 +7,7 @@ import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
 import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
+import BoxResponseList from "../../Entities/BoxResponseList";
 const { Option } = Select;
 const columns = [
     {
@@ -97,7 +98,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
 
   onSend = async () => {
     this.state.selectedUsers!.map(x => {
-      let request: RequestRequest = {signerId: x, requestorId: 1, formId: 1, status: "Waiting", sentDate: new Date() };
+      let request: RequestRequest = {signerId: x, requestorId: 1, formId: 1, status: "Waiting", sentDate: new Date(), boxes: new BoxResponseList({}) };
       this.props.requestHandler!.createRequest(request); 
     
     }) //change to current user, change to selected form

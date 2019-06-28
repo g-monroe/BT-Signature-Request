@@ -36,7 +36,7 @@ namespace SignatureRequests.Managers
 
         public string GetEmail(int id)
         {
-            UserResponse result =  GetUser(id);
+            UserResponse result = GetUser(id);
             if (result == null)
             {
                 return "";
@@ -71,7 +71,7 @@ namespace SignatureRequests.Managers
         }
         public UserResponseList GetAllInclude()
         {
-            var result =  _userHandler.GetAllInclude();
+            var result = _userHandler.GetAllInclude();
             var resp = UserToListResponse(result);
             return resp;
         }
@@ -99,8 +99,8 @@ namespace SignatureRequests.Managers
                 TotalResults = me.Count(),
                 UsersList = new List<UserResponse>()
             };
-            
-            foreach(UserEntity user in me)
+
+            foreach (UserEntity user in me)
             {
                 resp.UsersList.Add(UserToListItem(user));
             }
@@ -138,5 +138,6 @@ namespace SignatureRequests.Managers
             updating.Role = me.Role;
             return updating;
         }
+       
     }
 }
