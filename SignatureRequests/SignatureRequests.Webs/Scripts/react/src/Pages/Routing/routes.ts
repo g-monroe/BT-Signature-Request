@@ -13,6 +13,14 @@ export const COMMON = {
         hasNavBar:true,
         condition:(User: UserType | null) => true
     },
+    "_Signup":{
+        path: "/signup",
+        link:"/signup",
+        breadcrumbName:"Signup",
+        component:Pages.SignUp,
+        hasNavBar:true,
+        condition:(User: UserType | null) => true
+    },
 
     "_Error":{
         path: "/error",
@@ -33,7 +41,7 @@ export const REQUESTER = {
         breadcrumbName:"Dashboard",
         component:Pages.DashBoard,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     },
    
     "_Create":{
@@ -42,7 +50,7 @@ export const REQUESTER = {
         breadcrumbName:"Create a From",
         component:Pages.Create,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     },
 
     "_Send":{
@@ -51,7 +59,7 @@ export const REQUESTER = {
         breadcrumbName:"Send Forms",
         component:Pages.Send,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     },
 
     "_View":{
@@ -60,21 +68,13 @@ export const REQUESTER = {
         breadcrumbName:"View your Forms",
         component:Pages.View,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SENDER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     }
 }
 
 //===================Signer Routes===================
 
 export const SIGNER = {
-    "_Dashboard":{
-        path: "/response/dashboard",
-        link:"/response/dashboard",
-        breadcrumbName:"Dashboard",
-        component:Pages.SignerDashboard,
-        hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)
-    },
 
     "_AddSignature":{
         path: "/response/add",
@@ -82,7 +82,7 @@ export const SIGNER = {
         breadcrumbName:"Create Signature",
         component:Pages.AddSignatures,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     },
 
     "_SignDocument":{
@@ -91,12 +91,13 @@ export const SIGNER = {
         breadcrumbName:"Sign Active Documents",
         component:Pages.SignDocument,
         hasNavBar:true,
-        condition:(User: UserType | null) => !!User && !!(User === UserType.SIGNER)
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     },
 }
 
-export const LoggedOut = [COMMON._Login,COMMON._Error]
+export const LoggedOut = [COMMON._Login,COMMON._Signup,COMMON._Error]
 export const Request = [REQUESTER._Create,REQUESTER._Dashboard,REQUESTER._Send,REQUESTER._View]
-export const Response = [SIGNER._AddSignature,SIGNER._Dashboard,SIGNER._SignDocument]
+export const Response = [SIGNER._AddSignature,SIGNER._SignDocument]
+export const Registered = [REQUESTER._Dashboard,REQUESTER._Create,REQUESTER._View,REQUESTER._Send,SIGNER._AddSignature,SIGNER._SignDocument]
 export const All = [REQUESTER._Create,REQUESTER._Dashboard,REQUESTER._Send,REQUESTER._View,
-    SIGNER._AddSignature,SIGNER._Dashboard,SIGNER._SignDocument,COMMON._Login,COMMON._Error]
+    SIGNER._AddSignature,SIGNER._SignDocument,COMMON._Login,COMMON._Signup,COMMON._Error]

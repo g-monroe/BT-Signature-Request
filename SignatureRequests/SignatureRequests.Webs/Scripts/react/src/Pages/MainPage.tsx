@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from 'antd';
-
 import * as routes from './Routing/routes';
 import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
@@ -16,6 +15,7 @@ export interface MainPageState {
     user: UserType
 }
 const ALL_ROUTES = routes.All;
+
 class MainPage extends React.Component<MainPageProps, MainPageState> {
     state : MainPageState= { 
         user: UserType.UNKNOWN

@@ -31,13 +31,9 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
                 currRoutes = routes.LoggedOut;
                 userHome = routes.COMMON._Login;
                 break;
-            case UserType.SENDER:
-                currRoutes = routes.Request;
+            case UserType.REGISTERED:
+                currRoutes = routes.Registered;
                 userHome = routes.REQUESTER._Dashboard;
-                break;
-            case UserType.SIGNER:
-                currRoutes = routes.Response;
-                userHome = routes.SIGNER._Dashboard;
                 break;
         }
 

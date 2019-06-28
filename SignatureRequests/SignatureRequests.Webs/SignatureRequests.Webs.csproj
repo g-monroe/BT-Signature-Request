@@ -307,6 +307,7 @@
     <TypeScriptCompile Include="Scripts\react\src\Pages\Error\Error.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\index.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\login\Login.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Pages\login\SignUp.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\MainPage.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Navigation.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Create\Create.tsx" />
