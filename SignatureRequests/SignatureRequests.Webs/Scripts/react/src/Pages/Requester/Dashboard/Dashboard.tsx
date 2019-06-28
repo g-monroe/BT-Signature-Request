@@ -4,9 +4,8 @@ import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
-import { Input, Select, Icon, Button } from 'antd';
+import {Select} from 'antd';
 import Search from 'antd/lib/input/Search';
-import { format } from 'path';
 const { Option } = Select;
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
@@ -85,7 +84,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         return ( 
             <div className="Page">
                 <div className="overlay">
-                <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")}/>
+                <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">
                 <div style={{ marginBottom: 16 }}>
                     <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />

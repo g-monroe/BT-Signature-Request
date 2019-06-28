@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
 import FormEntity from '../../Entities/FormEntity';
 import TagItem from './TagItem';
-import { Tabs, Progress, Tag } from 'antd';
+import { Tabs, Progress } from 'antd';
 import '../../../node_modules/antd/dist/antd.css';
 const TabPane = Tabs.TabPane;
 
@@ -49,7 +49,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
     }else{
-      formEntity.requests.collection.map((request, index) => {
+      formEntity.requests.collection.map((request) => {
         const newTag = new TagItem("#000", "#fff", request.status);
         tags.push(newTag);
       })
