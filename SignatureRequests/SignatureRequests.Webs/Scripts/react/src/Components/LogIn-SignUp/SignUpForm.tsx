@@ -9,6 +9,7 @@ import UserEntity from '../../Entities/UserEntity';
 
 export interface ISignUpFormProps {
     handler:IUserHandler
+    signUp: (name:string)=>void
 }
  
 export interface ISignUpFormState {
@@ -146,9 +147,10 @@ const Signup = withFormik<ISignUpFormProps, ISignUpFormState>({
             Name: values.userName,
             Email: values.email,
             Password: values.passwordOne,
-        })).then(()=>
-            setSubmitting(false)
-        );
+        })).then(()=>{
+            setSubmitting(false);
+            props.signUp(values.userName);
+        });
     }
 })(SignUpForm);
 
