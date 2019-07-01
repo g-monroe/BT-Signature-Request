@@ -4,6 +4,8 @@ using SignatureRequests.DataAccessHandlers.Infrastructure;
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace SignatureRequests.DataAccessHandlers
 {
@@ -41,6 +43,19 @@ namespace SignatureRequests.DataAccessHandlers
         {
             var user = GetUserProperty(id);
             return user.Name;
+        }
+        public UserEntity GetByName(string name)
+        {
+            try
+            {
+                var user = _context.Users.First(e => e.Name.Equals(name));
+                return user;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+          
         }
     }
 }

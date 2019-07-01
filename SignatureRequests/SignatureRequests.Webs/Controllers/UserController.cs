@@ -59,6 +59,14 @@ namespace SignatureRequests.Controllers
         {
             _userManager.Delete(id);
         }
+
+        [Route("api/User/Verify")]
+        [HttpGet]
+        public UserResponse VerifyUser([FromBody]UserVerificationRequest me)
+        {
+            var result = _userManager.Verify(me);
+            return result;
+        }
         #endregion
     }
 }

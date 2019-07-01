@@ -23,5 +23,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         UserResponseList UserToListResponse(IEnumerable<UserEntity> me);
         UserEntity UserToDbItem(UserRequest me, UserEntity updating = null);
         UserResponse UserToListItem(UserEntity me);
+        UserResponse Verify(UserVerificationRequest info);
     }
 }

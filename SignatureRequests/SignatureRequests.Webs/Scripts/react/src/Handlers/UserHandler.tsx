@@ -2,6 +2,7 @@ import { APIHandler } from "./apiHandler";
 import UserResponseList from "../Entities/UserResponseList";
 import UserEntity from "../Entities/UserEntity";
 import UserRequest from "../Entities/UserRequest";
+import UserVerificationEntity from '../Entities/UserVerificationEntity';
 
 export interface IUserHandler {
     getAll(): Promise<UserResponseList>;
@@ -27,5 +28,18 @@ export class UserHandler implements IUserHandler {
             data:newUser
         });
         return user;
+    }
+
+    async verifyUser(info:UserVerificationEntity) : Promise<UserEntity> {
+        try {
+            return await APIHandler(`api/User/Verify`, {
+                headers: {"Content-Type" : "application/json"},
+                method: "GET",
+                responseType: UserEntity,
+                data:info
+            });
+        }catch (e){
+            return new UserEntity({Id:-1});
+        }
     }
 }
