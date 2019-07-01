@@ -13,7 +13,7 @@ namespace SignatureRequests.Core.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201906281406528_db"; }
+            get { return "201907011521469_db"; }
         }
         
         string IMigrationMetadata.Source

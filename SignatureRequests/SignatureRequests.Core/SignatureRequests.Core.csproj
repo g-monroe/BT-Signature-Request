@@ -192,6 +192,7 @@
     <Compile Include="Interfaces\DataAccessHandlers\ISignatureHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
+    <Compile Include="Interfaces\Engines\IGroupEngine.cs" />
     <Compile Include="Interfaces\Managers\IGroupManager.cs" />
     <Compile Include="Interfaces\Managers\IFormManager.cs" />
     <Compile Include="Interfaces\Managers\IRequestManager.cs" />
@@ -208,13 +209,9 @@
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Items\X509Item.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBaseHandler.cs" />
-    <Compile Include="Migrations\201906281406528_db.cs" />
-    <Compile Include="Migrations\201906281406528_db.Designer.cs">
-      <DependentUpon>201906281406528_db.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906281953374_db1.cs" />
-    <Compile Include="Migrations\201906281953374_db1.Designer.cs">
-      <DependentUpon>201906281953374_db1.cs</DependentUpon>
+    <Compile Include="Migrations\201907011521469_db.cs" />
+    <Compile Include="Migrations\201907011521469_db.Designer.cs">
+      <DependentUpon>201907011521469_db.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SignatureJSON.cs" />
@@ -241,18 +238,12 @@
     <Compile Include="ResponseObjects\UserResponseList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\Engines\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906281406528_db.resx">
-      <DependentUpon>201906281406528_db.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906281953374_db1.resx">
-      <DependentUpon>201906281953374_db1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907011521469_db.resx">
+      <DependentUpon>201907011521469_db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

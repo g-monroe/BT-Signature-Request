@@ -54,7 +54,6 @@ namespace SignatureRequests.Engines
                     SignerId = request.SignerId,
                     Requestor = request.Requestor,
                     RequestorId = request.RequestorId,
-                    FormId = request.FormId,
                     Status = request.Status,
                     SentDate = request.SentDate,
                     Boxes = respBoxes
@@ -63,8 +62,6 @@ namespace SignatureRequests.Engines
             return new GroupResponse()
             {
                 Id = group.Id,
-                Request = group.Request,
-                RequestId = group.RequestId,
                 FormEntity = group.FormEntity,
                 FormId = group.FormId,
                 RequestEntities = resp

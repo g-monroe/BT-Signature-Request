@@ -31,7 +31,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
            loading: false
        });
      }
-   
      getForms = (forms: FormResponseList) : any[] => {
        return forms.collection;
      }
@@ -40,6 +39,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
+            console.log(this.state, "--", this.props);
             if (tableData == null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{
@@ -81,6 +81,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
               <Option value="refused">Refused</Option>
             </Select>
           );
+        
         return ( 
             <div className="Page">
                 <div className="overlay">

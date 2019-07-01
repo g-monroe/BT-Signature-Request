@@ -12,7 +12,7 @@ class RequestRequest {
     this.formId = data.FormId;
     this.status = data.Status;
     this.sentDate = data.SentDate;
-    this.boxes = data.Boxes;
+    this.boxes = new BoxResponseList(data.Boxes);
   }
 }
 

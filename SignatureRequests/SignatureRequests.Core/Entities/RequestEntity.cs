@@ -20,11 +20,6 @@ namespace SignatureRequests.Core.Entities
         public virtual UserEntity Requestor { get; set; }
 
         public int RequestorId { get; set; }
-        
-        [Required]
-        public virtual FormEntity Form { get; set; }
-
-        public int FormId { get; set; }
 
         [Required]
         public string Status { get; set; }

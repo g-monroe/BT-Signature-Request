@@ -41,16 +41,15 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     const {formEntity} = this.props;
     let iconCheck = faSquare;
     let tags = [];
-
     if (checked){
       iconCheck = faCheckSquare;
     }
-    if (formEntity.requests.count === 0){
-    const newTag = new TagItem("#000", "#fff", "Nothing found!");
+    if (formEntity.groups.count === 0){
+      const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
     }else{
-      formEntity.requests.collection.map((request) => {
-        const newTag = new TagItem("#000", "#fff", request.status);
+      formEntity.groups.collection.map((request) => {
+        const newTag = new TagItem("#000", "#fff", request.id.toString());
         tags.push(newTag);
       })
     }
