@@ -18,5 +18,6 @@ namespace SignatureRequests.Core.RequestObjects
         public int FormId { get; set; }
         public string Status { get; set; }
         public DateTime SentDate { get; set; }
+        public List<BoxEntity> BoxEntities { get; set; }
     }
 }

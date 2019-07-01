@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseHandler.cs" />
+    <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
     <Compile Include="Migrations\201906281856062_Anyname.cs" />
     <Compile Include="Migrations\201906281856062_Anyname.Designer.cs">
