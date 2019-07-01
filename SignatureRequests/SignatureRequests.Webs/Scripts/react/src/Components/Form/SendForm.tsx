@@ -114,7 +114,6 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
           status: FormProgress.PENDING, 
           sentDate: new Date(), 
           boxes: new BoxResponseList({TotalResults: 0, BoxesList: []}) });
-        console.log(request);
         this.props.requestHandler!.createRequest(request);
       }
     }
