@@ -1,5 +1,6 @@
 import UserEntity from "./UserEntity";
 import FormEntity from "./FormEntity";
+import BoxResponseList from "./BoxResponseList";
 
 class RequestEntity {
   id: number;
@@ -8,6 +9,7 @@ class RequestEntity {
   form: FormEntity;
   status: string;
   sentDate: Date;
+  boxes: BoxResponseList;
 
   constructor(data: any) {
     this.id = data.Id;
@@ -16,6 +18,7 @@ class RequestEntity {
     this.form = data.Form;
     this.status = data.Status;
     this.sentDate = data.SentDate;
+    this.boxes = new BoxResponseList(data.Boxes);
   }
 }
 

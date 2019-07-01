@@ -55,8 +55,6 @@ namespace SignatureRequests.Managers
             request.SignerId = newRequest.SignerId;
             request.Requestor = newRequest.Requestor;
             request.RequestorId = newRequest.RequestorId;
-            request.Form = newRequest.Form;
-            request.FormId = newRequest.FormId;
             request.Status = newRequest.Status;
             request.SentDate = newRequest.SentDate;
             _requestHandler.Update(request);
@@ -132,8 +130,6 @@ namespace SignatureRequests.Managers
                 SignerId = request.SignerId,
                 Requestor = request.Requestor,
                 RequestorId = request.RequestorId,
-                Form = request.Form,
-                FormId = request.FormId,
                 Status = request.Status,
                 SentDate = request.SentDate,
                 Boxes = respBoxes
@@ -150,8 +146,6 @@ namespace SignatureRequests.Managers
             updating.SignerId = request.SignerId;
             updating.Requestor = _userHandler.GetById(request.RequestorId);
             updating.RequestorId = request.RequestorId;
-            updating.Form = _formHandler.GetById(request.FormId);
-            updating.FormId = request.FormId;
             updating.Status = request.Status;
             updating.SentDate = request.SentDate;
             return updating;
