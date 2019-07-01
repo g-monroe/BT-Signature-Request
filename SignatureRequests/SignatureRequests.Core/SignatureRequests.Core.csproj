@@ -192,6 +192,7 @@
     <Compile Include="Interfaces\DataAccessHandlers\ISignatureHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IUserHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
+    <Compile Include="Interfaces\Engines\IGroupEngine.cs" />
     <Compile Include="Interfaces\Managers\IGroupManager.cs" />
     <Compile Include="Interfaces\Managers\IFormManager.cs" />
     <Compile Include="Interfaces\Managers\IRequestManager.cs" />
@@ -240,9 +241,7 @@
     <Compile Include="ResponseObjects\UserResponse.cs" />
     <Compile Include="ResponseObjects\UserResponseList.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\Engines\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
