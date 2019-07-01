@@ -1,7 +1,6 @@
 enum UserType {
     UNKNOWN,
-    SENDER,
-    SIGNER
+    REGISTERED
 }
 
 export default UserType;

@@ -31,37 +31,41 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
                 currRoutes = routes.LoggedOut;
                 userHome = routes.COMMON._Login;
                 break;
-            case UserType.SENDER:
-                currRoutes = routes.Request;
+            case UserType.REGISTERED:
+                currRoutes = routes.Registered;
                 userHome = routes.REQUESTER._Dashboard;
-                break;
-            case UserType.SIGNER:
-                currRoutes = routes.Response;
-                userHome = routes.SIGNER._Dashboard;
                 break;
         }
 
-        return (  
-            <div className="navigation">
-                <Menu
-                    className="navigation__menu"
-                    theme="dark"
-                    mode="horizontal"
-                    style={{ lineHeight: '64px' }}
-                >
-                    {
-                    currRoutes.map((e) => e.hasNavBar ? 
-                    <Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? {backgroundColor: "#1890ff"} : {backgroundColor: "inherit"}}>
-                            <NavLink to={e.link}>
-                             {e.breadcrumbName}
-                            </NavLink>
-                        </Menu.Item>
-                    : <div></div>
-                    )
-                    }
+        const menuObjects = currRoutes.map((e) => e.hasNavBar ? 
+            <Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? {backgroundColor: "#1890ff"} : {backgroundColor: "inherit"}}>
+                <NavLink to={e.link}>
+                    {e.breadcrumbName}
+                </NavLink>
+            </Menu.Item>
+            
+        : undefined
 
-                </Menu>
+        )
+
+        return (  
+           
+            <div className="navigation">
+            
+               {
+                   menuObjects ?
+                   <Menu
+                        className="navigation__menu"
+                        theme="dark"
+                        mode="horizontal"
+                        style={{ lineHeight: '64px' }}
+                    >
+                    {menuObjects} 
+                   </Menu> :
+                   <div></div>
+               }
                 <NavLink to = {userHome.link}> <div id="logo"/></NavLink>
+            
             </div>
 
 
