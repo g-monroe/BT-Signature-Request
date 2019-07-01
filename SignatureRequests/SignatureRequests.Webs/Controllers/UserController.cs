@@ -61,7 +61,7 @@ namespace SignatureRequests.Controllers
         }
 
         [Route("api/User/Verify")]
-        [HttpGet]
+        [HttpPost]
         public UserResponse VerifyUser([FromBody]UserVerificationRequest me)
         {
             var result = _userManager.Verify(me);

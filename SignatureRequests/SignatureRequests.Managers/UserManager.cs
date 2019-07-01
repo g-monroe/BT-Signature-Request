@@ -95,9 +95,9 @@ namespace SignatureRequests.Managers
 
         public UserResponse Verify(UserVerificationRequest info)
         {
-            var user = _userHandler.GetByName(info.Name);
+            var user = _userHandler.GetByName(info.name);
 
-            if(user != null && user.Password == info.Password)
+            if(user != null && user.Password == info.password)
             {
                 return UserToListItem(user);
             }

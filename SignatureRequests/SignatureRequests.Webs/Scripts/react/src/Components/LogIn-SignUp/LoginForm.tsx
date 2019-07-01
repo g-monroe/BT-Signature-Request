@@ -6,9 +6,12 @@ import * as yup from 'yup';
 import { Form, Input, Icon, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import * as routes from '../../Pages/Routing/routes'
+import UserVerificationEntity from '../../Entities/UserVerificationEntity';
+import UserEntity from '../../Entities/UserEntity';
 
 export interface ILoginFormProps {
     handler:IUserHandler
+    loginAttempt:(user:UserEntity)=>void
 }
  
 export interface ILoginFormState {
@@ -41,6 +44,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                 validateStatus = {this.getValidateStatus(touched.userName && errors.userName)}>
                     <Input autoFocus
                     name = "userName"
+                    placeholder = "Username"
                     prefix = {<Icon type = "user" className = "loginFormIcons"/>}
                     defaultValue = {this.state.userName}
                     value = {values.userName}
@@ -51,14 +55,15 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
 
                 <Form.Item required hasFeedback help = {errors.password}
                 validateStatus = {this.getValidateStatus(touched.password && errors.password)}>
-                    <Input autoFocus
-                    name = "userName"
+                    <Input.Password
+                    name = "password"
+                    placeholder = "Password"
                     prefix = {<Icon type = "lock" className = "loginFormIcons"/>}
                     defaultValue = {this.state.password}
                     value = {values.password}
                     onChange = {handleChange}
                     >
-                    </Input>
+                    </Input.Password>
                 </Form.Item>
                 <Form.Item>
                     <div id = "SignUpButtons">
@@ -74,5 +79,27 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
          );
     }
 }
+
+
+const Login = withFormik<ILoginFormProps, ILoginFormState>({
+    mapPropsToValues: () =>({
+        userName:"",
+        password:""
+    }),
+    validationSchema:yupValidation,
+    handleSubmit: async (values,{setSubmitting,props}) =>{
+        setSubmitting(true);
+
+        await props.handler.verifyUser(new UserVerificationEntity({
+            Name:values.userName,
+            Password:values.password
+        })).then((result)=> {
+            setSubmitting(false);
+            props.loginAttempt(result);
+        });
+
+
+    }
+})(LoginForm)
  
-export default LoginForm;
+export default Login;

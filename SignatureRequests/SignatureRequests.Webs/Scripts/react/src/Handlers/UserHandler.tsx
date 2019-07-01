@@ -7,6 +7,7 @@ import UserVerificationEntity from '../Entities/UserVerificationEntity';
 export interface IUserHandler {
     getAll(): Promise<UserResponseList>;
     createUser(newUser:UserRequest) : Promise<UserEntity>;
+    verifyUser(info:UserVerificationEntity) : Promise<UserEntity>;
 }
 
 export class UserHandler implements IUserHandler {
@@ -34,7 +35,7 @@ export class UserHandler implements IUserHandler {
         try {
             return await APIHandler(`api/User/Verify`, {
                 headers: {"Content-Type" : "application/json"},
-                method: "GET",
+                method: "POST",
                 responseType: UserEntity,
                 data:info
             });
