@@ -55,9 +55,8 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 }
                                 </Switch> 
                         }
-                            <Login userSelected = {this.changeUser}>
-                                    
-                            </Login>
+                            
+                            
                    </Layout.Content>
                 </Layout>
             </Router>

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Signup from './SignUpForm';
+import Signup from '../../Components/LogIn-SignUp/SignUpForm';
 import { Layout, Modal, Button } from 'antd';
 import {UserHandler, IUserHandler} from '../../Handlers/UserHandler';
 import { Link } from 'react-router-dom';
-import * as routes from '../../Pages/Routing/routes';
+import * as routes from '../Routing/routes';
 
 export interface ISignupPageProps {
     handler?:IUserHandler

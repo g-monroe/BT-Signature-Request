@@ -1,5 +1,5 @@
 import Login from './login/Login';
-import SignUp from './login/SignUp';
+import SignUp from './login/SignUpPage';
 import Create from './Requester/Create/Create';
 import DashBoard from './Requester/Dashboard/Dashboard';
 import Send from './Requester/Send/Send';
