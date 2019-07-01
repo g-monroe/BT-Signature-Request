@@ -13,17 +13,21 @@ namespace SignatureRequests.Engines
     {
         public GroupResponse GroupToListItem(GroupEntity group)
         {
+            if (group.RequestEntities == null)
+            {
+                group.RequestEntities = new List<RequestEntity>();
+            }
             var resp = new RequestResponseList
             {
                 TotalResults = group.RequestEntities.Count(),
                 RequestsList = new List<RequestResponse>()
             };
-            if (group.RequestEntities == null)
-            {
-                group.RequestEntities = new List<RequestEntity>();
-            }
             foreach (RequestEntity request in group.RequestEntities)
             {
+                if (request.BoxEntities == null)
+                {
+                    request.BoxEntities = new List<BoxEntity>();
+                }
                 var respBoxes = new BoxResponseList
                 {
                     TotalResults = request.BoxEntities.Count(),
@@ -59,10 +63,11 @@ namespace SignatureRequests.Engines
                     Boxes = respBoxes
                 });
             }
+            group.Form.GroupEntities = null;
             return new GroupResponse()
             {
                 Id = group.Id,
-                FormEntity = group.FormEntity,
+                FormEntity = group.Form,
                 FormId = group.FormId,
                 RequestEntities = resp
             };

@@ -44,8 +44,8 @@ namespace SignatureRequests.Managers
         public GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup)
         {
             var result = _groupHandler.GetById(group.Id);
-            result.FormEntity = newGroup.FormEntity;
-            result.FormId = newGroup.FormId;
+            result.Form = newGroup.Form;
+            //result.FormId = newGroup.Form.Id;
             _groupHandler.SaveChanges();
             return group;
         }
