@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -17,10 +18,12 @@ namespace SignatureRequests.Managers
     {
         private readonly IFormHandler _formHandler;
         private readonly IUserHandler _userHandler;
-        public FormManager(IFormHandler formHandler, IUserHandler userHandler)
+        private readonly IGroupEngine _groupEngine;
+        public FormManager(IFormHandler formHandler, IUserHandler userHandler, IGroupEngine groupEngine)
         {
             _formHandler = formHandler;
             _userHandler = userHandler;
+            _groupEngine = groupEngine;
         }
         public FormResponseList GetForms()
         {
@@ -117,52 +120,18 @@ namespace SignatureRequests.Managers
         }
         private FormResponse FormToListItem(FormEntity form)
         {
-            var resp = new RequestResponseList
+            var resp = new GroupResponseList
             {
-                TotalResults = form.RequestEntities.Count(),
-                RequestsList = new List<RequestResponse>()
+                TotalResults = form.GroupEntities.Count(),
+                GorupsList = new List<GroupResponse>()
             };
-            if (form.RequestEntities == null)
+            if (form.GroupEntities == null)
             {
-                form.RequestEntities = new List<RequestEntity>();
+                form.GroupEntities = new List<GroupEntity>();
             }
-            foreach (RequestEntity request in form.RequestEntities)
+            foreach (GroupEntity group in form.GroupEntities)
             {
-                var respBoxes = new BoxResponseList
-                {
-                    TotalResults = request.BoxEntities.Count(),
-                    BoxesList = new List<BoxResponse>()
-                };
-                foreach (BoxEntity box in request.BoxEntities)
-                {
-                    var item = new BoxResponse()
-                    {
-                        Id = box.Id,
-                        X = box.X,
-                        Y = box.Y,
-                        Width = box.Width,
-                        Length = box.Length,
-                        Type = box.Type,
-                        SignerType = box.SignerType,
-                        SignedStatus = box.SignedStatus,
-                        RequestId = box.RequestId,
-                        Signature = box.Signature,
-                        SignatureId = box.SignatureId,
-                    };
-                    respBoxes.BoxesList.Add(item);
-                }
-                resp.RequestsList.Add(new RequestResponse()
-                {
-                    Id = request.Id,
-                    Signer = request.Signer,
-                    SignerId = request.SignerId,
-                    Requestor = request.Requestor,
-                    RequestorId = request.RequestorId,
-                    FormId = request.FormId,
-                    Status = request.Status,
-                    SentDate = request.SentDate,
-                    Boxes = respBoxes
-                });
+                resp.GorupsList.Add(_groupEngine.GroupToListItem(group));
             }
              return new FormResponse()
             {
@@ -173,7 +142,7 @@ namespace SignatureRequests.Managers
                 Title = form.Title,
                 User = form.User,
                 UserId = form.UserId,
-                RequestEntities = resp
+                GroupEntities = resp
             };
         }
         private FormEntity RequestToEntity(FormRequest form, FormEntity updating)
