@@ -30,11 +30,6 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
             .WithMany()
             .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<GroupEntity>()
-            .HasRequired<FormEntity>(b => b.FormEntity)
-            .WithMany()
-            .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<BoxEntity>()
             .HasOptional<SignatureEntity>(b => b.Signature)
             .WithMany().WillCascadeOnDelete(false);

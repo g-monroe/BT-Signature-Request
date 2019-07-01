@@ -1,5 +1,5 @@
 import UserEntity from "./UserEntity";
-import RequestResponseList from "./RequestResponseList";
+import GroupResponseList from "./GroupResponseList";
 class FormEntity {
   id: number;
   filePath: string;
@@ -7,7 +7,8 @@ class FormEntity {
   description? : string;
   createDate: Date;
   user: UserEntity;
-  requests: RequestResponseList;
+  groups: GroupResponseList;
+
   constructor(data: any) {
     this.id = data.Id;
     this.filePath = data.FilePath;
@@ -15,7 +16,7 @@ class FormEntity {
     this.description = data.Description;
     this.createDate = data.CreateDate;
     this.user = data.User;
-    this.requests = new RequestResponseList(data.RequestEntities);
+    this.groups = new GroupResponseList(data.GroupEntities);
   }
 }
 

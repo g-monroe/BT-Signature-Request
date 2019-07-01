@@ -185,7 +185,6 @@
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
     <Compile Include="Enums\InitializeCertifcation.cs" />
-    <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IGroupHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IFormHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IRequestHandler.cs" />
@@ -209,15 +208,6 @@
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Items\X509Item.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IBaseHandler.cs" />
-    <Compile Include="Migrations\201906281406528_db.cs" />
-    <Compile Include="Migrations\201906281406528_db.Designer.cs">
-      <DependentUpon>201906281406528_db.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906281953374_db1.cs" />
-    <Compile Include="Migrations\201906281953374_db1.Designer.cs">
-      <DependentUpon>201906281953374_db1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SignatureJSON.cs" />
     <Compile Include="Models\UserJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -245,14 +235,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906281406528_db.resx">
-      <DependentUpon>201906281406528_db.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906281953374_db1.resx">
-      <DependentUpon>201906281953374_db1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
