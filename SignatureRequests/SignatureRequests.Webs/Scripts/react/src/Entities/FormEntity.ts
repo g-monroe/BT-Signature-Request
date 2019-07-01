@@ -10,7 +10,6 @@ class FormEntity {
   groups: GroupResponseList;
 
   constructor(data: any) {
-    console.log("FormE:",data);
     this.id = data.Id;
     this.filePath = data.FilePath;
     this.title = data.Title;

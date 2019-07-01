@@ -9,7 +9,6 @@ class GroupEntity {
   requests?: RequestResponseList[];
 
   constructor(data: any) {
-    console.log("GroupE:",data);
     this.id = data.Id;
     this.form = data.FormEntity;
     this.formId = data.FormId;

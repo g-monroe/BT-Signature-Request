@@ -45,7 +45,7 @@ namespace SignatureRequests.Managers
         {
             var result = _groupHandler.GetById(group.Id);
             result.Form = newGroup.Form;
-            //result.FormId = newGroup.Form.Id;
+            result.FormId = newGroup.FormId;
             _groupHandler.SaveChanges();
             return group;
         }
