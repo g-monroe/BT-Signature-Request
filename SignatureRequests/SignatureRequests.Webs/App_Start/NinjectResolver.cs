@@ -1,9 +1,11 @@
 ﻿using Ninject;
 using Ninject.Extensions.ChildKernel;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.DataAccessHandlers;
 using SignatureRequests.DataAccessHandlers.Infrastructure;
+using SignatureRequests.Engines;
 using SignatureRequests.Managers;
 using System;
 using System.Collections.Generic;
@@ -44,7 +46,9 @@ namespace SignatureRequests.App_Start
             kernel.Bind<IFormHandler>().To<FormHandler>().WithConstructorArgument("context", context);
             kernel.Bind<IRequestManager>().To<RequestManager>().InSingletonScope();
             kernel.Bind<IRequestHandler>().To<RequestHandler>().WithConstructorArgument("context", context);
-
+            kernel.Bind<IGroupManager>().To<GroupManager>().InSingletonScope();
+            kernel.Bind<IGroupEngine>().To<GroupEngine>().InSingletonScope();
+            kernel.Bind<IGroupHandler>().To<GroupHandler>().WithConstructorArgument("context", context);
             return kernel;
         }
 
