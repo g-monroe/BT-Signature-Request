@@ -54,8 +54,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 })
                                 }
                                 </Switch> 
-                            
                         }
+                            
+                            
                    </Layout.Content>
                 </Layout>
             </Router>

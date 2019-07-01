@@ -25,3 +25,8 @@
 .loginFormIcons {
     color:#b1b4b5;
 }
+
+#SignUpModalContent {
+    height: 100%;
+    width:100%;
+}
