@@ -23,14 +23,6 @@ class ChooseUser extends React.Component<IChooseUserProps, IChooseUserState> {
     render() { 
         return (
             <div id = 'flex-container'>
-                <Card id = 'categoryBox'  title = 'Requester'>
-                    <p>Choose this option to view the app as a user able to send out documents</p>
-                    <Button  id = 'Button' onClick = {() =>this.chooseUserType(UserType.REGISTERED)}>
-                        <Link to = {routes.REQUESTER._Dashboard.link}> 
-                            Select
-                        </Link>
-                    </Button>
-                </Card>
                 <Card id = 'categoryBox' title = 'Signer'>
                     <p>Choose this option to view the app as a user able to receive/sign the documents</p>
                     <Button id = 'Button' onClick = {() =>this.chooseUserType(UserType.REGISTERED)}>
