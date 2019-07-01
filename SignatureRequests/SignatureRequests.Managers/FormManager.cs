@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -17,10 +18,12 @@ namespace SignatureRequests.Managers
     {
         private readonly IFormHandler _formHandler;
         private readonly IUserHandler _userHandler;
-        public FormManager(IFormHandler formHandler, IUserHandler userHandler)
+        private readonly IGroupEngine _groupEngine;
+        public FormManager(IFormHandler formHandler, IUserHandler userHandler, IGroupEngine groupEngine)
         {
             _formHandler = formHandler;
             _userHandler = userHandler;
+            _groupEngine = groupEngine;
         }
         public FormResponseList GetForms()
         {
@@ -128,49 +131,7 @@ namespace SignatureRequests.Managers
             }
             foreach (GroupEntity group in form.GroupEntities)
             {
-                var respRequest = new RequestResponseList
-                {
-                    TotalResults = group.RequestEntities.Count(),
-                    RequestsList = new List<RequestResponse>()
-                };
-                foreach (RequestEntity request in group.RequestEntities)
-                {
-                    var respBoxes = new BoxResponseList
-                    {
-                        TotalResults = request.BoxEntities.Count(),
-                        BoxesList = new List<BoxResponse>()
-                    };
-                    foreach (BoxEntity box in request.BoxEntities)
-                    {
-                        var item = new BoxResponse()
-                        {
-                            Id = box.Id,
-                            X = box.X,
-                            Y = box.Y,
-                            Width = box.Width,
-                            Length = box.Length,
-                            Type = box.Type,
-                            SignerType = box.SignerType,
-                            SignedStatus = box.SignedStatus,
-                            RequestId = box.RequestId,
-                            Signature = box.Signature,
-                            SignatureId = box.SignatureId,
-                        };
-                        respBoxes.BoxesList.Add(item);
-                    }
-                    respRequest.RequestsList.Add(new RequestResponse()
-                    {
-                        Id = request.Id,
-                        Signer = request.Signer,
-                        SignerId = request.SignerId,
-                        Requestor = request.Requestor,
-                        RequestorId = request.RequestorId,
-                        FormId = request.FormId,
-                        Status = request.Status,
-                        SentDate = request.SentDate,
-                        Boxes = respBoxes
-                    });
-                }
+                resp.GorupsList.Add(_groupEngine.GroupToListItem(group));
             }
              return new FormResponse()
             {
