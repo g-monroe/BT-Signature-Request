@@ -31,7 +31,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
            loading: false
        });
      }
-   
      getForms = (forms: FormResponseList) : any[] => {
        return forms.collection;
      }
@@ -81,6 +80,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
               <Option value="refused">Refused</Option>
             </Select>
           );
+        
         return ( 
             <div className="Page">
                 <div className="overlay">

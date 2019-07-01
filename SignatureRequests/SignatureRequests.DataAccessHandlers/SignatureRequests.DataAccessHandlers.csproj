@@ -181,17 +181,10 @@
     <Compile Include="BaseHandler.cs" />
     <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
-    <Compile Include="Migrations\201906181458560_NextMigration.cs" />
-    <Compile Include="Migrations\201906181458560_NextMigration.Designer.cs">
-      <DependentUpon>201906181458560_NextMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906241500055_int.cs" />
-    <Compile Include="Migrations\201906241500055_int.Designer.cs">
-      <DependentUpon>201906241500055_int.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906271925004_int2.cs" />
-    <Compile Include="Migrations\201906271925004_int2.Designer.cs">
-      <DependentUpon>201906271925004_int2.cs</DependentUpon>
+    <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
+    <Compile Include="Migrations\201907011824584_Initial.cs" />
+    <Compile Include="Migrations\201907011824584_Initial.Designer.cs">
+      <DependentUpon>201907011824584_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -212,17 +205,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
-    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906181458560_NextMigration.resx">
-      <DependentUpon>201906181458560_NextMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906241500055_int.resx">
-      <DependentUpon>201906241500055_int.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906271925004_int2.resx">
-      <DependentUpon>201906271925004_int2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907011824584_Initial.resx">
+      <DependentUpon>201907011824584_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
