@@ -1,6 +1,6 @@
 ﻿using SautinSoft.Document;
 using SignatureRequests.Core.Entities;
-using SignatureRequests.Core.Enums;
+using SignatureRequests.Core;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
