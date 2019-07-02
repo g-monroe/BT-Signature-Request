@@ -26,7 +26,7 @@ export interface ILoginState {
 class Login extends React.Component<ILoginProps, ILoginState> {
     state : ILoginState = {
         error:<></>,
-        visible:true
+        visible:false
     }
 
 
@@ -40,7 +40,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 error:<p id = "errorText">You have entered either an incorrect username or password</p>
             })
         }else{
-            console.log("Entered else statement");
             await this.props.updateUser({
                  id: user.id,
                  role: user.role,
@@ -51,9 +50,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
             this.setState({
                 visible:true
             });
-            console.log(this.state.visible);
         }
-        console.log(user)
     }
 
 
@@ -61,21 +58,17 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     render() { 
         return ( 
                 <Layout>
-                    {console.log("the fuck")}
                     <Layout.Header style = {{background:'inherit'}}>
                 
                     </Layout.Header>
                     <Layout.Content>
                         <div id = "SignUpContent">
                             <h1>Login Here</h1>
-                            {console.log("Handler", this.props.handler)}
                             <LoginForm handler = {this.props.handler!} loginAttempt = {this.login}></LoginForm>
-                            {console.log("MADE IT", this.state.visible)}
                             {this.state.error}
                         </div>
                         <h1 id = 'HeaderText'>Choose User Type</h1>
                         <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
-                        {console.log("TEST",this.state.visible)}
                         
                           
                             <Modal
@@ -96,8 +89,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 Welcome to the signature experiment!
                             </div>
                         </Modal>
-                        
-                        {console.log("Maybe")}
                     </Layout.Content>
                 </Layout>
          );

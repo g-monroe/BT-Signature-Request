@@ -54,7 +54,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    component={WithUser} 
+                                    component={withNav} 
                                     />
                                     )
                                 })
