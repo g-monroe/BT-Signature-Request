@@ -6,6 +6,8 @@ import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
 import withUser from '../Components/WrapperComponents/withUser';
+import withNavigation from '../Components/WrapperComponents/withNavigation';
+import Welcome from './Welcome/Welcome'
 
 export interface MainPageProps {
     
@@ -39,28 +41,27 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         return ( 
             <Router >
                 <Layout style = {{height:'100%'}}>
-                    <Layout.Header>
-                        <Navigation userType = {this.state.user.type}></Navigation>
-                    </Layout.Header>
                    <Layout.Content>
                         {
                                 <Switch>
                                 {
                                 ALL_ROUTES.map((route,i) => {
                                     const WithUser = withUser(route.component);
+                                    const withNav = withNavigation(WithUser);
                                     return (
                                     <Route 
                                     key={i} 
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    component={WithUser} 
+                                    component={withNav} 
                                     />
                                     )
                                 })
                                 }
                                 </Switch> 
                         }
+                        <Welcome></Welcome>
                    </Layout.Content>
                 </Layout>
             </Router>

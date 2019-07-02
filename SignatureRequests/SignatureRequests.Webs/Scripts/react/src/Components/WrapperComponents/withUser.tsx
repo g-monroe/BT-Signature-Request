@@ -3,7 +3,7 @@ import MainPageUser from '../../Entities/MainPageUser';
 import UserType from '../../Util/Enums/UserTypes';
 
 export interface IwithUserProps {
-    
+    updateUserType: (data:UserType) => void
 }
  
 export interface IwithUserState {
@@ -23,6 +23,7 @@ const withUser = (Component: any) => {
           }
 
         userUpdated = (data:MainPageUser) =>{
+            this.props.updateUserType(data.type);
             this.setState({
                 user:data
             })

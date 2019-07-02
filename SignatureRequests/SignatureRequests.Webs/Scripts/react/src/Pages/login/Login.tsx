@@ -40,13 +40,13 @@ class Login extends React.Component<ILoginProps, ILoginState> {
             })
         }else{
             console.log("Entered else statement");
-            // await this.props.updateUser({
-            //      id: user.id,
-            //      role: user.role,
-            //      name: user.name,
-            //      email: user.email,
-            //      type: UserType.REGISTERED
-            //  });
+            await this.props.updateUser({
+                 id: user.id,
+                 role: user.role,
+                 name: user.name,
+                 email: user.email,
+                 type: UserType.REGISTERED
+             });
             this.setState({
                 visible:true
             });
