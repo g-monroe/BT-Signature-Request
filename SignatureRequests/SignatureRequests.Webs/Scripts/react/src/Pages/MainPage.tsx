@@ -5,7 +5,7 @@ import * as routes from './Routing/routes';
 import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
-import withUser from '../Components/User/withUser';
+import withUser from '../Components/WrapperComponents/withUser';
 
 export interface MainPageProps {
     
