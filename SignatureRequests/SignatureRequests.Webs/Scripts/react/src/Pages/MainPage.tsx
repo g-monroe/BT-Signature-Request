@@ -2,7 +2,6 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Layout } from 'antd';
 import * as routes from './Routing/routes';
-import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
 import withUser from '../Components/WrapperComponents/withUser';
@@ -30,7 +29,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         })
     }
 
-    changeUser = (User: MainPageUser) =>{
+    updateUser = (User: MainPageUser) =>{
         this.setState({
             user:User
         })
@@ -55,7 +54,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    render={()=><UserProvider value = {{user:this.state.user, update:this.changeUser}}><WithNav></WithNav></UserProvider>}
+                                    render={()=><UserProvider value = {{user:this.state.user, update:this.updateUser}}><WithNav></WithNav></UserProvider>}
 
                                      
                                     />

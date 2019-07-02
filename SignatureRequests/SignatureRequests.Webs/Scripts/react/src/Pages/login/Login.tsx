@@ -9,7 +9,6 @@ import * as routes from '../Routing/routes';
 import ChooseUser from '../../Components/User/ChooseUser';
 import ContextUserObject from '../../Components/WrapperComponents/ContextUserObject';
 
-
 export interface ILoginProps { 
     handler?:IUserHandler
     UserObject:ContextUserObject
@@ -19,13 +18,10 @@ export interface ILoginState {
     error?:any
 }
 
-
-
 class Login extends React.Component<ILoginProps, ILoginState> {
     state : ILoginState = {
         error:<></>
     }
-
 
     static defaultProps = {
         handler: new UserHandler()
@@ -57,21 +53,16 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         });
     }
 
-
-
     render() { 
         return ( 
                 <Layout>
-                    <Layout.Header style = {{background:'inherit'}}>
-                
-                    </Layout.Header>
                     <Layout.Content>
                         <div id = "SignUpContent">
                             <h1>Login Here</h1>
                             <LoginForm handler = {this.props.handler!} loginAttempt = {this.login}></LoginForm>
                             {this.state.error}
                         </div>
-                        <h1 id = 'HeaderText'>Choose User Type</h1>
+                        <h1 id = 'HeaderText'>Display Testing User Only</h1>
                         <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
                             <Modal
                             title = "Login Successful"
