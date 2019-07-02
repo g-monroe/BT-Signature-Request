@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom';
 import * as routes from '../Routing/routes';
 import MainPageUser from '../../Entities/MainPageUser';
 import ChooseUser from '../../Components/User/ChooseUser';
+import ContextUserObject from '../../Components/WrapperComponents/ContextUserObject';
 
 
-export interface ILoginProps {
-    userSelected: (user: UserType) => void
+export interface ILoginProps { 
     handler?:IUserHandler
-    updateUser: (data:MainPageUser)=> void
+    UserObject:ContextUserObject
 }
  
 export interface ILoginState {
@@ -40,17 +40,28 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 error:<p id = "errorText">You have entered either an incorrect username or password</p>
             })
         }else{
-            await this.props.updateUser({
+            await this.props.UserObject.update({
                  id: user.id,
                  role: user.role,
                  name: user.name,
                  email: user.email,
                  type: UserType.REGISTERED
              });
+             console.log(this.state.visible, "In log in")
             this.setState({
                 visible:true
             });
         }
+    }
+
+    chooseUserButton = (user: UserType) =>{
+        this.props.UserObject.update({
+            id: 1,
+            role: "Role here",
+            name: "Max Min",
+            email: "MM@gmail.com",
+            type: user
+        });
     }
 
 
@@ -68,9 +79,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             {this.state.error}
                         </div>
                         <h1 id = 'HeaderText'>Choose User Type</h1>
-                        <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
+                        <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
                         
-                          
+                          {console.log(this.state.visible, "In Render")}
                             <Modal
                             title = "Login Successful"
                             visible={this.state.visible}

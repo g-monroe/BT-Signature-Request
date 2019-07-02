@@ -7,6 +7,7 @@ import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
 import withUser from '../Components/WrapperComponents/withUser';
 import withNavigation from '../Components/WrapperComponents/withNavigation';
+import ContextUserObject from '../Components/WrapperComponents/ContextUserObject';
 
 
 export interface MainPageProps {
@@ -47,14 +48,16 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 {
                                 ALL_ROUTES.map((route,i) => {
                                     const WithUser = withUser(route.component);
-                                    const withNav = withNavigation(WithUser);
+                                    const WithNav = withNavigation(WithUser);
                                     return (
                                     <Route 
                                     key={i} 
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    component={withNav} 
+                                    render={()=><UserProvider value = {{user:this.state.user, update:this.changeUser}}><WithNav></WithNav></UserProvider>}
+
+                                     
                                     />
                                     )
                                 })
@@ -72,3 +75,8 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
 }
  
 export default MainPage;
+
+export const UserContext = React.createContext<ContextUserObject>( new ContextUserObject())
+
+export const UserProvider = UserContext.Provider;
+export const UserConsumer = UserContext.Consumer;

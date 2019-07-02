@@ -2,13 +2,13 @@ import * as React from 'react';
 import UserType from '../../Util/Enums/UserTypes';
 import {Layout} from 'antd';
 import Navigation from '../../Pages/Navigation';
-
+import {UserConsumer} from '../../Pages/MainPage'
 export interface IwithNavigationProps {
     
 }
  
 export interface IwithNavigationState {
-    type:UserType
+    type:any
 }
  
 
@@ -19,7 +19,7 @@ const withNavigation = (Component: any) => {
             type:UserType.UNKNOWN
         }
 
-        updateUserType = (data:UserType) =>{
+        updateUser = (data:UserType) =>{
             console.log("Update user type reached");
             this.setState({
                 type:data
@@ -30,20 +30,21 @@ const withNavigation = (Component: any) => {
 
 
         render() { 
-            const ContextProvider = React.createContext<UserType | null>(null).Provider;
-            return ( 
-               
-                <ContextProvider value = {this.state.type}>
-                <Layout>
-                    <Layout.Header>
-                        <Navigation userType = {this.state.type}></Navigation>
-                    </Layout.Header>
-                    <Layout.Content>
-                        <Component {...this.props} updateUserType = {this.updateUserType}/>
-                    </Layout.Content>
-                </Layout>
-                </ContextProvider>
-               
+    
+            return (  
+
+                    <Layout>
+                        <Layout.Header>
+                            <UserConsumer>
+                                {user => <Navigation userType = {user.user.type}></Navigation>}
+                            </UserConsumer>
+                            
+                        </Layout.Header>
+                        <Layout.Content>
+                            <Component/>
+                        </Layout.Content>
+                    </Layout>  
+ 
              );
         }
     }

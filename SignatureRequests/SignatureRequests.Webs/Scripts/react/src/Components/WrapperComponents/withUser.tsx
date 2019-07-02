@@ -1,6 +1,7 @@
 import * as React from 'react';
 import MainPageUser from '../../Entities/MainPageUser';
 import UserType from '../../Util/Enums/UserTypes';
+import {UserConsumer} from '../../Pages/MainPage';
 
 export interface IwithUserProps {
     updateUserType: (data:UserType) => void
@@ -13,13 +14,7 @@ export interface IwithUserState {
 const withUser = (Component: any) => {
     class withUser extends React.Component<IwithUserProps, IwithUserState> {
         state = { 
-            user: new MainPageUser({
-                id: -1,
-                role:"" ,
-                name:"" ,
-                email:"" ,
-                type:UserType.UNKNOWN,
-            })
+            user: this.context
           }
 
         userUpdated = (data:MainPageUser) =>{
@@ -31,12 +26,15 @@ const withUser = (Component: any) => {
 
 
         render() { 
-            const ContextProvider = React.createContext<MainPageUser | null>(null).Provider;
+    
             return ( 
-               
-                <ContextProvider value = {this.state.user}>
-                    <Component {...this.props} User = {this.state.user} updateUser = {this.userUpdated}/>
-                </ContextProvider>
+                
+                <UserConsumer>
+                    {(user) =>{
+                        console.log(user);
+                        return <Component {...this.props} UserObject = {user}/> 
+                        }}
+                </UserConsumer>
                
              );
         }
@@ -44,6 +42,7 @@ const withUser = (Component: any) => {
 
     return withUser;
 }
+
 
  
 export default withUser;
