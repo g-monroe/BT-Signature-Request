@@ -55,14 +55,15 @@ namespace SignatureRequests.Managers
         {
             foreach (var file in provider.Contents)
             {
+                const string path = @"\assets\v1\documents\";
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path  + filename,
                     buffer);
-                DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename);
+                DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
                 DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
-                dp.Pages[0].Rasterize(800, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename + ".png");
+                dp.Pages[0].Rasterize(800, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + filename + ".png");
             }
         }
         public FormEntity UpdateForm(FormEntity form, FormEntity newForm)
