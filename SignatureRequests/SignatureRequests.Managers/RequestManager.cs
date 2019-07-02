@@ -17,13 +17,15 @@ namespace SignatureRequests.Managers
         private readonly IUserHandler _userHandler;
         private readonly IFormHandler _formHandler;
         private readonly IGroupManager _groupManager;
+        private readonly IGroupHandler _groupHandler;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupManager groupManager)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupManager groupManager, IGroupHandler groupHandler)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
             _formHandler = formHandler;
             _groupManager = groupManager;
+            _groupHandler = groupHandler;
         }
 
         public RequestResponseList GetRequests()
@@ -150,7 +152,7 @@ namespace SignatureRequests.Managers
             updating.Id = request.Id;
             updating.Signer = _userHandler.GetById(request.SignerId);
             updating.SignerId = request.SignerId;
-            updating.Group = _groupManager.RequestToEntity(request.Group, null);
+            updating.Group = _groupHandler.GetById(request.GroupId);
             updating.GroupId = request.GroupId;
             updating.Requestor = _userHandler.GetById(request.RequestorId);
             updating.RequestorId = request.RequestorId;

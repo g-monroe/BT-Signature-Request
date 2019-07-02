@@ -16,16 +16,12 @@ namespace SignatureRequests.Managers
     {
         private readonly IGroupHandler _groupHandler;
         private readonly IGroupEngine _groupEngine;
-        private readonly IRequestManager _requestManager;
         private readonly IFormHandler _formHandler;
-        private readonly IFormManager _formManager;
-        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine, IRequestManager requestManager, IFormHandler formHandler, IFormManager formManager)
+        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine, IFormHandler formHandler)
         {
             _groupHandler = groupHandler;
             _groupEngine = groupEngine;
-            _requestManager = requestManager;
             _formHandler = formHandler;
-            _formManager = formManager;
         }
 
         public GroupEntity CreateGroupEntity(GroupEntity newGroup)
@@ -123,12 +119,12 @@ namespace SignatureRequests.Managers
             };
             foreach (RequestEntity request in group.RequestEntities)
             {
-                resp.RequestsList.Add(_requestManager.RequestToListItem(request));
+                resp.RequestsList.Add(_groupEngine.RequestToListItem(request));
             }
             return new GroupResponse()
             {
                 Id = group.Id,
-                Form = _formManager.FormToListItem(group.Form),
+                Form = _groupEngine.FormToListItem(group.Form),
                 FormId = group.FormId,
                 RequestEntities = resp
             };

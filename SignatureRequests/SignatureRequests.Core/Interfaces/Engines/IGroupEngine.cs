@@ -11,5 +11,7 @@ namespace SignatureRequests.Core.Interfaces.Engines
     public interface IGroupEngine
     {
         GroupResponse GroupToListItem(GroupEntity group);
+        FormResponse FormToListItem(FormEntity form);
+        RequestResponse RequestToListItem(RequestEntity request);
     }
 }

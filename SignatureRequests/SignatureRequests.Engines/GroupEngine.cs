@@ -12,9 +12,6 @@ namespace SignatureRequests.Engines
 {
     public class GroupEngine : IGroupEngine
     {
-        public GroupEngine(IFormManager formManager)
-        {
-        }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
             if (group.RequestEntities == null)
@@ -71,9 +68,82 @@ namespace SignatureRequests.Engines
             return new GroupResponse()
             {
                 Id = group.Id,
-                Form = _formManager.FormToListItem(group.Form),
+                Form = FormToListItem(group.Form),
                 FormId = group.FormId,
                 RequestEntities = resp
+            };
+        }
+
+        public FormResponse FormToListItem(FormEntity form)
+        {
+            if (form.GroupEntities == null)
+            {
+                form.GroupEntities = new List<GroupEntity>();
+            }
+            var resp = new GroupResponseList
+            {
+                TotalResults = form.GroupEntities.Count(),
+                GroupsList = new List<GroupResponse>()
+            };
+            foreach (GroupEntity group in form.GroupEntities)
+            {
+                resp.GroupsList.Add(GroupToListItem(group));
+            }
+            return new FormResponse()
+            {
+                Id = form.Id,
+                CreateDate = form.CreateDate,
+                Description = form.Description,
+                FilePath = form.FilePath,
+                Title = form.Title,
+                User = form.User,
+                UserId = form.UserId,
+                GroupEntities = resp
+            };
+        }
+
+        public RequestResponse RequestToListItem(RequestEntity request)
+        {
+            var respBoxes = new BoxResponseList
+            {
+                TotalResults = 0,
+                BoxesList = new List<BoxResponse>()
+            };
+            if (request.BoxEntities == null)
+            {
+                request.BoxEntities = new List<BoxEntity>();
+            }
+            foreach (BoxEntity box in request.BoxEntities)
+            {
+                var item = new BoxResponse()
+                {
+                    Id = box.Id,
+                    X = box.X,
+                    Y = box.Y,
+                    Width = box.Width,
+                    Length = box.Length,
+                    Type = box.Type,
+                    SignerType = box.SignerType,
+                    SignedStatus = box.SignedStatus,
+                    Request = null,
+                    RequestId = box.RequestId,
+                    Signature = box.Signature,
+                    SignatureId = box.SignatureId,
+                };
+                respBoxes.BoxesList.Add(item);
+            }
+            return new RequestResponse()
+            {
+                Id = request.Id,
+                Signer = request.Signer,
+                SignerId = request.SignerId,
+                Group = GroupToListItem(request.Group),
+                GroupId = request.GroupId,
+                Requestor = request.Requestor,
+                RequestorId = request.RequestorId,
+                Status = request.Status,
+                SentDate = request.SentDate,
+                Boxes = respBoxes
             };
         }
     }
