@@ -1,17 +1,11 @@
-import React, { RefObject } from "react";
-import { Form as AntForm, Select, Table, Button, Input, Upload, Icon, message } from 'antd';
+import React from "react";
+import { Form as AntForm, Button, Input, Upload, Icon, } from 'antd';
 import "antd/dist/antd.css";
-import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
 import UserEntity from "../../Entities/UserEntity";
 import { Form, InjectedFormikProps, withFormik } from "formik";
-import FormRequest from "../../Entities/FormRequest";
-import FormEntity from "../../Entities/FormEntity";
 import * as yup from 'yup';
-import { StringLiteral, file } from "@babel/types";
 import TextArea from "antd/lib/input/TextArea";
-import { Link, Redirect } from "react-router-dom";
 const FileViewer = require('react-file-viewer');
-const { Option } = Select;
 const FormItem = AntForm.Item;
 
 interface ICreateProps {

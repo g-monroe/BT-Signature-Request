@@ -1,4 +1,3 @@
-import SignatureEntity from "./SignatureEntity";
 
 class UserVerificationEntity {
   name: string;

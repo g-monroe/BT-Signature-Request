@@ -56,6 +56,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     render() { 
         return ( 
                 <Layout>
+                    <Layout.Header>
+                        
+                    </Layout.Header>
                     <Layout.Content>
                         <div id = "SignUpContent">
                             <h1>Login Here</h1>
