@@ -72,7 +72,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                                 New? Signup!
                             </Link>
                             </Button>
-                        <Button htmlType = "submit" loading = {isSubmitting} type = "primary">Log In</Button>
+                        <Button onClick = {handleSubmit} loading = {isSubmitting} type = "primary">Log In</Button>
                     </div>
                 </Form.Item>
             </Form>
@@ -88,6 +88,7 @@ const Login = withFormik<ILoginFormProps, ILoginFormState>({
     }),
     validationSchema:yupValidation,
     handleSubmit: async (values,{setSubmitting,props}) =>{
+        console.log("submit")
         setSubmitting(true);
 
         await props.handler.verifyUser(new UserVerificationEntity({

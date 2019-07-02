@@ -33,6 +33,7 @@ export class UserHandler implements IUserHandler {
 
     async verifyUser(info:UserVerificationEntity) : Promise<UserEntity> {
         try {
+            console.log("API")
             return await APIHandler(`api/User/Verify`, {
                 headers: {"Content-Type" : "application/json"},
                 method: "POST",

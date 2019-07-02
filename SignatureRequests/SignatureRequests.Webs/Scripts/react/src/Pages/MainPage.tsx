@@ -4,24 +4,30 @@ import { Layout } from 'antd';
 import * as routes from './Routing/routes';
 import Navigation from './Navigation';
 import UserType from '../Util/Enums/UserTypes';
-import Login from './login/Login';
-
+import MainPageUser from '../Entities/MainPageUser';
+import withUser from '../Components/User/withUser';
 
 export interface MainPageProps {
     
 }
  
 export interface MainPageState {
-    user: UserType
+    user: MainPageUser
 }
 const ALL_ROUTES = routes.All;
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
     state : MainPageState= { 
-        user: UserType.UNKNOWN
+        user: new MainPageUser({
+            id: -1,
+            role:"" ,
+            name:"" ,
+            email:"" ,
+            type:UserType.UNKNOWN,
+        })
     }
 
-    changeUser = (User: UserType) =>{
+    changeUser = (User: MainPageUser) =>{
         this.setState({
             user:User
         })
@@ -34,27 +40,26 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             <Router >
                 <Layout style = {{height:'100%'}}>
                     <Layout.Header>
-                        <Navigation userType = {this.state.user}></Navigation>
+                        <Navigation userType = {this.state.user.type}></Navigation>
                     </Layout.Header>
                    <Layout.Content>
                         {
-   
                                 <Switch>
                                 {
                                 ALL_ROUTES.map((route,i) => {
+                                    const WithUser = withUser(route.component);
                                     return (
                                     <Route 
                                     key={i} 
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    component={route.component} 
+                                    component={WithUser} 
                                     />
                                     )
                                 })
                                 }
                                 </Switch> 
-                            
                         }
                    </Layout.Content>
                 </Layout>
