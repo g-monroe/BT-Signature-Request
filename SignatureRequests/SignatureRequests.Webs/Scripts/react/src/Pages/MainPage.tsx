@@ -7,7 +7,7 @@ import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
 import withUser from '../Components/WrapperComponents/withUser';
 import withNavigation from '../Components/WrapperComponents/withNavigation';
-import Welcome from './Welcome/Welcome'
+
 
 export interface MainPageProps {
     
@@ -54,14 +54,14 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                     path={route.path} 
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
-                                    component={withNav} 
+                                    component={WithUser} 
                                     />
                                     )
                                 })
                                 }
                                 </Switch> 
                         }
-                        <Welcome></Welcome>
+                                                  
                    </Layout.Content>
                 </Layout>
             </Router>

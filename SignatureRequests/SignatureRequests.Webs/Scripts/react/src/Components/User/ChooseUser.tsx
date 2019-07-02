@@ -15,24 +15,18 @@ export interface IChooseUserState {
  
 class ChooseUser extends React.Component<IChooseUserProps, IChooseUserState> {
 
-    chooseUserType = (newUser: UserType) =>{
-        this.props.changeUser(newUser)
-    }
-
 
     render() { 
         return (
             <div id = 'flex-container'>
-                <Card id = 'categoryBox' title = 'Signer'>
-                    <p>Choose this option to view the app </p>
-                    <Button id = 'Button' onClick = {() =>this.chooseUserType(UserType.REGISTERED)}>
+                <Card id = 'categoryBox'  title = 'Login'>
+                    <p>This is a temp login. You will not log in as a specific user</p>
+                    <Button  id = 'Button' onClick = {() =>this.props.changeUser(UserType.REGISTERED)}>
                         <Link to = {routes.REQUESTER._Dashboard.link}> 
                             Select
                         </Link>
                     </Button>
                 </Card>
-
-
             </div>
 
           );

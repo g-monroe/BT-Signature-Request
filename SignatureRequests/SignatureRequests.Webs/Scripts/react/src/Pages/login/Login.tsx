@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Layout, Modal, Button } from 'antd';
-import ChooseUser from '../../Components/User/ChooseUser';
 import UserType from '../../Util/Enums/UserTypes';
 import LoginForm from '../../Components/LogIn-SignUp/LoginForm';
 import { UserHandler, IUserHandler } from '../../Handlers/UserHandler';
@@ -8,6 +7,7 @@ import UserEntity from '../../Entities/UserEntity';
 import { Link } from 'react-router-dom';
 import * as routes from '../Routing/routes';
 import MainPageUser from '../../Entities/MainPageUser';
+import ChooseUser from '../../Components/User/ChooseUser';
 
 
 export interface ILoginProps {
@@ -20,12 +20,13 @@ export interface ILoginState {
     error?:any,
     visible:boolean
 }
- 
-class Login extends React.Component<ILoginProps, ILoginState> {
 
+
+
+class Login extends React.Component<ILoginProps, ILoginState> {
     state : ILoginState = {
         error:<></>,
-        visible:false
+        visible:true
     }
 
 
@@ -55,6 +56,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         console.log(user)
     }
 
+
+
     render() { 
         return ( 
                 <Layout>
@@ -71,7 +74,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             {this.state.error}
                         </div>
                         <h1 id = 'HeaderText'>Choose User Type</h1>
-                        {/* <ChooseUser changeUser={this.props.userSelected}></ChooseUser> */}
+                        <ChooseUser changeUser={this.props.userSelected}></ChooseUser>
                         {console.log("TEST",this.state.visible)}
                         
                           
