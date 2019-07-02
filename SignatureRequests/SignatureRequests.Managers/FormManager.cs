@@ -1,4 +1,5 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SautinSoft.Document;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -59,6 +60,9 @@ namespace SignatureRequests.Managers
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
                     buffer);
+                DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename);
+                DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+                dp.Pages[0].Rasterize(800, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename + ".png");
             }
         }
         public FormEntity UpdateForm(FormEntity form, FormEntity newForm)

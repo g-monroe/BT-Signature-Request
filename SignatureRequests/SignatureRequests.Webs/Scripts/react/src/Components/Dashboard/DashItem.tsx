@@ -94,7 +94,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-            <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" alt = "Preview"/>
+            <img className="preview-doc" src={"../../../../../assets/v1/documents/" + formEntity.filePath + ".png"} alt = "Preview"/>
         </div>
         <div className="activity-content header-item">
         <label className="ribbon right success"><span>{formEntity.createDate}</span></label>
