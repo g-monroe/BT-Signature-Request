@@ -11,21 +11,56 @@ const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
     formEntity: FormEntity;
+    isOwner: boolean;
 }
  
 export interface IDashItemState {
     checked:boolean;
+    progressBar:number;
+    tags: TagItem[];
 }
 
 class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    state:IDashItemState = {
-     checked: false
+     checked: false,
+     progressBar: 0,
+     tags: []
    }
   
    handleMultiSelect = (e: any) =>{
       this.setState({
         checked: !this.state.checked
       });
+   }
+   componentDidMount(){
+    const {formEntity} = this.props;
+    const { tags } = this.state;
+    if (formEntity.groups.count === 0){
+      const newTag = new TagItem("#000", "#fff", "Nothing found!");
+      tags.push(newTag);
+    }else{
+      let totalRequests = 0;
+      let totalDoneRequests = 0;
+      formEntity.groups.collection.map((group) => {
+        totalRequests = group.requests.count;
+        group.requests.collection.map((con) => {
+          let tagText = new String(con.signer.name).concat(": ").concat(con.status).concat("(").concat(con.sentDate.toString()).concat(")");
+          let color = "#fff";
+          if (con.status == "Done"){
+            color = "#3CB371";
+            totalDoneRequests += 1;
+          }
+          if (con.boxes.count != 0){
+            tagText = new String(con.signer.name).concat(": ").concat(con.boxes.count.toString()).concat(" - ").concat(con.status).concat("(").concat(con.sentDate.toString()).concat(")");
+          }
+          const newTag = new TagItem("#000", color, tagText);
+          tags.push(newTag);
+        })
+      })
+      this.setState({
+        progressBar: (totalDoneRequests / totalRequests) * 100
+      })
+    }
    }
    renderTags = (e:TagItem[]) =>{
     return e.map((tag, index) =>
@@ -38,20 +73,19 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
   }
   render() {
     const { checked } = this.state;
-    const {formEntity} = this.props;
-    let iconCheck = faSquare;
-    let tags = [];
+    const { formEntity, isOwner } = this.props;
+      
+    
+    let iconCheck = faSquare; 
     if (checked){
       iconCheck = faCheckSquare;
     }
-    if (formEntity.groups.count === 0){
-      const newTag = new TagItem("#000", "#fff", "Nothing found!");
-      tags.push(newTag);
-    }else{
-      formEntity.groups.collection.map((request) => {
-        const newTag = new TagItem("#000", "#fff", request.id.toString());
-        tags.push(newTag);
-      })
+    let options = <>
+    <button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
+    <button style={{color:'#222'}} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
+    <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={ iconCheck } /></button></>;
+    if (!isOwner){
+      options = <><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></>
     }
     return (
       <div style={{display: "inline-block"}} className="DashItem">
@@ -61,7 +95,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
             <img className="preview-doc" src="https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" alt = "Preview"/>
         </div>
         <div className="activity-content header-item">
-        <label className="ribbon right success"><span>Billing</span></label>
+        <label className="ribbon right success"><span>{formEntity.createDate}</span></label>
         <h5 style={{marginBottom:"0px"}} className="block-head">{formEntity.title}</h5>
         <div className="content-left">
 
@@ -72,24 +106,21 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           <TabPane tab="Details" key="2">
           <ul className="tag-list">
             {
-                this.renderTags(tags)
+              this.renderTags(this.state.tags)
             }
         </ul>
           </TabPane>
         </Tabs>
-        <Progress width={70} type="dashboard" percent={75} />
+        <Progress width={70} type="dashboard" percent={this.state.progressBar} />
         </div>
         <div className="content-right">
-            <button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
-            <button style={{color:'#222'}} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
-            <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={ iconCheck } /></button>
-        </div>
+            {options}
+          </div>
         </div>
         </div>
       </div>
     );
-   
-  }
+   }
 }
 
 export default DashItem;

@@ -13,8 +13,8 @@ class RequestEntity {
 
   constructor(data: any) {
     this.id = data.Id;
-    this.signer = data.Signer;
-    this.requestor = data.Requestor;
+    this.signer = new UserEntity(data.Signer);
+    this.requestor = new UserEntity(data.Requestor);
     this.form = data.Form;
     this.status = data.Status;
     this.sentDate = data.SentDate;

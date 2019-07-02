@@ -51,11 +51,24 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         }
                     }
                      return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form}/>
+                          <DashItem key={index} formEntity={form} isOwner={false}/>
                 ));
                 }else{
-                    return displayedForms.map((form, index) => 
-                            (<DashItem key={index} formEntity={form}/>));
+                    let filteredForms = [];
+                    for(var i = 0; i<tableData.length; i++){
+                        if (tableData[i].groups.count != 0){
+                            let filteredGroups = tableData[i].groups.collection;
+                            for(var inn = 0; inn<filteredGroups.length; inn++){
+                                if (filteredGroups[inn].requests != null){
+                                    filteredForms.push(tableData[i]);
+                                }
+                            }
+                        }
+                    }
+                    return filteredForms.map((form, index) =>
+
+                            (<DashItem key={index} formEntity={form} isOwner={false}/>
+                           ));
                 }
             }
         }

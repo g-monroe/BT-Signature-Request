@@ -6,13 +6,13 @@ class GroupResponse {
     id: number;
     form: FormEntity;
     formId: number;
-    requests?: RequestResponseList[];
+    requests: RequestResponseList;
   
     constructor(data: any) {
       this.id = data.Id;
       this.form = data.FormEntity;
       this.formId = data.FormId;
-      this.requests = data.RequestEntities;
+      this.requests = new RequestResponseList(data.RequestEntities);
     }
   }
   
