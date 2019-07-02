@@ -16,12 +16,14 @@ namespace SignatureRequests.Managers
         private readonly IRequestHandler _requestHandler;
         private readonly IUserHandler _userHandler;
         private readonly IFormHandler _formHandler;
+        private readonly IGroupManager _groupManager;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupManager groupManager)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
             _formHandler = formHandler;
+            _groupManager = groupManager;
         }
 
         public RequestResponseList GetRequests()
@@ -53,6 +55,8 @@ namespace SignatureRequests.Managers
         {
             request.Signer = newRequest.Signer;
             request.SignerId = newRequest.SignerId;
+            request.Group = newRequest.Group;
+            request.GroupId = newRequest.GroupId;
             request.Requestor = newRequest.Requestor;
             request.RequestorId = newRequest.RequestorId;
             request.Status = newRequest.Status;
@@ -93,7 +97,7 @@ namespace SignatureRequests.Managers
             var result = UpdateRequest(currentRequest, updating);
             return RequestToListItem(result);
         }
-        private RequestResponse RequestToListItem(RequestEntity request)
+        public RequestResponse RequestToListItem(RequestEntity request)
         {
             var respBoxes = new BoxResponseList
             {
@@ -128,6 +132,8 @@ namespace SignatureRequests.Managers
                 Id = request.Id,
                 Signer = request.Signer,
                 SignerId = request.SignerId,
+                Group = _groupManager.GroupToListItem(request.Group),
+                GroupId = request.GroupId,
                 Requestor = request.Requestor,
                 RequestorId = request.RequestorId,
                 Status = request.Status,
@@ -135,7 +141,7 @@ namespace SignatureRequests.Managers
                 Boxes = respBoxes
             };
         }
-        private RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
+        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
         {
             if (updating == null)
             {
@@ -144,6 +150,8 @@ namespace SignatureRequests.Managers
             updating.Id = request.Id;
             updating.Signer = _userHandler.GetById(request.SignerId);
             updating.SignerId = request.SignerId;
+            updating.Group = _groupManager.RequestToEntity(request.Group, null);
+            updating.GroupId = request.GroupId;
             updating.Requestor = _userHandler.GetById(request.RequestorId);
             updating.RequestorId = request.RequestorId;
             updating.Status = request.Status;

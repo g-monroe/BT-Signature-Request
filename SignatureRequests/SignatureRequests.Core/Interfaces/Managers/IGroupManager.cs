@@ -13,9 +13,20 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IGroupManager
     {
         GroupResponseList GetGroups();
-        GroupResponseList GetGroupsById(int id);
+        GroupResponseList GetGroupByFormId(int id);
+        GroupResponseList GetGroupById(int id);
         GroupEntity CreateGroupEntity(GroupEntity newGroup);
         GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup);
         void Delete(int id);
+        GroupResponseList GroupToListResponse(GroupEntity group);
+        GroupEntity GetGroup(int id);
+        GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
+        GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
+        GroupResponse GroupToListItem(GroupEntity group);
+        GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating);
+
+
+
+
     }
 }

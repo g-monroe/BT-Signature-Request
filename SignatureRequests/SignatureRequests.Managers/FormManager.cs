@@ -91,6 +91,7 @@ namespace SignatureRequests.Managers
             {
                 resp.FormsList.Add(FormToListItem(form));
             }
+
             return resp;
         }
         public FormResponseList FormToListResponse(FormEntity form)
@@ -118,20 +119,20 @@ namespace SignatureRequests.Managers
             var result = UpdateForm(currentForm, updating);
             return FormToListItem(result);
         }
-        private FormResponse FormToListItem(FormEntity form)
+        public FormResponse FormToListItem(FormEntity form)
         {
-            var resp = new GroupResponseList
-            {
-                TotalResults = form.GroupEntities.Count(),
-                GorupsList = new List<GroupResponse>()
-            };
             if (form.GroupEntities == null)
             {
                 form.GroupEntities = new List<GroupEntity>();
             }
+            var resp = new GroupResponseList
+            {
+                TotalResults = form.GroupEntities.Count(),
+                GroupsList = new List<GroupResponse>()
+            };
             foreach (GroupEntity group in form.GroupEntities)
             {
-                resp.GorupsList.Add(_groupEngine.GroupToListItem(group));
+                resp.GroupsList.Add(_groupEngine.GroupToListItem(group));
             }
              return new FormResponse()
             {

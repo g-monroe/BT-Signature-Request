@@ -8,6 +8,7 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
     public interface IGroupHandler : IBaseHandler<GroupEntity>
     {
         IEnumerable<GroupEntity> GetAllByFormId(int id);
+        IEnumerable<GroupEntity> GetGroupById(int id);
         IEnumerable<GroupEntity> GetAllInclude();
     }
 }

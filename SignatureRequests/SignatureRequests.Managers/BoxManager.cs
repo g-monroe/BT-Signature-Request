@@ -14,9 +14,12 @@ namespace SignatureRequests.Managers
     public class BoxManager : IBoxManager
     {
         private readonly IBoxHandler _boxHandler;
-        public BoxManager(IBoxHandler boxHandler)
+        private readonly IRequestManager _requestManager;
+        public BoxManager(IBoxHandler boxHandler, IRequestManager requestManager)
         {
             _boxHandler = boxHandler;
+            _requestManager = requestManager;
+
         }
         public BoxResponse CreateBoxEntity(BoxRequest newBox)
         {
@@ -99,7 +102,7 @@ namespace SignatureRequests.Managers
                 Type = me.Type,
                 SignerType = me.SignerType,
                 SignedStatus = me.SignedStatus,
-                Request = me.Request,
+                Request = _requestManager.RequestToListItem(me.Request),
                 RequestId = me.RequestId,
                 Signature = me.Signature,
                 SignatureId = me.SignatureId,
@@ -119,7 +122,7 @@ namespace SignatureRequests.Managers
             updating.Type = me.Type;
             updating.SignerType = me.SignerType;
             updating.SignedStatus = me.SignedStatus;
-            updating.Request = me.Request;
+            updating.Request = _requestManager.RequestToEntity(me.Request, null);
             updating.RequestId = me.RequestId;
             updating.Signature = me.Signature;
             updating.SignatureId = me.SignatureId;

@@ -5,6 +5,7 @@ import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
 import { resolve } from 'path';
+import GroupResponseList from '../../../Entities/GroupResponseList';
 
 export interface ICreateProps {
     currentUser?: UserEntity;

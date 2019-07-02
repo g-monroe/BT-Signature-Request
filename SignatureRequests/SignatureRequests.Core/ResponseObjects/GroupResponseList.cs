@@ -9,6 +9,6 @@ namespace SignatureRequests.Core.ResponseObjects
     public class GroupResponseList
     {
         public int TotalResults { get; set; }
-        public List<GroupResponse> GorupsList { get; set; }
+        public List<GroupResponse> GroupsList { get; set; }
     }
 }

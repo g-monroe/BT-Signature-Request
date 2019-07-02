@@ -15,6 +15,10 @@ namespace SignatureRequests.Core.Entities
 
         public int SignerId { get; set; }
 
+        [Required]
+        public virtual GroupEntity Group { get; set; }
+
+        public int GroupId { get; set; }
         
         [Required]
         public virtual UserEntity Requestor { get; set; }

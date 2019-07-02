@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.Engines;
+using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace SignatureRequests.Engines
 {
     public class GroupEngine : IGroupEngine
     {
+        public GroupEngine(IFormManager formManager)
+        {
+        }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
             if (group.RequestEntities == null)
@@ -67,7 +71,7 @@ namespace SignatureRequests.Engines
             return new GroupResponse()
             {
                 Id = group.Id,
-                FormEntity = group.Form,
+                Form = _formManager.FormToListItem(group.Form),
                 FormId = group.FormId,
                 RequestEntities = resp
             };

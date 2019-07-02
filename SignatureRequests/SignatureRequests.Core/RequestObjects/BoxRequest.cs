@@ -16,7 +16,7 @@ namespace SignatureRequests.Core.RequestObjects
         public string Type { get; set; }
         public string SignerType { get; set; }
         public string SignedStatus { get; set; }
-        public RequestEntity Request { get; set; }
+        public RequestRequest Request { get; set; }
         public int RequestId { get; set; }
         public SignatureEntity Signature { get; set; }
         public int? SignatureId { get; set; }

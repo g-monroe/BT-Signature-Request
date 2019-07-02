@@ -21,5 +21,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         RequestResponseList RequestToListResponse(IEnumerable<RequestEntity> requests);
         RequestResponse EditRequest(int id, RequestRequest request, RequestEntity updating = null);
         RequestResponse AddRequest(RequestRequest request, RequestEntity updating = null);
+        RequestResponse RequestToListItem(RequestEntity request);
+        RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating);
     }
 }

@@ -16,10 +16,16 @@ namespace SignatureRequests.Managers
     {
         private readonly IGroupHandler _groupHandler;
         private readonly IGroupEngine _groupEngine;
-        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine)
+        private readonly IRequestManager _requestManager;
+        private readonly IFormHandler _formHandler;
+        private readonly IFormManager _formManager;
+        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine, IRequestManager requestManager, IFormHandler formHandler, IFormManager formManager)
         {
             _groupHandler = groupHandler;
             _groupEngine = groupEngine;
+            _requestManager = requestManager;
+            _formHandler = formHandler;
+            _formManager = formManager;
         }
 
         public GroupEntity CreateGroupEntity(GroupEntity newGroup)
@@ -36,9 +42,14 @@ namespace SignatureRequests.Managers
             _groupHandler.SaveChanges();
         }
 
-        public GroupResponseList GetGroupsById(int id)
+        public GroupResponseList GetGroupByFormId(int id)
         {
-            return GroupToListResponse(_groupHandler.GetAllByFormId(id));
+            return GroupsToListResponse(_groupHandler.GetAllByFormId(id));
+        }
+
+        public GroupResponseList GetGroupById(int id)
+        {
+            return GroupsToListResponse(_groupHandler.GetGroupById(id));
         }
 
         public GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup)
@@ -50,24 +61,88 @@ namespace SignatureRequests.Managers
             return group;
         }
 
-        private GroupResponseList GroupToListResponse(IEnumerable<GroupEntity> groups)
+        private GroupResponseList GroupsToListResponse(IEnumerable<GroupEntity> groups)
         {
             var resp = new GroupResponseList
             {
                 TotalResults = groups.Count(),
-                GorupsList = new List<GroupResponse>()
+                GroupsList = new List<GroupResponse>()
             };
             foreach (GroupEntity request in groups)
             {
-                resp.GorupsList.Add(_groupEngine.GroupToListItem(request));
+                resp.GroupsList.Add(_groupEngine.GroupToListItem(request));
             }
             return resp;
         }
-      
+
+        public GroupResponseList GroupToListResponse(GroupEntity group)
+        {
+            var resp = new GroupResponseList
+            {
+                TotalResults = 1,
+                GroupsList = new List<GroupResponse>()
+            };
+
+            resp.GroupsList.Add(GroupToListItem(group));
+
+            return resp;
+        }
 
         public GroupResponseList GetGroups()
         {
-            return GroupToListResponse(_groupHandler.GetAllInclude());
+            return GroupsToListResponse(_groupHandler.GetAllInclude());
+        }
+        public GroupEntity GetGroup(int id)
+        {
+            return _groupHandler.GetById(id);
+        }
+        public GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null)
+        {
+            var newEntity = RequestToEntity(group, updating);
+            var entity = CreateGroupEntity(newEntity);
+            return GroupToListItem(entity);
+        }
+
+        public GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null)
+        {
+            updating = RequestToEntity(group, updating);
+            var currentGroup = GetGroup(id);
+            var result = UpdateGroup(currentGroup, updating);
+            return GroupToListItem(result);
+        }
+        public GroupResponse GroupToListItem(GroupEntity group)
+        {
+            if (group.RequestEntities == null)
+            {
+                group.RequestEntities = new List<RequestEntity>();
+            }
+            var resp = new RequestResponseList
+            {
+                TotalResults = group.RequestEntities.Count(),
+                RequestsList = new List<RequestResponse>()
+            };
+            foreach (RequestEntity request in group.RequestEntities)
+            {
+                resp.RequestsList.Add(_requestManager.RequestToListItem(request));
+            }
+            return new GroupResponse()
+            {
+                Id = group.Id,
+                Form = _formManager.FormToListItem(group.Form),
+                FormId = group.FormId,
+                RequestEntities = resp
+            };
+        }
+        public GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating)
+        {
+            if (updating == null)
+            {
+                updating = new GroupEntity();
+            }
+            updating.Id = group.Id;
+            updating.Form = _formHandler.GetById(group.FormId);
+            updating.FormId = group.FormId;
+            return updating;
         }
     }
 }
