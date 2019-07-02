@@ -6,7 +6,6 @@ import { UserHandler, IUserHandler } from '../../Handlers/UserHandler';
 import UserEntity from '../../Entities/UserEntity';
 import { Link } from 'react-router-dom';
 import * as routes from '../Routing/routes';
-import MainPageUser from '../../Entities/MainPageUser';
 import ChooseUser from '../../Components/User/ChooseUser';
 import ContextUserObject from '../../Components/WrapperComponents/ContextUserObject';
 
@@ -17,16 +16,14 @@ export interface ILoginProps {
 }
  
 export interface ILoginState {
-    error?:any,
-    visible:boolean
+    error?:any
 }
 
 
 
 class Login extends React.Component<ILoginProps, ILoginState> {
     state : ILoginState = {
-        error:<></>,
-        visible:false
+        error:<></>
     }
 
 
@@ -47,10 +44,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                  email: user.email,
                  type: UserType.REGISTERED
              });
-             console.log(this.state.visible, "In log in")
-            this.setState({
-                visible:true
-            });
         }
     }
 
@@ -80,11 +73,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                         </div>
                         <h1 id = 'HeaderText'>Choose User Type</h1>
                         <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
-                        
-                          {console.log(this.state.visible, "In Render")}
                             <Modal
                             title = "Login Successful"
-                            visible={this.state.visible}
+                            visible={this.props.UserObject.user.id! > 0}
                             closable = {false}
                             footer = {[
                 
@@ -93,11 +84,10 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                             Continue to Dashboard
                                         </Link>
                                     </Button>   
-                
                             ]}
                         >
                             <div id = "SignUpModalContent">
-                                Welcome to the signature experiment!
+                                {this.props.UserObject.user.name}, welcome to the signature experiment!
                             </div>
                         </Modal>
                     </Layout.Content>
