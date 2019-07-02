@@ -55,6 +55,11 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 }
                                 </Switch> 
                         }
+                        {
+                            UserType.UNKNOWN === this.state.user ?
+                            <Login userSelected = {this.changeUser}></Login> :
+                            <></>
+                        }
                             
                             
                    </Layout.Content>
