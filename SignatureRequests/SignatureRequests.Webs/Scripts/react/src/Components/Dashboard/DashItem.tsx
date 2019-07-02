@@ -6,6 +6,7 @@ import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/fr
 import FormEntity from '../../Entities/FormEntity';
 import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
+import RequestStatus from '../../Util/Enums/RequestStatus';
 import '../../../node_modules/antd/dist/antd.css';
 const TabPane = Tabs.TabPane;
 
@@ -43,15 +44,16 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       let totalDoneRequests = 0;
       formEntity.groups.collection.map((group) => {
         totalRequests = group.requests.count;
-        group.requests.collection.map((con) => {
-          let tagText = new String(con.signer.name).concat(": ").concat(con.status).concat("(").concat(con.sentDate.toString()).concat(")");
+        group.requests.collection.map((request) => {
+
+          let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
           let color = "#fff";
-          if (con.status == "Done"){
+          if (request.status == RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
           }
-          if (con.boxes.count != 0){
-            tagText = new String(con.signer.name).concat(": ").concat(con.boxes.count.toString()).concat(" - ").concat(con.status).concat("(").concat(con.sentDate.toString()).concat(")");
+          if (request.boxes.count != 0){
+            tagText = `${request.signer.name}: ${request.boxes.count} - ${request.status} (${request.sentDate.toString()})`
           }
           const newTag = new TagItem("#000", color, tagText);
           tags.push(newTag);
