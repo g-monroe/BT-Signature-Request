@@ -1,5 +1,6 @@
 ﻿using SautinSoft.Document;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -55,7 +56,7 @@ namespace SignatureRequests.Managers
         {
             foreach (var file in provider.Contents)
             {
-                const string path = @"\assets\v1\documents\";
+                const string path = Constants.DocumentPath;
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
