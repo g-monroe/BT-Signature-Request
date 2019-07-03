@@ -15,12 +15,12 @@ export interface ILoginProps {
 }
  
 export interface ILoginState {
-    error?:any
+    error?:string
 }
 
 class Login extends React.Component<ILoginProps, ILoginState> {
     state : ILoginState = {
-        error:<></>
+        error:""
     }
 
     static defaultProps = {
@@ -30,7 +30,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     login = async (user:UserEntity) =>{
         if(user.id < 0){
             this.setState({
-                error:<p id = "errorText">You have entered either an incorrect username or password</p>
+                error:"You have entered either an incorrect username or password"
             })
         }else{
             await this.props.UserObject.update({
@@ -63,7 +63,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                         <div id = "SignUpContent">
                             <h1>Login Here</h1>
                             <LoginForm handler = {this.props.handler!} loginAttempt = {this.login}></LoginForm>
-                            {this.state.error}
+                            <div id = "errorText">
+                                {this.state.error}
+                            </div>
                         </div>
                         <h1 id = 'HeaderText'>Display Testing User Only</h1>
                         <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
