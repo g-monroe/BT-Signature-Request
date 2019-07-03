@@ -87,10 +87,7 @@ namespace SignatureRequests.Managers
         {
             return GroupsToListResponse(_groupHandler.GetAllInclude());
         }
-        public GroupEntity GetGroup(int id)
-        {
-            return _groupHandler.GetById(id);
-        }
+
         public GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null)
         {
             var newEntity = RequestToEntity(group, updating);
@@ -101,7 +98,7 @@ namespace SignatureRequests.Managers
         public GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null)
         {
             updating = RequestToEntity(group, updating);
-            var currentGroup = GetGroup(id);
+            var currentGroup = _groupHandler.GetById(id);
             var result = UpdateGroup(currentGroup, updating);
             return _groupEngine.GroupToListItem(result);
         }

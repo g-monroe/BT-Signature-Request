@@ -7,6 +7,7 @@ using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -157,7 +158,7 @@ namespace SignatureRequests.Engines
             };
         }
 
-        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
+        public RequestEntity RequestToEntity(RequestRequest request,[Optional] RequestEntity updating)
         {
             if (updating == null)
             {

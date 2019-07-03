@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,10 +20,9 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup);
         void Delete(int id);
         GroupResponseList GroupToListResponse(GroupEntity group);
-        GroupEntity GetGroup(int id);
         GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
-        GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating);
+        GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
 
 
 

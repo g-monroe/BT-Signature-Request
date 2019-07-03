@@ -123,7 +123,7 @@ namespace SignatureRequests.Managers
             updating.Type = me.Type;
             updating.SignerType = me.SignerType;
             updating.SignedStatus = me.SignedStatus;
-            updating.Request = _groupEngine.RequestToEntity(me.Request, null);
+            updating.Request = _groupEngine.RequestToEntity(me.Request);
             updating.RequestId = me.RequestId;
             updating.Signature = me.Signature;
             updating.SignatureId = me.SignatureId;
