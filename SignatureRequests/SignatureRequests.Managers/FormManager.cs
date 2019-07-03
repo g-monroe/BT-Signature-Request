@@ -89,7 +89,7 @@ namespace SignatureRequests.Managers
 
             foreach (FormEntity form in forms)
             {
-                resp.FormsList.Add(FormToListItem(form));
+                resp.FormsList.Add(_groupEngine.FormToListItem(form));
             }
 
             return resp;
@@ -102,7 +102,7 @@ namespace SignatureRequests.Managers
                 FormsList = new List<FormResponse>()
             };
             
-            resp.FormsList.Add(FormToListItem(form));
+            resp.FormsList.Add(_groupEngine.FormToListItem(form));
             
             return resp;
         }
@@ -110,42 +110,16 @@ namespace SignatureRequests.Managers
         {
             var newEntity = RequestToEntity(form, updating);
             var entity = CreateFormEntity(newEntity);
-            return FormToListItem(entity);
+            return _groupEngine.FormToListItem(entity);
         }
         public FormResponse EditForm(int id, FormRequest form, FormEntity updating = null)
         {
             updating = RequestToEntity(form, updating);
             var currentForm = GetForm(id);
             var result = UpdateForm(currentForm, updating);
-            return FormToListItem(result);
+            return _groupEngine.FormToListItem(result);
         }
-        public FormResponse FormToListItem(FormEntity form)
-        {
-            if (form.GroupEntities == null)
-            {
-                form.GroupEntities = new List<GroupEntity>();
-            }
-            var resp = new GroupResponseList
-            {
-                TotalResults = form.GroupEntities.Count(),
-                GroupsList = new List<GroupResponse>()
-            };
-            foreach (GroupEntity group in form.GroupEntities)
-            {
-                resp.GroupsList.Add(_groupEngine.GroupToListItem(group));
-            }
-             return new FormResponse()
-            {
-                Id = form.Id,
-                CreateDate = form.CreateDate,
-                Description = form.Description,
-                FilePath = form.FilePath,
-                Title = form.Title,
-                User = form.User,
-                UserId = form.UserId,
-                GroupEntities = resp
-            };
-        }
+      
         private FormEntity RequestToEntity(FormRequest form, FormEntity updating)
         {
             if (updating == null)

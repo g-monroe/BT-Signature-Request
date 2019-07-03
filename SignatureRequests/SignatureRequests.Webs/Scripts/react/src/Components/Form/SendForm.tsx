@@ -113,7 +113,6 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     
     for(let i=0; i<this.state.selectedForms!.length; i++){
       let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id})));
-      console.log("group test");
       for(let j=0; j<this.state.selectedUsers!.length; j++){ 
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 

@@ -79,7 +79,7 @@ namespace SignatureRequests.Managers
                 GroupsList = new List<GroupResponse>()
             };
 
-            resp.GroupsList.Add(GroupToListItem(group));
+            resp.GroupsList.Add(_groupEngine.GroupToListItem(group));
 
             return resp;
         }
@@ -96,7 +96,7 @@ namespace SignatureRequests.Managers
         {
             var newEntity = RequestToEntity(group, updating);
             var entity = CreateGroupEntity(newEntity);
-            return GroupToListItem(entity);
+            return _groupEngine.GroupToListItem(entity);
         }
 
         public GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null)
@@ -104,31 +104,9 @@ namespace SignatureRequests.Managers
             updating = RequestToEntity(group, updating);
             var currentGroup = GetGroup(id);
             var result = UpdateGroup(currentGroup, updating);
-            return GroupToListItem(result);
+            return _groupEngine.GroupToListItem(result);
         }
-        public GroupResponse GroupToListItem(GroupEntity group)
-        {
-            if (group.RequestEntities == null)
-            {
-                group.RequestEntities = new List<RequestEntity>();
-            }
-            var resp = new RequestResponseList
-            {
-                TotalResults = group.RequestEntities.Count(),
-                RequestsList = new List<RequestResponse>()
-            };
-            foreach (RequestEntity request in group.RequestEntities)
-            {
-                resp.RequestsList.Add(_groupEngine.RequestToListItem(request));
-            }
-            return new GroupResponse()
-            {
-                Id = group.Id,
-                Form = _groupEngine.FormToListItem(group.Form),
-                FormId = group.FormId,
-                RequestEntities = resp
-            };
-        }
+        
         public GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating)
         {
             if (updating == null)

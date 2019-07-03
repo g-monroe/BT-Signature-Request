@@ -22,7 +22,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupEntity GetGroup(int id);
         GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
-        GroupResponse GroupToListItem(GroupEntity group);
         GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating);
 
 

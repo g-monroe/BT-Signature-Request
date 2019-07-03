@@ -1,6 +1,8 @@
 ﻿using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
+using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,14 @@ namespace SignatureRequests.Engines
 {
     public class GroupEngine : IGroupEngine
     {
+        private readonly IUserHandler _userHandler;
+        private readonly IGroupHandler _groupHandler;
+
+        public GroupEngine(IUserHandler userHandler, IGroupHandler groupHandler)
+        {
+            _userHandler = userHandler;
+            _groupHandler = groupHandler;
+        }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
             if (group.RequestEntities == null)
@@ -145,6 +155,24 @@ namespace SignatureRequests.Engines
                 SentDate = request.SentDate,
                 Boxes = respBoxes
             };
+        }
+
+        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
+        {
+            if (updating == null)
+            {
+                updating = new RequestEntity();
+            }
+            updating.Id = request.Id;
+            updating.Signer = _userHandler.GetById(request.SignerId);
+            updating.SignerId = request.SignerId;
+            updating.Group = _groupHandler.GetById(request.GroupId);
+            updating.GroupId = request.GroupId;
+            updating.Requestor = _userHandler.GetById(request.RequestorId);
+            updating.RequestorId = request.RequestorId;
+            updating.Status = request.Status;
+            updating.SentDate = request.SentDate;
+            return updating;
         }
     }
 }
