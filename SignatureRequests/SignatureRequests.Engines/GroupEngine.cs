@@ -158,7 +158,7 @@ namespace SignatureRequests.Engines
             };
         }
 
-        public RequestEntity RequestToEntity(RequestRequest request,[Optional] RequestEntity updating)
+        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating = null)
         {
             if (updating == null)
             {
