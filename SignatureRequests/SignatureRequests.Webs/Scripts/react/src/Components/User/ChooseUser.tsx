@@ -20,7 +20,9 @@ class ChooseUser extends React.Component<IChooseUserProps, IChooseUserState> {
         return (
             <div id = 'flex-container'>
                 <Card id = 'categoryBox'  title = 'Login'>
-                    <p>This is a temp login. You will not log in as a specific user</p>
+                    <p>This will log you in as a user with:</p>
+                    <p>id:1, role: "Role here", name: "Max Min", email: "MM@gmail.com"</p>
+                    <p>This is not stored in the database</p>
                     <Button  id = 'Button' onClick = {() =>this.props.changeUser(UserType.REGISTERED)}>
                         <Link to = {routes.REQUESTER._Dashboard.link}> 
                             Select

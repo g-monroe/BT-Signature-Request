@@ -92,6 +92,22 @@ namespace SignatureRequests.Managers
             var result = UserToListItem(user);
             return result;
         }
+
+        public UserResponse Verify(UserVerificationRequest info)
+        {
+            var user = _userHandler.GetByName(info.name);
+
+            if(user != null && user.Password == info.password)
+            {
+                return UserToListItem(user);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
         public UserResponseList UserToListResponse(IEnumerable<UserEntity> me)
         {
             var resp = new UserResponseList

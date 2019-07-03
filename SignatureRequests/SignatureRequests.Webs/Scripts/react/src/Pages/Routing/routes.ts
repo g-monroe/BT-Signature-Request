@@ -6,8 +6,8 @@ import UserType from '../../Util/Enums/UserTypes';
 
 export const COMMON = {
     "_Login":{
-        path: "/login",
-        link:"/login",
+        path: "/",
+        link:"/",
         breadcrumbName:"Login",
         component:Pages.Login,
         hasNavBar:true,
