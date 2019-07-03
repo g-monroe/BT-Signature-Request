@@ -12,10 +12,10 @@ namespace SignatureRequests.Core.ResponseObjects
         public int Id { get; set; }
         public virtual UserEntity Signer { get; set; }
         public int SignerId { get; set; }
+        public virtual GroupResponse Group { get; set; }
+        public int GroupId { get; set; }
         public virtual UserEntity Requestor { get; set; }
         public int RequestorId { get; set; }
-        public virtual FormEntity Form { get; set; }
-        public int FormId { get; set; }
         public string Status { get; set; }
         public DateTime SentDate { get; set; }
         public BoxResponseList Boxes { get; set; }

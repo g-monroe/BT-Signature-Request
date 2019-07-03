@@ -1,4 +1,5 @@
 ﻿using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,6 @@ namespace SignatureRequests.Core.RequestObjects
         public virtual UserEntity User { get; set; }
 
         public int UserId { get; set; }
+
     }
 }

@@ -10,7 +10,7 @@ class GroupEntity {
 
   constructor(data: any) {
     this.id = data.Id;
-    this.form = data.FormEntity;
+    this.form = data.Form;
     this.formId = data.FormId;
     this.requests = new RequestResponseList(data.RequestEntities);
   }

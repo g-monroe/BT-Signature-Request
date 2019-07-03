@@ -10,9 +10,7 @@ namespace SignatureRequests.Core.RequestObjects
     public class GroupRequest
     {
         public int Id { get; set; }
-        public RequestEntity Request { get; set; }
-        public int RequestId { get; set; }
-        public FormEntity FormEntity { get; set; }
+        public FormRequest Form { get; set; }
         public int FormId { get; set; }
     }
 }

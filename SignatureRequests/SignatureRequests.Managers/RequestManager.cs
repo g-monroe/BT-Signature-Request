@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -16,12 +17,16 @@ namespace SignatureRequests.Managers
         private readonly IRequestHandler _requestHandler;
         private readonly IUserHandler _userHandler;
         private readonly IFormHandler _formHandler;
+        private readonly IGroupEngine _groupEngine;
+        private readonly IGroupHandler _groupHandler;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
             _formHandler = formHandler;
+            _groupEngine = groupEngine;
+            _groupHandler = groupHandler;
         }
 
         public RequestResponseList GetRequests()
@@ -53,6 +58,8 @@ namespace SignatureRequests.Managers
         {
             request.Signer = newRequest.Signer;
             request.SignerId = newRequest.SignerId;
+            request.Group = newRequest.Group;
+            request.GroupId = newRequest.GroupId;
             request.Requestor = newRequest.Requestor;
             request.RequestorId = newRequest.RequestorId;
             request.Status = newRequest.Status;
@@ -76,79 +83,23 @@ namespace SignatureRequests.Managers
             };
             foreach (RequestEntity request in requests)
             {
-                resp.RequestsList.Add(RequestToListItem(request));
+                resp.RequestsList.Add(_groupEngine.RequestToListItem(request));
             }
             return resp;
         }
         public RequestResponse AddRequest(RequestRequest request, RequestEntity updating = null)
         {
-            var newEntity = RequestToEntity(request, updating);
+            var newEntity = _groupEngine.RequestToEntity(request, updating);
             var entity = CreateRequestEntity(newEntity);
-            return RequestToListItem(entity);
+            return _groupEngine.RequestToListItem(entity);
         }
         public RequestResponse EditRequest(int id, RequestRequest request, RequestEntity updating = null)
         {
-            updating = RequestToEntity(request, updating);
+            updating = _groupEngine.RequestToEntity(request, updating);
             var currentRequest = GetRequest(id);
             var result = UpdateRequest(currentRequest, updating);
-            return RequestToListItem(result);
+            return _groupEngine.RequestToListItem(result);
         }
-        private RequestResponse RequestToListItem(RequestEntity request)
-        {
-            var respBoxes = new BoxResponseList
-            {
-                TotalResults = 0,
-                BoxesList = new List<BoxResponse>()
-            };
-            if (request.BoxEntities == null)
-            {
-                request.BoxEntities = new List<BoxEntity>();
-            }
-            foreach (BoxEntity box in request.BoxEntities)
-            {
-                var item = new BoxResponse()
-                {
-                    Id = box.Id,
-                    X = box.X,
-                    Y = box.Y,
-                    Width = box.Width,
-                    Length = box.Length,
-                    Type = box.Type,
-                    SignerType = box.SignerType,
-                    SignedStatus = box.SignedStatus,
-                    Request = null,
-                    RequestId = box.RequestId,
-                    Signature = box.Signature,
-                    SignatureId = box.SignatureId,
-                };
-                respBoxes.BoxesList.Add(item);
-            }
-            return new RequestResponse()
-            {
-                Id = request.Id,
-                Signer = request.Signer,
-                SignerId = request.SignerId,
-                Requestor = request.Requestor,
-                RequestorId = request.RequestorId,
-                Status = request.Status,
-                SentDate = request.SentDate,
-                Boxes = respBoxes
-            };
-        }
-        private RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating)
-        {
-            if (updating == null)
-            {
-                updating = new RequestEntity();
-            }
-            updating.Id = request.Id;
-            updating.Signer = _userHandler.GetById(request.SignerId);
-            updating.SignerId = request.SignerId;
-            updating.Requestor = _userHandler.GetById(request.RequestorId);
-            updating.RequestorId = request.RequestorId;
-            updating.Status = request.Status;
-            updating.SentDate = request.SentDate;
-            return updating;
-        }
+        
     }
 }

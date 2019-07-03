@@ -1,9 +1,13 @@
 ﻿using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
+using SignatureRequests.Core.Interfaces.Managers;
+using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +15,14 @@ namespace SignatureRequests.Engines
 {
     public class GroupEngine : IGroupEngine
     {
+        private readonly IUserHandler _userHandler;
+        private readonly IGroupHandler _groupHandler;
+
+        public GroupEngine(IUserHandler userHandler, IGroupHandler groupHandler)
+        {
+            _userHandler = userHandler;
+            _groupHandler = groupHandler;
+        }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
             if (group.RequestEntities == null)
@@ -67,10 +79,101 @@ namespace SignatureRequests.Engines
             return new GroupResponse()
             {
                 Id = group.Id,
-                FormEntity = group.Form,
+                Form = FormToListItem(group.Form),
                 FormId = group.FormId,
                 RequestEntities = resp
             };
+        }
+
+        public FormResponse FormToListItem(FormEntity form)
+        {
+            if (form.GroupEntities == null)
+            {
+                form.GroupEntities = new List<GroupEntity>();
+            }
+            var resp = new GroupResponseList
+            {
+                TotalResults = form.GroupEntities.Count(),
+                GroupsList = new List<GroupResponse>()
+            };
+            foreach (GroupEntity group in form.GroupEntities)
+            {
+                resp.GroupsList.Add(GroupToListItem(group));
+            }
+            return new FormResponse()
+            {
+                Id = form.Id,
+                CreateDate = form.CreateDate,
+                Description = form.Description,
+                FilePath = form.FilePath,
+                Title = form.Title,
+                User = form.User,
+                UserId = form.UserId,
+                GroupEntities = resp
+            };
+        }
+
+        public RequestResponse RequestToListItem(RequestEntity request)
+        {
+            var respBoxes = new BoxResponseList
+            {
+                TotalResults = 0,
+                BoxesList = new List<BoxResponse>()
+            };
+            if (request.BoxEntities == null)
+            {
+                request.BoxEntities = new List<BoxEntity>();
+            }
+            foreach (BoxEntity box in request.BoxEntities)
+            {
+                var item = new BoxResponse()
+                {
+                    Id = box.Id,
+                    X = box.X,
+                    Y = box.Y,
+                    Width = box.Width,
+                    Length = box.Length,
+                    Type = box.Type,
+                    SignerType = box.SignerType,
+                    SignedStatus = box.SignedStatus,
+                    Request = null,
+                    RequestId = box.RequestId,
+                    Signature = box.Signature,
+                    SignatureId = box.SignatureId,
+                };
+                respBoxes.BoxesList.Add(item);
+            }
+            return new RequestResponse()
+            {
+                Id = request.Id,
+                Signer = request.Signer,
+                SignerId = request.SignerId,
+                Group = GroupToListItem(request.Group),
+                GroupId = request.GroupId,
+                Requestor = request.Requestor,
+                RequestorId = request.RequestorId,
+                Status = request.Status,
+                SentDate = request.SentDate,
+                Boxes = respBoxes
+            };
+        }
+
+        public RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating = null)
+        {
+            if (updating == null)
+            {
+                updating = new RequestEntity();
+            }
+            updating.Id = request.Id;
+            updating.Signer = _userHandler.GetById(request.SignerId);
+            updating.SignerId = request.SignerId;
+            updating.Group = _groupHandler.GetById(request.GroupId);
+            updating.GroupId = request.GroupId;
+            updating.Requestor = _userHandler.GetById(request.RequestorId);
+            updating.RequestorId = request.RequestorId;
+            updating.Status = request.Status;
+            updating.SentDate = request.SentDate;
+            return updating;
         }
     }
 }

@@ -108,8 +108,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
           }
           return file;
         });
-        let path: string = '../assets/v1/documents/'
-        values.FilePath= path.concat(fileList[0].name);
+        values.FilePath= fileList[0].name;
         values.FileList= fileList[0];
         this.setState({ fileInput : fileList });
       },
