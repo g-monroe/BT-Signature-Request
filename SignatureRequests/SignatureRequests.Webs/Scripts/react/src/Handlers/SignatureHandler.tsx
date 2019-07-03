@@ -1,7 +1,6 @@
 import { APIHandler } from "./apiHandler";
 import SignatureRequest from "../Entities/SignatureRequest";
 import SignatureEntity from "../Entities/SignatureEntity";
-import { replace } from "formik";
 
 export interface ISignatureHandler {
     createSignature(entity: SignatureRequest) : Promise<SignatureEntity>;

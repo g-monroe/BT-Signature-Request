@@ -1,5 +1,4 @@
 import { APIHandler } from "./apiHandler";
-import GroupResponseList from "../Entities/GroupResponseList";
 import GroupRequest from "../Entities/GroupRequest";
 import GroupEntity from "../Entities/GroupEntity";
 

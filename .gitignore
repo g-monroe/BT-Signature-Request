@@ -353,5 +353,7 @@ MigrationBackup/
 
 /SignatureRequests/SignatureRequests.Webs/Scripts/react/build
 
-
+/SignatureRequests/SignatureRequests.Webs/assets/v1/documents
+/SignatureRequests/SignatureRequests.Webs/assets/v1/images/initials
+/SignatureRequests/SignatureRequests.Webs/assets/v1/images/signatures
 
