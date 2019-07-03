@@ -6,6 +6,7 @@ import { Form, Input, Button, Icon } from 'antd';
 import "./Login-SignUp.css"
 import { IUserHandler } from '../../Handlers/UserHandler';
 import UserEntity from '../../Entities/UserEntity';
+import ValidateStatus from '../../Util/Enums/ValidateStatus';
 
 export interface ISignUpFormProps {
     handler:IUserHandler
@@ -39,8 +40,8 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
         passwordTwo: ""
     }
 
-    getValidateStatus = (Value:any)=>{
-        return !! Value ?  'error' : 'success'
+    getValidateStatus = (Value:boolean)=>{
+        return !! Value ?  ValidateStatus.error : ValidateStatus.success
     }
       
       public clearForm = () =>{
@@ -54,7 +55,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
         return ( 
             <Form className = "SignUpForm" onSubmitCapture = {handleSubmit} layout = "horizontal">
                 <Form.Item required hasFeedback help = {errors.userName}
-                    validateStatus = {this.getValidateStatus(touched.userName && errors.userName)}
+                    validateStatus = {this.getValidateStatus((!!touched.userName) && (!!errors.userName))}
                     >
                     <Input autoFocus
                         name = "userName"
@@ -68,7 +69,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     </Input>
                 </Form.Item>
                 <Form.Item required hasFeedback  help = {errors.email}
-                    validateStatus = {this.getValidateStatus(touched.email && errors.email)}
+                    validateStatus = {this.getValidateStatus((!!touched.email) && (!!errors.email))}
                     >
                     <Input 
                         name = "email"
@@ -81,7 +82,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     </Input>
                 </Form.Item>
                 <Form.Item required hasFeedback help = {errors.role}
-                    validateStatus = {this.getValidateStatus(touched.role && errors.role)}
+                    validateStatus = {this.getValidateStatus((!!touched.role) && (!!errors.role))}
                     >
                     <Input 
                         name = "role"
@@ -94,7 +95,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     </Input>
                 </Form.Item>
                 <Form.Item required hasFeedback help = {errors.passwordOne}
-                    validateStatus = {this.getValidateStatus(touched.passwordOne && errors.passwordOne)}
+                    validateStatus = {this.getValidateStatus((!!touched.passwordOne) && (!!errors.passwordOne))}
                     >
                     <Input.Password 
                         name = "passwordOne"
@@ -107,7 +108,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                     </Input.Password>
                 </Form.Item>
                 <Form.Item required hasFeedback help = {errors.passwordTwo}
-                    validateStatus = {this.getValidateStatus(touched.passwordTwo && errors.passwordTwo)}
+                    validateStatus = {this.getValidateStatus((!!touched.passwordTwo) && (!!errors.passwordTwo))}
                     >
                     <Input.Password
                         name = "passwordTwo"

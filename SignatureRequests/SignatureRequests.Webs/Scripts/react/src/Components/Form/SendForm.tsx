@@ -5,11 +5,14 @@ import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
+import { GroupHandler, IGroupHandler } from "../../Handlers/GroupHandler";
 import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
 import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
 import BoxResponseList from "../../Entities/BoxResponseList";
+import GroupRequest from "../../Entities/GroupRequest";
+import GroupEntity from "../../Entities/GroupEntity";
 const { Option } = Select;
 const columns = [
     {
@@ -34,6 +37,7 @@ export interface ISendFormProps {
    formHandler?: IFormHandler; 
    userHandler?: IUserHandler;
    requestHandler?: IRequestHandler;
+   groupHandler?: IGroupHandler;
    currentUser?: UserEntity;
 }
 
@@ -52,6 +56,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
      formHandler: new FormHandler(),
      userHandler: new UserHandler(),
      requestHandler: new RequestHandler(),
+     groupHandler: new GroupHandler()
      
   };
   state: ISendFormState = {};
@@ -105,15 +110,16 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   }
 
   onSend = async () => {
+    
     for(let i=0; i<this.state.selectedForms!.length; i++){
+      let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id})));
       for(let j=0; j<this.state.selectedUsers!.length; j++){ 
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 
+          groupId: group.id,
           requestorId: this.props.currentUser!.id, 
-          formId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id, 
           status: FormProgress.PENDING, 
-          sentDate: new Date(), 
-          boxes: new BoxResponseList({TotalResults: 0, BoxesList: []}) });
+          sentDate: new Date() });
         this.props.requestHandler!.createRequest(request);
       }
     }

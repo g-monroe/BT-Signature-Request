@@ -14,6 +14,7 @@ namespace SignatureRequests.Core.Entities
         [Required]
         public virtual FormEntity Form { get; set; }
         public int FormId { get; set; }
+
         public virtual ICollection<RequestEntity> RequestEntities { get; set; }
     }
 }

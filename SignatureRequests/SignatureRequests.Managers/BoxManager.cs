@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -14,9 +15,12 @@ namespace SignatureRequests.Managers
     public class BoxManager : IBoxManager
     {
         private readonly IBoxHandler _boxHandler;
-        public BoxManager(IBoxHandler boxHandler)
+        private readonly IGroupEngine _groupEngine;
+        public BoxManager(IBoxHandler boxHandler, IGroupEngine groupEngine)
         {
             _boxHandler = boxHandler;
+            _groupEngine = groupEngine;
+
         }
         public BoxResponse CreateBoxEntity(BoxRequest newBox)
         {
@@ -99,7 +103,7 @@ namespace SignatureRequests.Managers
                 Type = me.Type,
                 SignerType = me.SignerType,
                 SignedStatus = me.SignedStatus,
-                Request = me.Request,
+                Request = _groupEngine.RequestToListItem(me.Request),
                 RequestId = me.RequestId,
                 Signature = me.Signature,
                 SignatureId = me.SignatureId,
@@ -119,7 +123,7 @@ namespace SignatureRequests.Managers
             updating.Type = me.Type;
             updating.SignerType = me.SignerType;
             updating.SignedStatus = me.SignedStatus;
-            updating.Request = me.Request;
+            updating.Request = _groupEngine.RequestToEntity(me.Request);
             updating.RequestId = me.RequestId;
             updating.Signature = me.Signature;
             updating.SignatureId = me.SignatureId;

@@ -5,6 +5,7 @@ import UserEntity from "../../Entities/UserEntity";
 import { Form, InjectedFormikProps, withFormik } from "formik";
 import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
+import ValidateStatus from "../../Util/Enums/ValidateStatus";
 const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
@@ -56,7 +57,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
   };
   
   getValidateStatus = (value: any) => {
-    return value ? "error" :"success";
+    return value ?  ValidateStatus.error : ValidateStatus.success
   };
 
   getBase64 = (img: any, callback: any) => {
@@ -102,8 +103,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
           }
           return file;
         });
-        let path: string = '../assets/v1/documents/'
-        values.FilePath= path.concat(fileList[0].name);
+        values.FilePath= fileList[0].name;
         values.FileList= fileList[0];
         this.setState({ fileInput : fileList });
       },

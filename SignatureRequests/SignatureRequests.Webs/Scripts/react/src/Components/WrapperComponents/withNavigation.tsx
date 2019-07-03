@@ -3,16 +3,16 @@ import {Layout} from 'antd';
 import Navigation from '../../Pages/Navigation';
 import {UserConsumer} from '../../Pages/MainPage'
 
-export interface IwithNavigationProps {
+export interface IWithNavigationProps {
     
 }
  
-export interface IwithNavigationState {
+export interface IWithNavigationState {
 
 }
 
-const withNavigation = (Component: any) => {
-    class withNavigation extends React.Component<IwithNavigationProps, IwithNavigationState> {
+const WithNavigation = (Component: any) => {
+    class WithNavigation extends React.Component<IWithNavigationProps, IWithNavigationState> {
         render() { 
     
             return (  
@@ -31,7 +31,7 @@ const withNavigation = (Component: any) => {
              );
         }
     }
-    return withNavigation;
+    return WithNavigation;
 }
  
-export default withNavigation;
+export default WithNavigation;

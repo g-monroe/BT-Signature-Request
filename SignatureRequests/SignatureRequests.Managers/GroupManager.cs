@@ -16,10 +16,12 @@ namespace SignatureRequests.Managers
     {  
         private readonly IGroupHandler _groupHandler;
         private readonly IGroupEngine _groupEngine;
-        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine)
+        private readonly IFormHandler _formHandler;
+        public GroupManager(IGroupHandler groupHandler, IGroupEngine groupEngine, IFormHandler formHandler)
         {
             _groupHandler = groupHandler;
             _groupEngine = groupEngine;
+            _formHandler = formHandler;
         }
 
         public GroupEntity CreateGroupEntity(GroupEntity newGroup)
@@ -36,9 +38,14 @@ namespace SignatureRequests.Managers
             _groupHandler.SaveChanges();
         }
 
-        public GroupResponseList GetGroupsById(int id)
+        public GroupResponseList GetGroupByFormId(int id)
         {
-            return GroupToListResponse(_groupHandler.GetAllByFormId(id));
+            return GroupsToListResponse(_groupHandler.GetAllByFormId(id));
+        }
+
+        public GroupResponseList GetGroupById(int id)
+        {
+            return GroupsToListResponse(_groupHandler.GetGroupById(id));
         }
 
         public GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup)
@@ -50,23 +57,62 @@ namespace SignatureRequests.Managers
             return group;
         }
 
-        private GroupResponseList GroupToListResponse(IEnumerable<GroupEntity> groups)
+        private GroupResponseList GroupsToListResponse(IEnumerable<GroupEntity> groups)
         {
             var resp = new GroupResponseList {
                 TotalResults = groups.Count(),
-                GorupsList = new List<GroupResponse>()
+                GroupsList = new List<GroupResponse>()
             };
             foreach (GroupEntity request in groups)
             {
-                resp.GorupsList.Add(_groupEngine.GroupToListItem(request));
+                resp.GroupsList.Add(_groupEngine.GroupToListItem(request));
             }
             return resp;
         }
-      
+
+        public GroupResponseList GroupToListResponse(GroupEntity group)
+        {
+            var resp = new GroupResponseList
+            {
+                TotalResults = 1,
+                GroupsList = new List<GroupResponse>()
+            };
+
+            resp.GroupsList.Add(_groupEngine.GroupToListItem(group));
+
+            return resp;
+        }
 
         public GroupResponseList GetGroups()
         {
-            return GroupToListResponse(_groupHandler.GetAllInclude());
+            return GroupsToListResponse(_groupHandler.GetAllInclude());
+        }
+
+        public GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null)
+        {
+            var newEntity = RequestToEntity(group, updating);
+            var entity = CreateGroupEntity(newEntity);
+            return _groupEngine.GroupToListItem(entity);
+        }
+
+        public GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null)
+        {
+            updating = RequestToEntity(group, updating);
+            var currentGroup = _groupHandler.GetById(id);
+            var result = UpdateGroup(currentGroup, updating);
+            return _groupEngine.GroupToListItem(result);
+        }
+        
+        public GroupEntity RequestToEntity(GroupRequest group, GroupEntity updating)
+        {
+            if (updating == null)
+            {
+                updating = new GroupEntity();
+            }
+            updating.Id = group.Id;
+            updating.Form = _formHandler.GetById(group.FormId);
+            updating.FormId = group.FormId;
+            return updating;
         }
     }
 }

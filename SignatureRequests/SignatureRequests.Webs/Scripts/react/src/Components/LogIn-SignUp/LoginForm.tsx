@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import * as routes from '../../Pages/Routing/routes'
 import UserVerificationEntity from '../../Entities/UserVerificationEntity';
 import UserEntity from '../../Entities/UserEntity';
+import ValidateStatus from '../../Util/Enums/ValidateStatus';
 
 export interface ILoginFormProps {
     handler:IUserHandler
@@ -30,8 +31,8 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
         password: ""
     }
 
-    getValidateStatus = (Value:any)=>{
-        return !! Value ?  'error' : 'success'
+    getValidateStatus = (Value:boolean)=>{
+        return !! Value ?  ValidateStatus.error : ValidateStatus.success
     }
     
     render() { 
@@ -41,7 +42,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
         return ( 
             <Form className = "LogInForm" onSubmitCapture = {handleSubmit}>
                 <Form.Item required hasFeedback help = {errors.userName}
-                validateStatus = {this.getValidateStatus(touched.userName && errors.userName)}>
+                validateStatus = {this.getValidateStatus((!!touched.userName) && (!!errors.userName))}>
                     <Input autoFocus
                     name = "userName"
                     placeholder = "Username"
@@ -54,7 +55,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                 </Form.Item>
 
                 <Form.Item required hasFeedback help = {errors.password}
-                validateStatus = {this.getValidateStatus(touched.password && errors.password)}>
+                validateStatus = {this.getValidateStatus((!!touched.password) && (!!errors.password))}>
                     <Input.Password
                     name = "password"
                     placeholder = "Password"
@@ -88,7 +89,6 @@ const Login = withFormik<ILoginFormProps, ILoginFormState>({
     }),
     validationSchema:yupValidation,
     handleSubmit: async (values,{setSubmitting,props}) =>{
-        console.log("submit")
         setSubmitting(true);
 
         await props.handler.verifyUser(new UserVerificationEntity({

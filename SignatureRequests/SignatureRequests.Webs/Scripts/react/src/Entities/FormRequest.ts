@@ -1,3 +1,4 @@
+import GroupResponseList from "./GroupResponseList";
 
 class FormRequest {
   filePath: string;

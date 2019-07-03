@@ -6,7 +6,7 @@ class GroupResponseList {
 
   constructor(data: any) {
     this.count = data.TotalResults;
-    this.collection = data.GorupsList.map((d:GroupEntity) => new GroupEntity(d));
+    this.collection = data.GroupsList.map((d:GroupEntity) => new GroupEntity(d));
   }
 }
 
