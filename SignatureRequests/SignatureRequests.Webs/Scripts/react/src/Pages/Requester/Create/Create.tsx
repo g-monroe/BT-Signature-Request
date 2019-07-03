@@ -5,10 +5,12 @@ import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
 import { resolve } from 'path';
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ICreateProps {
     currentUser?: UserEntity;
     formHandler?: IFormHandler;
+    UserObject:ContextUserObject;
 }
  
 export interface ICreateState {
