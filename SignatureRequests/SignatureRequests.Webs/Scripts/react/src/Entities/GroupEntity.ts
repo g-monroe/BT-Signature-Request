@@ -6,7 +6,11 @@ class GroupEntity {
   id: number;
   form: FormEntity;
   formId: number;
+<<<<<<< HEAD
   requests?: RequestResponseList;
+=======
+  requests: RequestResponseList;
+>>>>>>> 9bd0fc8b368d3f98398dbf92f4ddad25d45a88bd
 
   constructor(data: any) {
     this.id = data.Id;

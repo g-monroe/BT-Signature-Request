@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SignatureRequests.Managers
 {
     public class GroupManager : IGroupManager
-    {
+    {  
         private readonly IGroupHandler _groupHandler;
         private readonly IGroupEngine _groupEngine;
         private readonly IFormHandler _formHandler;
@@ -29,7 +29,7 @@ namespace SignatureRequests.Managers
             _groupHandler.Insert(newGroup);
             _groupHandler.SaveChanges();
             return newGroup;
-        }
+        } 
 
         public void Delete(int id)
         {
@@ -59,8 +59,7 @@ namespace SignatureRequests.Managers
 
         private GroupResponseList GroupsToListResponse(IEnumerable<GroupEntity> groups)
         {
-            var resp = new GroupResponseList
-            {
+            var resp = new GroupResponseList {
                 TotalResults = groups.Count(),
                 GroupsList = new List<GroupResponse>()
             };

@@ -17,7 +17,7 @@ namespace SignatureRequests.DataAccessHandlers
         public IEnumerable<GroupEntity> GetAllByFormId(int id)
         {
             return _context.Groups.Where(x => x.Form.Id == id).Include(form => form.Form).Include(form => form.RequestEntities.Select(r => r.BoxEntities));
-        }
+        }  
 
         public IEnumerable<GroupEntity> GetGroupById(int id)
         {

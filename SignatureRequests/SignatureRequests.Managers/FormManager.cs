@@ -1,4 +1,6 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SautinSoft.Document;
+using SignatureRequests.Core.Entities;
+using SignatureRequests.Core;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -54,11 +56,15 @@ namespace SignatureRequests.Managers
         {
             foreach (var file in provider.Contents)
             {
+                const string path = Constants.DocumentPath;
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + @"\assets\v1\documents\" + filename,
+                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path  + filename,
                     buffer);
+                DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
+                DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+                dp.Pages[0].Rasterize(800, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + filename + ".png");
             }
         }
         public FormEntity UpdateForm(FormEntity form, FormEntity newForm)
