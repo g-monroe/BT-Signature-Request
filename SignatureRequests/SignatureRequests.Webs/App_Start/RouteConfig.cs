@@ -18,6 +18,12 @@ namespace SignatureRequests.Webs
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Default", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                "NotFound",
+                "{.*}",
+                defaults: new { controller = "Default", action = "Index" }
+            );
         }
     }
 }

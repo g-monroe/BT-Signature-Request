@@ -23,7 +23,6 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
             userType
         } = this.props;
 
-
         let currRoutes:Array<any> = [];
         let userHome:any;
         switch(userType){
