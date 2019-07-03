@@ -31,7 +31,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
         password: ""
     }
 
-    getValidateStatus = (Value:any)=>{
+    getValidateStatus = (Value:boolean)=>{
         return !! Value ?  ValidateStatus.error : ValidateStatus.success
     }
     
@@ -42,7 +42,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
         return ( 
             <Form className = "LogInForm" onSubmitCapture = {handleSubmit}>
                 <Form.Item required hasFeedback help = {errors.userName}
-                validateStatus = {this.getValidateStatus(touched.userName && errors.userName)}>
+                validateStatus = {this.getValidateStatus((!!touched.userName) && (!!errors.userName))}>
                     <Input autoFocus
                     name = "userName"
                     placeholder = "Username"
@@ -55,7 +55,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                 </Form.Item>
 
                 <Form.Item required hasFeedback help = {errors.password}
-                validateStatus = {this.getValidateStatus(touched.password && errors.password)}>
+                validateStatus = {this.getValidateStatus((!!touched.password) && (!!errors.password))}>
                     <Input.Password
                     name = "password"
                     placeholder = "Password"
