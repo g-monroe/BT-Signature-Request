@@ -6,6 +6,7 @@ import { Form, Input, Button, Icon } from 'antd';
 import "./Login-SignUp.css"
 import { IUserHandler } from '../../Handlers/UserHandler';
 import UserEntity from '../../Entities/UserEntity';
+import ValidateStatus from '../../Util/Enums/ValidateStatus';
 
 export interface ISignUpFormProps {
     handler:IUserHandler
@@ -40,7 +41,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
     }
 
     getValidateStatus = (Value:any)=>{
-        return !! Value ?  'error' : 'success'
+        return !! Value ?  ValidateStatus.error : ValidateStatus.success
     }
       
       public clearForm = () =>{

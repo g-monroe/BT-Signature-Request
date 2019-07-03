@@ -4,8 +4,8 @@ import { Layout } from 'antd';
 import * as routes from './Routing/routes';
 import UserType from '../Util/Enums/UserTypes';
 import MainPageUser from '../Entities/MainPageUser';
-import withUser from '../Components/WrapperComponents/withUser';
-import withNavigation from '../Components/WrapperComponents/withNavigation';
+import WithUser from '../Components/WrapperComponents/WithUser';
+import WithNavigation from '../Components/WrapperComponents/WithNavigation';
 import ContextUserObject from '../Components/WrapperComponents/ContextUserObject';
 
 
@@ -46,8 +46,8 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 <Switch>
                                 {
                                 ALL_ROUTES.map((route,i) => {
-                                    const WithUser = withUser(route.component);
-                                    const WithNav = withNavigation(WithUser);
+                                    const withUser = WithUser(route.component);
+                                    const WithNav = WithNavigation(withUser);
                                     return (
                                     <Route 
                                     key={i} 

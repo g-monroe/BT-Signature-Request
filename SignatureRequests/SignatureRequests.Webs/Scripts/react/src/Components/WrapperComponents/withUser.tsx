@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {UserConsumer} from '../../Pages/MainPage';
 
-export interface IwithUserProps {
+export interface IWithUserProps {
 
 }
  
-export interface IwithUserState {
+export interface IWithUserState {
 
 }
  
-const withUser = (Component: any) => {
-    class withUser extends React.Component<IwithUserProps, IwithUserState> {
+const WithUser = (Component: any) => {
+    class WithUser extends React.Component<IWithUserProps, IWithUserState> {
         render() { 
             return ( 
                 <UserConsumer>
@@ -22,7 +22,7 @@ const withUser = (Component: any) => {
              );
         }
     }
-    return withUser;
+    return WithUser;
 }
 
-export default withUser;
+export default WithUser;
