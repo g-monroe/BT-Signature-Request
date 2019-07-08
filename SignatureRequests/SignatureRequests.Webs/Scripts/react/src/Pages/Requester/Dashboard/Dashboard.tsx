@@ -59,7 +59,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (tableData[i].groups.count != 0){
                             let filteredGroups = tableData[i].groups.collection;
                             for(var inn = 0; inn<filteredGroups.length; inn++){
-                                if (filteredGroups[inn].requests != null){
+                                if (filteredGroups[inn].requests !== null){
                                     filteredForms.push(tableData[i]);
                                 }
                             }

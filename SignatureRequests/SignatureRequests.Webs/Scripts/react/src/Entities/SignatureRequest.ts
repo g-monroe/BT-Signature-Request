@@ -8,7 +8,7 @@ class SignatureRequest {
   contactInfo?: string;
   isInitial: boolean;
   userId: number;
-  expirationDate?: Date;
+  expirationDate: Date;
 
   constructor(data: any) {
     this.imagePath = data.ImagePath;
