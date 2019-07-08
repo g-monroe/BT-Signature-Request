@@ -75,16 +75,32 @@ namespace SignatureRequests.Managers
 
         public SignatureResponse GetUserSignature(int userId)
         {
+          
             var result = _userHandler.GetSignature(userId);
-            var resp = SignatureToListItem(result);
-            return resp;
+            if(result == null)
+            {
+                return null;
+            }
+            else
+            {
+                var resp = SignatureToListItem(result);
+                return resp;
+            }
         }
 
          public SignatureResponse GetUserInitial(int userId)
         {
             var result = _userHandler.GetInitial(userId);
-            var resp = SignatureToListItem(result);
-            return resp;
+            if(result == null)
+            {
+                return null;
+            }
+            else
+            {
+                var resp = SignatureToListItem(result);
+                return resp;
+            }
+
         }
         public Boolean HasUserSignature(int userId)
         {
