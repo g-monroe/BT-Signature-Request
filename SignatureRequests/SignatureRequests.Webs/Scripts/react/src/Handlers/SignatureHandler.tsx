@@ -6,9 +6,30 @@ export interface ISignatureHandler {
     createSignature(entity: SignatureRequest) : Promise<SignatureEntity>;
     uploadSignature(file: FormData) : Promise<string>;
     uploadInitials(file: FormData) : Promise<string>;
+    downloadSignature(id: number) : Promise<FormData>;
+    downloadInitials(id: number) : Promise<FormData>;
+    signatureExists(id: number) : Promise<boolean>;
+    initialExists(id: number) : Promise<boolean>;
 }
 
 export class SignatureHandler implements ISignatureHandler {
+    
+    signatureExists(id: number): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
+
+    initialExists(id: number): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
+    
+    downloadSignature(id: number): Promise<FormData> {
+        throw new Error("Method not implemented.");
+    }
+    
+    downloadInitials(id: number): Promise<FormData> {
+        throw new Error("Method not implemented.");
+    }
+
     async createSignature(entity: SignatureRequest) : Promise<SignatureEntity> {
         return await APIHandler(`/api/Signature/AddSignature`, {
             headers: {"Content-Type" : "application/json"},

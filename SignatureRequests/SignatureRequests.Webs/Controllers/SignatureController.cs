@@ -33,6 +33,46 @@ namespace SignatureRequests.Controllers
             var signs = _signatureManager.GetSignatures();
             return signs;
         }
+
+        [Route("api/Signature/GetSignature/{id}")]
+        [HttpGet]
+        public SignatureResponseList GetSignatureWithID([FromRoute]int id)
+        {
+            var signs = _signatureManager.GetSignaturesID(id);
+            return signs;
+        }
+
+        [Route("api/Signature/GetInitial/{id}")]
+        [HttpGet]
+        public SignatureResponseList GetInitialWithID([FromRoute]int id)
+        {
+            var signs = _signatureManager.GetInitialID(id);
+            return signs;
+        }
+
+        [Route("api/Signature/HasSignature/{id}")]
+        [HttpGet]
+        public Boolean HasSignatureWithID([FromRoute]int id)
+        {
+            var signs = _signatureManager.GetSignature(id);
+            if(signs != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        [Route("api/Signature/HasInitial/{id}")]
+        [HttpGet]
+        public Boolean HasInitialWithID([FromRoute]int id)
+        {
+            var signs = _signatureManager.GetInitialID(id);
+            return signs;
+        }
+
         [Route("api/Signature/AddSignature")]
         [HttpPost]
         public SignatureResponse AddSignature([FromBody]SignatureRequest me)
@@ -40,6 +80,7 @@ namespace SignatureRequests.Controllers
             var result = _signatureManager.CreateSignatureEntity(me);
             return result;
         }
+
         [Route("api/Signature/UpdateSignature/{id}")]
         [HttpPost]
         //POST:api/Product/UpdateProduct
@@ -48,6 +89,7 @@ namespace SignatureRequests.Controllers
             var result = _signatureManager.UpdateSignature(id, me);
             return result;
         }
+
         [HttpPost, Route("api/Signature/UploadSignature")]
         public async Task<IHttpActionResult> Upload()
         {
@@ -60,6 +102,7 @@ namespace SignatureRequests.Controllers
 
             return Ok();
         }
+
         [HttpPost, Route("api/Signature/UploadIntials")]
         public async Task<IHttpActionResult> UploadIntials()
         {
@@ -71,6 +114,7 @@ namespace SignatureRequests.Controllers
             await _signatureManager.SaveSignatureAsync(provider, @"\assets\v1\images\intials\");
             return Ok();
         }
+
         //// DELETE api/<controller>/5
         [Route("api/Signature/DeleteSignature/{id}")]
         [HttpDelete]

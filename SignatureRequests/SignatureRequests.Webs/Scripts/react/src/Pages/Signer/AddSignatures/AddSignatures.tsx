@@ -35,8 +35,8 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                             {HowToSign}
                             <div id = "SigExample">
                                 <SignatureDropDown type = {TypesOfBoxes.Date}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Initial}existing = {true}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Signature}existing = {true}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Initial}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Signature}></SignatureDropDown>
                             </div>
                         </div>
                     </Layout.Sider>
