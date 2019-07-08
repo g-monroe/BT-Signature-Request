@@ -1,6 +1,7 @@
 import { APIHandler } from "./apiHandler";
 import SignatureRequest from "../Entities/SignatureRequest";
 import SignatureEntity from "../Entities/SignatureEntity";
+import ExistsEntity from '../Entities/ExistsEntity';
 
 export interface ISignatureHandler {
     createSignature(entity: SignatureRequest) : Promise<SignatureEntity>;
@@ -14,12 +15,22 @@ export interface ISignatureHandler {
 
 export class SignatureHandler implements ISignatureHandler {
     
-    signatureExists(id: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async signatureExists(id: number): Promise<boolean> {
+        const result = await APIHandler(`/api/Signature/HasSignature/${id}`, {
+            headers: {"Content-Type" : "application/json"},
+            method:'GET',
+            responseType:ExistsEntity
+        })
+        return result.exists
     }
 
-    initialExists(id: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async initialExists(id: number): Promise<boolean> {
+        const result = await APIHandler(`/api/Signature/HasInitial/${id}`, {
+            headers: {"Content-Type" : "application/json"},
+            method:'GET',
+            responseType:ExistsEntity
+        })
+        return result.exists
     }
     
     downloadSignature(id: number): Promise<FormData> {

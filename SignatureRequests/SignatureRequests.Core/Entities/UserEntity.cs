@@ -26,7 +26,7 @@ namespace SignatureRequests.Core.Entities
         public virtual SignatureEntity Signature { get; set; }
 
         public int? SignatureId { get; set; }
-
+        [JsonIgnore]
         public virtual SignatureEntity Initial { get; set; }
 
         public int? InitialId { get; set; }
