@@ -4,7 +4,8 @@ import SignatureEntity from "../Entities/SignatureEntity";
 
 export interface ISignatureHandler {
     createSignature(entity: SignatureRequest) : Promise<SignatureEntity>;
-    uploadSignature(file: FormData) : Promise<string>
+    uploadSignature(file: FormData) : Promise<string>;
+    uploadInitials(file: FormData) : Promise<string>;
 }
 
 export class SignatureHandler implements ISignatureHandler {

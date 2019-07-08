@@ -86,7 +86,8 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         
                         this.props.SignatureHandler!.createSignature(request);
-                        this.props.SignatureHandler!.uploadSignature(pic);
+                        init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
+                         
                         anchor = document.createElement('a');
                         anchor.download = "test.png";
                         anchor.href = (window.URL).createObjectURL(blob);
