@@ -37,6 +37,11 @@ namespace SignatureRequests.Managers
             var form = _formHandler.GetByFormId(id);
             return FormToListResponse(form);
         }
+        public FormResponseList GetRequested(int id)
+        {
+            var form = _formHandler.GetRequested(id);
+            return FormsToListResponse(form);
+        }
         public FormResponseList GetFormsByUserId(int id)
         {
             var forms = _formHandler.GetAllByUserId(id);
