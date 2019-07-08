@@ -65,7 +65,7 @@ namespace SignatureRequests.Managers
 
         public UserResponseList GetUsers()
         {
-            var result = _userHandler.GetAll();
+            var result = _userHandler.GetAllInclude();
             var resp = UserToListResponse(result);
             return resp;
         }
@@ -124,18 +124,17 @@ namespace SignatureRequests.Managers
         }
         public UserResponse UserToListItem(UserEntity me)
         {
-            return new UserResponse()
-            {
-                Id = me.Id,
-                Signature = me.Signature,
-                SignatureId = me.SignatureId,
-                Email = me.Email,
-                Name = me.Name,
-                Initial = me.Initial,
-                InitialId = me.InitialId,
-                Password = me.Password,
-                Role = me.Role
-            };
+            var x = new UserResponse();
+            x.Id = me.Id;
+               x.Signature = me.Signature;
+                x.SignatureId = me.SignatureId;
+                x.Email = me.Email;
+                x.Name = me.Name;
+                x.Initial = me.Initial;
+                x.InitialId = me.InitialId;
+                x.Password = me.Password;
+                x.Role = me.Role;
+            return x;
         }
         public UserEntity UserToDbItem(UserRequest me, UserEntity updating = null)
         {

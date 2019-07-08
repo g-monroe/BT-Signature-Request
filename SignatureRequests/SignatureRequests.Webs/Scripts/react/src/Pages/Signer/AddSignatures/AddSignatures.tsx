@@ -7,9 +7,10 @@ import Paragraph from 'antd/lib/typography/Paragraph';
 import ImageViewModal from '../../../Components/Signatures/ImageViewModal';
 import {HowToSign} from '../../../Util/Text';
 import { TypesOfBoxes } from '../../../Util/Enums/SignatureDropDown';
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface IAddSignatuesProps {
-    
+    UserObject:ContextUserObject
 }
  
 export interface IAddSignatuesState {
@@ -34,9 +35,9 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                             <Divider></Divider>
                             {HowToSign}
                             <div id = "SigExample">
-                                <SignatureDropDown type = {TypesOfBoxes.Date}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Initial}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Signature}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Date} UserObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Initial} UserObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Signature} UserObject = {this.props.UserObject}></SignatureDropDown>
                             </div>
                         </div>
                     </Layout.Sider>
@@ -53,7 +54,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                                     <Paragraph id = "SigPara">{SignatureExplanation}</Paragraph>
                                     <h4>{SignatureExplanationfooter}</h4>
                                 </div>
-                                <SignatureBox></SignatureBox>
+                                <SignatureBox UserObject = {this.props.UserObject}></SignatureBox>
                             </div>
                         </Layout.Content>
                     </Layout>

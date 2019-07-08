@@ -27,9 +27,27 @@ namespace SignatureRequests.Managers
             var result = SignatureToDbItem(newSignature);
             _signatureHandler.Insert(result);
             _signatureHandler.SaveChanges();
+            UpdateUserWithSignature(result);
             var resp = SignatureToListItem(result);
             return resp;
         }
+
+        private void UpdateUserWithSignature(SignatureEntity sig)
+        {
+            var user = _userHandler.GetById(sig.UserId);
+            if (sig.isInitial)
+            {
+                user.InitialId = sig.Id;
+            }
+            else
+            {
+                user.SignatureId = sig.Id;
+            }
+            _userHandler.Update(user);
+            _userHandler.SaveChanges();
+
+        }
+
         public async Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath)
         {
             foreach (var file in provider.Contents)
@@ -53,6 +71,39 @@ namespace SignatureRequests.Managers
             var result = _signatureHandler.GetById(id);
             var resp = SignatureToListItem(result);
             return resp;
+        }
+
+        public SignatureResponse GetUserSignature(int userId)
+        {
+            var result = _userHandler.GetSignature(userId);
+            var resp = SignatureToListItem(result);
+            return resp;
+        }
+
+         public SignatureResponse GetUserInitial(int userId)
+        {
+            var result = _userHandler.GetInitial(userId);
+            var resp = SignatureToListItem(result);
+            return resp;
+        }
+        public Boolean HasUserSignature(int userId)
+        {
+            var result = _userHandler.GetSignature(userId);
+            if(result != null){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+          public Boolean HasUserInitial(int userId)
+        {
+            var result = _userHandler.GetInitial(userId);
+            if(result != null){
+                return true;
+            }else{
+                return false;
+            }
         }
 
         public SignatureResponseList GetSignatures()

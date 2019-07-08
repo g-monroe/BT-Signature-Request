@@ -36,17 +36,17 @@ namespace SignatureRequests.Controllers
 
         [Route("api/Signature/GetSignature/{id}")]
         [HttpGet]
-        public SignatureResponseList GetSignatureWithID([FromRoute]int id)
+        public SignatureResponse GetSignatureWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.GetSignaturesID(id);
+            var signs = _signatureManager.GetUserSignature(id);
             return signs;
         }
 
         [Route("api/Signature/GetInitial/{id}")]
         [HttpGet]
-        public SignatureResponseList GetInitialWithID([FromRoute]int id)
+        public SignatureResponse GetInitialWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.GetInitialID(id);
+            var signs = _signatureManager.GetUserInitial(id);
             return signs;
         }
 
@@ -54,22 +54,15 @@ namespace SignatureRequests.Controllers
         [HttpGet]
         public Boolean HasSignatureWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.GetSignature(id);
-            if(signs != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var signs = _signatureManager.HasUserSignature(id);
+            return signs;
         }
 
         [Route("api/Signature/HasInitial/{id}")]
         [HttpGet]
         public Boolean HasInitialWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.GetInitialID(id);
+            var signs = _signatureManager.HasUserInitial(id);
             return signs;
         }
 

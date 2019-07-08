@@ -1,4 +1,5 @@
 ﻿using BTSuggestions.Core.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,6 +32,7 @@ namespace SignatureRequests.Core.Entities
         [Required]
         public Boolean isInitial { get; set; }
 
+        [JsonIgnore]
         [Required]
         public virtual UserEntity User { get; set; }
 
