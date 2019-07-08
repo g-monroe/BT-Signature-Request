@@ -32,16 +32,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
 
     static defaultProps = {
         SignatureHandler: new SignatureHandler(),
-        UserObject: new ContextUserObject({
-            user:new UserEntity ({
-                Id: 1,
-                Role: "role",
-                Name: "name",
-                Email: "email",
-                Password: "password"
-              }),
-            update: undefined
-        })
+        UserObject: new ContextUserObject()
     }
 
     success = () =>{
