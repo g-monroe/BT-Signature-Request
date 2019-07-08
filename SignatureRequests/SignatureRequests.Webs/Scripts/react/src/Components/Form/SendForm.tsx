@@ -10,7 +10,6 @@ import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
 import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
-import BoxResponseList from "../../Entities/BoxResponseList";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 const { Option } = Select;

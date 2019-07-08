@@ -3,13 +3,12 @@ import { CreateForm } from '../../../Components/Form/CreateForm';
 import UserEntity from '../../../Entities/UserEntity';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
-import FormEntity from '../../../Entities/FormEntity';
-import { resolve } from 'path';
-import GroupResponseList from '../../../Entities/GroupResponseList';
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ICreateProps {
     currentUser?: UserEntity;
     formHandler?: IFormHandler;
+    UserObject:ContextUserObject;
 }
  
 export interface ICreateState {
