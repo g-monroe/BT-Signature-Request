@@ -87,14 +87,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
      renderRequests = () =>{
         const {requestData, loading, searchTerm} = this.state;
-        console.log("Trest:", requestData);
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
             if (requestData == null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
             }else{
-                console.log("Made it");
                 let displayedForms = requestData;
                 if (searchTerm.length > 2 && !loading){
                     let filteredForms = [];

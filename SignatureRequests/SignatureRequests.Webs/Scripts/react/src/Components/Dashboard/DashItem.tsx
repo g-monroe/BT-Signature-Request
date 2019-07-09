@@ -52,7 +52,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           if (request.status == RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
-          }else if (request.status == RequestStatus.NOTSIGNED){
           }
           if (request.boxes.count != 0){
             let signedBoxes = 0;
