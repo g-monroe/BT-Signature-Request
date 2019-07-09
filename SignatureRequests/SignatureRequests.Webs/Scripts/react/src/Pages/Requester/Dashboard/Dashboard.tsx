@@ -135,9 +135,9 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
     render() { 
         const selectBefore = (
-            <Select defaultValue="completed">
-              <Option value="completed">Completed</Option>
+            <Select defaultValue="pending">
               <Option value="pending">Pending</Option>
+              <Option value="completed">Completed</Option>
               <Option value="refused">Refused</Option>
             </Select>
           );
@@ -148,7 +148,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">
                 <div style={{ marginBottom: 16 }}>
-                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
+                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="" />
                     </div>
                </div>
                 </div>
