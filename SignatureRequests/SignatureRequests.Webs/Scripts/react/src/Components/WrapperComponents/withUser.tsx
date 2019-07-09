@@ -2,7 +2,6 @@ import * as React from 'react';
 import {UserConsumer} from '../../Pages/MainPage';
 
 export interface IWithUserProps {
-
 }
  
 export interface IWithUserState {

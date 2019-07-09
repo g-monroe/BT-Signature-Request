@@ -6,6 +6,9 @@ import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
 import { resolve } from 'path';
 import GroupResponseList from '../../../Entities/GroupResponseList';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { REQUESTER } from "../../../Pages/Routing/routes";
 
 export interface ICreateProps {
     currentUser?: UserEntity;
@@ -13,7 +16,9 @@ export interface ICreateProps {
 }
  
 export interface ICreateState {
-    form?: FormRequest
+    form?: FormRequest;
+    uploaded?: FormEntity;
+    isUploaded?: Boolean;
 }
  
 class Create extends React.Component<ICreateProps, ICreateState> {
@@ -35,7 +40,8 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             description: "",
             createDate: "",
             userId: 1
-        })
+        }),
+        isUploaded: false
      };
 
     handleSave = async (data: any) : Promise<void> => {
@@ -49,14 +55,33 @@ class Create extends React.Component<ICreateProps, ICreateState> {
         let form = new FormData();
         form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );
         
-        this.props.formHandler!.createForm(request);
+        let response = (await this.props.formHandler!.createForm(request));
+        this.setState({
+            uploaded: response,
+            isUploaded: true
+        });
         this.props.formHandler!.uploadForm(form);
     };
 
     render() { 
         if (!this.state.form!) {
             return <div>Loading...</div>;
-          }else{
+          }
+        else if (!this.state.isUploaded!){
+            return (
+                <> 
+            <h1  id = 'HeaderText'>Create a Form</h1>
+                <CreateForm
+                handleSave={this.handleSave}
+                currentUser={this.props.currentUser!}
+                />
+            <Button disabled={!this.state.isUploaded}>
+                Continue
+                </Button>
+            </>
+            );
+        }  
+          else{
         return (
             
             <> 
@@ -65,8 +90,13 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                 handleSave={this.handleSave}
                 currentUser={this.props.currentUser!}
                 />
-
+            <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
+            <Button disabled={!this.state.isUploaded}>
+                Continue
+                </Button>
+                </Link>
             </>
+
          );
         }
     }

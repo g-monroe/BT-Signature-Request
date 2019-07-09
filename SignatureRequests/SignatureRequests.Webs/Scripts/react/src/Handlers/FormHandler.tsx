@@ -7,6 +7,7 @@ export interface IFormHandler {
     getAllByUser(id: number): Promise<FormResponseList>;
     createForm(entity: FormRequest) : Promise<FormEntity>;
     uploadForm(file: FormData) : Promise<String>;
+    getFormById(id: number) : Promise<FormEntity>;
 }
 
 export class FormHandler implements IFormHandler {
@@ -36,4 +37,15 @@ export class FormHandler implements IFormHandler {
           resolve(req.response);
         });
       }
+
+    async getFormById(id: number) : Promise<FormEntity> {
+        console.log("At least this works");
+        const collection = await APIHandler(`/api/Form/GetFormById/${id}`, {
+            headers: {"Content-Type": "application/json"},
+            method: "GET",
+            responseType: FormResponseList
+        });
+        console.log(collection);
+        return collection.collection[0];
+    }
 }
