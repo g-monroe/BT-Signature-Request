@@ -16,7 +16,7 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
-    UserObject: ContextUserObject;
+    userObject: ContextUserObject;
 }
  
 export interface IDashboardState {
