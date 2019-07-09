@@ -3,7 +3,7 @@ import DrawCanvas from './DrawCanvas';
 import {manualInputTypeEnum, inputMethodEnum} from '../../Util/Enums/SelectTypes';
 import ButtonSelect from './ButtonSelect';
 import TypedSignature from './TypedSignature';
-import { Button, message } from 'antd';
+import { Button, message, Affix } from 'antd';
 import html2canvas from 'html2canvas';
 import SignatureRequest from '../../Entities/SignatureRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
@@ -114,12 +114,13 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                     </div>
                 } 
                 <div id = "ThingToSave">
-                {
-                this.state.method === inputMethodEnum.Draw ? 
-                <DrawCanvas type = {this.state.type} getCanvas = {this.setCanvasRef}></DrawCanvas> :
-                <TypedSignature></TypedSignature>
-
-                }
+                <Affix offsetBottom = {20}>
+                    {
+                    this.state.method === inputMethodEnum.Draw ? 
+                    <DrawCanvas type = {this.state.type} getCanvas = {this.setCanvasRef}></DrawCanvas> :
+                    <TypedSignature></TypedSignature>
+                    }
+                </Affix>
                 </div>
                 
                 <div id = "SignatureFooter">
