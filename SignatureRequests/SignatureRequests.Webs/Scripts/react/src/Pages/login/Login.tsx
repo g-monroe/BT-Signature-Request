@@ -40,6 +40,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                  email: user.email,
                  type: UserType.REGISTERED
              });
+            
         }
     }
 
