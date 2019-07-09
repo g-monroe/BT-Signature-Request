@@ -8,6 +8,7 @@ import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
 import RequestStatus from '../../Util/Enums/RequestStatus';
 import '../../../node_modules/antd/dist/antd.css';
+import Image from './Image';
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
@@ -47,13 +48,19 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         group.requests.collection.map((request) => {
 
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
-          let color = "#fff";
+          let color = "#CDCDCD";
           if (request.status == RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
           }
           if (request.boxes.count != 0){
-            tagText = `${request.signer.name}: ${request.boxes.count} - ${request.status} (${request.sentDate.toString()})`
+            let signedBoxes = 0;
+            request.boxes.collection.map((box) => {
+              if (box.signedStatus == RequestStatus.SIGNED){
+                signedBoxes += 1;
+              }
+            })
+            tagText = `${request.signer.name}: ${signedBoxes}/${request.boxes.count} - ${request.status} (${request.sentDate.toString()})`
           }
           const newTag = new TagItem("#000", color, tagText);
           tags.push(newTag);
@@ -67,7 +74,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    renderTags = (e:TagItem[]) =>{
     return e.map((tag, index) =>
       (<li key={index}>
-        <span style={{color:tag.color, backgroundColor:tag.backgroundColor}} className="badge badge-success ml">
+        <span style={{color:tag.color, backgroundColor:tag.backgroundColor, display:"block",float:"left"}} className="badge badge-success ml">
           {tag.text}
         </span>
       </li>)
@@ -94,7 +101,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-            <img className="preview-doc" src={"../../../../../assets/v1/documents/" + formEntity.filePath + ".png"} alt = "Preview"/>
+          <Image src={"../../../../../assets/v1/documents/" + formEntity.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
         <label className="ribbon right success"><span>{formEntity.createDate}</span></label>

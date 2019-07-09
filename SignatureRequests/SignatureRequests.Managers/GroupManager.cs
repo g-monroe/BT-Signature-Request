@@ -24,6 +24,7 @@ namespace SignatureRequests.Managers
             _formHandler = formHandler;
         }
 
+
         public GroupEntity CreateGroupEntity(GroupEntity newGroup)
         {
             _groupHandler.Insert(newGroup);
@@ -114,5 +115,6 @@ namespace SignatureRequests.Managers
             updating.FormId = group.FormId;
             return updating;
         }
+
     }
 }

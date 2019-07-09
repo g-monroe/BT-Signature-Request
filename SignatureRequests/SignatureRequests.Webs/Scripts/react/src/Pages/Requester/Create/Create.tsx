@@ -9,10 +9,12 @@ import GroupResponseList from '../../../Entities/GroupResponseList';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { REQUESTER } from "../../../Pages/Routing/routes";
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ICreateProps {
     currentUser?: UserEntity;
     formHandler?: IFormHandler;
+    UserObject:ContextUserObject;
 }
  
 export interface ICreateState {

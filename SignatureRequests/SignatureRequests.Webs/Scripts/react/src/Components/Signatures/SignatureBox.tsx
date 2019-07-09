@@ -5,9 +5,15 @@ import ButtonSelect from './ButtonSelect';
 import TypedSignature from './TypedSignature';
 import { Button, message } from 'antd';
 import html2canvas from 'html2canvas';
+import SignatureRequest from '../../Entities/SignatureRequest';
+import ContextUserObject from '../WrapperComponents/ContextUserObject';
+import { SignatureHandler, ISignatureHandler } from '../../Handlers/SignatureHandler';
+import UserEntity from '../../Entities/UserEntity';
 
 export interface ISignatureBoxProps {
-    signType?: manualInputTypeEnum
+    signType?: manualInputTypeEnum,
+    UserObject?:ContextUserObject
+    SignatureHandler?:ISignatureHandler
 }
  
 export interface ISignatureBoxState {
@@ -22,6 +28,11 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         method: inputMethodEnum.Draw,
         type: this.props.signType || manualInputTypeEnum.Signature,
         canvasRef: null
+    }
+
+    static defaultProps = {
+        SignatureHandler: new SignatureHandler(),
+        UserObject: new ContextUserObject()
     }
 
     success = () =>{
@@ -61,13 +72,25 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
             html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
-                        anchor = document.createElement('a');
-                        anchor.download = "test.png";
-                        anchor.href = (window.URL).createObjectURL(blob);
-                        anchor.dataset.downloadurl = ["image/png", anchor.download, anchor.href].join(':');
-                        anchor.click();
+                        const init = this.state.type === manualInputTypeEnum.Initial;
+                        let request = new SignatureRequest({
+                            isInitial: init,
+                            UserId: this.props.UserObject!.user.id,
+                            ImagePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
+                            CertificatePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
+                            CertificatePassword: this.props.UserObject!.user.email,
+                            ExpirationDate: new Date()
+
+                        })
+                        
+                        let pic = new FormData();
+                        pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
+                        
+                        this.props.SignatureHandler!.createSignature(request);
+                        init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
+
                     }
-                },"image/png");
+                },"image/octet-stream");
             })
         
         setTimeout(()=> {

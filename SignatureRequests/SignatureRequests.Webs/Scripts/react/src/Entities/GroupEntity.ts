@@ -1,4 +1,4 @@
-import RequestEntity from "./RequestEntity";
+
 import FormEntity from "./FormEntity";
 import RequestResponseList from "./RequestResponseList";
 
@@ -10,7 +10,7 @@ class GroupEntity {
 
   constructor(data: any) {
     this.id = data.Id;
-    this.form = data.Form;
+    this.form = new FormEntity(data.Form);
     this.formId = data.FormId;
     this.requests = new RequestResponseList(data.RequestEntities);
   }
