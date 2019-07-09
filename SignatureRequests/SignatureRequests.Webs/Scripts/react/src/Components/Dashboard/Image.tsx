@@ -27,17 +27,11 @@ class Image extends React.Component<IImageProps, IImageState> {
 
   render() {
     const { src } = this.state;
-    const {
-      src: _1,
-      failedSrc: _2,
-      ...props
-    } = this.props;
 
     return (
       <img className="preview-doc"
         src={src}
         onError={this.onError}
-        {...props}
       />
     );
   }
