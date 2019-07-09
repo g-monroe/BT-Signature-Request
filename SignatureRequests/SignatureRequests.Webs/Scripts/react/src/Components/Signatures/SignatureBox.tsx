@@ -82,19 +82,15 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                             ExpirationDate: new Date()
 
                         })
+                        
                         let pic = new FormData();
                         pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         
                         this.props.SignatureHandler!.createSignature(request);
                         init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
-                         
-                        anchor = document.createElement('a');
-                        anchor.download = "test.png";
-                        anchor.href = (window.URL).createObjectURL(blob);
-                        anchor.dataset.downloadurl = ["image/png", anchor.download, anchor.href].join(':');
-                        anchor.click();
+
                     }
-                },"image/png");
+                },"image/octet-stream");
             })
         
         setTimeout(()=> {
