@@ -5,6 +5,8 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -36,9 +38,17 @@ namespace SignatureRequests.Managers
             {
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
+                Stream x = await file.ReadAsStreamAsync();
+                Image pix = Image.FromStream(x);
+                Bitmap bmp;
+                using (var ms = x)
+                {
+                    bmp = new Bitmap(ms);
+                }
+                Color white = Color.White;
+                bmp.MakeTransparent(white);
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory +  filePath + filename,
-                    buffer);
+                bmp.Save(AppDomain.CurrentDomain.BaseDirectory + filePath + filename, ImageFormat.Png);
             }
         }
         public void Delete(int id)

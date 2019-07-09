@@ -88,12 +88,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         
                         this.props.SignatureHandler!.createSignature(request);
                         init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
-                         
-                        anchor = document.createElement('a');
-                        anchor.download = "test.png";
-                        anchor.href = (window.URL).createObjectURL(blob);
-                        anchor.dataset.downloadurl = ["image/octet-stream", anchor.download, anchor.href].join(':');
-                        anchor.click();
+
                     }
                 },"image/octet-stream");
             })
