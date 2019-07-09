@@ -7,11 +7,7 @@ import FormEntity from '../../../Entities/FormEntity';
 import {Select, Tabs} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { request } from 'http';
-import { IGroupHandler, GroupHandler } from '../../../Handlers/GroupHandler';
-import GroupEntity from '../../../Entities/GroupEntity';
-import GroupResponseList from '../../../Entities/GroupResponseList';
-import { format } from 'path';
+import { GroupHandler } from '../../../Handlers/GroupHandler';
 const { Option } = Select;
 const { TabPane } = Tabs;
 export interface IDashboardProps {
@@ -66,12 +62,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 ));
                 }else{
                     let filteredForms = [];
-                    for(var i = 0; i<tableData.length; i++){
-                        if (tableData[i].groups.count != 0){
-                            let filteredGroups = tableData[i].groups.collection;
+                    for(var j = 0; j<tableData.length; j++){
+                        if (tableData[j].groups.count !== 0){
+                            let filteredGroups = tableData[j].groups.collection;
                             for(var inn = 0; inn<filteredGroups.length; inn++){
                                 if (filteredGroups[inn].requests !== null){
-                                    filteredForms.push(tableData[i]);
+                                    filteredForms.push(tableData[j]);
                                 }
                             }
                         }
@@ -106,12 +102,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 ));
                 }else{
                     let filteredForms = [];
-                    for(var i = 0; i<requestData.length; i++){
-                        if (requestData[i].groups.count != 0){
-                            let filteredGroups = requestData[i].groups.collection;
+                    for(var k = 0; k<requestData.length; k++){
+                        if (requestData[k].groups.count !== 0){
+                            let filteredGroups = requestData[k].groups.collection;
                             for(var inn = 0; inn<filteredGroups.length; inn++){
                                 if (filteredGroups[inn].requests != null){
-                                    filteredForms.push(requestData[i]);
+                                    filteredForms.push(requestData[k]);
                                 }
                             }
                         }
