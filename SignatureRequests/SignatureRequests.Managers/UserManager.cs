@@ -127,11 +127,9 @@ namespace SignatureRequests.Managers
             return new UserResponse()
             {
                 Id = me.Id,
-                Signature = me.Signature,
                 SignatureId = me.SignatureId,
                 Email = me.Email,
                 Name = me.Name,
-                Initial = me.Initial,
                 InitialId = me.InitialId,
                 Password = me.Password,
                 Role = me.Role

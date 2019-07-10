@@ -61,8 +61,8 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   state: ISendFormState = {};
   async componentDidMount() {
     this.setState({
-        forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id)),
-        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id))), //change to current user
+        forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id!)),
+        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id!))), //change to current user
         users: (await this.props.userHandler!.getAll()),
         selectedUsers: [],
         selectedForms: []
@@ -116,7 +116,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 
           groupId: group.id,
-          requestorId: this.props.currentUser!.id, 
+          requestorId: this.props.currentUser!.id!, 
           status: FormProgress.PENDING, 
           sentDate: new Date() });
         this.props.requestHandler!.createRequest(request);

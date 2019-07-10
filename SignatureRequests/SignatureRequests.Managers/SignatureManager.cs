@@ -115,7 +115,6 @@ namespace SignatureRequests.Managers
             return new SignatureResponse()
             {
                 Id = me.Id,
-                User = me.User,
                 UserId = me.UserId,
                 CertificatePassword = me.CertificatePassword,
                 CertificatePath = me.CertificatePath,

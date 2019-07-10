@@ -32,7 +32,6 @@ namespace SignatureRequests.Core.Entities
         [Required]
         public Boolean isInitial { get; set; }
 
-        [JsonIgnore]
         [Required]
         public virtual UserEntity User { get; set; }
 

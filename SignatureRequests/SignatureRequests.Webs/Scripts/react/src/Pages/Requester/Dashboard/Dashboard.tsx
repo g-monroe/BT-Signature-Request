@@ -2,7 +2,6 @@ import * as React from 'react';
 import DashItem from '../../../Components/Dashboard/DashItem';
 import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
-import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
 import {Select, Tabs} from 'antd';
 import Search from 'antd/lib/input/Search';
@@ -23,6 +22,11 @@ export interface IDashboardState {
     loading: boolean;
     searchTerm: string;
     contentState: ViewingState;
+}
+
+export enum ViewingState {
+    OutGoingRequests,
+    IncomingRequests
 }
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -50,88 +54,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
        });
      }
 
-     renderForms = () =>{
-         const {tableData, loading, searchTerm} = this.state;
-        if (loading){
-            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
-        }else{
-            if (tableData == null){
-                return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
-            }else{
-                let displayedForms = tableData;
-                if (searchTerm.length > 2 && !loading){
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={true}/>
-                ));
-                }else{
-                    let filteredForms = [];
-                    for(var j = 0; j<tableData.length; j++){
-                        if (tableData[j].groups.count !== 0){
-                            let filteredGroups = tableData[j].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){
-                                if (filteredGroups[inn].requests !== null){
-                                    filteredForms.push(tableData[j]);
-                                }
-                            }
-                        }
-                    }
-                    
-                    return filteredForms.map((form, index) =>
-
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
-                           ));
-                }
-            }
-        }
-     }
-
-     renderRequests = () =>{
-        const {requestData, loading, searchTerm} = this.state;
-        if (loading){
-            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
-        }else{
-            if (requestData == null){
-                return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
-            }else{
-                let displayedForms = requestData;
-                if (searchTerm.length > 2 && !loading){
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={false}/>
-                ));
-                }else{
-                    let filteredForms = [];
-                    for(var k = 0; k<requestData.length; k++){
-                        if (requestData[k].groups.count !== 0){
-                            let filteredGroups = requestData[k].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){
-                                if (filteredGroups[inn].requests != null){
-                                    filteredForms.push(requestData[k]);
-                                }
-                            }
-                        }
-                    }
-                    
-                    return filteredForms.map((form, index) =>
-
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
-                           ));
-                }
-            }
-        }
-     }
-
     private renderContent = (data: FormEntity[] | undefined) => {
         console.log(data, "Into render Content");
         const {loading} = this.state;
@@ -139,7 +61,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading Forms</h1>);
         }else{ //Content has been loaded in (If it exists)
             if(data){
-                let formsToDisplay = this.formsWithSeachTerms(data);
+                let formsToDisplay = this.findFormsWithSeachTerms(data);
                 if(formsToDisplay.length === 0 ){
                     data.forEach((form) => {
                         form.groups.collection.forEach((group) => {
@@ -160,7 +82,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 
     }
 
-    private formsWithSeachTerms = (data: FormEntity[]) =>{
+    private findFormsWithSeachTerms = (data: FormEntity[]) =>{
         const { searchTerm} = this.state;
         let filteredForms = [];
         if (searchTerm.length > 2 && data){
@@ -172,7 +94,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             }
         }
             return filteredForms;
-        
     }
 
      save  = ( target:any ) => {
@@ -185,7 +106,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 searchTerm: ""
             })
         }
-        
      }
 
     private changeViewingState = (key:string, event: any) => {
@@ -231,8 +151,3 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
 }
  
 export default Dashboard;
-
-export enum ViewingState {
-    OutGoingRequests,
-    IncomingRequests
-}

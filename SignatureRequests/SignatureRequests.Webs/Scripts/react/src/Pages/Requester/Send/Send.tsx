@@ -1,6 +1,5 @@
 import * as React from 'react';
 import SendForm from '../../../Components/Form/SendForm';
-import UserEntity from '../../../Entities/UserEntity';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ISendProps {
