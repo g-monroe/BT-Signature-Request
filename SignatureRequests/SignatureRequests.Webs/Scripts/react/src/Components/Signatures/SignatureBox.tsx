@@ -3,17 +3,17 @@ import DrawCanvas from './DrawCanvas';
 import {manualInputTypeEnum, inputMethodEnum} from '../../Util/Enums/SelectTypes';
 import ButtonSelect from './ButtonSelect';
 import TypedSignature from './TypedSignature';
-import { Button, message, Affix } from 'antd';
+import { Button, message } from 'antd';
 import html2canvas from 'html2canvas';
 import SignatureRequest from '../../Entities/SignatureRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import { SignatureHandler, ISignatureHandler } from '../../Handlers/SignatureHandler';
-import UserEntity from '../../Entities/UserEntity';
 
 export interface ISignatureBoxProps {
     signType?: manualInputTypeEnum,
     UserObject?:ContextUserObject
     SignatureHandler?:ISignatureHandler
+    SigSaved?: () => void
 }
  
 export interface ISignatureBoxState {
@@ -69,7 +69,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     saveCanvas = () => {
         let anchor;
         
-            html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
+            html2canvas(document.getElementById(this.props.signType != undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
                         const init = this.state.type === manualInputTypeEnum.Initial;
@@ -88,6 +88,8 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         this.props.SignatureHandler!.createSignature(request);
                         init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
                          
+                        this.props.SigSaved && this.props.SigSaved();
+
                         anchor = document.createElement('a');
                         anchor.download = "test.png";
                         anchor.href = (window.URL).createObjectURL(blob);
@@ -107,20 +109,20 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
             <div id = 'SignatureBox'>
             <div id = 'SignatureButtons'>
                 {
-                    this.props.signType ? 
+                    this.props.signType != undefined ? //Added to allow for values of 0 to pass
                     <></>:
                     <div id = "SignatureHeader">
                         <ButtonSelect options = {manualInputTypeEnum} onChange = {this.manualInputTypeChanged}></ButtonSelect>
                     </div>
                 } 
-                <div id = "ThingToSave">
-                <Affix offsetBottom = {20}>
+                <div id = {this.props.signType != undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave"}>
+                
                     {
                     this.state.method === inputMethodEnum.Draw ? 
                     <DrawCanvas type = {this.state.type} getCanvas = {this.setCanvasRef}></DrawCanvas> :
                     <TypedSignature></TypedSignature>
                     }
-                </Affix>
+               
                 </div>
                 
                 <div id = "SignatureFooter">

@@ -35,8 +35,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         })
     }
 
-
-
     render() { 
         return ( 
             <Router >
@@ -55,20 +53,15 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                     exact 
                                     breadcrumbName={route.breadcrumbName}
                                     render={()=><UserProvider value = {{user:this.state.user, update:this.updateUser}}><WithNav></WithNav></UserProvider>}
-
-                                     
                                     />
                                     )
                                 })
                                 }
                                 </Switch> 
-                        }
-                                                  
+                        }             
                    </Layout.Content>
                 </Layout>
             </Router>
-
-
          );
     }
 }

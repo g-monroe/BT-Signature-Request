@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { TypesOfBoxes, DropDownState } from '../../Util/Enums/SignatureDropDown';
-import { Menu, Dropdown, Icon, DatePicker, Button, Modal } from 'antd';
+import { Menu, Dropdown, Icon, DatePicker, Button, Modal, Drawer } from 'antd';
 import SignatureBox from './SignatureBox';
 import {manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
 import { ISignatureHandler, SignatureHandler } from '../../Handlers/SignatureHandler';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
+import './DrawTest.css'
+
 
 export interface ISignatureDropDownProps {
     type:TypesOfBoxes  
     sigHandler?:ISignatureHandler
     UserObject?:ContextUserObject
+    dataAdded?:(data: any) => void
 }
  
 export interface ISignatureDropDownState {
@@ -51,6 +54,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
             modalVisible:false,
             menuVisible:false
         })
+        this.updateHasSig();
     }
 
     handleCancel = () =>{
@@ -70,6 +74,19 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
+    updateHasSig = async () => {
+        let bool = false;
+        if(this.props.UserObject!.user.id && this.props.UserObject!.user.id > 0){
+            this.props.type === TypesOfBoxes.Signature ? 
+                bool = await this.props.sigHandler!.signatureExists(this.props.UserObject!.user.id) :
+                bool = await this.props.sigHandler!.initialExists(this.props.UserObject!.user.id)
+        }
+
+        this.setState({
+            existing:bool
+        })
+    }
+
     render() { 
         const menu = 
             <Menu>
@@ -77,7 +94,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                     {
                         this.props.type === TypesOfBoxes.Date ?
                             <Menu.Item key = {0} onClick = {()=> this.onClickChangeState(DropDownState.Date,false,true)}>Select the date: {" "}
-                                <DatePicker onChange = {this.handleInfoChange}></DatePicker> {" "}
+                                <DatePicker onChange = {this.handleInfoChange} ></DatePicker> {" "}
                                 {this.state.info ?
                                     <Button onClick = {this.handleSubmitButton}>Submit</Button> :
                                     <Button onClick = {this.handleSubmitButton} disabled>Submit</Button>
@@ -102,24 +119,22 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         return ( 
             <>
                 <Dropdown overlay = {menu} trigger = {['click']} onVisibleChange = {this.handleVisChange} visible = {this.state.menuVisible}>
-                    <Button href = '#' size = "small">Add {TypesOfBoxes[this.props.type]} {" "}
+                    <Button href = '#' size = "small"> {TypesOfBoxes[this.props.type]}? {" "}
                         <Icon type="plus-circle"/>
                     </Button>
                 </Dropdown>
                 {   
                     this.state.status === DropDownState.NewInitial  || this.state.status === DropDownState.NewSignature ?
-                        <Modal 
+                        <Drawer 
                             visible = {this.state.modalVisible}
                             title = {this.state.status === DropDownState.NewInitial ? "Draw your initials below" : "Draw your signature below"}
-                            onOk = {this.handleSubmitButton}
-                            onCancel = {this.handleCancel}
-                            footer = {[
-                                <Button key = "back" onClick = {this.handleCancel}>Back</Button>,
-                                <Button key = "submit" onClick = {this.handleSubmitButton} type = "primary">Submit</Button>
-                            ]}
+                            onClose = {this.handleCancel}
+                            placement = "bottom"
+                            height = "60%"
+                            
                         >
-                            <SignatureBox signType = {this.state.status === DropDownState.NewInitial ? manualInputTypeEnum.Initial : manualInputTypeEnum.Signature}></SignatureBox>
-                        </Modal>
+                            <SignatureBox SigSaved = {this.handleSubmitButton} signType = {this.state.status === DropDownState.NewInitial ? manualInputTypeEnum.Initial : manualInputTypeEnum.Signature} UserObject = {this.props.UserObject}></SignatureBox>
+                        </Drawer>
                         : <></>
                 }
             </>
@@ -128,16 +143,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
     }
 
     async componentDidMount () {
-        let bool = false;
-        if(this.props.UserObject!.user.id && this.props.UserObject!.user.id > 0){
-            this.props.type === TypesOfBoxes.Signature ? 
-                bool = await this.props.sigHandler!.signatureExists(this.props.UserObject!.user.id) :
-                bool = await this.props.sigHandler!.initialExists(this.props.UserObject!.user.id)
-        }
-
-        this.setState({
-            existing:bool
-        })
+        await this.updateHasSig();
     }
 }
  
