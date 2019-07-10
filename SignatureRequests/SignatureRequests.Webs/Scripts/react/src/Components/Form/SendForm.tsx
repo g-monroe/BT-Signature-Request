@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Select, Table, Button } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
-import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
@@ -12,6 +11,7 @@ import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
+import MainPageUser from "../../Entities/MainPageUser";
 const { Option } = Select;
 const columns = [
     {
@@ -37,7 +37,7 @@ export interface ISendFormProps {
    userHandler?: IUserHandler;
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
-   currentUser?: UserEntity;
+   currentUser?: MainPageUser;
 }
 
 export interface ISendFormState {
