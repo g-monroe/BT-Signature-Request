@@ -21,7 +21,7 @@ export interface IDashboardState {
     requestData?: FormEntity[];
     loading: boolean;
     searchTerm: string;
-    contentState: ViewingState;
+    contentState: number;
 }
 
 export enum ViewingState {
@@ -69,7 +69,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     })
                 }
                 return formsToDisplay.map((form, index) =>
-                    <DashItem key = {index} formEntity = {form} isOwner = {this.state.contentState == ViewingState.IncomingRequests}></DashItem>
+                    <DashItem key = {index} formEntity = {form} isOwner = {this.state.contentState === ViewingState.IncomingRequests}></DashItem>
                 );
             }
             else { //Request data doesn't exist. Show an empty symbol
@@ -105,9 +105,9 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         }
      }
 
-    private changeViewingState = (key:string, event: any) => {
+    private changeViewingState = (key:string) => {
         this.setState({
-            contentState:ViewingState[parseInt(key)]
+            contentState:parseInt(key)
         })
 
      }
