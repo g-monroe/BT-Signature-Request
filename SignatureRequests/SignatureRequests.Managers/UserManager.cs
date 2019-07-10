@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -14,9 +15,11 @@ namespace SignatureRequests.Managers
     public class UserManager : IUserManager
     {
         private readonly IUserHandler _userHandler;
-        public UserManager(IUserHandler userHandler)
+        private readonly ISignatureEngine _signatureEngine;
+        public UserManager(IUserHandler userHandler, ISignatureEngine signatureEngine)
         {
             _userHandler = userHandler;
+            _signatureEngine = signatureEngine;
         }
         public UserResponse CreateUserEntity(UserRequest newUser)
         {
@@ -127,9 +130,11 @@ namespace SignatureRequests.Managers
             return new UserResponse()
             {
                 Id = me.Id,
+                Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
                 Email = me.Email,
                 Name = me.Name,
+                Initial = _signatureEngine.SignatureToListItem(me.Initial),
                 InitialId = me.InitialId,
                 Password = me.Password,
                 Role = me.Role

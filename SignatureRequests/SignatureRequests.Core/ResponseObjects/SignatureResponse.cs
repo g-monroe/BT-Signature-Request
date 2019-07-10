@@ -16,7 +16,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public string Reason { get; set; }
         public string ContactInfo { get; set; }
         public Boolean IsInitial { get; set; }
-        public UserEntity User { get; set; }
         public int UserId { get; set; }
         public DateTime ExpirationDate { get; set; }
 
