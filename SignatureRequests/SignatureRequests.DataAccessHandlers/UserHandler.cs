@@ -6,7 +6,7 @@ using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
-
+using System.Data.Entity;
 namespace SignatureRequests.DataAccessHandlers
 {
     public class UserHandler : BaseHandler<UserEntity>, IUserHandler
@@ -16,7 +16,7 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public IEnumerable<UserEntity> GetAllInclude()
         {
-            return _context.Users.Include("Signature");
+            return _context.Users.Include(x => x.Signature);
             
         }
         private UserEntity GetUserProperty(int id)

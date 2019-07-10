@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="GroupEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignatureEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infastructure\" />
