@@ -112,6 +112,10 @@ namespace SignatureRequests.Managers
         }
         public SignatureResponse SignatureToListItem(SignatureEntity me)
         {
+            if (me == null)
+            {
+                return new SignatureResponse();
+            }
             return new SignatureResponse()
             {
                 Id = me.Id,

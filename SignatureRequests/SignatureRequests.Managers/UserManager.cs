@@ -14,9 +14,11 @@ namespace SignatureRequests.Managers
     public class UserManager : IUserManager
     {
         private readonly IUserHandler _userHandler;
-        public UserManager(IUserHandler userHandler)
+        private readonly ISignatureManager _signatureManager;
+        public UserManager(IUserHandler userHandler, ISignatureManager signatureManager)
         {
             _userHandler = userHandler;
+            _signatureManager = signatureManager;
         }
         public UserResponse CreateUserEntity(UserRequest newUser)
         {
@@ -65,7 +67,7 @@ namespace SignatureRequests.Managers
 
         public UserResponseList GetUsers()
         {
-            var result = _userHandler.GetAll();
+            var result = _userHandler.GetAllInclude();
             var resp = UserToListResponse(result);
             return resp;
         }
@@ -124,6 +126,14 @@ namespace SignatureRequests.Managers
         }
         public UserResponse UserToListItem(UserEntity me)
         {
+            if (me.Signature != null)
+            {
+                me.Signature.User = null;
+            }
+            if (me.Initial != null)
+            {
+                me.Initial.User = null;
+            }
             return new UserResponse()
             {
                 Id = me.Id,
