@@ -14,11 +14,9 @@ namespace SignatureRequests.Managers
     public class UserManager : IUserManager
     {
         private readonly IUserHandler _userHandler;
-        private readonly ISignatureManager _signatureManager;
-        public UserManager(IUserHandler userHandler, ISignatureManager signatureManager)
+        public UserManager(IUserHandler userHandler)
         {
             _userHandler = userHandler;
-            _signatureManager = signatureManager;
         }
         public UserResponse CreateUserEntity(UserRequest newUser)
         {
