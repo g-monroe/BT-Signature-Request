@@ -124,22 +124,12 @@ namespace SignatureRequests.Managers
         }
         public UserResponse UserToListItem(UserEntity me)
         {
-            if (me.Signature != null)
-            {
-                me.Signature.User = null;
-            }
-            if (me.Initial != null)
-            {
-                me.Initial.User = null;
-            }
             return new UserResponse()
             {
                 Id = me.Id,
-                Signature = me.Signature,
                 SignatureId = me.SignatureId,
                 Email = me.Email,
                 Name = me.Name,
-                Initial = me.Initial,
                 InitialId = me.InitialId,
                 Password = me.Password,
                 Role = me.Role
