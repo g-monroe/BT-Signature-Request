@@ -52,7 +52,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
        });
      }
 
-    private renderContent = (data: FormEntity[] | undefined) => {
+    private renderContent = (data?: FormEntity[]) => {
         const {loading} = this.state;
         if(loading){
             return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading Forms</h1>);
