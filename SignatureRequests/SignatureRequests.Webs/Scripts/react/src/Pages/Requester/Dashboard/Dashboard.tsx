@@ -53,7 +53,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
 
     private renderContent = (data: FormEntity[] | undefined) => {
-        console.log(data, "Into render Content");
         const {loading} = this.state;
         if(loading){
             return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading Forms</h1>);
@@ -107,7 +106,10 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
 
     private changeViewingState = (key:string, event: any) => {
-        console.log(ViewingState[parseInt(key)]);
+        this.setState({
+            contentState:ViewingState[parseInt(key)]
+        })
+
      }
      
     render() { 
