@@ -61,7 +61,7 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return _dbSet.Where(where).Include(col).ToList();
         }
-        public IEnumerable<T> GetIncludes(string col)
+        public IEnumerable<T> GetIncludes(string col) 
         {
             return _dbSet.Include(col).ToList();
         }

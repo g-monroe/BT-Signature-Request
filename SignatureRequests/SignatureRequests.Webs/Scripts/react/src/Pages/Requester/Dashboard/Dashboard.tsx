@@ -4,7 +4,7 @@ import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
 import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
-import {Select, Tabs} from 'antd';
+import {Select, Tabs, Drawer, Button} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 import { request } from 'http';
@@ -24,6 +24,9 @@ export interface IDashboardState {
     requestData?: FormEntity[];
     loading: boolean;
     searchTerm: string;
+    selectedItems: DashItem[];
+    sideBar: boolean;
+    itemsSelected: boolean;
 }
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
@@ -33,7 +36,10 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      };
      state: IDashboardState = {
          loading: true,
-         searchTerm: ""
+         searchTerm: "",
+         selectedItems:[],
+         sideBar: false,
+         itemsSelected: false,
      };
      async componentDidMount() {
        this.setState({
@@ -62,7 +68,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         }
                     }
                      return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={true}/>
+                          <DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
                 ));
                 }else{
                     let filteredForms = [];
@@ -79,7 +85,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     
                     return filteredForms.map((form, index) =>
 
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
+                            (<DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
                            ));
                 }
             }
@@ -102,7 +108,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         }
                     }
                      return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={false}/>
+                          <DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
                 ));
                 }else{
                     let filteredForms = [];
@@ -111,15 +117,19 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                             let filteredGroups = requestData[i].groups.collection;
                             for(var inn = 0; inn<filteredGroups.length; inn++){
                                 if (filteredGroups[inn].requests != null){
-                                    filteredForms.push(requestData[i]);
+                                    let requests = filteredGroups[inn].requests.collection;
+                                    for(var ind = 0; ind<requests.length; ind++){
+                                        if (requests[ind].status !== "Done"){
+                                            filteredForms.push(requestData[i]);
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                     
-                    return filteredForms.map((form, index) =>
-
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
+                    return filteredForms.map((form, index) => 
+                            (<DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
                            ));
                 }
             }
@@ -137,6 +147,29 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         }
         
      }
+     onClose = (e: any) =>{
+         this.setState({
+             sideBar: false,
+             selectedItems: [],
+             itemsSelected: false
+         })
+     }
+     openDraw = (e:any) =>{
+         let side = !this.state.sideBar;
+        this.setState({
+            sideBar: side
+        })
+     }
+     renderEditDashItems = () => {
+         const { selectedItems } = this.state;
+         if (selectedItems.length !== 0){
+             return selectedItems.map((dash) =>(
+                <p>{dash.props.formEntity.title}</p>
+             ));
+         }else{
+             return <h1>No Items Selected</h1>;
+         }
+     }
     render() { 
         const selectBefore = (
             <Select defaultValue="completed">
@@ -147,7 +180,15 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
           );
         
         return ( 
+           
             <div className="Page">
+                 <Drawer title="Create a new account" width={720} onClose={this.onClose} visible={this.state.sideBar}>
+                    {
+                        this.renderEditDashItems()
+                    }
+                </Drawer>
+
+                <Button onClick={this.openDraw} type="primary" shape="circle" icon="edit" className="editButton"/>
                 <div className="overlay">
                 <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">

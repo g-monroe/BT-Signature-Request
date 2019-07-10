@@ -9,11 +9,16 @@ import { Tabs, Progress } from 'antd';
 import RequestStatus from '../../Util/Enums/RequestStatus';
 import '../../../node_modules/antd/dist/antd.css';
 import Image from './Image';
+import { Redirect } from 'react-router';
+import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
+import Dashboard from '../../Pages/Requester/Dashboard/Dashboard';
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
     formEntity: FormEntity;
     isOwner: boolean;
+    groupHandler?: IGroupHandler;
+    parent: Dashboard;
 }
  
 export interface IDashItemState {
@@ -23,16 +28,37 @@ export interface IDashItemState {
 }
 
 class DashItem extends React.Component<IDashItemProps, IDashItemState> {
+  static defaultProps = {
+    groupHandler: new GroupHandler
+  }
    state:IDashItemState = {
      checked: false,
      progressBar: 0,
      tags: []
    }
-  
+   handleDelete = (e:any) => {
+    if (this.props.isOwner){
+      //Send request and get the response
+      //Then demount the component
+      let groups = this.props.formEntity.groups.collection;
+      if (groups !== null){
+        this.props.groupHandler!.deleteGroup(groups[0].id);
+      }
+    }
+   }
+   handleEdit = (e:any) => {
+     //Redirect to the page to edit the group if owner
+     if (this.props.isOwner){
+        return <Redirect to={""}/>
+     }else{//Else Sign document
+        return <Redirect to={""}/>  
+     }
+   }
    handleMultiSelect = (e: any) =>{
       this.setState({
         checked: !this.state.checked
       });
+      
    }
    componentDidMount(){
     const {formEntity} = this.props;
