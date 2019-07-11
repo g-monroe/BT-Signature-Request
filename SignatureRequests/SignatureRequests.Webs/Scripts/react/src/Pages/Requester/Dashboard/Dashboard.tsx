@@ -160,6 +160,14 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             sideBar: side
         })
      }
+     addSelected = (dash: DashItem) => {
+        const { selectedItems } = this.state;
+        selectedItems.map((dashItem) =>{
+            if (dashItem == dash){
+                
+            }
+        })
+     }
      renderEditDashItems = () => {
          const { selectedItems } = this.state;
          if (selectedItems.length !== 0){

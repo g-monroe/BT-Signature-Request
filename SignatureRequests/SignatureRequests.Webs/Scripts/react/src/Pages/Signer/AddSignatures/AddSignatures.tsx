@@ -7,9 +7,10 @@ import Paragraph from 'antd/lib/typography/Paragraph';
 import ImageViewModal from '../../../Components/Signatures/ImageViewModal';
 import {HowToSign} from '../../../Util/Text';
 import { TypesOfBoxes } from '../../../Util/Enums/SignatureDropDown';
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface IAddSignatuesProps {
-    
+    UserObject:ContextUserObject
 }
  
 export interface IAddSignatuesState {
@@ -53,7 +54,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                                     <Paragraph id = "SigPara">{SignatureExplanation}</Paragraph>
                                     <h4>{SignatureExplanationfooter}</h4>
                                 </div>
-                                <SignatureBox></SignatureBox>
+                                <SignatureBox UserObject = {this.props.UserObject}></SignatureBox>
                             </div>
                         </Layout.Content>
                     </Layout>

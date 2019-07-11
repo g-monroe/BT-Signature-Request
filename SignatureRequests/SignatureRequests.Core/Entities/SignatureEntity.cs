@@ -1,4 +1,5 @@
 ﻿using BTSuggestions.Core.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

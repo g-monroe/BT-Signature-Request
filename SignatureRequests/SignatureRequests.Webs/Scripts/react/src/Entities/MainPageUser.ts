@@ -1,7 +1,7 @@
 import UserType from "../Util/Enums/UserTypes";
 
 class MainPageUser {
-  id?: number;
+  id: number;
   role?: string;
   name?: string;
   email?: string;
