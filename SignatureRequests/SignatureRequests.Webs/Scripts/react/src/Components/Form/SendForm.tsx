@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Select, Table, Button } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
-import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
@@ -12,6 +11,7 @@ import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
+import MainPageUser from "../../Entities/MainPageUser";
 const { Option } = Select;
 const columns = [
     {
@@ -37,7 +37,7 @@ export interface ISendFormProps {
    userHandler?: IUserHandler;
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
-   currentUser?: UserEntity;
+   currentUser?: MainPageUser;
 }
 
 export interface ISendFormState {
@@ -61,8 +61,8 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   state: ISendFormState = {};
   async componentDidMount() {
     this.setState({
-        forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id)),
-        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id))), //change to current user
+        forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id!)),
+        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id!))), //change to current user
         users: (await this.props.userHandler!.getAll()),
         selectedUsers: [],
         selectedForms: []
@@ -116,7 +116,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 
           groupId: group.id,
-          requestorId: this.props.currentUser!.id, 
+          requestorId: this.props.currentUser!.id!, 
           status: FormProgress.PENDING, 
           sentDate: new Date() });
         this.props.requestHandler!.createRequest(request);

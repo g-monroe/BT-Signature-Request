@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+
 interface IImageProps{
     src: string;
     failedSrc:string;
@@ -32,6 +32,7 @@ class Image extends React.Component<IImageProps, IImageState> {
       <img className="preview-doc"
         src={src}
         onError={this.onError}
+        alt = "Preview"
       />
     );
   }

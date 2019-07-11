@@ -49,14 +49,14 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
 
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
           let color = "#CDCDCD";
-          if (request.status == RequestStatus.DONE){
+          if (request.status === RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
           }
-          if (request.boxes.count != 0){
+          if (request.boxes.count !== 0){
             let signedBoxes = 0;
             request.boxes.collection.map((box) => {
-              if (box.signedStatus == RequestStatus.SIGNED){
+              if (box.signedStatus === RequestStatus.SIGNED){
                 signedBoxes += 1;
               }
             })

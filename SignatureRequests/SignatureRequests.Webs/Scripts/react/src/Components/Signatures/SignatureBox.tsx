@@ -8,7 +8,6 @@ import html2canvas from 'html2canvas';
 import SignatureRequest from '../../Entities/SignatureRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import { SignatureHandler, ISignatureHandler } from '../../Handlers/SignatureHandler';
-import UserEntity from '../../Entities/UserEntity';
 
 export interface ISignatureBoxProps {
     signType?: manualInputTypeEnum,
@@ -66,9 +65,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         }
     }
 
-    saveCanvas = () => {
-        let anchor;
-        
+    saveCanvas = () => {    
             html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
