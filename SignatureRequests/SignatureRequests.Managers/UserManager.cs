@@ -15,18 +15,20 @@ namespace SignatureRequests.Managers
     public class UserManager : IUserManager
     {
         private readonly IUserHandler _userHandler;
+        private readonly IUserEngine _userEngine;
         private readonly ISignatureEngine _signatureEngine;
-        public UserManager(IUserHandler userHandler, ISignatureEngine signatureEngine)
+        public UserManager(IUserHandler userHandler, ISignatureEngine signatureEngine, IUserEngine userEngine)
         {
             _userHandler = userHandler;
             _signatureEngine = signatureEngine;
+            _userEngine = userEngine;
         }
         public UserResponse CreateUserEntity(UserRequest newUser)
         {
-            var user = UserToDbItem(newUser);
+            var user = _userEngine.UserToDbItem(newUser);
             _userHandler.Insert(user);
             _userHandler.SaveChanges();
-            var result = UserToListItem(user);
+            var result = _userEngine.UserToListItem(user);
             return result;
         }
 
@@ -62,26 +64,26 @@ namespace SignatureRequests.Managers
         public UserResponse GetUser(int id)
         {
             var result = _userHandler.GetById(id);
-            var resp = UserToListItem(result);
+            var resp = _userEngine.UserToListItem(result);
             return resp;
         }
 
         public UserResponseList GetUsers()
         {
             var result = _userHandler.GetAllInclude();
-            var resp = UserToListResponse(result);
+            var resp = _userEngine.UserToListResponse(result);
             return resp;
         }
         public UserResponseList GetAllInclude()
         {
             var result = _userHandler.GetAllInclude();
-            var resp = UserToListResponse(result);
+            var resp = _userEngine.UserToListResponse(result);
             return resp;
         }
         public UserResponse UpdateUser(int id, UserRequest newUser)
         {
             var user = _userHandler.GetById(id);
-            var reqUser = UserToDbItem(newUser);
+            var reqUser = _userEngine.UserToDbItem(newUser);
             user.Signature = reqUser.Signature;
             user.SignatureId = reqUser.SignatureId;
             user.Email = reqUser.Email;
@@ -92,7 +94,7 @@ namespace SignatureRequests.Managers
             user.Role = reqUser.Role;
             _userHandler.Update(user);
             _userHandler.SaveChanges();
-            var result = UserToListItem(user);
+            var result = _userEngine.UserToListItem(user);
             return result;
         }
 
@@ -102,7 +104,7 @@ namespace SignatureRequests.Managers
 
             if(user != null && user.Password == info.password)
             {
-                return UserToListItem(user);
+                return _userEngine.UserToListItem(user);
             }
             else
             {
@@ -110,53 +112,6 @@ namespace SignatureRequests.Managers
             }
         }
 
-
-        public UserResponseList UserToListResponse(IEnumerable<UserEntity> me)
-        {
-            var resp = new UserResponseList
-            {
-                TotalResults = me.Count(),
-                UsersList = new List<UserResponse>()
-            };
-
-            foreach (UserEntity user in me)
-            {
-                resp.UsersList.Add(UserToListItem(user));
-            }
-            return resp;
-        }
-        public UserResponse UserToListItem(UserEntity me)
-        {
-            return new UserResponse()
-            {
-                Id = me.Id,
-                Signature = _signatureEngine.SignatureToListItem(me.Signature),
-                SignatureId = me.SignatureId,
-                Email = me.Email,
-                Name = me.Name,
-                Initial = _signatureEngine.SignatureToListItem(me.Initial),
-                InitialId = me.InitialId,
-                Password = me.Password,
-                Role = me.Role
-            };
-        }
-        public UserEntity UserToDbItem(UserRequest me, UserEntity updating = null)
-        {
-            if (updating == null)
-            {
-                updating = new UserEntity();
-            }
-            updating.Id = me.Id;
-            updating.Signature = me.Signature;
-            updating.SignatureId = me.SignatureId;
-            updating.Email = me.Email;
-            updating.Name = me.Name;
-            updating.Initial = me.Initial;
-            updating.InitialId = me.InitialId;
-            updating.Password = me.Password;
-            updating.Role = me.Role;
-            return updating;
-        }
        
     }
 }
