@@ -11,6 +11,7 @@ import FormEntity from "../../../Entities/FormEntity";
 import { IFormHandler, FormHandler } from "../../../Handlers/FormHandler";
 import GroupResponseList from "../../../Entities/GroupResponseList";
 import GroupEntity from "../../../Entities/GroupEntity";
+import FormImage from "./FormImage";
 const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
@@ -26,9 +27,12 @@ export interface IEditState {
     file: FormEntity;
     fileUploaded: Boolean;
     page: number;
+    images: JSX.Element[];
+    clearPage: Boolean;
 }
  
 class Edit extends React.Component<IEditProps, IEditState> {
+
     static defaultProps = {
         boxHandler: new BoxHandler(),
         formHandler: new FormHandler()
@@ -45,33 +49,97 @@ class Edit extends React.Component<IEditProps, IEditState> {
             GroupEntities: new GroupResponseList({TotalResults: 0, GroupsList: [] as GroupEntity[]})
         }),
         fileUploaded: false,
-        page: 0
+        page: 0,
+        images: [],
+        clearPage: true
     };
     
     async componentDidMount() {
+        let file = (await this.props.formHandler!.getFormById(this.props.UserObject.formId));
+        let items = [];
+        let form = file.filePath.split('.')[0];
+        for(let i = 0; i<file.numPages; i++){
+            let newItem = <FormImage pageNum={i} src={`../../../../../../assets/v1/documents/${form}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
+            items.push(newItem);
+        }
         this.setState({
-            file: (await this.props.formHandler!.getFormById(this.props.UserObject.formId)),
-            fileUploaded: true
+            file: file,
+            fileUploaded: true,
+            images: items
         });
-        console.log(this.state.file!);
-    }
+    };
     
+    onNext = () => {
+        this.setState({
+            page: this.state.page+1,
+            clearPage: true
+        });
+    };
+
+    onPrev = () => {
+        this.setState({
+            page: this.state.page-1,
+            clearPage: true
+        })
+    };
+
+    clearPage = () : JSX.Element => {
+        return <></>;
+    };
+
+    renderpage = (): JSX.Element =>{
+        if(this.state.clearPage){
+            this.setState({
+                clearPage: false
+            });
+            return <></>;
+        }
+        const {page, images} = this.state;
+        for(let i=0; i<images.length; i++){
+            if(images[i].props.pageNum == page){
+                return images[i];
+            }
+        }
+        return images[0];
+    }
 
     render() { 
         if(!this.state.fileUploaded){
             return <div>Loading...</div>;
         } else{
-            let form = this.state.file!.filePath.split('.')[0];
+            
         return (
             <> 
-            <h1  id = 'HeaderText'>Edit a Form</h1>
-            <h1>{this.props.UserObject.formId}</h1>
-            <img src={require("../../../../../../assets/v1/documents/"+form+"/"+this.state.page+".png")}/>
+            {this.clearPage()}
+            {this.renderpage()}
+            <div
+            style={{
+                borderTopLeftRadius: "11px",
+                borderBottomLeftRadius: "11px",
+                padding: "0px",
+                margin: "auto",
+                paddingRight: "5px",
+                display: "block",
+                textAlign: "center"
+            }}
+            >
+                <Button 
+                    disabled={this.state.page==0}
+                    onClick={this.onPrev}>
+                    Prev
+                </Button>
+                  Page {this.state.page+1} of {this.state.file!.numPages}  
+                <Button 
+                    disabled={this.state.page==this.state.file!.numPages-1}
+                    onClick={this.onNext}>
+                    Next
+                </Button>
+            </div>
             </>
          );
         }
         
-    }
+    };
 }
  
 export default Edit;

@@ -109,6 +109,7 @@ namespace SignatureRequests.Engines
                 Title = form.Title,
                 User = form.User,
                 UserId = form.UserId,
+                NumPages = form.NumPages,
                 GroupEntities = resp
             };
         }

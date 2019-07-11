@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SignatureRequests.Managers
 {
@@ -59,8 +60,8 @@ namespace SignatureRequests.Managers
         }
         public async Task SaveDocumentAsync(MultipartMemoryStreamProvider provider)
         {
-            foreach (var file in provider.Contents)
-            {
+            
+            var file = provider.Contents[0];
                 const string path = Constants.DocumentPath;
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
@@ -73,9 +74,29 @@ namespace SignatureRequests.Managers
                 DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
                 for (int i=0; i<dp.Pages.Count(); i++)
                 {
-                    dp.Pages[i].Rasterize(800, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + i.ToString() + ".png");
+                    
+                     dp.Pages[i].Rasterize(72,Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + i.ToString() + ".png");
+                    
+                   
                 }
-            }
+            
+            
+        }
+        public async Task<int> GetPageCount(MultipartMemoryStreamProvider provider)
+        {
+            var file = provider.Contents[0];
+            const string path = Constants.DocumentPath;
+            var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
+            var buffer = await file.ReadAsByteArrayAsync();
+            string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var fullName = filename.Split('.').First();
+            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName);
+            File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path + filename,
+                buffer);
+            DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
+            DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+            return dp.Pages.Count();
+            
         }
         public FormEntity UpdateForm(FormEntity form, FormEntity newForm)
         {
@@ -149,6 +170,7 @@ namespace SignatureRequests.Managers
             updating.Title = form.Title;
             updating.User = _userHandler.GetById(form.UserId);
             updating.UserId = form.UserId;
+            updating.NumPages = form.NumPages;
             return updating;
         }
     }

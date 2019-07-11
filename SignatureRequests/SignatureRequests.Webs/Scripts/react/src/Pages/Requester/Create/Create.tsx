@@ -4,8 +4,6 @@ import UserEntity from '../../../Entities/UserEntity';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
-import { resolve } from 'path';
-import GroupResponseList from '../../../Entities/GroupResponseList';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { REQUESTER } from "../../../Pages/Routing/routes";
@@ -54,15 +52,20 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             CreateDate: data.CreateDate,
             UserId: data.UserId
         });
+
         let form = new FormData();
         form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );
         
-        let response = (await this.props.formHandler!.createForm(request));
-        this.setState({
+        let uploadRequest = this.props.formHandler!.uploadForm(form);
+        uploadRequest.addEventListener("load", async () => {
+            request.numPages = parseInt(uploadRequest.response);
+            let response = (await this.props.formHandler!.createForm(request));
+            this.setState({
             uploaded: response,
             isUploaded: true
+            });
         });
-        this.props.formHandler!.uploadForm(form);
+
     };
 
     render() { 
@@ -83,23 +86,21 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             </>
             );
         }  
-          else{
-        return (
-            
-            <> 
-            <h1  id = 'HeaderText'>Create a Form</h1>
-                <CreateForm
-                handleSave={this.handleSave}
-                currentUser={this.props.currentUser!}
-                />
-            <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
-            <Button disabled={!this.state.isUploaded}>
-                Continue
-                </Button>
-                </Link>
-            </>
-
-         );
+        else{
+            return (
+                <> 
+                <h1  id = 'HeaderText'>Create a Form</h1>
+                    <CreateForm
+                    handleSave={this.handleSave}
+                    currentUser={this.props.currentUser!}
+                    />
+                <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
+                <Button disabled={!this.state.isUploaded}>
+                    Continue
+                    </Button>
+                    </Link>
+                </>
+            );
         }
     }
 }
