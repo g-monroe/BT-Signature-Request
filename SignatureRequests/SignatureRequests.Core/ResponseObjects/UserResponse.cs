@@ -16,9 +16,9 @@ namespace SignatureRequests.Core.ResponseObjects
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public SignatureEntity Signature { get; set; }
+        public SignatureResponse Signature { get; set; }
         public int? SignatureId { get; set; }
-        public SignatureEntity Initial { get; set; }
+        public SignatureResponse Initial { get; set; }
         public int? InitialId { get; set; }
     }
 }
