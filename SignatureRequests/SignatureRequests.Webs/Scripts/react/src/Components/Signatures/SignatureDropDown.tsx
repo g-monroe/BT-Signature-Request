@@ -37,6 +37,8 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         UserObject: new ContextUserObject()
      }
 
+     
+
     handleVisChange = (bool: boolean) =>{
         this.setState({
             menuVisible:bool
@@ -94,7 +96,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                     {
                         this.props.type === TypesOfBoxes.Date ?
                             <Menu.Item key = {0} onClick = {()=> this.onClickChangeState(DropDownState.Date,false,true)}>Select the date: {" "}
-                                <DatePicker onChange = {this.handleInfoChange} ></DatePicker> {" "}
+                                <DatePicker onChange = {this.handleInfoChange} format = {['DD/MM/YYYY', 'DD/MM/YY']}></DatePicker> {" "}
                                 {this.state.info ?
                                     <Button onClick = {this.handleSubmitButton}>Submit</Button> :
                                     <Button onClick = {this.handleSubmitButton} disabled>Submit</Button>

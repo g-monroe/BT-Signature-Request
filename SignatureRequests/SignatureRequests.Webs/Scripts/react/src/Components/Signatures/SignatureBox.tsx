@@ -69,7 +69,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     saveCanvas = () => {
         let anchor;
         
-            html2canvas(document.getElementById(this.props.signType != undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
+            html2canvas(document.getElementById(this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
                         const init = this.state.type === manualInputTypeEnum.Initial;
@@ -109,13 +109,13 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
             <div id = 'SignatureBox'>
             <div id = 'SignatureButtons'>
                 {
-                    this.props.signType != undefined ? //Added to allow for values of 0 to pass
+                    this.props.signType !== undefined ? //Added to allow for values of 0 to pass
                     <></>:
                     <div id = "SignatureHeader">
                         <ButtonSelect options = {manualInputTypeEnum} onChange = {this.manualInputTypeChanged}></ButtonSelect>
                     </div>
                 } 
-                <div id = {this.props.signType != undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave"}>
+                <div id = {this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave"}>
                 
                     {
                     this.state.method === inputMethodEnum.Draw ? 
