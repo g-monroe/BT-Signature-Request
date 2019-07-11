@@ -16,11 +16,12 @@ namespace SignatureRequests.Managers
     {
         private readonly IBoxHandler _boxHandler;
         private readonly IGroupEngine _groupEngine;
-        public BoxManager(IBoxHandler boxHandler, IGroupEngine groupEngine)
+        private readonly ISignatureEngine _signatureEngine;
+        public BoxManager(IBoxHandler boxHandler, IGroupEngine groupEngine, ISignatureEngine signatureEngine)
         {
             _boxHandler = boxHandler;
             _groupEngine = groupEngine;
-
+            _signatureEngine = signatureEngine;
         }
         public BoxResponse CreateBoxEntity(BoxRequest newBox)
         {
@@ -105,7 +106,7 @@ namespace SignatureRequests.Managers
                 SignedStatus = me.SignedStatus,
                 Request = _groupEngine.RequestToListItem(me.Request),
                 RequestId = me.RequestId,
-                Signature = me.Signature,
+                Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
             };
         }

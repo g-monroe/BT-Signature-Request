@@ -16,12 +16,15 @@ namespace SignatureRequests.Engines
     public class GroupEngine : IGroupEngine
     {
         private readonly IUserHandler _userHandler;
+        private readonly IUserEngine _userEngine;
         private readonly IGroupHandler _groupHandler;
-
-        public GroupEngine(IUserHandler userHandler, IGroupHandler groupHandler)
+        private readonly ISignatureEngine _signatureEngine;
+        public GroupEngine(IUserHandler userHandler, IGroupHandler groupHandler, ISignatureEngine signatureEngine, IUserEngine userEngine)
         {
             _userHandler = userHandler;
             _groupHandler = groupHandler;
+            _signatureEngine = signatureEngine;
+            _userEngine = userEngine;
         }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
@@ -58,7 +61,7 @@ namespace SignatureRequests.Engines
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
-                        Signature = box.Signature,
+                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
                     };
                     respBoxes.BoxesList.Add(item);
@@ -66,9 +69,9 @@ namespace SignatureRequests.Engines
                 resp.RequestsList.Add(new RequestResponse()
                 {
                     Id = request.Id,
-                    Signer = request.Signer,
+                    Signer = _userEngine.UserToListItem(request.Signer),
                     SignerId = request.SignerId,
-                    Requestor = request.Requestor,
+                    Requestor = _userEngine.UserToListItem(request.Requestor),
                     RequestorId = request.RequestorId,
                     Status = request.Status,
                     SentDate = request.SentDate,
@@ -107,7 +110,7 @@ namespace SignatureRequests.Engines
                 Description = form.Description,
                 FilePath = form.FilePath,
                 Title = form.Title,
-                User = form.User,
+                User = _userEngine.UserToListItem(form.User),
                 UserId = form.UserId,
                 NumPages = form.NumPages,
                 GroupEntities = resp
@@ -139,7 +142,7 @@ namespace SignatureRequests.Engines
                     SignedStatus = box.SignedStatus,
                     Request = null,
                     RequestId = box.RequestId,
-                    Signature = box.Signature,
+                    Signature = _signatureEngine.SignatureToListItem(box.Signature),
                     SignatureId = box.SignatureId,
                 };
                 respBoxes.BoxesList.Add(item);
@@ -147,11 +150,11 @@ namespace SignatureRequests.Engines
             return new RequestResponse()
             {
                 Id = request.Id,
-                Signer = request.Signer,
+                Signer = _userEngine.UserToListItem(request.Signer),
                 SignerId = request.SignerId,
                 Group = GroupToListItem(request.Group),
                 GroupId = request.GroupId,
-                Requestor = request.Requestor,
+                Requestor = _userEngine.UserToListItem(request.Requestor),
                 RequestorId = request.RequestorId,
                 Status = request.Status,
                 SentDate = request.SentDate,

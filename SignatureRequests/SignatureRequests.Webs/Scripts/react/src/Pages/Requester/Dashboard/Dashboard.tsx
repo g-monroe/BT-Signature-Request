@@ -2,14 +2,18 @@ import * as React from 'react';
 import DashItem from '../../../Components/Dashboard/DashItem';
 import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
+import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
-import {Select, Tabs} from 'antd';
+import {Select, Tabs, Drawer, Button} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { GroupHandler } from '../../../Handlers/GroupHandler';
+import { request } from 'http';
+import { IGroupHandler, GroupHandler } from '../../../Handlers/GroupHandler';
+import GroupEntity from '../../../Entities/GroupEntity';
+import GroupResponseList from '../../../Entities/GroupResponseList';
+import { format } from 'path';
 const { Option } = Select;
 const { TabPane } = Tabs;
-
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userObject: ContextUserObject;
@@ -20,78 +24,119 @@ export interface IDashboardState {
     requestData?: FormEntity[];
     loading: boolean;
     searchTerm: string;
-    contentState: ViewingState;
-}
-
-export enum ViewingState {
-    OutGoingRequests,
-    IncomingRequests
+    selectedItems: DashItem[];
+    sideBar: boolean;
+    itemsSelected: boolean;
 }
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
-    
     static defaultProps = {
         formHandler: new FormHandler(),
         groupHandler: new GroupHandler()
      };
-
      state: IDashboardState = {
          loading: true,
          searchTerm: "",
-         contentState: ViewingState.OutGoingRequests
+         selectedItems:[],
+         sideBar: false,
+         itemsSelected: false,
      };
-
      async componentDidMount() {
          const table = (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)).collection
          const request = (await this.props.formHandler!.getAllRequested(this.props.userObject.user.id!)).collection
        this.setState({
-           tableData: table,
-           requestData: request,
+           tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
+           requestData: this.getForms((await this.props.formHandler!.getAllRequested(1))),
            loading: false
        });
      }
-
-    private renderContent = (data?: FormEntity[]) => {
-        const {loading} = this.state;
-        if(loading){
-            return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading Forms</h1>);
-        }else{ //Content has been loaded in (If it exists)
-            if(data){
-                let formsToDisplay = this.findFormsWithSeachTerms(data);
-                if(formsToDisplay.length === 0 ){
-                    data.forEach((form) => {
-                        form.groups.collection.forEach((group) => {
-                            if(group.requests){
-                                formsToDisplay.push(form)
+     getForms = (forms: FormResponseList) : any[] => {
+       return forms.collection;
+     }
+     renderForms = () =>{
+         const {tableData, loading, searchTerm} = this.state;
+        if (loading){
+            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
+        }else{
+            if (tableData == null){
+                return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
+            }else{
+                let displayedForms = tableData;
+                if (searchTerm.length > 2 && !loading){
+                    let filteredForms = [];
+                    for(var i = 0; i<displayedForms.length; i++){
+                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
+                            filteredForms.push(displayedForms[i]);
+                        }
+                    }
+                     return filteredForms.map((form, index) => (
+                          <DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
+                ));
+                }else{
+                    let filteredForms = [];
+                    for(var i = 0; i<tableData.length; i++){
+                        if (tableData[i].groups.count != 0){
+                            let filteredGroups = tableData[i].groups.collection;
+                            for(var inn = 0; inn<filteredGroups.length; inn++){
+                                if (filteredGroups[inn].requests !== null){
+                                    filteredForms.push(tableData[i]);
+                                }
                             }
-                        })
-                    })
-                }
-                return formsToDisplay.map((form, index) =>
-                    <DashItem key = {index} formEntity = {form} isOwner = {this.state.contentState === ViewingState.IncomingRequests}></DashItem>
-                );
-            }
-            else { //Request data doesn't exist. Show an empty symbol
-                return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>You haven't sent a form yet.</h1>);
-            }
-        }
+                        }
+                    }
+                    
+                    return filteredForms.map((form, index) =>
 
-    }
-
-    private findFormsWithSeachTerms = (data: FormEntity[]) =>{
-        const { searchTerm} = this.state;
-        let filteredForms = [];
-        if (searchTerm.length > 2 && data){
-            
-            for(var i = 0; i<data.length; i++){
-                if (data[i].title.toLowerCase().includes(searchTerm) || data[i].description!.toLowerCase().includes(searchTerm)){
-                    filteredForms.push(data[i]);
+                            (<DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
+                           ));
                 }
             }
         }
-            return filteredForms;
-    }
-
+     }
+     renderRequests = () =>{
+        const {requestData, loading, searchTerm} = this.state;
+        if (loading){
+            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
+        }else{
+            if (requestData == null){
+                return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
+            }else{
+                let displayedForms = requestData;
+                if (searchTerm.length > 2 && !loading){
+                    let filteredForms = [];
+                    for(var i = 0; i<displayedForms.length; i++){
+                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
+                            filteredForms.push(displayedForms[i]);
+                        }
+                    }
+                     return filteredForms.map((form, index) => (
+                          <DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
+                ));
+                }else{
+                    let filteredForms = [];
+                    for(var i = 0; i<requestData.length; i++){
+                        if (requestData[i].groups.count != 0){
+                            let filteredGroups = requestData[i].groups.collection;
+                            for(var inn = 0; inn<filteredGroups.length; inn++){
+                                if (filteredGroups[inn].requests != null){
+                                    let requests = filteredGroups[inn].requests.collection;
+                                    for(var ind = 0; ind<requests.length; ind++){
+                                        if (requests[ind].status !== "Done"){
+                                            filteredForms.push(requestData[i]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    return filteredForms.map((form, index) => 
+                            (<DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
+                           ));
+                }
+            }
+        }
+     }
      save  = ( target:any ) => {
         if (target.length > 2){
             this.setState({
@@ -102,46 +147,78 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 searchTerm: ""
             })
         }
+        
      }
-
-    private changeViewingState = (key:string) => {
+     onClose = (e: any) =>{
+         this.setState({
+             sideBar: false,
+             selectedItems: [],
+             itemsSelected: false
+         })
+     }
+     openDraw = (e:any) =>{
+         let side = !this.state.sideBar;
         this.setState({
-            contentState:parseInt(key)
+            sideBar: side
         })
-
      }
-     
+     addSelected = (dash: DashItem) => {
+        const { selectedItems } = this.state;
+        selectedItems.map((dashItem) =>{
+            if (dashItem == dash){
+                
+            }
+        })
+     }
+     renderEditDashItems = () => {
+         const { selectedItems } = this.state;
+         if (selectedItems.length !== 0){
+             return selectedItems.map((dash) =>(
+                <p>{dash.props.formEntity.title}</p>
+             ));
+         }else{
+             return <h1>No Items Selected</h1>;
+         }
+     }
     render() { 
         const selectBefore = (
-            <Select defaultValue="pending">
-              <Option value="pending">Pending</Option>
+            <Select defaultValue="completed">
               <Option value="completed">Completed</Option>
+              <Option value="pending">Pending</Option>
               <Option value="refused">Refused</Option>
             </Select>
           );
         
         return ( 
+           
             <div className="Page">
+                 <Drawer title="Create a new account" width={720} onClose={this.onClose} visible={this.state.sideBar}>
+                    {
+                        this.renderEditDashItems()
+                    }
+                </Drawer>
+
+                <Button onClick={this.openDraw} type="primary" shape="circle" icon="edit" className="editButton"/>
                 <div className="overlay">
                 <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">
                 <div style={{ marginBottom: 16 }}>
-                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="" />
+                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
                     </div>
                </div>
                 </div>
                 <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", textAlign:"center"}}className="page-items">
-                    <Tabs defaultActiveKey="1" onTabClick = {this.changeViewingState}>
-                        <TabPane tab="Requested" key="0">
-                            {
-                                this.renderContent(this.state.tableData) 
-                            }
-                        </TabPane>
-                        <TabPane tab="Needs Signed" key="1">
-                            {
-                                this.renderContent(this.state.requestData)
-                            }
-                        </TabPane>
+                <Tabs defaultActiveKey="1">
+                    <TabPane tab="Requested" key="1">
+                    {
+                       this.renderForms() 
+                    }
+                    </TabPane>
+                    <TabPane tab="Needs Signed" key="2">
+                        {
+                            this.renderRequests()
+                        }
+                    </TabPane>
                     </Tabs>
                 </div>
           </div>

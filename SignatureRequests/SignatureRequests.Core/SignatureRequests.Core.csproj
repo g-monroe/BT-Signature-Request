@@ -194,6 +194,7 @@
     <Compile Include="Interfaces\DataAccessHandlers\IBoxHandler.cs" />
     <Compile Include="Interfaces\Engines\IGroupEngine.cs" />
     <Compile Include="Interfaces\Engines\ISignatureEngine.cs" />
+    <Compile Include="Interfaces\Engines\IUserEngine.cs" />
     <Compile Include="Interfaces\Managers\IGroupManager.cs" />
     <Compile Include="Interfaces\Managers\IFormManager.cs" />
     <Compile Include="Interfaces\Managers\IRequestManager.cs" />

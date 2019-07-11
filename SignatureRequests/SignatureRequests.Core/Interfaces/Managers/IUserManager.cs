@@ -20,9 +20,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         string GetRole(int id);
         void Delete(int id);
         UserResponseList GetAllInclude();
-        UserResponseList UserToListResponse(IEnumerable<UserEntity> me);
-        UserEntity UserToDbItem(UserRequest me, UserEntity updating = null);
-        UserResponse UserToListItem(UserEntity me);
         UserResponse Verify(UserVerificationRequest info);
     }
 }
