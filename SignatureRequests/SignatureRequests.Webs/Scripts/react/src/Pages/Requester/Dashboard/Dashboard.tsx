@@ -2,18 +2,14 @@ import * as React from 'react';
 import DashItem from '../../../Components/Dashboard/DashItem';
 import '../../../Components/Dashboard/SearchHeader.css';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
-import FormResponseList from '../../../Entities/FormResponseList';
 import FormEntity from '../../../Entities/FormEntity';
 import {Select, Tabs} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { request } from 'http';
-import { IGroupHandler, GroupHandler } from '../../../Handlers/GroupHandler';
-import GroupEntity from '../../../Entities/GroupEntity';
-import GroupResponseList from '../../../Entities/GroupResponseList';
-import { format } from 'path';
+import { GroupHandler } from '../../../Handlers/GroupHandler';
 const { Option } = Select;
 const { TabPane } = Tabs;
+
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userObject: ContextUserObject;
@@ -24,107 +20,78 @@ export interface IDashboardState {
     requestData?: FormEntity[];
     loading: boolean;
     searchTerm: string;
+    contentState: ViewingState;
+}
+
+export enum ViewingState {
+    OutGoingRequests,
+    IncomingRequests
 }
  
 class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
+    
     static defaultProps = {
         formHandler: new FormHandler(),
         groupHandler: new GroupHandler()
      };
+
      state: IDashboardState = {
          loading: true,
-         searchTerm: ""
+         searchTerm: "",
+         contentState: ViewingState.OutGoingRequests
      };
+
      async componentDidMount() {
+         const table = (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)).collection
+         const request = (await this.props.formHandler!.getAllRequested(this.props.userObject.user.id!)).collection
        this.setState({
-           tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
-           requestData: this.getForms((await this.props.formHandler!.getAllRequested(1))),
+           tableData: table,
+           requestData: request,
            loading: false
        });
      }
-     getForms = (forms: FormResponseList) : any[] => {
-       return forms.collection;
-     }
-     renderForms = () =>{
-         const {tableData, loading, searchTerm} = this.state;
-        if (loading){
-            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
-        }else{
-            if (tableData == null){
-                return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
-            }else{
-                let displayedForms = tableData;
-                if (searchTerm.length > 2 && !loading){
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={true}/>
-                ));
-                }else{
-                    let filteredForms = [];
-                    for(var i = 0; i<tableData.length; i++){
-                        if (tableData[i].groups.count != 0){
-                            let filteredGroups = tableData[i].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){
-                                if (filteredGroups[inn].requests !== null){
-                                    filteredForms.push(tableData[i]);
-                                }
-                            }
-                        }
-                    }
-                    
-                    return filteredForms.map((form, index) =>
 
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
-                           ));
+    private renderContent = (data?: FormEntity[]) => {
+        const {loading} = this.state;
+        if(loading){
+            return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading Forms</h1>);
+        }else{ //Content has been loaded in (If it exists)
+            if(data){
+                let formsToDisplay = this.findFormsWithSeachTerms(data);
+                if(formsToDisplay.length === 0 ){
+                    data.forEach((form) => {
+                        form.groups.collection.forEach((group) => {
+                            if(group.requests){
+                                formsToDisplay.push(form)
+                            }
+                        })
+                    })
+                }
+                return formsToDisplay.map((form, index) =>
+                    <DashItem key = {index} formEntity = {form} isOwner = {this.state.contentState === ViewingState.IncomingRequests}></DashItem>
+                );
+            }
+            else { //Request data doesn't exist. Show an empty symbol
+                return (<h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>You haven't sent a form yet.</h1>);
+            }
+        }
+
+    }
+
+    private findFormsWithSeachTerms = (data: FormEntity[]) =>{
+        const { searchTerm} = this.state;
+        let filteredForms = [];
+        if (searchTerm.length > 2 && data){
+            
+            for(var i = 0; i<data.length; i++){
+                if (data[i].title.toLowerCase().includes(searchTerm) || data[i].description!.toLowerCase().includes(searchTerm)){
+                    filteredForms.push(data[i]);
                 }
             }
         }
-     }
-     renderRequests = () =>{
-        const {requestData, loading, searchTerm} = this.state;
-        if (loading){
-            return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
-        }else{
-            if (requestData == null){
-                return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
-            }else{
-                let displayedForms = requestData;
-                if (searchTerm.length > 2 && !loading){
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={false}/>
-                ));
-                }else{
-                    let filteredForms = [];
-                    for(var i = 0; i<requestData.length; i++){
-                        if (requestData[i].groups.count != 0){
-                            let filteredGroups = requestData[i].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){
-                                if (filteredGroups[inn].requests != null){
-                                    filteredForms.push(requestData[i]);
-                                }
-                            }
-                        }
-                    }
-                    
-                    return filteredForms.map((form, index) =>
+            return filteredForms;
+    }
 
-                            (<DashItem key={index} formEntity={form} isOwner={true}/>
-                           ));
-                }
-            }
-        }
-     }
      save  = ( target:any ) => {
         if (target.length > 2){
             this.setState({
@@ -135,13 +102,20 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 searchTerm: ""
             })
         }
-        
      }
+
+    private changeViewingState = (key:string) => {
+        this.setState({
+            contentState:parseInt(key)
+        })
+
+     }
+     
     render() { 
         const selectBefore = (
-            <Select defaultValue="completed">
-              <Option value="completed">Completed</Option>
+            <Select defaultValue="pending">
               <Option value="pending">Pending</Option>
+              <Option value="completed">Completed</Option>
               <Option value="refused">Refused</Option>
             </Select>
           );
@@ -152,22 +126,22 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">
                 <div style={{ marginBottom: 16 }}>
-                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
+                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="" />
                     </div>
                </div>
                 </div>
                 <div style={{backgroundColor: "#b1b4b5", margin: "auto", display: "flex", flexWrap: "wrap", justifyContent: "space-evenly", textAlign:"center"}}className="page-items">
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="Requested" key="1">
-                    {
-                       this.renderForms() 
-                    }
-                    </TabPane>
-                    <TabPane tab="Needs Signed" key="2">
-                        {
-                            this.renderRequests()
-                        }
-                    </TabPane>
+                    <Tabs defaultActiveKey="1" onTabClick = {this.changeViewingState}>
+                        <TabPane tab="Requested" key="0">
+                            {
+                                this.renderContent(this.state.tableData) 
+                            }
+                        </TabPane>
+                        <TabPane tab="Needs Signed" key="1">
+                            {
+                                this.renderContent(this.state.requestData)
+                            }
+                        </TabPane>
                     </Tabs>
                 </div>
           </div>

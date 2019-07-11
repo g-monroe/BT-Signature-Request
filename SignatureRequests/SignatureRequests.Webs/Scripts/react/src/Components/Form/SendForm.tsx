@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Select, Table, Button } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
-import UserEntity from "../../Entities/UserEntity";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
 import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
@@ -13,6 +12,7 @@ import FormProgress from "../../Util/Enums/FormProgress";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
+import MainPageUser from "../../Entities/MainPageUser";
 const { Option } = Select;
 const columns = [
     {

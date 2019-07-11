@@ -65,7 +65,8 @@ namespace SignatureRequests.Managers
             const string path = Constants.DocumentPath;
             var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
             var buffer = await file.ReadAsByteArrayAsync();
-            var fullName = filename.Split('.').First();
+            var extensionLength = filename.Split('.').Last().Count();
+            var fullName = filename.Remove(filename.Count()-extensionLength, extensionLength);
             Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName);
             File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path  + filename, buffer);
             DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);

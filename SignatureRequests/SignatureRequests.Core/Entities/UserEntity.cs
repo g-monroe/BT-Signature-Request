@@ -22,11 +22,9 @@ namespace SignatureRequests.Core.Entities
 
         [MaxLength(255), Required]
         public string Password { get; set; }
-        [JsonIgnore]
         public virtual SignatureEntity Signature { get; set; }
 
         public int? SignatureId { get; set; }
-        [JsonIgnore]
         public virtual SignatureEntity Initial { get; set; }
 
         public int? InitialId { get; set; }
