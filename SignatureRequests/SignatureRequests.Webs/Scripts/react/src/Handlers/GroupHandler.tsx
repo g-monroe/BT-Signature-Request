@@ -20,7 +20,7 @@ export class GroupHandler implements IGroupHandler {
     async deleteGroup(id: number): Promise<String>{
         return await APIHandler(`/api/Group/Delete/${id}`, {
             headers: {"Content-Type" : "application/json"},
-            method: "POST",
+            method: "DELETE",
             responseType: String
         });
     }
