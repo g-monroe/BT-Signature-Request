@@ -21,7 +21,7 @@ export interface IDashboardState {
     requestData?: FormEntity[];
     loading: boolean;
     searchTerm: string;
-    contentState: number;
+    contentState: ViewingState;
 }
 
 export enum ViewingState {
