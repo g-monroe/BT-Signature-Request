@@ -110,7 +110,7 @@ namespace SignatureRequests.Engines
                 Description = form.Description,
                 FilePath = form.FilePath,
                 Title = form.Title,
-                User = null,
+                User = _userEngine.UserToListItem(form.User),
                 UserId = form.UserId,
                 GroupEntities = resp
             };
