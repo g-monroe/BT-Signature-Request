@@ -20,15 +20,15 @@ export interface IEditProps {
     boxHandler?: IBoxHandler;
     formHandler?: IFormHandler;
     handleSave: (data: any) => Promise<void>;
-    UserObject:ContextUserObject;
+    userObject:ContextUserObject;
 }
  
 export interface IEditState {
     file: FormEntity;
-    fileUploaded: Boolean;
+    fileUploaded: boolean;
     page: number;
     images: JSX.Element[];
-    clearPage: Boolean;
+    clearPage: boolean;
 }
  
 class Edit extends React.Component<IEditProps, IEditState> {
@@ -55,7 +55,7 @@ class Edit extends React.Component<IEditProps, IEditState> {
     };
     
     async componentDidMount() {
-        let file = (await this.props.formHandler!.getFormById(this.props.UserObject.formId));
+        let file = (await this.props.formHandler!.getFormById(this.props.userObject.formId));
         let items = [];
         let form = file.filePath.split('.')[0];
         for(let i = 0; i<file.numPages; i++){

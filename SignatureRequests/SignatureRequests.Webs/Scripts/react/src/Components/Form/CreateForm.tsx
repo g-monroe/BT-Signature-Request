@@ -7,11 +7,12 @@ import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
 import ValidateStatus from "../../Util/Enums/ValidateStatus";
 import { Document } from 'react-pdf';
+import ContextUserObject from "../WrapperComponents/ContextUserObject";
 const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
 interface ICreateProps {
-   currentUser?: UserEntity;
+  userObject: ContextUserObject;
    handleSave: (data: any) => Promise<void>;
 }
 
@@ -193,7 +194,7 @@ export const CreateForm = withFormik<
     Title:  "",
     Description:  "",
     CreateDate:  new Date(),
-    UserId:  props.currentUser!.id
+    UserId:  props.userObject.user.id!
   }),
   validationSchema: yupValidation,
   handleSubmit: async (values, { setSubmitting, props }) => {

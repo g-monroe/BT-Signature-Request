@@ -12,7 +12,7 @@ import UserEntity from '../../Entities/UserEntity';
 
 export interface ISignatureBoxProps {
     signType?: manualInputTypeEnum,
-    UserObject?:ContextUserObject
+    userObject?:ContextUserObject
     SignatureHandler?:ISignatureHandler
 }
  
@@ -75,16 +75,16 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         const init = this.state.type === manualInputTypeEnum.Initial;
                         let request = new SignatureRequest({
                             isInitial: init,
-                            UserId: this.props.UserObject!.user.id,
+                            UserId: this.props.userObject!.user.id,
                             ImagePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
                             CertificatePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
-                            CertificatePassword: this.props.UserObject!.user.email,
+                            CertificatePassword: this.props.userObject!.user.email,
                             ExpirationDate: new Date()
 
                         })
                         
                         let pic = new FormData();
-                        pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
+                        pic.append('file', new File([blob], this.props.userObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         
                         this.props.SignatureHandler!.createSignature(request);
                         init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);

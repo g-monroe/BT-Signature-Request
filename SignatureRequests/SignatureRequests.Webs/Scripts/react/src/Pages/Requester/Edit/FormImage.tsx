@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './FormImage.css';
 interface IFormImageProps{
     src: string;
     pageNum: number;

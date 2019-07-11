@@ -45,13 +45,11 @@ export class FormHandler implements IFormHandler {
       }
 
     async getFormById(id: number) : Promise<FormEntity> {
-        console.log("At least this works");
         const collection = await APIHandler(`/api/Form/GetFormById/${id}`, {
             headers: {"Content-Type": "application/json"},
             method: "GET",
             responseType: FormResponseList
         });
-        console.log(collection);
         return collection.collection[0];
     }
 }

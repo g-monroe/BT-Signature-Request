@@ -10,15 +10,14 @@ import { REQUESTER } from "../../../Pages/Routing/routes";
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ICreateProps {
-    currentUser?: UserEntity;
     formHandler?: IFormHandler;
-    UserObject:ContextUserObject;
+    userObject:ContextUserObject;
 }
  
 export interface ICreateState {
     form?: FormRequest;
     uploaded?: FormEntity;
-    isUploaded?: Boolean;
+    isUploaded: boolean;
 }
  
 class Create extends React.Component<ICreateProps, ICreateState> {
@@ -78,7 +77,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             <h1  id = 'HeaderText'>Create a Form</h1>
                 <CreateForm
                 handleSave={this.handleSave}
-                currentUser={this.props.currentUser!}
+                userObject={this.props.userObject}
                 />
             <Button disabled={!this.state.isUploaded}>
                 Continue
@@ -92,7 +91,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                 <h1  id = 'HeaderText'>Create a Form</h1>
                     <CreateForm
                     handleSave={this.handleSave}
-                    currentUser={this.props.currentUser!}
+                    userObject={this.props.userObject}
                     />
                 <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
                 <Button disabled={!this.state.isUploaded}>

@@ -14,7 +14,7 @@ const WithUser = (Component: any) => {
             return ( 
                 <UserConsumer>
                     {(user) =>{
-                        return <Component {...this.props} UserObject = {user}/> 
+                        return <Component {...this.props} userObject = {user}/> 
                     }}
                 </UserConsumer>
                

@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
+import ContextUserObject from "../WrapperComponents/ContextUserObject";
 const { Option } = Select;
 const columns = [
     {
@@ -37,7 +38,7 @@ export interface ISendFormProps {
    userHandler?: IUserHandler;
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
-   currentUser?: UserEntity;
+   userObject: ContextUserObject;
 }
 
 export interface ISendFormState {
@@ -61,8 +62,8 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   state: ISendFormState = {};
   async componentDidMount() {
     this.setState({
-        forms: (await this.props.formHandler!.getAllByUser(this.props.currentUser!.id)),
-        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.currentUser!.id))), //change to current user
+        forms: (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)),
+        tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!))), //change to current user
         users: (await this.props.userHandler!.getAll()),
         selectedUsers: [],
         selectedForms: []
@@ -116,7 +117,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 
           groupId: group.id,
-          requestorId: this.props.currentUser!.id, 
+          requestorId: this.props.userObject.user.id!, 
           status: FormProgress.PENDING, 
           sentDate: new Date() });
         this.props.requestHandler!.createRequest(request);

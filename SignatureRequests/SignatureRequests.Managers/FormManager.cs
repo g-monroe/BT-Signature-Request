@@ -62,37 +62,24 @@ namespace SignatureRequests.Managers
         {
             
             var file = provider.Contents[0];
-                const string path = Constants.DocumentPath;
-                var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-                var buffer = await file.ReadAsByteArrayAsync();
-                string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                var fullName = filename.Split('.').First();
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName);
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path  + filename,
-                    buffer);
-                DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
-                DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
-                for (int i=0; i<dp.Pages.Count(); i++)
-                {
-                    
-                     dp.Pages[i].Rasterize(72,Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + i.ToString() + ".png");
-                    
-                   
-                }
-            
-            
-        }
-        public async Task<int> GetPageCount(MultipartMemoryStreamProvider provider)
-        {
-            var file = provider.Contents[0];
             const string path = Constants.DocumentPath;
             var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
             var buffer = await file.ReadAsByteArrayAsync();
-            string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
             var fullName = filename.Split('.').First();
             Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName);
-            File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path + filename,
-                buffer);
+            File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory + path  + filename, buffer);
+            DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
+            DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+            for (int i=0; i<dp.Pages.Count(); i++)
+            { 
+                 dp.Pages[i].Rasterize(72,Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + i.ToString() + ".png");  
+            }
+           
+        }
+        public int GetPageCount(MultipartMemoryStreamProvider provider)
+        {
+            const string path = Constants.DocumentPath;
+            var filename = provider.Contents[0].Headers.ContentDisposition.FileName.Trim('\"');
             DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
             DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
             return dp.Pages.Count();

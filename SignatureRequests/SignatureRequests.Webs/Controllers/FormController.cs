@@ -77,7 +77,7 @@ namespace SignatureRequests.Controllers
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
             await _formManager.SaveDocumentAsync(provider);
-            var numPages = await _formManager.GetPageCount(provider);
+            var numPages = _formManager.GetPageCount(provider);
             return numPages;
         }
         [Route("api/Form/DeleteForm/{id}")]
