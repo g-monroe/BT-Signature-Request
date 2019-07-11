@@ -184,6 +184,7 @@
     <Compile Include="GroupEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureEngine.cs" />
+    <Compile Include="UserEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infastructure\" />
