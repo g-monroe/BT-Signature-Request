@@ -10,5 +10,6 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         IEnumerable<GroupEntity> GetAllByFormId(int id);
         IEnumerable<GroupEntity> GetGroupById(int id);
         IEnumerable<GroupEntity> GetAllInclude();
+        
     }
 }

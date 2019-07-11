@@ -1,10 +1,13 @@
 ﻿using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,19 +18,21 @@ namespace SignatureRequests.Managers
     public class SignatureManager : ISignatureManager
     {
         private readonly ISignatureHandler _signatureHandler;
+        private readonly ISignatureEngine _signatureEngine;
         private readonly IUserHandler _userHandler;
-        public SignatureManager(ISignatureHandler signatureHandler, IUserHandler userHandler)
+        public SignatureManager(ISignatureHandler signatureHandler, IUserHandler userHandler, ISignatureEngine signatureEngine)
         {
             _signatureHandler = signatureHandler;
             _userHandler = userHandler;
+            _signatureEngine = signatureEngine;
         }
         public SignatureResponse CreateSignatureEntity(SignatureRequest newSignature)
         {
-            var result = SignatureToDbItem(newSignature);
+            var result = _signatureEngine.SignatureToDbItem(newSignature);
             _signatureHandler.Insert(result);
             _signatureHandler.SaveChanges();
             UpdateUserWithSignature(result);
-            var resp = SignatureToListItem(result);
+            var resp = _signatureEngine.SignatureToListItem(result);
             return resp;
         }
 
@@ -53,9 +58,17 @@ namespace SignatureRequests.Managers
             {
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var buffer = await file.ReadAsByteArrayAsync();
+                Stream x = await file.ReadAsStreamAsync();
+                Image pix = Image.FromStream(x);
+                Bitmap bmp;
+                using (var ms = x)
+                {
+                    bmp = new Bitmap(ms);
+                }
+                Color white = Color.White;
+                bmp.MakeTransparent(white);
                 string workingDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                File.WriteAllBytes(AppDomain.CurrentDomain.BaseDirectory +  filePath + filename,
-                    buffer);
+                bmp.Save(AppDomain.CurrentDomain.BaseDirectory + filePath + filename, ImageFormat.Png);
             }
         }
         public void Delete(int id)
@@ -68,7 +81,7 @@ namespace SignatureRequests.Managers
         public SignatureResponse GetSignature(int id)
         {
             var result = _signatureHandler.GetById(id);
-            var resp = SignatureToListItem(result);
+            var resp = _signatureEngine.SignatureToListItem(result);
             return resp;
         }
 
@@ -124,19 +137,19 @@ namespace SignatureRequests.Managers
         public SignatureResponseList GetSignatures()
         {
            var result = _signatureHandler.GetAll();
-           var resp = SignatureToListResponse(result);
+           var resp = _signatureEngine.SignatureToListResponse(result);
            return resp;
         }
         public SignatureResponseList GetAllInclude()
         {
             var result = _signatureHandler.GetAllInclude();
-            var resp = SignatureToListResponse(result);
+            var resp = _signatureEngine.SignatureToListResponse(result);
             return resp;
         }
         public SignatureResponse UpdateSignature(int id, SignatureRequest newSignature)
         {
             var signature = _signatureHandler.GetById(id);
-            var reqSignature = SignatureToDbItem(newSignature);
+            var reqSignature = _signatureEngine.SignatureToDbItem(newSignature);
             signature.User = reqSignature.User;
             signature.UserId = reqSignature.UserId;
             signature.CertificatePassword = reqSignature.CertificatePassword;
@@ -149,9 +162,10 @@ namespace SignatureRequests.Managers
             signature.Location = reqSignature.Location;
             _signatureHandler.Update(signature);
             _signatureHandler.SaveChanges();
-            var resp = SignatureToListItem(signature); 
+            var resp = _signatureEngine.SignatureToListItem(signature); 
             return resp;
         }
+
         public SignatureResponseList SignatureToListResponse(IEnumerable<SignatureEntity> me)
         {
             var resp = new SignatureResponseList
@@ -171,7 +185,6 @@ namespace SignatureRequests.Managers
             return new SignatureResponse()
             {
                 Id = me.Id,
-                User = me.User,
                 UserId = me.UserId,
                 CertificatePassword = me.CertificatePassword,
                 CertificatePath = me.CertificatePath,
@@ -202,6 +215,7 @@ namespace SignatureRequests.Managers
             updating.Location = me.Location;
             return updating;
         }
+
 
     }
 }

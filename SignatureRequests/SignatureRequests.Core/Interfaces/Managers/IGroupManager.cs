@@ -24,8 +24,5 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
         GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
 
-
-
-
     }
 }

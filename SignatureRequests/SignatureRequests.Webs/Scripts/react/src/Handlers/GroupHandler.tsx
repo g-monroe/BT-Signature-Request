@@ -7,7 +7,6 @@ export interface IGroupHandler {
 }
 
 export class GroupHandler implements IGroupHandler {
-
     async createGroup(entity: GroupRequest) : Promise<GroupEntity> {
         return await APIHandler(`/api/Group/AddGroup`, {
             headers: {"Content-Type" : "application/json"},

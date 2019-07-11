@@ -13,9 +13,9 @@ class RequestEntity {
 
   constructor(data: any) {
     this.id = data.Id;
-    this.signer = data.Signer;
+    this.signer = new UserEntity(data.Signer);
     this.group = data.Group;
-    this.requestor = data.Requestor;
+    this.requestor = new UserEntity(data.Requestor);
     this.status = data.Status;
     this.sentDate = data.SentDate;
     this.boxes = new BoxResponseList(data.Boxes);

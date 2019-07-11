@@ -66,10 +66,8 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         }
     }
 
-    saveCanvas = () => {
-        let anchor;
-        
-            html2canvas(document.getElementById(this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
+    saveCanvas = () => {    
+            html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
                 canvas.toBlob((blob)=>{
                     if(blob){
                         const init = this.state.type === manualInputTypeEnum.Initial;
@@ -82,21 +80,14 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                             ExpirationDate: new Date()
 
                         })
+                        
                         let pic = new FormData();
                         pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         
                         this.props.SignatureHandler!.createSignature(request);
                         init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
-                         
-                        this.props.SigSaved && this.props.SigSaved();
-
-                        anchor = document.createElement('a');
-                        anchor.download = "test.png";
-                        anchor.href = (window.URL).createObjectURL(blob);
-                        anchor.dataset.downloadurl = ["image/png", anchor.download, anchor.href].join(':');
-                        anchor.click();
                     }
-                },"image/png");
+                },"image/octet-stream");
             })
         
         setTimeout(()=> {

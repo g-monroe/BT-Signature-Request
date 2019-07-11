@@ -1,9 +1,9 @@
 import * as React from 'react';
 import SendForm from '../../../Components/Form/SendForm';
-import UserEntity from '../../../Entities/UserEntity';
+import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ISendProps {
-    
+    UserObject:ContextUserObject
 }
  
 export interface ISendState {
@@ -16,13 +16,7 @@ class Send extends React.Component<ISendProps, ISendState> {
         return (  
             <>
             <h1 id = 'HeaderText'>Send a Form</h1>
-            <SendForm currentUser={new UserEntity ({
-                Id: 1,
-                Role: "role",
-                Name: "name",
-                Email: "email",
-                Password: "password"
-                })} >
+            <SendForm currentUser={this.props.UserObject.user} >
             </SendForm>
             </>
         );

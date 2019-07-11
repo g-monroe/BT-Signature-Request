@@ -23,8 +23,5 @@ namespace SignatureRequests.Core.Interfaces.Managers
         SignatureResponse UpdateSignature(int id, SignatureRequest newSignature);
         void Delete(int id);
         SignatureResponseList GetAllInclude();
-        SignatureResponseList SignatureToListResponse(IEnumerable<SignatureEntity> me);
-        SignatureEntity SignatureToDbItem(SignatureRequest me, SignatureEntity updating = null);
-        SignatureResponse SignatureToListItem(SignatureEntity me);
     }
 }
