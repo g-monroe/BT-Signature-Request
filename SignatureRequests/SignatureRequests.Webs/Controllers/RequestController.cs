@@ -34,9 +34,9 @@ namespace SignatureRequests.Webs.Controllers
 
         [Route("api/Request/GetRequestsById/{id}")]
         [HttpGet]
-        public RequestResponse GetRequestsById([FromRoute] int id)
+        public RequestResponse GetRequestById([FromRoute] int id)
         {
-            return _requestManager.GetRequestsById(id);
+            return _requestManager.GetRequestById(id);
         }
 
         [Route("api/Request/AddRequest")]

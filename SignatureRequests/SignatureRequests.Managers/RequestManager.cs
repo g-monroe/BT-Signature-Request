@@ -36,9 +36,9 @@ namespace SignatureRequests.Managers
             var requests = _requestHandler.GetAllInclude();
             return RequestToListResponse(requests);
         }
-        public RequestResponse GetRequestsById(int id)
+        public RequestResponse GetRequestById(int id)
         {
-            var requests = _requestHandler.GetAllById(id);
+            var requests = _requestHandler.GetById(id);
             return RequestToResponse(requests);
         }
         public RequestResponseList GetRequestsByFormId(int id)
@@ -53,7 +53,7 @@ namespace SignatureRequests.Managers
 
         public RequestToCompleteResponse GetRequestByRequestId(int id )
         {
-            var request = _requestHandler.GetAllById(id);
+            var request = _requestHandler.GetById(id);
             return RequestEntityToComplete(request);
 
         }
@@ -123,7 +123,7 @@ namespace SignatureRequests.Managers
                 RequestorId = data.RequestorId,
                 Status = data.Status,
                 SentDate = data.SentDate,
-                Boxes = _groupEngine.BoxEntitiesToResponseList(data.BoxEntities)
+                Boxes = BoxEntitiesToResponseList(data.BoxEntities)
             };
         }
 
@@ -135,9 +135,46 @@ namespace SignatureRequests.Managers
                 Status = data.Status,
                 SentDate = data.SentDate,
                 DueDate = data.SentDate, //TODO
-                Boxes = _groupEngine.BoxEntitysToCompleteList(data.BoxEntities)
+                Boxes = BoxEntitiesToResponseList(data.BoxEntities)
             };
         }
-        
+
+        private BoxResponseList BoxEntitiesToResponseList(ICollection<BoxEntity> boxes)
+        {
+            var boxResponses = new List<BoxResponse>();
+
+            if (boxes == null)
+            {
+                return new BoxResponseList
+                {
+                    TotalResults = 0,
+                    BoxesList = boxResponses
+                };
+            }
+
+            foreach (BoxEntity box in boxes)
+            {
+                var item = new BoxResponse()
+                {
+                    Id = box.Id,
+                    X = box.X,
+                    Y = box.Y,
+                    Width = box.Width,
+                    Length = box.Length,
+                    Type = box.Type,
+                    SignerType = box.SignerType,
+                    SignedStatus = box.SignedStatus,
+                    RequestId = box.RequestId,
+                    SignatureId = box.SignatureId,
+                };
+                boxResponses.Add(item);
+            }
+            return new BoxResponseList
+            {
+                TotalResults = boxResponses.Count,
+                BoxesList = boxResponses
+            };
+        }
+
     }
 }

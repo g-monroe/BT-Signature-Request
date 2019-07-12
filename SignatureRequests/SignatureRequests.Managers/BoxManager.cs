@@ -104,9 +104,7 @@ namespace SignatureRequests.Managers
                 Type = me.Type,
                 SignerType = me.SignerType,
                 SignedStatus = me.SignedStatus,
-                Request = _groupEngine.RequestToListItem(me.Request),
                 RequestId = me.RequestId,
-                Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
             };
         }

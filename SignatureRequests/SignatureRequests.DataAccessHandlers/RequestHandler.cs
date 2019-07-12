@@ -15,7 +15,7 @@ namespace SignatureRequests.DataAccessHandlers
         public RequestHandler(SignatureRequestsContext context) : base(context)
         {
         }
-        public RequestEntity GetAllById(int id)
+        public RequestEntity GetById(int id)
         {
             return First(s => s.Id == id);
         }

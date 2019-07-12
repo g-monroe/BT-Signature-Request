@@ -61,7 +61,6 @@ namespace SignatureRequests.Engines
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
-                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
                     };
                     respBoxes.BoxesList.Add(item);
@@ -139,9 +138,8 @@ namespace SignatureRequests.Engines
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
-                    Request = null,
                     RequestId = box.RequestId,
-                    Signature = _signatureEngine.SignatureToListItem(box.Signature),
+
                     SignatureId = box.SignatureId,
                 };
                 respBoxes.BoxesList.Add(item);
@@ -179,75 +177,7 @@ namespace SignatureRequests.Engines
             return updating;
         }
 
-        public BoxResponseList BoxEntitiesToResponseList(ICollection<BoxEntity> boxes)
-        {
-            var boxResponses = new List<BoxResponse>();
+ 
 
-            if (boxes == null)
-            {
-                return new BoxResponseList
-                {
-                    TotalResults = 0,
-                    BoxesList = boxResponses
-                };
-            }
-
-            foreach (BoxEntity box in boxes)
-                {
-                    var item = new BoxResponse()
-                    {
-                        Id = box.Id,
-                        X = box.X,
-                        Y = box.Y,
-                        Width = box.Width,
-                        Length = box.Length,
-                        Type = box.Type,
-                        SignerType = box.SignerType,
-                        SignedStatus = box.SignedStatus,
-                        RequestId = box.RequestId,
-                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
-                        SignatureId = box.SignatureId,
-                    };
-                    boxResponses.Add(item);
-                }
-            return new BoxResponseList{
-                TotalResults = boxResponses.Count,
-                BoxesList = boxResponses
-            };
-        }
-
-        public BoxToCompleteListResponse BoxEntitysToCompleteList(ICollection<BoxEntity> boxes){
-            var boxCompleteResponses = new List<BoxToCompleteResponse>();
-
-            if (boxes == null)
-            {
-                return new BoxToCompleteListResponse
-                {
-                    TotalResults = 0,
-                    BoxesList = boxCompleteResponses
-                };
-            }
-
-            foreach (BoxEntity box in boxes)
-            {
-                var response = new BoxToCompleteResponse(){
-                        Id = box.Id,
-                        X = box.X,
-                        Y = box.Y,
-                        Width = box.Width,
-                        Length = box.Length,
-                        Type = box.Type,
-                        SignerType = box.SignerType,
-                        SignedStatus = box.SignedStatus,
-                        RequestId = box.RequestId,
-                        SignatureId = box.SignatureId,
-                };
-                boxCompleteResponses.Add(response);
-            }
-            return new BoxToCompleteListResponse{
-                TotalResults = boxCompleteResponses.Count,
-                BoxesList = boxCompleteResponses
-            };
-        }
     }
 }

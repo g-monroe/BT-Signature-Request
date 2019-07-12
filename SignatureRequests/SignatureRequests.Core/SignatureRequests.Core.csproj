@@ -223,8 +223,6 @@
     <Compile Include="RequestObjects\RequestRequest.cs" />
     <Compile Include="RequestObjects\SignatureResquest.cs" />
     <Compile Include="RequestObjects\UserRequest.cs" />
-    <Compile Include="ResponseObjects\BoxToCompleteListResponse.cs" />
-    <Compile Include="ResponseObjects\BoxToCompleteResponse.cs" />
     <Compile Include="ResponseObjects\ExistsResponse.cs" />
     <Compile Include="ResponseObjects\FormResponse.cs" />
     <Compile Include="ResponseObjects\GroupResponseList.cs" />
