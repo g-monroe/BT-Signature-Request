@@ -19,14 +19,16 @@ namespace SignatureRequests.Managers
         private readonly IFormHandler _formHandler;
         private readonly IGroupEngine _groupEngine;
         private readonly IGroupHandler _groupHandler;
+        private readonly IUserEngine _userEngine;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
             _formHandler = formHandler;
             _groupEngine = groupEngine;
             _groupHandler = groupHandler;
+            _userEngine = userEngine;
         }
 
         public RequestResponseList GetRequests()
@@ -34,10 +36,10 @@ namespace SignatureRequests.Managers
             var requests = _requestHandler.GetAllInclude();
             return RequestToListResponse(requests);
         }
-        public RequestResponseList GetRequestsById(int id)
+        public RequestResponse GetRequestById(int id)
         {
-            var requests = _requestHandler.GetAllById(id);
-            return RequestToListResponse(requests);
+            var requests = _requestHandler.GetById(id);
+            return RequestToResponse(requests);
         }
         public RequestResponseList GetRequestsByFormId(int id)
         {
@@ -48,6 +50,14 @@ namespace SignatureRequests.Managers
         {
             return _requestHandler.GetById(id);
         }
+
+        public RequestToCompleteResponse GetRequestByRequestId(int id )
+        {
+            var request = _requestHandler.GetById(id);
+            return RequestEntityToComplete(request);
+
+        }
+
         public RequestEntity CreateRequestEntity(RequestEntity newRequest)
         {
             var result = _requestHandler.Insert(newRequest);
@@ -100,6 +110,73 @@ namespace SignatureRequests.Managers
             var result = UpdateRequest(currentRequest, updating);
             return _groupEngine.RequestToListItem(result);
         }
-        
+
+        private RequestResponse RequestToResponse(RequestEntity data)
+        {
+            return new RequestResponse(){
+                Id = data.Id,
+                Signer = _userEngine.UserToListItem(data.Signer),
+                SignerId = data.SignerId,
+                Group = _groupEngine.GroupToListItem(data.Group),
+                GroupId = data.GroupId,
+                Requestor = _userEngine.UserToListItem(data.Requestor),
+                RequestorId = data.RequestorId,
+                Status = data.Status,
+                SentDate = data.SentDate,
+                Boxes = BoxEntitiesToResponseList(data.BoxEntities)
+            };
+        }
+
+        private RequestToCompleteResponse RequestEntityToComplete(RequestEntity data){
+            return new RequestToCompleteResponse() {
+                Id = data.Id,
+                SignerId = data.SignerId,
+                RequestorId = data.RequestorId,
+                Status = data.Status,
+                SentDate = data.SentDate,
+                DueDate = data.SentDate, //TODO
+                Boxes = BoxEntitiesToResponseList(data.BoxEntities),
+                GroupTitle = data.Group.Title,
+                GroupDescription = data.Group.Description
+            };
+        }
+
+        private BoxResponseList BoxEntitiesToResponseList(ICollection<BoxEntity> boxes)
+        {
+            var boxResponses = new List<BoxResponse>();
+
+            if (boxes == null)
+            {
+                return new BoxResponseList
+                {
+                    TotalResults = 0,
+                    BoxesList = boxResponses
+                };
+            }
+
+            foreach (BoxEntity box in boxes)
+            {
+                var item = new BoxResponse()
+                {
+                    Id = box.Id,
+                    X = box.X,
+                    Y = box.Y,
+                    Width = box.Width,
+                    Length = box.Length,
+                    Type = box.Type,
+                    SignerType = box.SignerType,
+                    SignedStatus = box.SignedStatus,
+                    RequestId = box.RequestId,
+                    SignatureId = box.SignatureId,
+                };
+                boxResponses.Add(item);
+            }
+            return new BoxResponseList
+            {
+                TotalResults = boxResponses.Count,
+                BoxesList = boxResponses
+            };
+        }
+
     }
 }

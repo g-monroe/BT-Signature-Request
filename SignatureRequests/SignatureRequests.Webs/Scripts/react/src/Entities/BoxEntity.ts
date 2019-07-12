@@ -1,5 +1,5 @@
 import RequestEntity from "./RequestEntity";
-import SignatureEntity from "./SignatureEntity";
+
 
 class BoxEntity {
   id: number;
@@ -10,8 +10,6 @@ class BoxEntity {
   type: string;
   signerType: string;
   signedStatus: string;
-  request: RequestEntity;
-  signature?: SignatureEntity;
 
   constructor(data: any) {
     this.id = data.Id;
@@ -22,8 +20,6 @@ class BoxEntity {
     this.type = data.Type;
     this.signerType = data.SignerType;
     this.signedStatus = data.SignedStatus;
-    this.request = data.Request;
-    this.signature = data.Signature;
   }
 }
 

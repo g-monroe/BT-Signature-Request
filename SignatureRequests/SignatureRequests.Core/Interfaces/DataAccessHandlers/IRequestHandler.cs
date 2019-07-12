@@ -9,7 +9,7 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
 {
     public interface IRequestHandler : IBaseHandler<RequestEntity>
     {
-        IEnumerable<RequestEntity> GetAllById(int id);
+        RequestEntity GetById(int id);
         IEnumerable<RequestEntity> GetAllByFormId(int id);
         IEnumerable<RequestEntity> GetAllInclude();
     }

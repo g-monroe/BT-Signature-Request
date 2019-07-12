@@ -12,7 +12,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IRequestManager
     {
         RequestResponseList GetRequests();
-        RequestResponseList GetRequestsById(int id);
+        RequestResponse GetRequestById(int id);
         RequestResponseList GetRequestsByFormId(int id);
         RequestEntity GetRequest(int id);
         RequestEntity CreateRequestEntity(RequestEntity newRequest);
@@ -21,5 +21,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         RequestResponseList RequestToListResponse(IEnumerable<RequestEntity> requests);
         RequestResponse EditRequest(int id, RequestRequest request, RequestEntity updating = null);
         RequestResponse AddRequest(RequestRequest request, RequestEntity updating = null);
+
+        RequestToCompleteResponse GetRequestByRequestId(int id );
     }
 }

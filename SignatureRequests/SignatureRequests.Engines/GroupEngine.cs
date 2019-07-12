@@ -61,7 +61,6 @@ namespace SignatureRequests.Engines
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
-                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
                     };
                     respBoxes.BoxesList.Add(item);
@@ -145,9 +144,8 @@ namespace SignatureRequests.Engines
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
-                    Request = null,
                     RequestId = box.RequestId,
-                    Signature = _signatureEngine.SignatureToListItem(box.Signature),
+
                     SignatureId = box.SignatureId,
                 };
                 respBoxes.BoxesList.Add(item);
@@ -184,5 +182,8 @@ namespace SignatureRequests.Engines
             updating.SentDate = request.SentDate;
             return updating;
         }
+
+ 
+
     }
 }

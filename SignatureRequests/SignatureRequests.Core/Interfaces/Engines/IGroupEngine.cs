@@ -16,5 +16,6 @@ namespace SignatureRequests.Core.Interfaces.Engines
         FormResponse FormToListItem(FormEntity form);
         RequestResponse RequestToListItem(RequestEntity request);
         RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating = null);
+
     }
 }
