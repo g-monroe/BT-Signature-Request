@@ -48,9 +48,10 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     async componentDidMount() {
         let file = (await this.props.formHandler!.getFormById(this.props.userObject.formId));
         let items = [];
-        let form = file.filePath.split('.')[0];
+        let form = file.filePath.split('.');
+        let formName = form.slice(0, form.length-1);
         for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImage pageNum={i} src={`../../../../../../assets/v1/documents/${form}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
+            let newItem = <FormImage pageNum={i} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
             items.push(newItem);
         }
         this.setState({
