@@ -182,21 +182,9 @@
     <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
-    <Compile Include="Migrations\201907101348472_NextMigration.cs" />
-    <Compile Include="Migrations\201907101348472_NextMigration.Designer.cs">
-      <DependentUpon>201907101348472_NextMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907121259226_db-title-groups.cs" />
-    <Compile Include="Migrations\201907121259226_db-title-groups.Designer.cs">
-      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907121626235_db-date-groups.cs" />
-    <Compile Include="Migrations\201907121626235_db-date-groups.Designer.cs">
-      <DependentUpon>201907121626235_db-date-groups.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907121649117_db-status-groups.cs" />
-    <Compile Include="Migrations\201907121649117_db-status-groups.Designer.cs">
-      <DependentUpon>201907121649117_db-status-groups.cs</DependentUpon>
+    <Compile Include="Migrations\201907121908434_goaway.cs" />
+    <Compile Include="Migrations\201907121908434_goaway.Designer.cs">
+      <DependentUpon>201907121908434_goaway.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -219,17 +207,8 @@
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907101348472_NextMigration.resx">
-      <DependentUpon>201907101348472_NextMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907121259226_db-title-groups.resx">
-      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907121626235_db-date-groups.resx">
-      <DependentUpon>201907121626235_db-date-groups.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907121649117_db-status-groups.resx">
-      <DependentUpon>201907121649117_db-status-groups.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907121908434_goaway.resx">
+      <DependentUpon>201907121908434_goaway.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
