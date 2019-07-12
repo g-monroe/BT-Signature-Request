@@ -1,4 +1,5 @@
-import BoxToCompleteList from "./BoxToCompleteList";
+
+import BoxResponseList from "../BoxResponseList";
 
 class RequestToCompleteEntity {
   id: number;
@@ -7,7 +8,9 @@ class RequestToCompleteEntity {
   status: string;
   sentDate: Date;
   dueDate:Date;
-  boxes: BoxToCompleteList;
+  boxes: BoxResponseList;
+  title:string;
+  description:string;
 
   constructor(data: any) {
     this.id = data.Id;
@@ -16,7 +19,9 @@ class RequestToCompleteEntity {
     this.status = data.Status;
     this.sentDate = data.SentDate;
     this.dueDate = data.DueDate;
-    this.boxes = new BoxToCompleteList(data.Boxes);
+    this.boxes = new BoxResponseList(data.Boxes);
+    this.title = data.GroupTitle;
+    this.description = data.GroupDescription;
   }
 }
 

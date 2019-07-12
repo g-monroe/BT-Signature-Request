@@ -182,13 +182,9 @@
     <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
-    <Compile Include="Migrations\201907101348472_NextMigration.cs" />
-    <Compile Include="Migrations\201907101348472_NextMigration.Designer.cs">
-      <DependentUpon>201907101348472_NextMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907121259226_db-title-groups.cs" />
-    <Compile Include="Migrations\201907121259226_db-title-groups.Designer.cs">
-      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
+    <Compile Include="Migrations\201907121837510_Migration.cs" />
+    <Compile Include="Migrations\201907121837510_Migration.Designer.cs">
+      <DependentUpon>201907121837510_Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -211,11 +207,8 @@
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907101348472_NextMigration.resx">
-      <DependentUpon>201907101348472_NextMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907121259226_db-title-groups.resx">
-      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907121837510_Migration.resx">
+      <DependentUpon>201907121837510_Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

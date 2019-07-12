@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NextMigration : DbMigration
+    public partial class Migration : DbMigration
     {
         public override void Up()
         {
@@ -53,6 +53,8 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         FormId = c.Int(nullable: false),
+                        Title = c.String(),
+                        Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)

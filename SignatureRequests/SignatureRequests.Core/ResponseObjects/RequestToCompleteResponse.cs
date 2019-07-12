@@ -16,5 +16,7 @@ namespace SignatureRequests.Core.ResponseObjects
         public DateTime SentDate { get; set; }
         public DateTime DueDate { get; set; }
         public BoxResponseList Boxes { get; set; }
+        public string GroupTitle { get; set; }
+        public string GroupDescription { get; set; }
     }
 }

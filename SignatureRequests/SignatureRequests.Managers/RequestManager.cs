@@ -128,14 +128,16 @@ namespace SignatureRequests.Managers
         }
 
         private RequestToCompleteResponse RequestEntityToComplete(RequestEntity data){
-            return new RequestToCompleteResponse(){
+            return new RequestToCompleteResponse() {
                 Id = data.Id,
                 SignerId = data.SignerId,
                 RequestorId = data.RequestorId,
                 Status = data.Status,
                 SentDate = data.SentDate,
                 DueDate = data.SentDate, //TODO
-                Boxes = BoxEntitiesToResponseList(data.BoxEntities)
+                Boxes = BoxEntitiesToResponseList(data.BoxEntities),
+                GroupTitle = data.Group.Title,
+                GroupDescription = data.Group.Description
             };
         }
 
