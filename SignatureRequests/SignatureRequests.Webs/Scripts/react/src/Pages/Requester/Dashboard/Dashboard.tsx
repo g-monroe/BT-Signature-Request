@@ -61,34 +61,26 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             if (tableData == null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{//Found forms
-                let displayedForms = tableData;
                 if (searchTerm.length > 2 && !loading){//Searching
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
-                ));
-                }else{//Not searching.
-                    let filteredForms = [];
-                    for(var i = 0; i<tableData.length; i++){//Loop through forms
-                        if (tableData[i].groups.count != 0){
-                            let filteredGroups = tableData[i].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){//loop trhough groups
-                                if (filteredGroups[inn].requests !== null){//Making sure there is something there.
-                                    filteredForms.push(tableData[i]);
+                    return tableData.map((form) => {
+                        if (form.groups.count !== 0){
+                            return form.groups.collection.map((group, index) =>{
+                                if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
+                                    return <DashItem key={index} groupEntity={group} isOwner={true} parent={this}/>
                                 }
-                            }
+                            })
                         }
-                    }
-                    
-                    return filteredForms.map((form, index) =>
-
-                            (<DashItem key={index} formEntity={form} isOwner={true} parent={this}/>
-                           ));
+                    });
+                }else{//Not searching.
+                    return tableData.map((form) => {
+                        if (form.groups.count !== 0){
+                            return form.groups.collection.map((group, index) =>{
+                                if (group.requests.count !== 0){
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} parent={this}/>
+                                }
+                            })
+                        }
+                    });
                 }
             }
         }
@@ -101,38 +93,30 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             if (requestData == null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
             }else{
-                let displayedForms = requestData;
                 if (searchTerm.length > 2 && !loading){//Searching
-                    let filteredForms = [];
-                    for(var i = 0; i<displayedForms.length; i++){
-                        if (displayedForms[i].title.toLowerCase().includes(searchTerm) || displayedForms[i].description!.toLowerCase().includes(searchTerm)){
-                            filteredForms.push(displayedForms[i]);
-                        }
-                    }
-                     return filteredForms.map((form, index) => (
-                          <DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
-                ));
-                }else{//Not Searching
-                    let filteredForms = [];
-                    for(var i = 0; i<requestData.length; i++){
-                        if (requestData[i].groups.count != 0) {
-                            let filteredGroups = requestData[i].groups.collection;
-                            for(var inn = 0; inn<filteredGroups.length; inn++){ //Loop through Groups
-                                if (filteredGroups[inn].requests != null){ //If Groups have requests
-                                    let requests = filteredGroups[inn].requests.collection;
-                                    for(var ind = 0; ind<requests.length; ind++){//Loop through Requests
-                                        if (requests[ind].status !== "Done"){ //If things need to be signed
-                                            filteredForms.push(requestData[i]);
-                                        }
-                                    }
+                   return requestData.map((form) => {
+                        if (form.groups.count !== 0){
+                            return form.groups.collection.map((group, index) =>{
+                                if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} parent={this}/>
                                 }
-                            }
+                            })
                         }
-                    } 
-
-                    return filteredForms.map((form, index) => 
-                            (<DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
-                           ));
+                    });
+                }else{//Not Searching
+                    return requestData.map((form) => {
+                        if (form.groups.count !== 0){
+                            return form.groups.collection.map((group) =>{
+                                if (group.requests.count !== 0){
+                                   return group.requests.collection.map((request, index) =>{
+                                        if (request.status !== "Done"){
+                                            return <DashItem key={index} groupEntity={group} isOwner={false} parent={this}/>
+                                        }
+                                    }) 
+                                }
+                            })
+                        }
+                    });
                 }
             }
         }
@@ -185,7 +169,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
          const { selectedItems } = this.state;
          if (selectedItems.length !== 0){
              return selectedItems.map((dash) =>(
-                <p><span style={{fontWeight:"bold", color:"#ccc"}}>></span> {dash.props.formEntity.title}</p>
+                <p><span style={{fontWeight:"bold", color:"#ccc"}}>></span> {dash.props.groupEntity.title}</p>
              ));
          }else{
              return <h1>No Items Selected</h1>;
