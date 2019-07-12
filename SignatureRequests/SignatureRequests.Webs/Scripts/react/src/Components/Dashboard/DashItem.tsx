@@ -12,6 +12,7 @@ import Image from './Image';
 import { Redirect } from 'react-router';
 import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import Dashboard from '../../Pages/Requester/Dashboard/Dashboard';
+import Moment from 'react-moment';
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
@@ -132,12 +133,13 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           <Image src={"../../../../../assets/v1/documents/" + formEntity.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
-        <label className="ribbon right success"><span>{formEntity.createDate}</span></label>
+        <label className="ribbon right success"><span>{formEntity.groups.collection[0].status}</span></label>
         <h5 style={{marginBottom:"0px"}} className="block-head">{formEntity.title}</h5>
         <div className="content-left">
 
         <Tabs defaultActiveKey="1">
           <TabPane tab="Description" key="1">
+            <span className="badge budge-success ml">Due: <Moment>{formEntity.groups.collection[0].dueDate.toString()}</Moment></span><br/>
           {formEntity.description}
           </TabPane>
           <TabPane tab="Details" key="2">
