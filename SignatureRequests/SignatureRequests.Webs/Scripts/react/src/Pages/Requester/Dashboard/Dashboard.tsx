@@ -160,26 +160,31 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             sideBar: side
         })
      }
+
      addSelected = (dash: DashItem) => {
-        const { selectedItems } = this.state;
-        let removed = false;
-        for(var i = 0; i<selectedItems.length; i++){
-            const dashItem = selectedItems[i];
-            if (dashItem == dash){
-                selectedItems.splice(i, 1);
-                removed = true;
-            }
-        }
-        if (!removed){ //If it wasn't removed, then add it.
+        let { selectedItems } = this.state;
+        let beforeRemoved = selectedItems.length;
+        
+        selectedItems = selectedItems.filter(item => item != dash);
+        console.log(selectedItems.length);
+        console.log("Before:", beforeRemoved);
+        console.log(selectedItems);
+        
+        console.log("Dash: ", dash);
+        if (beforeRemoved === selectedItems.length){ //If it wasn't removed, then add it.
             selectedItems.push(dash);
         }
+        console.log("2:", selectedItems.length);
+        console.log("Before 2:", beforeRemoved);
         if (selectedItems.length > 0){
             this.setState({
-                itemsSelected: true
+                itemsSelected: true,
+                selectedItems: selectedItems
             })
         }else{
             this.setState({
-                itemsSelected: false
+                itemsSelected: false,
+                selectedItems: selectedItems
             })
         }
      }
