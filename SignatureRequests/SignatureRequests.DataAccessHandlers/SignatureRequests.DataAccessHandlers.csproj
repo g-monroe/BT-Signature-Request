@@ -186,6 +186,10 @@
     <Compile Include="Migrations\201907021637216_NewMigration.Designer.cs">
       <DependentUpon>201907021637216_NewMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907121259226_db-title-groups.cs" />
+    <Compile Include="Migrations\201907121259226_db-title-groups.Designer.cs">
+      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestHandler.cs" />
@@ -209,6 +213,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201907021637216_NewMigration.resx">
       <DependentUpon>201907021637216_NewMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907121259226_db-title-groups.resx">
+      <DependentUpon>201907121259226_db-title-groups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,7 +58,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       this.setState({
         checked: !this.state.checked
       });
-      
+     this.props.parent.addSelected(this);
    }
    componentDidMount(){
     const {formEntity} = this.props;
@@ -71,6 +71,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       let totalDoneRequests = 0;
       formEntity.groups.collection.map((group) => {
         totalRequests = group.requests.count;
+        formEntity.title = group.title;
+        formEntity.description = group.description;
         group.requests.collection.map((request) => {
 
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
