@@ -49,7 +49,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             Title: data.Title,
             Description: data.Description,
             CreateDate: data.CreateDate,
-            UserId: this.props.UserObject.user.id
+            UserId: this.props.userObject.user.id
         });
 
         let form = new FormData();
