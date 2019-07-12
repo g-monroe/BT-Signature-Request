@@ -34,10 +34,10 @@ namespace SignatureRequests.Managers
             var requests = _requestHandler.GetAllInclude();
             return RequestToListResponse(requests);
         }
-        public RequestResponseList GetRequestsById(int id)
+        public RequestResponse GetRequestsById(int id)
         {
             var requests = _requestHandler.GetAllById(id);
-            return RequestToListResponse(requests);
+            return RequestToResponse(requests);
         }
         public RequestResponseList GetRequestsByFormId(int id)
         {
@@ -48,6 +48,14 @@ namespace SignatureRequests.Managers
         {
             return _requestHandler.GetById(id);
         }
+
+        public RequestToCompleteResponse GetRequestByRequestId(int id )
+        {
+            var request = _requestHandler.GetAllById(id);
+            return RequestEntityToComplete(request);
+
+        }
+
         public RequestEntity CreateRequestEntity(RequestEntity newRequest)
         {
             var result = _requestHandler.Insert(newRequest);
@@ -99,6 +107,34 @@ namespace SignatureRequests.Managers
             var currentRequest = GetRequest(id);
             var result = UpdateRequest(currentRequest, updating);
             return _groupEngine.RequestToListItem(result);
+        }
+
+        private RequestResponse RequestToResponse(RequestEntity data)
+        {
+            return new RequestResponse(){
+                Id = data.Id,
+                Signer = data.Signer,
+                SignerId = data.SignerId,
+                Group = _groupEngine.GroupToListItem(data.Group),
+                GroupId = data.GroupId,
+                Requestor = data.Requestor,
+                RequestorId = data.RequestorId,
+                Status = data.Status,
+                SentDate = data.SentDate,
+                Boxes = _groupEngine.BoxEntitiesToResponseList(data.BoxEntities)
+            };
+        }
+
+        private RequestToCompleteResponse RequestEntityToComplete(RequestEntity data){
+            return new RequestToCompleteResponse(){
+                Id = data.Id,
+                SignerId = data.SignerId,
+                RequestorId = data.RequestorId,
+                Status = data.Status,
+                SentDate = data.SentDate,
+                DueDate = data.SentDate, //TODO
+                Boxes = _groupEngine.BoxEntitysToCompleteList(data.BoxEntities)
+            };
         }
         
     }

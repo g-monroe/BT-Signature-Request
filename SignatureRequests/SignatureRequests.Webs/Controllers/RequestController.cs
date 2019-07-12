@@ -60,5 +60,12 @@ namespace SignatureRequests.Webs.Controllers
         {
             _requestManager.Delete(id);
         }
+
+        [Route("api/Request/GetRequestByRequestId/{id}")]
+        [HttpGet]
+        public RequestToCompleteResponse GetRequestByRequestId([FromRoute] int id)
+        {
+            return _requestManager.GetRequestByRequestId(id);
+        }
     }
 }

@@ -178,5 +178,58 @@ namespace SignatureRequests.Engines
             updating.SentDate = request.SentDate;
             return updating;
         }
+
+        public BoxResponseList BoxEntitiesToResponseList(ICollection<BoxEntity> boxes)
+        {
+            var boxResponses = new List<BoxResponse>();
+            
+            foreach (BoxEntity box in boxes)
+                {
+                    var item = new BoxResponse()
+                    {
+                        Id = box.Id,
+                        X = box.X,
+                        Y = box.Y,
+                        Width = box.Width,
+                        Length = box.Length,
+                        Type = box.Type,
+                        SignerType = box.SignerType,
+                        SignedStatus = box.SignedStatus,
+                        RequestId = box.RequestId,
+                        Signature = box.Signature,
+                        SignatureId = box.SignatureId,
+                    };
+                    boxResponses.Add(item);
+                }
+            return new BoxResponseList{
+                TotalResults = boxResponses.Count,
+                BoxesList = boxResponses
+            };
+        }
+
+        public BoxToCompleteListResponse BoxEntitysToCompleteList(ICollection<BoxEntity> boxes){
+            var boxCompleteResponses = new List<BoxToCompleteResponse>();
+
+            foreach (BoxEntity box in boxes)
+            {
+                var response = new BoxToCompleteResponse(){
+                        Id = box.Id,
+                        X = box.X,
+                        Y = box.Y,
+                        Width = box.Width,
+                        Length = box.Length,
+                        Type = box.Type,
+                        SignerType = box.SignerType,
+                        SignedStatus = box.SignedStatus,
+                        RequestId = box.RequestId,
+                        SignatureId = box.SignatureId,
+                };
+                boxCompleteResponses.Add(response);
+            }
+            return new BoxToCompleteListResponse{
+                TotalResults = boxCompleteResponses.Count,
+                BoxesList = boxCompleteResponses
+            };
+        }
     }
 }
