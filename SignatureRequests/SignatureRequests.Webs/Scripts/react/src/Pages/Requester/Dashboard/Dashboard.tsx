@@ -161,7 +161,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         })
      }
      addSelected = (dash: DashItem) => {
-        console.log(dash);
         const { selectedItems } = this.state;
         let removed = false;
         for(var i = 0; i<selectedItems.length; i++){
@@ -183,8 +182,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 itemsSelected: false
             })
         }
-        console.log(this.state);
-        return false;
      }
      renderEditDashItems = () => {
          const { selectedItems } = this.state;
