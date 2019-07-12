@@ -84,6 +84,8 @@ namespace SignatureRequests.Engines
                 Id = group.Id,
                 Form = FormToListItem(group.Form),
                 FormId = group.FormId,
+                Title = group.Title,
+                Description = group.Description,
                 RequestEntities = resp
             };
         }
