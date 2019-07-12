@@ -10,6 +10,8 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         string GetEmail(int id);
         string GetRole(int id);
         string GetName(int id);
+        SignatureEntity GetInitial(int userId);
+        SignatureEntity GetSignature(int userId);
         IEnumerable<UserEntity> GetAllInclude();
         UserEntity GetByName(string name);
     }
