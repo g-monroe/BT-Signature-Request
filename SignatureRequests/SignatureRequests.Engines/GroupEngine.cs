@@ -86,6 +86,9 @@ namespace SignatureRequests.Engines
                 FormId = group.FormId,
                 Title = group.Title,
                 Description = group.Description,
+                DueDate = group.DueDate,
+                CreateDate = group.CreateDate,
+                Status = group.Status,
                 RequestEntities = resp
             };
         }

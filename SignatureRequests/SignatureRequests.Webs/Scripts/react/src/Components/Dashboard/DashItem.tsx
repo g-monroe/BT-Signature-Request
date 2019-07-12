@@ -12,10 +12,12 @@ import Image from './Image';
 import { Redirect } from 'react-router';
 import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import Dashboard from '../../Pages/Requester/Dashboard/Dashboard';
+import Moment from 'react-moment';
+import GroupEntity from '../../Entities/GroupEntity';
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
-    formEntity: FormEntity;
+    groupEntity: GroupEntity;
     isOwner: boolean;
     groupHandler?: IGroupHandler;
     parent: Dashboard;
@@ -40,10 +42,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (this.props.isOwner){
       //Send request and get the response
       //Then demount the component
-      let groups = this.props.formEntity.groups.collection;
-      if (groups !== null){
-        this.props.groupHandler!.deleteGroup(groups[0].id);
-      }
+      this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
     }
    }
    handleEdit = (e:any) => {
@@ -61,19 +60,16 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
      this.props.parent.addSelected(this);
    }
    componentDidMount(){
-    const {formEntity} = this.props;
+    const {groupEntity} = this.props;
     const { tags } = this.state;
-    if (formEntity.groups.count === 0){
+    if (groupEntity.requests.count === 0){
       const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
     }else{
       let totalRequests = 0;
       let totalDoneRequests = 0;
-      formEntity.groups.collection.map((group) => {
-        totalRequests = group.requests.count;
-        formEntity.title = group.title;
-        formEntity.description = group.description;
-        group.requests.collection.map((request) => {
+        totalRequests = groupEntity.requests.count;
+        groupEntity.requests.collection.map((request) => {
 
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
           let color = "#CDCDCD";
@@ -93,7 +89,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           const newTag = new TagItem("#000", color, tagText);
           tags.push(newTag);
         })
-      })
       this.setState({
         progressBar: (totalDoneRequests / totalRequests) * 100
       })
@@ -110,7 +105,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
   }
   render() {
     const { checked } = this.state;
-    const { formEntity, isOwner } = this.props;
+    const { groupEntity, isOwner } = this.props;
       
     
     let iconCheck = faSquare; 
@@ -129,16 +124,17 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-          <Image src={"../../../../../assets/v1/documents/" + formEntity.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
+          <Image src={"../../../../../assets/v1/documents/" + groupEntity.form.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
-        <label className="ribbon right success"><span>{formEntity.createDate}</span></label>
-        <h5 style={{marginBottom:"0px"}} className="block-head">{formEntity.title}</h5>
+        <label className="ribbon right success"><span>{groupEntity.status}</span></label>
+        <h5 style={{marginBottom:"0px"}} className="block-head">{groupEntity.title}</h5>
         <div className="content-left">
 
         <Tabs defaultActiveKey="1">
           <TabPane tab="Description" key="1">
-          {formEntity.description}
+            <span className="badge budge-success ml">Due: <Moment>{groupEntity.dueDate.toString()}</Moment></span><br/>
+          {groupEntity.description}
           </TabPane>
           <TabPane tab="Details" key="2">
           <ul className="tag-list">
