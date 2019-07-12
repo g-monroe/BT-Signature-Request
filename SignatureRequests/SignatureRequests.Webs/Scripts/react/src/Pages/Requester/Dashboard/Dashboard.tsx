@@ -110,7 +110,6 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                 if (group.requests.count !== 0){
                                    return group.requests.collection.map((request, index) =>{
                                         if (request.status !== "Done"){
-                                            console.log(group);
                                             return <DashItem key={index} groupEntity={group} isOwner={false} parent={this}/>
                                         }
                                     }) 
