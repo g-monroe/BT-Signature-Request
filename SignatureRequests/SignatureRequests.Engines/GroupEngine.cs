@@ -182,7 +182,16 @@ namespace SignatureRequests.Engines
         public BoxResponseList BoxEntitiesToResponseList(ICollection<BoxEntity> boxes)
         {
             var boxResponses = new List<BoxResponse>();
-            
+
+            if (boxes == null)
+            {
+                return new BoxResponseList
+                {
+                    TotalResults = 0,
+                    BoxesList = boxResponses
+                };
+            }
+
             foreach (BoxEntity box in boxes)
                 {
                     var item = new BoxResponse()
@@ -209,6 +218,15 @@ namespace SignatureRequests.Engines
 
         public BoxToCompleteListResponse BoxEntitysToCompleteList(ICollection<BoxEntity> boxes){
             var boxCompleteResponses = new List<BoxToCompleteResponse>();
+
+            if (boxes == null)
+            {
+                return new BoxToCompleteListResponse
+                {
+                    TotalResults = 0,
+                    BoxesList = boxCompleteResponses
+                };
+            }
 
             foreach (BoxEntity box in boxes)
             {
