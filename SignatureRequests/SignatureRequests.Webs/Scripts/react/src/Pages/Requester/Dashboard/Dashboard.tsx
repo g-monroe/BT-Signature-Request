@@ -42,6 +42,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
          itemsSelected: false,
      };
      async componentDidMount() {
+         const table = (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)).collection
+         const request = (await this.props.formHandler!.getAllRequested(this.props.userObject.user.id!)).collection
        this.setState({
            tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
            requestData: this.getForms((await this.props.formHandler!.getAllRequested(1))),

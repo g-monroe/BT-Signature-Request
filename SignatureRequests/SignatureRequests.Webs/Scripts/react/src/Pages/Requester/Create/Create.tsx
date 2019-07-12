@@ -3,16 +3,21 @@ import { CreateForm } from '../../../Components/Form/CreateForm';
 import UserEntity from '../../../Entities/UserEntity';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
+import FormEntity from '../../../Entities/FormEntity';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
+import { REQUESTER } from "../../../Pages/Routing/routes";
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 
 export interface ICreateProps {
-    currentUser?: UserEntity;
     formHandler?: IFormHandler;
-    UserObject:ContextUserObject;
+    userObject:ContextUserObject;
 }
  
 export interface ICreateState {
-    form?: FormRequest
+    form?: FormRequest;
+    uploaded?: FormEntity;
+    isUploaded: boolean;
 }
  
 class Create extends React.Component<ICreateProps, ICreateState> {
@@ -34,7 +39,8 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             description: "",
             createDate: "",
             userId: 1
-        })
+        }),
+        isUploaded: false
      };
 
     handleSave = async (data: any) : Promise<void> => {
@@ -43,30 +49,57 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             Title: data.Title,
             Description: data.Description,
             CreateDate: data.CreateDate,
-            UserId: this.props.UserObject.user.id
+            UserId: this.props.userObject.user.id
         });
+
         let form = new FormData();
         form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );
         
-        this.props.formHandler!.createForm(request);
-        this.props.formHandler!.uploadForm(form);
+        let uploadRequest = this.props.formHandler!.uploadForm(form);
+        uploadRequest.addEventListener("load", async () => {
+            request.numPages = parseInt(uploadRequest.response);
+            let response = (await this.props.formHandler!.createForm(request));
+            this.setState({
+            uploaded: response,
+            isUploaded: true
+            });
+        });
+
     };
 
     render() { 
         if (!this.state.form!) {
             return <div>Loading...</div>;
-          }else{
-        return (
-            
-            <> 
+          }
+        else if (!this.state.isUploaded!){
+            return (
+                <> 
             <h1  id = 'HeaderText'>Create a Form</h1>
                 <CreateForm
                 handleSave={this.handleSave}
-                currentUser={this.props.currentUser!}
+                userObject={this.props.userObject}
                 />
-
+            <Button disabled={!this.state.isUploaded}>
+                Continue
+                </Button>
             </>
-         );
+            );
+        }  
+        else{
+            return (
+                <> 
+                <h1  id = 'HeaderText'>Create a Form</h1>
+                    <CreateForm
+                    handleSave={this.handleSave}
+                    userObject={this.props.userObject}
+                    />
+                <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
+                <Button disabled={!this.state.isUploaded}>
+                    Continue
+                    </Button>
+                    </Link>
+                </>
+            );
         }
     }
 }

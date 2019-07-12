@@ -7,6 +7,7 @@ class FormEntity {
   description? : string;
   createDate: Date;
   user: UserEntity;
+  numPages: number;
   groups: GroupResponseList;
 
   constructor(data: any) {
@@ -16,6 +17,7 @@ class FormEntity {
     this.description = data.Description;
     this.createDate = data.CreateDate;
     this.user = data.User;
+    this.numPages = data.NumPages;
     this.groups = new GroupResponseList(data.GroupEntities);
   }
 }

@@ -6,11 +6,13 @@ import { Form, InjectedFormikProps, withFormik } from "formik";
 import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
 import ValidateStatus from "../../Util/Enums/ValidateStatus";
+import { Document } from 'react-pdf';
+import ContextUserObject from "../WrapperComponents/ContextUserObject";
 const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
 interface ICreateProps {
-   currentUser?: UserEntity;
+  userObject: ContextUserObject;
    handleSave: (data: any) => Promise<void>;
 }
 
@@ -81,7 +83,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
   };
   
   render() {
-    
+
     const fileInput = this.state.fileInput;
 
     const {
@@ -91,7 +93,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       handleChange,
       isSubmitting
     } = this.props;
-   
+
     const props = {
 
       onChange: async (info: any) => {
@@ -164,7 +166,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
                 onChange={handleChange}
               />
             </FormItem>
-            
+
             <FormItem>
               <Button
                 name="submit"
@@ -192,7 +194,7 @@ export const CreateForm = withFormik<
     Title:  "",
     Description:  "",
     CreateDate:  new Date(),
-    UserId:  props.currentUser!.id
+    UserId:  props.userObject.user.id!
   }),
   validationSchema: yupValidation,
   handleSubmit: async (values, { setSubmitting, props }) => {
