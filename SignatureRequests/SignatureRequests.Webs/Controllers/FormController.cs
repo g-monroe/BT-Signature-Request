@@ -69,7 +69,7 @@ namespace SignatureRequests.Controllers
             
         }
         [HttpPost, Route("api/Form/Upload")]
-        public async Task<IHttpActionResult> Upload()
+        public async Task<int> Upload()
         {
             if (!Request.Content.IsMimeMultipartContent())
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -77,7 +77,8 @@ namespace SignatureRequests.Controllers
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
             await _formManager.SaveDocumentAsync(provider);
-            return Ok();
+            var numPages = _formManager.GetPageCount(provider);
+            return numPages;
         }
         [Route("api/Form/DeleteForm/{id}")]
         [HttpDelete]
