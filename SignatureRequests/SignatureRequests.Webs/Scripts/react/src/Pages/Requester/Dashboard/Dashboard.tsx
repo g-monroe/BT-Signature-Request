@@ -126,8 +126,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                 }
                             }
                         }
-                    }
-                    
+                    } 
+
                     return filteredForms.map((form, index) => 
                             (<DashItem key={index} formEntity={form} isOwner={false} parent={this}/>
                            ));
@@ -149,9 +149,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
      onClose = (e: any) =>{
          this.setState({
-             sideBar: false,
-             selectedItems: [],
-             itemsSelected: false
+             sideBar: false
          })
      }
      openDraw = (e:any) =>{
@@ -166,16 +164,9 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         let beforeRemoved = selectedItems.length;
         
         selectedItems = selectedItems.filter(item => item != dash);
-        console.log(selectedItems.length);
-        console.log("Before:", beforeRemoved);
-        console.log(selectedItems);
-        
-        console.log("Dash: ", dash);
         if (beforeRemoved === selectedItems.length){ //If it wasn't removed, then add it.
             selectedItems.push(dash);
         }
-        console.log("2:", selectedItems.length);
-        console.log("Before 2:", beforeRemoved);
         if (selectedItems.length > 0){
             this.setState({
                 itemsSelected: true,
