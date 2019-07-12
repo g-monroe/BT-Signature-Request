@@ -6,9 +6,10 @@ import Send from './Requester/Send/Send';
 import View from './Requester/View/View';
 import AddSignatures from './Signer/AddSignatures/AddSignatures';
 import SignDocument from './Signer/SignDocument/SignDocument';
-import Error from './Error/Error'
+import Error from './Error/Error';
+import Edit from '../Pages/Requester/Edit/Edit';
 
 
-export {Login, SignUp, Create, DashBoard, Send, View, AddSignatures, SignDocument, Error}
+export {Login, SignUp, Create, DashBoard, Send, View, AddSignatures, SignDocument, Error, Edit}
 
 

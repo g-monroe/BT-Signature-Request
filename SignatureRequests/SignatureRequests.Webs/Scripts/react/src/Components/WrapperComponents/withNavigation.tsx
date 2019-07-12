@@ -4,7 +4,6 @@ import Navigation from '../../Pages/Navigation';
 import {UserConsumer} from '../../Pages/MainPage'
 
 export interface IWithNavigationProps {
-    
 }
  
 export interface IWithNavigationState {
@@ -25,7 +24,7 @@ const WithNavigation = (Component: any) => {
                             
                         </Layout.Header>
                         <Layout.Content>
-                            <Component/>
+                            <Component {...this.props}/>
                         </Layout.Content>
                     </Layout>  
              );

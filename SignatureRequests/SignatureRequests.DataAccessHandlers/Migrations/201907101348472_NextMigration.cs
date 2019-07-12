@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NewMigration : DbMigration
+    public partial class NextMigration : DbMigration
     {
         public override void Up()
         {
@@ -68,6 +68,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                         Description = c.String(maxLength: 400),
                         CreateDate = c.DateTime(nullable: false),
                         UserId = c.Int(nullable: false),
+                        NumPages = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.UserEntities", t => t.UserId, cascadeDelete: true)

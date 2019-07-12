@@ -27,6 +27,9 @@ namespace SignatureRequests.Core.Entities
         public virtual UserEntity User { get; set; }
 
         public int UserId { get; set; }
+        
+        public int NumPages { get; set; }
+
         public virtual ICollection<GroupEntity> GroupEntities { get; set; }
     }
 }

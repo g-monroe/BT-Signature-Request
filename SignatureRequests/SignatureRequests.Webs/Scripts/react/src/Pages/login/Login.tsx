@@ -11,7 +11,7 @@ import ContextUserObject from '../../Components/WrapperComponents/ContextUserObj
 
 export interface ILoginProps { 
     handler?:IUserHandler
-    UserObject:ContextUserObject
+    userObject:ContextUserObject
 }
  
 export interface ILoginState {
@@ -33,7 +33,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 error:"You have entered either an incorrect username or password"
             })
         }else{
-            await this.props.UserObject.update({
+            await this.props.userObject.update({
                  id: user.id,
                  role: user.role,
                  name: user.name,
@@ -45,7 +45,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     }
 
     chooseUserButton = (user: UserType) =>{
-        this.props.UserObject.update({
+        this.props.userObject.update({
             id: 1,
             role: "Role here",
             name: "Max Min",
@@ -72,7 +72,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                         <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
                             <Modal
                             title = "Login Successful"
-                            visible={this.props.UserObject.user.id! > 0}
+                            visible={this.props.userObject.user.id! > 0}
                             closable = {false}
                             footer = {[
                 
@@ -84,7 +84,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             ]}
                         >
                             <div id = "SignUpModalContent">
-                                {this.props.UserObject.user.name}, welcome to the signature experiment!
+                                {this.props.userObject.user.name}, welcome to the signature experiment!
                             </div>
                         </Modal>
                     </Layout.Content>

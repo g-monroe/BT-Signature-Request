@@ -49,10 +49,11 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                     return (
                                     <Route 
                                     key={i} 
-                                    path={route.path} 
-                                    exact 
+                                    path={route.path}
+                                    exact
                                     breadcrumbName={route.breadcrumbName}
-                                    render={()=><UserProvider value = {{user:this.state.user, update:this.updateUser}}><WithNav></WithNav></UserProvider>}
+                                    render={(props:any)=><UserProvider value = {{user:this.state.user, formId: props.match.params.id, update:this.updateUser}}><WithNav></WithNav></UserProvider>}
+                                     
                                     />
                                     )
                                 })

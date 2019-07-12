@@ -83,6 +83,8 @@ namespace SignatureRequests.Engines
                 Id = group.Id,
                 Form = FormToListItem(group.Form),
                 FormId = group.FormId,
+                Title = group.Title,
+                Description = group.Description,
                 RequestEntities = resp
             };
         }
@@ -111,6 +113,7 @@ namespace SignatureRequests.Engines
                 Title = form.Title,
                 User = _userEngine.UserToListItem(form.User),
                 UserId = form.UserId,
+                NumPages = form.NumPages,
                 GroupEntities = resp
             };
         }
