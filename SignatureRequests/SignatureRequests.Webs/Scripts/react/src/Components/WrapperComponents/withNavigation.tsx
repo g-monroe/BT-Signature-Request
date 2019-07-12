@@ -17,7 +17,7 @@ const WithNavigation = (Component: any) => {
     
             return (  
 
-                    <Layout>
+                    <Layout  style = {{height:'100%'}}>
                         <Layout.Header>
                             <UserConsumer>
                                 {user => <Navigation userType = {user.user.type}></Navigation>}

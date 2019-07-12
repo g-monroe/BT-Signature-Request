@@ -14,6 +14,10 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         SignatureResponseList GetSignatures();
         SignatureResponse GetSignature(int id);
+        SignatureResponse GetUserSignature(int userId);
+        SignatureResponse GetUserInitial(int userId);
+        ExistsResponse HasUserSignature(int userId);
+        ExistsResponse HasUserInitial(int userId);
         SignatureResponse CreateSignatureEntity(SignatureRequest newSignature);
         Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath);
         SignatureResponse UpdateSignature(int id, SignatureRequest newSignature);
