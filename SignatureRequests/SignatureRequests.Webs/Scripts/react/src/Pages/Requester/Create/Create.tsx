@@ -43,7 +43,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             Title: data.Title,
             Description: data.Description,
             CreateDate: data.CreateDate,
-            UserId: data.UserId
+            UserId: this.props.UserObject.user.id
         });
         let form = new FormData();
         form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );

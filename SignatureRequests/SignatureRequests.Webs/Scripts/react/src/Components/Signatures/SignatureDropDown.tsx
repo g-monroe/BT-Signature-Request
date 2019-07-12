@@ -11,7 +11,7 @@ import './DrawTest.css'
 export interface ISignatureDropDownProps {
     type:TypesOfBoxes  
     sigHandler?:ISignatureHandler
-    UserObject?:ContextUserObject
+    userObject?:ContextUserObject
     dataAdded?:(data: any) => void
 }
  
@@ -34,7 +34,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
 
      static defaultProps = {
         sigHandler: new SignatureHandler(),
-        UserObject: new ContextUserObject()
+        userObject: new ContextUserObject()
      }
 
      
@@ -77,15 +77,15 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
     }
 
     updateHasSig = async () => {
-        let bool = false;
-        if(this.props.UserObject!.user.id && this.props.UserObject!.user.id > 0){
+        let isExisting = false;
+        if(this.props.userObject!.user.id && this.props.userObject!.user.id > 0){
             this.props.type === TypesOfBoxes.Signature ? 
-                bool = await this.props.sigHandler!.signatureExists(this.props.UserObject!.user.id) :
-                bool = await this.props.sigHandler!.initialExists(this.props.UserObject!.user.id)
+                isExisting = await this.props.sigHandler!.signatureExists(this.props.userObject!.user.id) :
+                isExisting = await this.props.sigHandler!.initialExists(this.props.userObject!.user.id)
         }
 
         this.setState({
-            existing:bool
+            existing:isExisting
         })
     }
 
@@ -135,7 +135,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                             height = "60%"
                             
                         >
-                            <SignatureBox SigSaved = {this.handleSubmitButton} signType = {this.state.status === DropDownState.NewInitial ? manualInputTypeEnum.Initial : manualInputTypeEnum.Signature} UserObject = {this.props.UserObject}></SignatureBox>
+                            <SignatureBox sigSaved = {this.handleSubmitButton} signType = {this.state.status === DropDownState.NewInitial ? manualInputTypeEnum.Initial : manualInputTypeEnum.Signature} userObject = {this.props.userObject}></SignatureBox>
                         </Drawer>
                         : <></>
                 }

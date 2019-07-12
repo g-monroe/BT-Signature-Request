@@ -11,9 +11,9 @@ import { SignatureHandler, ISignatureHandler } from '../../Handlers/SignatureHan
 
 export interface ISignatureBoxProps {
     signType?: manualInputTypeEnum,
-    UserObject?:ContextUserObject
-    SignatureHandler?:ISignatureHandler
-    SigSaved?: () => void
+    userObject?:ContextUserObject
+    signatureHandler?:ISignatureHandler
+    sigSaved?: () => void
 }
  
 export interface ISignatureBoxState {
@@ -31,8 +31,8 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     }
 
     static defaultProps = {
-        SignatureHandler: new SignatureHandler(),
-        UserObject: new ContextUserObject()
+        signatureHandler: new SignatureHandler(),
+        userObject: new ContextUserObject()
     }
 
     success = () =>{
@@ -73,19 +73,19 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         const init = this.state.type === manualInputTypeEnum.Initial;
                         let request = new SignatureRequest({
                             isInitial: init,
-                            UserId: this.props.UserObject!.user.id,
+                            UserId: this.props.userObject!.user.id,
                             ImagePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
                             CertificatePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
-                            CertificatePassword: this.props.UserObject!.user.email,
+                            CertificatePassword: this.props.userObject!.user.email,
                             ExpirationDate: new Date()
 
                         })
                         
                         let pic = new FormData();
-                        pic.append('file', new File([blob], this.props.UserObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
+                        pic.append('file', new File([blob], this.props.userObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         
-                        this.props.SignatureHandler!.createSignature(request);
-                        init ? this.props.SignatureHandler!.uploadInitials(pic) : this.props.SignatureHandler!.uploadSignature(pic);
+                        this.props.signatureHandler!.createSignature(request);
+                        init ? this.props.signatureHandler!.uploadInitials(pic) : this.props.signatureHandler!.uploadSignature(pic);
                     }
                 },"image/octet-stream");
             })

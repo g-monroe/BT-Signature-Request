@@ -54,24 +54,14 @@ namespace SignatureRequests.Controllers
         [HttpGet]
         public ExistsResponse HasSignatureWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.HasUserSignature(id);
-            var response = new ExistsResponse
-            {
-                exists = signs
-            };
-            return response;
+            return _signatureManager.HasUserSignature(id);
         }
 
         [Route("api/Signature/HasInitial/{id}")]
         [HttpGet]
         public ExistsResponse HasInitialWithID([FromRoute]int id)
         {
-            var signs = _signatureManager.HasUserInitial(id);
-            var response = new ExistsResponse
-            {
-                exists = signs
-            };
-            return response;
+            return _signatureManager.HasUserInitial(id);
         }
 
         [Route("api/Signature/AddSignature")]

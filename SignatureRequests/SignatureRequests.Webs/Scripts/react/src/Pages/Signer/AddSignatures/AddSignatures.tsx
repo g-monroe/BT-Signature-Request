@@ -35,9 +35,9 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                             <Divider></Divider>
                             {HowToSign}
                             <div id = "SigExample">
-                                <SignatureDropDown type = {TypesOfBoxes.Date} UserObject = {this.props.UserObject}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Initial} UserObject = {this.props.UserObject}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Signature} UserObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Date} userObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Initial} userObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {TypesOfBoxes.Signature} userObject = {this.props.UserObject}></SignatureDropDown>
                             </div>
                         </div>
                     </Layout.Sider>
@@ -54,7 +54,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                                     <Paragraph id = "SigPara">{SignatureExplanation}</Paragraph>
                                     <h4>{SignatureExplanationfooter}</h4>
                                 </div>
-                                <SignatureBox UserObject = {this.props.UserObject}></SignatureBox>
+                                <SignatureBox userObject = {this.props.UserObject}></SignatureBox>
                             </div>
                         </Layout.Content>
                     </Layout>

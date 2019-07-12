@@ -114,23 +114,31 @@ namespace SignatureRequests.Managers
             }
 
         }
-        public Boolean HasUserSignature(int userId)
+        public ExistsResponse HasUserSignature(int userId)
         {
             var result = _userHandler.GetSignature(userId);
             if(result != null){
-                return true;
+                return new ExistsResponse(){
+                    exists = true
+                };
             }else{
-                return false;
+                return new ExistsResponse(){
+                    exists = false
+                };
             }
         }
 
-          public Boolean HasUserInitial(int userId)
+          public ExistsResponse HasUserInitial(int userId)
         {
             var result = _userHandler.GetInitial(userId);
             if(result != null){
-                return true;
+                return new ExistsResponse(){
+                    exists = true
+                };
             }else{
-                return false;
+                return new ExistsResponse(){
+                    exists = false
+                };
             }
         }
 
