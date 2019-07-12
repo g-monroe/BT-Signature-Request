@@ -11,7 +11,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SignatureRequests.Managers
@@ -32,9 +31,27 @@ namespace SignatureRequests.Managers
             var result = _signatureEngine.SignatureToDbItem(newSignature);
             _signatureHandler.Insert(result);
             _signatureHandler.SaveChanges();
+            UpdateUserWithSignature(result);
             var resp = _signatureEngine.SignatureToListItem(result);
             return resp;
         }
+
+        private void UpdateUserWithSignature(SignatureEntity sig)
+        {
+            var user = _userHandler.GetById(sig.UserId);
+            if (sig.isInitial)
+            {
+                user.InitialId = sig.Id;
+            }
+            else
+            {
+                user.SignatureId = sig.Id;
+            }
+            _userHandler.Update(user);
+            _userHandler.SaveChanges();
+
+        }
+
         public async Task SaveSignatureAsync(MultipartMemoryStreamProvider provider, string filePath)
         {
             foreach (var file in provider.Contents)
@@ -66,6 +83,63 @@ namespace SignatureRequests.Managers
             var result = _signatureHandler.GetById(id);
             var resp = _signatureEngine.SignatureToListItem(result);
             return resp;
+        }
+
+        public SignatureResponse GetUserSignature(int userId)
+        {
+          
+            var result = _userHandler.GetSignature(userId);
+            if(result == null)
+            {
+                return null;
+            }
+            else
+            {
+                var resp = SignatureToListItem(result);
+                return resp;
+            }
+        }
+
+         public SignatureResponse GetUserInitial(int userId)
+        {
+            var result = _userHandler.GetInitial(userId);
+            if(result == null)
+            {
+                return null;
+            }
+            else
+            {
+                var resp = SignatureToListItem(result);
+                return resp;
+            }
+
+        }
+        public ExistsResponse HasUserSignature(int userId)
+        {
+            var result = _userHandler.GetSignature(userId);
+            if(result != null){
+                return new ExistsResponse(){
+                    exists = true
+                };
+            }else{
+                return new ExistsResponse(){
+                    exists = false
+                };
+            }
+        }
+
+          public ExistsResponse HasUserInitial(int userId)
+        {
+            var result = _userHandler.GetInitial(userId);
+            if(result != null){
+                return new ExistsResponse(){
+                    exists = true
+                };
+            }else{
+                return new ExistsResponse(){
+                    exists = false
+                };
+            }
         }
 
         public SignatureResponseList GetSignatures()

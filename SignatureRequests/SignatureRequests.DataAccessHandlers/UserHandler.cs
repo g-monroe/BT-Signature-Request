@@ -44,6 +44,32 @@ namespace SignatureRequests.DataAccessHandlers
             var user = GetUserProperty(id);
             return user.Name;
         }
+
+        public SignatureEntity GetSignature(int userId)
+        {
+            try 
+            {
+                var user = GetUserProperty(userId);
+                return user.Signature;
+            }            
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public SignatureEntity GetInitial(int userId)
+        {
+           try 
+            {
+                var user = GetUserProperty(userId);
+                return user.Initial;
+            }            
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
         public UserEntity GetByName(string name)
         {
             try
@@ -57,5 +83,6 @@ namespace SignatureRequests.DataAccessHandlers
             }
           
         }
+
     }
 }

@@ -35,8 +35,6 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         })
     }
 
-
-
     render() { 
         return ( 
             <Router >
@@ -61,13 +59,10 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
                                 })
                                 }
                                 </Switch> 
-                        }
-                                                  
+                        }             
                    </Layout.Content>
                 </Layout>
             </Router>
-
-
          );
     }
 }
