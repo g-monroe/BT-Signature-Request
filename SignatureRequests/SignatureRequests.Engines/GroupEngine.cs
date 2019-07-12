@@ -196,7 +196,7 @@ namespace SignatureRequests.Engines
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
-                        Signature = box.Signature,
+                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
                     };
                     boxResponses.Add(item);

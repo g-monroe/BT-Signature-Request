@@ -19,14 +19,16 @@ namespace SignatureRequests.Managers
         private readonly IFormHandler _formHandler;
         private readonly IGroupEngine _groupEngine;
         private readonly IGroupHandler _groupHandler;
+        private readonly IUserEngine _userEngine;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
             _formHandler = formHandler;
             _groupEngine = groupEngine;
             _groupHandler = groupHandler;
+            _userEngine = userEngine;
         }
 
         public RequestResponseList GetRequests()
@@ -113,11 +115,11 @@ namespace SignatureRequests.Managers
         {
             return new RequestResponse(){
                 Id = data.Id,
-                Signer = data.Signer,
+                Signer = _userEngine.UserToListItem(data.Signer),
                 SignerId = data.SignerId,
                 Group = _groupEngine.GroupToListItem(data.Group),
                 GroupId = data.GroupId,
-                Requestor = data.Requestor,
+                Requestor = _userEngine.UserToListItem(data.Requestor),
                 RequestorId = data.RequestorId,
                 Status = data.Status,
                 SentDate = data.SentDate,
