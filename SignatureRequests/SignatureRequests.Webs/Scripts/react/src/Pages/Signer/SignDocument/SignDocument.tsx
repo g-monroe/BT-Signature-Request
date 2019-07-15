@@ -26,9 +26,10 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     static defaultProps = {
         userHandler: new UserHandler(),
-        requestHandler: new RequestHandler()
+        requestHandler: new RequestHandler(),
+        requestID:1
     }
-    
+
     render() { 
         if(!this.state.requestData || !this.state.sender){
             return(
