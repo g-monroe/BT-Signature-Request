@@ -54,10 +54,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    handleEdit = (e:any) => {
      //Redirect to the page to edit the group if owner
      if (this.props.isOwner){
-      console.log("wowner");
         return <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}/>
      }else{//Else Sign document
-      console.log("sign");
         return <Redirect to={"/response/sign"}/>  
      }
    }
