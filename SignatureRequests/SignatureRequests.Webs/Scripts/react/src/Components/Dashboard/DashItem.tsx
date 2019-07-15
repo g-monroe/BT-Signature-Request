@@ -51,14 +51,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
     }
    }
-   handleEdit = (e:any) => {
-     //Redirect to the page to edit the group if owner
-     if (this.props.isOwner){
-        return <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}/>
-     }else{//Else Sign document
-        return <Redirect to={"/response/sign"}/>  
-     }
-   }
    handleMultiSelect = (e: any) =>{
       this.setState({
         checked: !this.state.checked
