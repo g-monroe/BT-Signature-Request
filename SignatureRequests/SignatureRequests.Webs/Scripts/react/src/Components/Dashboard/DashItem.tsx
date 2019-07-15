@@ -14,6 +14,9 @@ import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import Dashboard from '../../Pages/Requester/Dashboard/Dashboard';
 import Moment from 'react-moment';
 import GroupEntity from '../../Entities/GroupEntity';
+import * as Routes from '../../Pages/Routing/routes';
+import { Link } from 'react-router-dom';
+import { request } from 'http';
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
@@ -27,6 +30,7 @@ export interface IDashItemState {
     checked:boolean;
     progressBar:number;
     tags: TagItem[];
+    requestSign?: number;
 }
 
 class DashItem extends React.Component<IDashItemProps, IDashItemState> {
@@ -36,7 +40,9 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    state:IDashItemState = {
      checked: false,
      progressBar: 0,
-     tags: []
+     tags: [],
+     requestSign: undefined
+     
    }
    handleDelete = (e:any) => {
     if (this.props.isOwner){
@@ -48,9 +54,11 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    handleEdit = (e:any) => {
      //Redirect to the page to edit the group if owner
      if (this.props.isOwner){
-        return <Redirect to={""}/>
+      console.log("wowner");
+        return <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}/>
      }else{//Else Sign document
-        return <Redirect to={""}/>  
+      console.log("sign");
+        return <Redirect to={"/response/sign"}/>  
      }
    }
    handleMultiSelect = (e: any) =>{
@@ -61,7 +69,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    }
    componentDidMount(){
     const {groupEntity} = this.props;
-    const { tags } = this.state;
+    const { tags, requestSign } = this.state;
     if (groupEntity.requests.count === 0){
       const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
@@ -69,6 +77,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       let totalRequests = 0;
       let totalDoneRequests = 0;
         totalRequests = groupEntity.requests.count;
+        let requestNum = undefined;
         groupEntity.requests.collection.map((request) => {
 
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
@@ -76,6 +85,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           if (request.status === RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
+          }else{
+            requestNum = request.id;
           }
           if (request.boxes.count !== 0){
             let signedBoxes = 0;
@@ -90,7 +101,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           tags.push(newTag);
         })
       this.setState({
-        progressBar: (totalDoneRequests / totalRequests) * 100
+        progressBar: (totalDoneRequests / totalRequests) * 100,
+        requestSign: requestNum
       })
     }
    }
@@ -113,11 +125,11 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       iconCheck = faCheckSquare;
     }
     let options = <>
-    <button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
-    <button style={{color:'#222'}} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
+    <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link>
+    <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
     <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={ iconCheck } /></button></>;
     if (!isOwner){
-      options = <><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></>
+      options = <><Link to={Routes.SIGNER._SignDocument.link(this.state.requestSign!)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link></>
     }
     return (
       <div style={{display: "inline-block"}} className="DashItem">
