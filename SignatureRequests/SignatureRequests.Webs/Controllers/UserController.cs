@@ -34,6 +34,12 @@ namespace SignatureRequests.Controllers
             return users;
         }
 
+        [Route("api/User/GetUser/{id}")]
+        public SimpleUserResponse GetUserById([FromRoute]int id)
+        {
+            var users = _userManager.GetSimpleUser(id);
+            return users;
+        }
 
         [Route("api/User/AddUser")]
         [HttpPost]

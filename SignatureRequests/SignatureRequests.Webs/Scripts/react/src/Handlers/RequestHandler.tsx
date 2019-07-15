@@ -5,6 +5,7 @@ import RequestToCompleteEntity from '../Entities/ToComplete/RequestToCompleteEnt
 
 export interface IRequestHandler {
     createRequest(entity: RequestRequest) : Promise<RequestEntity>;
+    getRequestByRequestId(id: number) : Promise<RequestToCompleteEntity>;
 }
 
 export class RequestHandler implements IRequestHandler {
