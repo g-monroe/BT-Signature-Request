@@ -40,9 +40,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    state:IDashItemState = {
      checked: false,
      progressBar: 0,
-     tags: [],
-     requestSign: undefined
-     
+     tags: []
    }
    handleDelete = (e:any) => {
     if (this.props.isOwner){
@@ -59,7 +57,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
    }
    componentDidMount(){
     const {groupEntity} = this.props;
-    const { tags, requestSign } = this.state;
+    const { tags } = this.state;
     if (groupEntity.requests.count === 0){
       const newTag = new TagItem("#000", "#fff", "Nothing found!");
       tags.push(newTag);
