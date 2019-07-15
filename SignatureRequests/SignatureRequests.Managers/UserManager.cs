@@ -70,8 +70,18 @@ namespace SignatureRequests.Managers
 
         public SimpleUserResponse GetSimpleUser(int id)
         {
-            var user = _userHandler.GetById(id);
-            return EntityToSimple(user);
+            SimpleUserResponse user;
+
+            try
+            {
+                user = EntityToSimple(_userHandler.GetById(id));
+            }
+            catch
+            {
+                user = new SimpleUserResponse();
+            }
+      
+            return user;
         }
 
         public UserResponseList GetUsers()
