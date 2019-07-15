@@ -95,8 +95,8 @@ export const SIGNER = {
     },
 
     "_SignDocument":{
-        path: "/response/sign",
-        link:"/response/sign",
+        path: `/response/sign/:id`,
+        link: (id: number) => `/response/sign/${id}`,
         breadcrumbName:"Sign Active Documents",
         component:Pages.SignDocument,
         hasNavBar:true,
