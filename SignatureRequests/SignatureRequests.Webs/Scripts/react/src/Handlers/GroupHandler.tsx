@@ -1,8 +1,6 @@
 import { APIHandler } from "./apiHandler";
 import GroupRequest from "../Entities/GroupRequest";
 import GroupEntity from "../Entities/GroupEntity";
-import { string } from "yup";
-
 export interface IGroupHandler {
     createGroup(entity: GroupRequest) : Promise<GroupEntity>;
     deleteGroup(id: number) : Promise<String>;
@@ -18,10 +16,11 @@ export class GroupHandler implements IGroupHandler {
         });
     }
     async deleteGroup(id: number): Promise<String>{
-        return await APIHandler(`/api/Group/Delete/${id}`, {
+        const collection = await APIHandler(`/api/Group/Delete/${id}`, {
             headers: {"Content-Type" : "application/json"},
             method: "DELETE",
             responseType: String
         });
+        return collection;
     }
 }
