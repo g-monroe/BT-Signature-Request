@@ -8,6 +8,7 @@ import {Select, Tabs, Drawer, Button} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 import { GroupHandler } from '../../../Handlers/GroupHandler';
+import RequestEntity from '../../../Entities/RequestEntity';
 const { Option } = Select;
 const { TabPane } = Tabs;
 export interface IDashboardProps {
@@ -55,7 +56,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         count++;
                     }
                 });
-                if (count == 0){
+                if (count === 0){
                     return <><h1>Nothing found!</h1></>
                 }
                 if (searchTerm.length > 2 && !loading){//Searching
@@ -83,6 +84,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             }
         } 
      }
+     isNotDone = (request:RequestEntity) =>{
+         if (request.status !== "Done"){
+             return true;
+         }
+         return false;
+     }
      renderRequests = () =>{
         const {requestData, loading, searchTerm} = this.state;
         if (loading){
@@ -106,13 +113,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
-                                   let items = 0;
-                                   group.requests.collection.map((request) =>{
-                                        if (request.status !== "Done"){
-                                            items = 1;
-                                        }
-                                    })
-                                    if (items === 1){
+                                   let items = group.requests.collection.some(this.isNotDone);
+                                    if (items){
                                         return <DashItem key={index} groupEntity={group} isOwner={false}/> 
                                     }
                                 } 
