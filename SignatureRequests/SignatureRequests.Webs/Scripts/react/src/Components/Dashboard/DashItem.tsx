@@ -23,7 +23,6 @@ export interface IDashItemProps {
     groupEntity: GroupEntity;
     isOwner: boolean;
     groupHandler?: IGroupHandler;
-    parent: Dashboard;
 }
  
 export interface IDashItemState {
@@ -49,12 +48,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
       this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
     }
    }
-   handleMultiSelect = (e: any) =>{
-      this.setState({
-        checked: !this.state.checked
-      });
-     this.props.parent.addSelected(this);
-   }
    componentDidMount(){
     const {groupEntity} = this.props;
     const { tags } = this.state;
@@ -67,15 +60,16 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         totalRequests = groupEntity.requests.count;
         let requestNum = undefined;
         groupEntity.requests.collection.map((request) => {
-
           let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
           let color = "#CDCDCD";
+          
           if (request.status === RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
           }else{
             requestNum = request.id;
           }
+          
           if (request.boxes.count !== 0){
             let signedBoxes = 0;
             request.boxes.collection.map((box) => {
@@ -104,21 +98,14 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     );
   }
   render() {
-    const { checked } = this.state;
     const { groupEntity, isOwner } = this.props;
-      
-    
-    let iconCheck = faSquare; 
-    if (checked){
-      iconCheck = faCheckSquare;
-    }
     let options = <>
     <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link>
-    <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
-    <button style={{color:'#222'}} onClick={this.handleMultiSelect} className="btn-primary action-btn"><FontAwesomeIcon icon={ iconCheck } /></button></>;
-     if (!isOwner && this.state.requestSign){
-       options = <><Link to={Routes.SIGNER._SignDocument.link(this.state.requestSign)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link></>
-     }
+    <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button></>;
+
+    if (!isOwner && this.state.requestSign){
+      options = <><Link to={Routes.SIGNER._SignDocument.link(this.state.requestSign)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link></>
+    }
     return (
       <div style={{display: "inline-block"}} className="DashItem">
         <div className="activity-block">
@@ -133,8 +120,10 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
 
         <Tabs defaultActiveKey="1">
           <TabPane tab="Description" key="1">
+            <div style={{height: "70px", overflow: "hidden", overflowY:"scroll"}}>
             <span className="badge budge-success ml">Due: <Moment>{groupEntity.dueDate.toString()}</Moment></span><br/>
           {groupEntity.description}
+            </div>
           </TabPane>
           <TabPane tab="Details" key="2">
           <ul className="tag-list">
