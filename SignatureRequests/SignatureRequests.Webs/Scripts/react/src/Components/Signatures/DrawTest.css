@@ -101,3 +101,13 @@
     position: sticky;
 }
 
+#canvasAndImage{
+    display: inline-block;
+    position: relative;
+    border: 5px black;
+}
+
+#CanvasOverImage{
+    position: relative;
+    z-index: 20;
+}

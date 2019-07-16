@@ -1,4 +1,5 @@
 ﻿using BTSuggestions.Core.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SignatureRequests.Core.Entities
@@ -9,7 +10,7 @@ namespace SignatureRequests.Core.Entities
         public int? Width { get; set; }
 
         [Required]
-        public int? Length { get; set; }
+        public int? Height { get; set; }
 
         [Required]
         public int? X { get; set; }
@@ -26,14 +27,21 @@ namespace SignatureRequests.Core.Entities
         [Required]
         public string SignedStatus { get; set; }
 
-        [Required]
         public virtual RequestEntity Request { get; set; }
 
-        public int RequestId { get; set; }
+        public int? RequestId { get; set; }
 
         public virtual SignatureEntity Signature { get; set; }
 
         public int? SignatureId { get; set; }
+
+        public virtual FormEntity Form { get; set; }
+
+        public int? FormId { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public bool IsModel { get; set; }
 
         
     }

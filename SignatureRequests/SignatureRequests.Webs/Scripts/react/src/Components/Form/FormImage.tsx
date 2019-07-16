@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Stage, Layer, Image } from 'react-konva';
+import { Context } from 'konva/types/Context';
+
 interface IFormImageProps{
     src: string;
     pageNum: number;
@@ -15,6 +18,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
       errored: false,
     };
   
+  componentDidMount(){
+  }
 
   onError = () => {
     if (!this.state.errored) {
@@ -29,12 +34,12 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     const { src } = this.state;
 
     return (
-      <div>
+      
+        <div id = "PictureToWrap"style = {{position:'relative'}}>
         <img 
           src={src}
           onError={this.onError}
-          style={{width: "35%",
-            height: "35%",
+          style={{
             borderTopLeftRadius: "11px",
             borderBottomLeftRadius: "11px",
             padding: "0px",
@@ -43,10 +48,10 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
             paddingLeft: "10px",
             paddingTop: "10px",
             paddingBottom: "10px",
-            display: "block"
+            display: "block",
             }}
         />
-      </div>
+        </div>
     );
   }
 }

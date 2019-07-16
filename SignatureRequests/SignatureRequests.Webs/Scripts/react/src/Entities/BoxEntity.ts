@@ -1,22 +1,26 @@
 import RequestEntity from "./RequestEntity";
 import SignatureEntity from "./SignatureEntity";
+import FormEntity from "./FormEntity";
 
 class BoxEntity {
   id: number;
   width: number;
-  length: number;
+  height: number;
   xVal : number;
   yVal: number;
   type: string;
   signerType: string;
   signedStatus: string;
-  request: RequestEntity;
+  request?: RequestEntity;
   signature?: SignatureEntity;
+  form?: FormEntity;
+  pageNumber: number;
+  isModel: boolean;
 
   constructor(data: any) {
     this.id = data.Id;
     this.width = data.Width;
-    this.length = data.Length;
+    this.height = data.Height;
     this.xVal = data.X;
     this.yVal = data.Y;
     this.type = data.Type;
@@ -24,6 +28,8 @@ class BoxEntity {
     this.signedStatus = data.SignedStatus;
     this.request = data.Request;
     this.signature = data.Signature;
+    this.pageNumber = data.PageNumber;
+    this.isModel = data.IsModel;
   }
 }
 

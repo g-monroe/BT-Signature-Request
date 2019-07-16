@@ -65,7 +65,7 @@ namespace SignatureRequests.Managers
             box.X = reqBox.X;
             box.Y = reqBox.Y;
             box.Width = reqBox.Width;
-            box.Length = reqBox.Length;
+            box.Height = reqBox.Height;
             box.Type = reqBox.Type;
             box.SignerType = reqBox.SignerType;
             box.SignedStatus = reqBox.SignedStatus;
@@ -73,6 +73,10 @@ namespace SignatureRequests.Managers
             box.RequestId = reqBox.RequestId;
             box.Signature = reqBox.Signature;
             box.SignatureId = reqBox.SignatureId;
+            box.Form = reqBox.Form;
+            box.FormId = reqBox.FormId;
+            box.PageNumber = reqBox.PageNumber;
+            box.IsModel = reqBox.IsModel;
             _boxHandler.Update(box);
             _boxHandler.SaveChanges();
             var resp = BoxToListItem(box);
@@ -100,7 +104,7 @@ namespace SignatureRequests.Managers
                 X = me.X,
                 Y = me.Y,
                 Width = me.Width,
-                Length = me.Length,
+                Height = me.Height,
                 Type = me.Type,
                 SignerType = me.SignerType,
                 SignedStatus = me.SignedStatus,
@@ -108,6 +112,10 @@ namespace SignatureRequests.Managers
                 RequestId = me.RequestId,
                 Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
+                Form = _groupEngine.FormToListItem(me.Form),
+                FormId = me.FormId,
+                PageNumber = me.PageNumber,
+                IsModel = me.IsModel
             };
         }
         public BoxEntity BoxToDbItem(BoxRequest me, BoxEntity updating = null)
@@ -120,7 +128,7 @@ namespace SignatureRequests.Managers
             updating.X = me.X;
             updating.Y = me.Y;
             updating.Width = me.Width;
-            updating.Length = me.Length;
+            updating.Height = me.Height;
             updating.Type = me.Type;
             updating.SignerType = me.SignerType;
             updating.SignedStatus = me.SignedStatus;
@@ -128,6 +136,10 @@ namespace SignatureRequests.Managers
             updating.RequestId = me.RequestId;
             updating.Signature = me.Signature;
             updating.SignatureId = me.SignatureId;
+            updating.Form = _groupEngine.FormToEntity(me.Form);
+            updating.FormId = me.FormId;
+            updating.PageNumber = me.PageNumber;
+            updating.IsModel = me.IsModel;
             return updating;
         }
     

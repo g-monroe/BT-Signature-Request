@@ -12,6 +12,7 @@ import FormImage from "./FormImage";
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userObject:ContextUserObject;
+    pageChange: (num: number) => void;
 }
  
 export interface IFileViewerState {
@@ -66,13 +67,15 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             page: this.state.page+1,
             clearPage: true
         });
+        this.props.pageChange(1);
     };
 
     onPrev = () => {
         this.setState({
             page: this.state.page-1,
             clearPage: true
-        })
+        });
+        this.props.pageChange(-1);
     };
 
     clearPage = () : JSX.Element => {
@@ -93,11 +96,13 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             }
         }
         return images[0];
-    }
+    };
+
+
 
     render() { 
         if(!this.state.fileUploaded){
-            return <div>Loading...</div>;
+            return <></>;
         } else{
             
         return (

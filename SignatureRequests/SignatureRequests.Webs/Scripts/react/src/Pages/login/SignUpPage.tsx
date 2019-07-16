@@ -54,7 +54,7 @@ class SignupPage extends React.Component<ISignupPageProps, ISignupPageState> {
             footer = {[
                 
                     <Button type = "primary">
-                        <Link to = {routes.COMMON._Login.link}>
+                        <Link to = {routes.COMMON._Login.path}>
                             Login
                         </Link>
                     </Button>   

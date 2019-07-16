@@ -56,13 +56,18 @@ namespace SignatureRequests.Engines
                         X = box.X,
                         Y = box.Y,
                         Width = box.Width,
-                        Length = box.Length,
+                        Height = box.Height,
                         Type = box.Type,
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
+                        Request = RequestToListItem(box.Request),
                         RequestId = box.RequestId,
                         Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
+                        Form = FormToListItem(box.Form),
+                        FormId = box.FormId,
+                        PageNumber = box.PageNumber,
+                        IsModel = box.IsModel
                     };
                     respBoxes.BoxesList.Add(item);
                 }
@@ -138,14 +143,18 @@ namespace SignatureRequests.Engines
                     X = box.X,
                     Y = box.Y,
                     Width = box.Width,
-                    Length = box.Length,
+                    Height = box.Height,
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
-                    Request = null,
+                    Request = RequestToListItem(box.Request),
                     RequestId = box.RequestId,
                     Signature = _signatureEngine.SignatureToListItem(box.Signature),
                     SignatureId = box.SignatureId,
+                    Form = FormToListItem(box.Form),
+                    FormId = box.FormId,
+                    PageNumber = box.PageNumber,
+                    IsModel = box.IsModel
                 };
                 respBoxes.BoxesList.Add(item);
             }
@@ -179,6 +188,23 @@ namespace SignatureRequests.Engines
             updating.RequestorId = request.RequestorId;
             updating.Status = request.Status;
             updating.SentDate = request.SentDate;
+            return updating;
+        }
+
+        public FormEntity FormToEntity(FormRequest form, FormEntity updating = null)
+        {
+            if (updating == null)
+            {
+                updating = new FormEntity();
+            }
+            updating.Id = form.Id;
+            updating.FilePath = form.FilePath;
+            updating.Title = form.Title;
+            updating.Description = form.Description;
+            updating.CreateDate = form.CreateDate;
+            updating.User = _userHandler.GetById(form.UserId);
+            updating.UserId = form.UserId;
+            updating.NumPages = form.NumPages;
             return updating;
         }
     }
