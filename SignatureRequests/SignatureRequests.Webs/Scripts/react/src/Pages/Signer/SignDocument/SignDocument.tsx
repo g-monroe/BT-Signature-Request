@@ -24,6 +24,10 @@ export interface ISignDocumentState {
  
 class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentState> {
 
+    state : ISignDocumentState = {
+        
+    }
+
     static defaultProps = {
         userHandler: new UserHandler(),
         requestHandler: new RequestHandler(),
@@ -54,7 +58,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
     }
 
     async componentDidMount(){
-       
+       try{
         const request = await this.props.requestHandler!.getRequestByRequestId(this.props.requestID);
         const user = await this.props.userHandler!.getUser(request.requestorId);
        
@@ -62,6 +66,12 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
             requestData:request,
             sender:user
         })
+       }catch(e){
+        this.setState({
+            requestData:undefined,
+            sender:undefined
+        })
+       }
 
     }
 }
