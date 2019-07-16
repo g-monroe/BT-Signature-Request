@@ -46,11 +46,11 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
-            if (tableData!.length == 0 || tableData == null){
+            if (tableData!.length === 0 || tableData === null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%"}}>Nothing Found!</h1></>);
             }else{//Found forms
                 let count = 0;
-                tableData.map((form) => {
+                tableData!.map((form) => {
                     if (form.groups.count !== 0){
                         count++;
                     }
@@ -59,7 +59,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     return <><h1>Nothing found!</h1></>
                 }
                 if (searchTerm.length > 2 && !loading){//Searching
-                    return tableData.map((form) => {
+                    return tableData!.map((form) => {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
@@ -69,7 +69,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         }
                     });
                 }else{//Not searching.
-                    return tableData.map((form) => {
+                    return tableData!.map((form) => {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
@@ -88,11 +88,11 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
-            if (requestData!.length == 0 || requestData == null){
+            if (requestData!.length === 0 || requestData === null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
             }else{ 
                 if (searchTerm.length > 2 && !loading){//Searching
-                   return requestData.map((form) => {
+                   return requestData!.map((form) => {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
@@ -102,7 +102,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         }
                     });
                 }else{//Not Searching 
-                    return requestData.map((form) => {
+                    return requestData!.map((form) => {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
@@ -112,7 +112,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                             items = 1;
                                         }
                                     })
-                                    if (items == 1){
+                                    if (items === 1){
                                         return <DashItem key={index} groupEntity={group} isOwner={false}/> 
                                     }
                                 } 
