@@ -3,20 +3,20 @@ import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
-import FormEntity from '../../Entities/FormEntity';
+
 import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
 import RequestStatus from '../../Util/Enums/RequestStatus';
 import '../../../node_modules/antd/dist/antd.css';
 import Image from './Image';
-import { Redirect } from 'react-router';
+
 import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import Dashboard from '../../Pages/Requester/Dashboard/Dashboard';
 import Moment from 'react-moment';
 import GroupEntity from '../../Entities/GroupEntity';
 import * as Routes from '../../Pages/Routing/routes';
 import { Link } from 'react-router-dom';
-import { request } from 'http';
+
 const TabPane = Tabs.TabPane;
 
 export interface IDashItemProps {
@@ -102,8 +102,9 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     let options = <>
     <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link>
     <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button></>;
-    if (!isOwner){
-      options = <><Link to={Routes.SIGNER._SignDocument.link(this.state.requestSign!)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link></>
+
+    if (!isOwner && this.state.requestSign){
+      options = <><Link to={Routes.SIGNER._SignDocument.link(this.state.requestSign)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link></>
     }
     return (
       <div style={{display: "inline-block"}} className="DashItem">
