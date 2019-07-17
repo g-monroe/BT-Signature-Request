@@ -2,10 +2,12 @@ import * as React from 'react';
 import SendForm from '../../../Components/Form/SendForm';
 
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { Layout, Typography, Modal, Form, Input, DatePicker } from 'antd';
+import { Layout, Typography, Modal, Form, Input, DatePicker, message, Button, Icon } from 'antd';
 import '../../../Components/LogIn-SignUp/Login-SignUp.css'
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
+import * as routes from '../../Routing/routes'
+import { Link } from 'react-router-dom';
 
 export interface ISendProps {
    userObject: ContextUserObject;
@@ -14,10 +16,11 @@ export interface ISendProps {
 export interface ISendState {
     isInfoVisible:boolean;
     isConfirmVisible:boolean;
-    sendFunction?:(title:string, desc:string, dueDate:Date)=>void;
+    sendFunction?:(title:string, desc:string, dueDate:Date)=>Promise<boolean>;
     title:string;
     description:string;
     date:Date;
+    wasSuccess:boolean;
 }
  
 class Send extends React.Component<ISendProps, ISendState> {
@@ -26,10 +29,11 @@ class Send extends React.Component<ISendProps, ISendState> {
         isConfirmVisible:false,
         title:"",
         description:"",
-        date: new Date()
+        date: new Date(),
+        wasSuccess:false
     }
 
-    userPressedSend = (send: (title:string, desc:string, dueDate:Date)=>void, preTitle:string, preDesc:string)  =>{
+    userPressedSend = (send: (title:string, desc:string, dueDate:Date)=>Promise<boolean>, preTitle:string, preDesc:string)  =>{
         
         const oneWeekFromNow = new Date();
         oneWeekFromNow.setDate(oneWeekFromNow.getDate()+7);
@@ -47,6 +51,19 @@ class Send extends React.Component<ISendProps, ISendState> {
         this.setState({
             isConfirmVisible:false,
             isInfoVisible:false
+        })
+    }
+
+    onSubmit = async () =>{
+        await this.state.sendFunction!(this.state.title, this.state.description, this.state.date).then((isSuccess)=>{
+            if(isSuccess){
+                message.success("Form successfully sent!");
+                this.setState({
+                    wasSuccess:true
+                })
+            }else{
+                message.error("Something went wrong");
+            }
         })
     }
 
@@ -91,19 +108,31 @@ class Send extends React.Component<ISendProps, ISendState> {
                 title = "Some Final Information"
                 visible = {this.state.isConfirmVisible}
                 onCancel = {this.onCancel}
-                onOk = {() => this.state.sendFunction!(this.state.title, this.state.description, this.state.date)}
+                onOk = {this.onSubmit}
+                footer = {this.state.wasSuccess ? 
+                        null : undefined}
                 >
-                <Form>
-                    <Form.Item label = "Title">
-                        <Input value = {this.state.title} placeholder = "Enter a brief title summarizing the document(s)" onChange = {this.handleTitleChange}/>
-                    </Form.Item>
-                    <Form.Item label = "Description">
-                        <TextArea rows = {3} value = {this.state.description} placeholder = "Why are you sending the document(s)? Are there any special notes?" onChange = {this.handleDescChange}/>
-                    </Form.Item>
-                    <Form.Item label = "Due Date">
-                        <DatePicker value = {moment(this.state.date)}onChange = {this.handleDateChange}></DatePicker>
-                    </Form.Item>
-                </Form>
+                {
+                    this.state.wasSuccess ?
+                    <div id = "sentFormSuccess">
+                        <Icon type="check-circle" theme="twoTone" twoToneColor = "#138520" style = {{fontSize:'100px', margin:'20px'}}/>
+                        <Link to = {routes.REQUESTER._Dashboard.path}>
+                            <Button type = "primary">Back To Dashboard</Button>
+                        </Link>
+                    </div> :
+                    <Form>
+                        <Form.Item label = "Title">
+                            <Input value = {this.state.title} placeholder = "Enter a brief title summarizing the document(s)" onChange = {this.handleTitleChange}/>
+                        </Form.Item>
+                        <Form.Item label = "Description">
+                            <TextArea rows = {3} value = {this.state.description} placeholder = "Why are you sending the document(s)? Are there any special notes?" onChange = {this.handleDescChange}/>
+                        </Form.Item>
+                        <Form.Item label = "Due Date">
+                            <DatePicker value = {moment(this.state.date)}onChange = {this.handleDateChange}></DatePicker>
+                        </Form.Item>
+                    </Form>
+                }
+
             </Modal>
 
             </>

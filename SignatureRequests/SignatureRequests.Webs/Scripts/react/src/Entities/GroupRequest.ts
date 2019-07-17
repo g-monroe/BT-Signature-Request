@@ -5,7 +5,7 @@ class GroupRequest {
     formId: number;
     title:string;
     description:string;
-    creationDate:Date;
+    createDate:Date;
     dueDate:Date;
     status: RequestStatusSigning;
   
@@ -13,7 +13,7 @@ class GroupRequest {
       this.formId = data.FormId;
       this.title = data.Title;
       this.description = data.Description;
-      this.creationDate = data.CreateDate;
+      this.createDate = data.CreateDate;
       this.dueDate = data.DueDate;
       this.status = data.Status;
     }

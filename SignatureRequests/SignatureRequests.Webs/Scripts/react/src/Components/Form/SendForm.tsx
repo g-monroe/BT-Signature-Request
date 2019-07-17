@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Select, Table, Button, Form, Input } from 'antd';
+import { Select, Table, Button, Form, Input, Modal } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
@@ -40,7 +40,7 @@ export interface ISendFormProps {
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
    userObject: ContextUserObject;
-   onPressSend:(send: (title:string, desc:string, dueDate:Date)=>void, preTitle:string, preDesc:string )=>void;
+   onPressSend:(send: (title:string, desc:string, dueDate:Date)=>Promise<boolean>, preTitle:string, preDesc:string )=>void;
 }
 
 export interface ISendFormState {
@@ -61,7 +61,9 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
      groupHandler: new GroupHandler()
      
   };
+
   state: ISendFormState = {};
+
   async componentDidMount() {
     this.setState({
         forms: (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)),
@@ -78,7 +80,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         data.push({
             filePath: forms.collection[i].filePath,
             title: forms.collection[i].title,
-            description: forms.collection[i].description,
+            description: forms.collection[i].description ? forms.collection[i].description!.substring(0,15): "",
             createDate: new Date(forms.collection[i].createDate).toDateString()
         });
     }
@@ -120,29 +122,35 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
       title = this.state.forms!.collection[(this.state.selectedForms![0] as number)].title || "";
       description = this.state.forms!.collection[(this.state.selectedForms![0] as number)].description || "";
     }
-     this.props.onPressSend(this.onSend, title, description)
+    await this.props.onPressSend(this.onSend, title, description)
   }
 
   onSend = async (title:string, desc:string, dueDate:Date) => {
-    for(let i=0; i<this.state.selectedForms!.length; i++){
-      let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
-                      FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
-                      Title: title,
-                      Description: desc,
-                      CreateDate: new Date(),
-                      DueDate: dueDate,
-                      Status:RequestStatusSigning.NOTSTARTED
-                    
-                })));
-      for(let j=0; j<this.state.selectedUsers!.length; j++){ 
-        let request: RequestRequest = ({
-          signerId: this.state.selectedUsers![j], 
-          groupId: group.id,
-          requestorId: this.props.userObject.user.id!, 
-          status: FormProgress.PENDING, 
-          sentDate: new Date() });
-        this.props.requestHandler!.createRequest(request);
+    const currDate = new Date();
+    try{
+      for(let i=0; i<this.state.selectedForms!.length; i++){
+        let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
+                        FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
+                        Title: title,
+                        Description: desc,
+                        CreateDate: currDate,
+                        DueDate: dueDate,
+                        Status:RequestStatusSigning.NOTSTARTED
+
+                  })));
+        for(let j=0; j<this.state.selectedUsers!.length; j++){ 
+          let request: RequestRequest = ({
+            signerId: this.state.selectedUsers![j], 
+            groupId: group.id,
+            requestorId: this.props.userObject.user.id!, 
+            status: FormProgress.PENDING, 
+            sentDate: currDate });
+          this.props.requestHandler!.createRequest(request);
+        }
       }
+      return true;
+    }catch(e){
+      return false;
     }
   }
 
