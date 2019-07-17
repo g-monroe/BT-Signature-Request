@@ -14,7 +14,7 @@ export interface ISendProps {
 export interface ISendState {
     isInfoVisible:boolean;
     isConfirmVisible:boolean;
-    sendFunction?:(title:string, desc:string)=>void;
+    sendFunction?:(title:string, desc:string, dueDate:Date)=>void;
     title:string;
     description:string;
     date:Date;
@@ -29,7 +29,7 @@ class Send extends React.Component<ISendProps, ISendState> {
         date: new Date()
     }
 
-    userPressedSend = (send: (title:string, desc:string)=>void, preTitle:string, preDesc:string)  =>{
+    userPressedSend = (send: (title:string, desc:string, dueDate:Date)=>void, preTitle:string, preDesc:string)  =>{
         
         const oneWeekFromNow = new Date();
         oneWeekFromNow.setDate(oneWeekFromNow.getDate()+7);
@@ -88,25 +88,22 @@ class Send extends React.Component<ISendProps, ISendState> {
             </Layout>
 
             <Modal
-                title = "Some Final Checks"
+                title = "Some Final Information"
                 visible = {this.state.isConfirmVisible}
                 onCancel = {this.onCancel}
-                onOk = {() => this.state.sendFunction!(this.state.title, this.state.description)}
+                onOk = {() => this.state.sendFunction!(this.state.title, this.state.description, this.state.date)}
                 >
-        <div id = "sendFormForm">
-          
-          <Form>
-              <Form.Item label = "Title">
-                  <Input value = {this.state.title} placeholder = "Enter a brief title summarizing the document(s)" onChange = {this.handleTitleChange}/>
-              </Form.Item>
-              <Form.Item label = "Description">
-                  <TextArea rows = {3} value = {this.state.description} placeholder = "Why are you sending the document(s)? Are there any special notes?" onChange = {this.handleDescChange}/>
-              </Form.Item>
-              <Form.Item>
-                  <DatePicker value = {moment(this.state.date)}onChange = {this.handleDateChange}></DatePicker>
-              </Form.Item>
-          </Form>
-        </div>
+                <Form>
+                    <Form.Item label = "Title">
+                        <Input value = {this.state.title} placeholder = "Enter a brief title summarizing the document(s)" onChange = {this.handleTitleChange}/>
+                    </Form.Item>
+                    <Form.Item label = "Description">
+                        <TextArea rows = {3} value = {this.state.description} placeholder = "Why are you sending the document(s)? Are there any special notes?" onChange = {this.handleDescChange}/>
+                    </Form.Item>
+                    <Form.Item label = "Due Date">
+                        <DatePicker value = {moment(this.state.date)}onChange = {this.handleDateChange}></DatePicker>
+                    </Form.Item>
+                </Form>
             </Modal>
 
             </>

@@ -13,6 +13,7 @@ import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import TextArea from "antd/lib/input/TextArea";
+import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 const { Option } = Select;
 const columns = [
     {
@@ -39,7 +40,7 @@ export interface ISendFormProps {
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
    userObject: ContextUserObject;
-   onPressSend:(send: (title:string, desc:string)=>void, preTitle:string, preDesc:string )=>void;
+   onPressSend:(send: (title:string, desc:string, dueDate:Date)=>void, preTitle:string, preDesc:string )=>void;
 }
 
 export interface ISendFormState {
@@ -78,7 +79,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
             filePath: forms.collection[i].filePath,
             title: forms.collection[i].title,
             description: forms.collection[i].description,
-            createDate: forms.collection[i].createDate.toDateString
+            createDate: new Date(forms.collection[i].createDate).toDateString()
         });
     }
     return data;
@@ -122,9 +123,17 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
      this.props.onPressSend(this.onSend, title, description)
   }
 
-  onSend = async (title:string, desc:string) => {
+  onSend = async (title:string, desc:string, dueDate:Date) => {
     for(let i=0; i<this.state.selectedForms!.length; i++){
-      let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id})));
+      let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
+                      FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
+                      Title: title,
+                      Description: desc,
+                      CreateDate: new Date(),
+                      DueDate: dueDate,
+                      Status:RequestStatusSigning.NOTSTARTED
+                    
+                })));
       for(let j=0; j<this.state.selectedUsers!.length; j++){ 
         let request: RequestRequest = ({
           signerId: this.state.selectedUsers![j], 
