@@ -10,10 +10,10 @@ namespace SignatureRequests.Core.ResponseObjects
     public class BoxResponse
     {
         public int Id { get; set; }
-        public int? Width { get; set; }
-        public int? Height { get; set; }
-        public int? X { get; set; }
-        public int? Y { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         public string Type { get; set; }
         public string SignerType { get; set; }
         public string SignedStatus { get; set; }
@@ -22,9 +22,11 @@ namespace SignatureRequests.Core.ResponseObjects
         public SignatureResponse Signature { get; set; }
         public int? SignatureId { get; set; }
         public FormResponse Form { get; set; }
-        public int? FormId { get; set; }
+        public int FormId { get; set; }
         public int PageNumber { get; set; }
         public bool IsModel { get; set; }
+        public string Text { get; set; }
+        public DateTime? Date { get; set; }
 
     }
 }

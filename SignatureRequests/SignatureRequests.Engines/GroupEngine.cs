@@ -67,7 +67,9 @@ namespace SignatureRequests.Engines
                         Form = FormToListItem(box.Form),
                         FormId = box.FormId,
                         PageNumber = box.PageNumber,
-                        IsModel = box.IsModel
+                        IsModel = box.IsModel,
+                        Text = box.Text,
+                        Date = box.Date
                     };
                     respBoxes.BoxesList.Add(item);
                 }
@@ -131,6 +133,10 @@ namespace SignatureRequests.Engines
                 TotalResults = 0,
                 BoxesList = new List<BoxResponse>()
             };
+            if(request == null)
+            {
+                return new RequestResponse();
+            }
             if (request.BoxEntities == null)
             {
                 request.BoxEntities = new List<BoxEntity>();
@@ -154,7 +160,9 @@ namespace SignatureRequests.Engines
                     Form = FormToListItem(box.Form),
                     FormId = box.FormId,
                     PageNumber = box.PageNumber,
-                    IsModel = box.IsModel
+                    IsModel = box.IsModel,
+                    Text = box.Text,
+                    Date = box.Date
                 };
                 respBoxes.BoxesList.Add(item);
             }

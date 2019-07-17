@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class UpdatedBoxEntity : DbMigration
+    public partial class EditBox : DbMigration
     {
         public override void Up()
         {
@@ -21,13 +21,15 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                         SignedStatus = c.String(nullable: false),
                         RequestId = c.Int(),
                         SignatureId = c.Int(),
-                        FormId = c.Int(),
+                        FormId = c.Int(nullable: false),
                         PageNumber = c.Int(nullable: false),
                         IsModel = c.Boolean(nullable: false),
+                        Text = c.String(),
+                        Date = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.RequestEntities", t => t.RequestId)
-                .ForeignKey("dbo.FormEntities", t => t.FormId)
+                .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
                 .ForeignKey("dbo.SignatureEntities", t => t.SignatureId)
                 .Index(t => t.RequestId)
                 .Index(t => t.SignatureId)
