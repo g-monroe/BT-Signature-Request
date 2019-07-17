@@ -51,18 +51,14 @@ class SignupPage extends React.Component<ISignupPageProps, ISignupPageState> {
             title = "Signup Successful"
             visible = {this.state.visible}
             closable = {false}
-            footer = {[
-                
-                    <Button type = "primary">
-                        <Link to = {routes.COMMON._Login.link}>
-                            Login
-                        </Link>
-                    </Button>   
-                
-            ]}
+            footer = {null}
         >
         <div id = "SignUpModalContent">
-            Hello
+                    <Button type = "primary">
+                        <Link to = {routes.COMMON._Login.link}>
+                            Go to Login
+                        </Link>
+                    </Button> 
         </div>
         </Modal>
         </>

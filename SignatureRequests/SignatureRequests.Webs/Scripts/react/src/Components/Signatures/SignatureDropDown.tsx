@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TypesOfBoxes, DropDownState } from '../../Util/Enums/SignatureDropDown';
-import { Menu, Dropdown, Icon, DatePicker, Button, Modal, Drawer } from 'antd';
+import { Menu, Dropdown, Icon, DatePicker, Button, Drawer } from 'antd';
 import SignatureBox from './SignatureBox';
 import {manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
 import { ISignatureHandler, SignatureHandler } from '../../Handlers/SignatureHandler';

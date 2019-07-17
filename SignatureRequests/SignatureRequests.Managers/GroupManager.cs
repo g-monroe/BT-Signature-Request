@@ -113,6 +113,11 @@ namespace SignatureRequests.Managers
             updating.Id = group.Id;
             updating.Form = _formHandler.GetById(group.FormId);
             updating.FormId = group.FormId;
+            updating.Title = group.Title;
+            updating.Description = group.Description;
+            updating.CreateDate = group.CreateDate;
+            updating.DueDate = group.DueDate;
+            updating.Status = group.Status;
             return updating;
         }
 

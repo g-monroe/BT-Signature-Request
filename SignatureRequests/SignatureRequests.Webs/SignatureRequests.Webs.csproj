@@ -281,6 +281,7 @@
     <Content Include="Scripts\react\scripts\start.js" />
     <Content Include="Scripts\react\scripts\test.js" />
     <Content Include="Scripts\react\src\FakeMaterials\testMadison.jpeg" />
+    <Content Include="Scripts\react\src\Pages\Requester\Send\Send.css" />
     <Content Include="Scripts\react\src\Pages\Signer\AddSignatures\AddSignatures.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -355,6 +356,7 @@
     <TypeScriptCompile Include="Scripts\react\src\Pages\Navigation.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Create\Create.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Dashboard\Dashboard.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Edit\Edit.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Send\Send.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\View\View.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Routing\routes.ts" />

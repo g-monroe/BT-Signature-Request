@@ -1,5 +1,3 @@
-import RequestEntity from "./RequestEntity";
-
 
 class BoxEntity {
   id: number;
