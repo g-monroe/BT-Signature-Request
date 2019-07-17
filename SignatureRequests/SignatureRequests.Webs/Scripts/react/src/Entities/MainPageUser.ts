@@ -5,7 +5,7 @@ class MainPageUser {
   role?: string;
   name?: string;
   email?: string;
-  type:UserType;
+  type: UserType;
 
   constructor(data: any) {
     this.id = data.id;
