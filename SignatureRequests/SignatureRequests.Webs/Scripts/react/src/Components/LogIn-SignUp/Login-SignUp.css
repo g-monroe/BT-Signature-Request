@@ -34,3 +34,20 @@
     height: 100%;
     width:100%;
 }
+
+#SendForm{
+    margin-left: 5%;
+    margin-right: 5%;
+
+}
+
+#SendFormContent{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    width:100%;
+}
+
+#sendFormForm{
+    display: flex;
+}
