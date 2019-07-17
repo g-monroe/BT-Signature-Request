@@ -7,6 +7,8 @@ using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,7 +78,29 @@ namespace SignatureRequests.Managers
             request.SentDate = newRequest.SentDate;
             _requestHandler.Update(request);
             _requestHandler.SaveChanges();
+            Email("Sent you an email that the request was sent", request.Signer.Email);
             return request;
+        }
+        public static void Email(string htmlString, string toEmail)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress("btsignacc@gmail.com");
+                message.To.Add(new MailAddress(toEmail));
+                message.Subject = "Test";
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = htmlString;
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com"; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("btsignacc@gmail.com", "powell110");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            }
+            catch (Exception) { }
         }
         public void Delete(int id)
         {
