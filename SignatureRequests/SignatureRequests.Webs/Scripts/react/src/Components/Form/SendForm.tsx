@@ -180,11 +180,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
             {this.createUserOptions()}
           </Select>
 
-          <Link to="/request/create">
-            <Button> 
-              Create
-            </Button>
-          </Link>
+
           
           <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table>
 

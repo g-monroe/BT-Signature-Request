@@ -2,7 +2,7 @@ import * as React from 'react';
 import SendForm from '../../../Components/Form/SendForm';
 
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { Layout, Typography, Modal, Form, Input, DatePicker, message, Button, Icon } from 'antd';
+import { Layout, Typography, Modal, Form, Input, DatePicker, message, Button, Icon, Drawer, Divider } from 'antd';
 import '../../../Components/LogIn-SignUp/Login-SignUp.css'
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
@@ -67,6 +67,12 @@ class Send extends React.Component<ISendProps, ISendState> {
         })
     }
 
+    onInfoClick = () =>{
+        this.setState({
+            isInfoVisible:true
+        })
+    }
+
     handleTitleChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
         this.setState({
             title:e.target.value
@@ -90,7 +96,11 @@ class Send extends React.Component<ISendProps, ISendState> {
             <>
             <Layout style = {{height:'100%'}}>
                 <Layout.Header style = {{background:"inherit"}}>
-                    <Typography.Title level = {1}>Request Form Completion</Typography.Title>
+                    <div id = "SendHeader">
+                        <Typography.Title level = {1}>Request Form Completion</Typography.Title>
+                        <Icon type="info-circle" theme="twoTone" twoToneColor = "#604099" style = {{fontSize:'37px', margin:'5px'}} onClick = {this.onInfoClick}/>
+                    </div>
+
                 </Layout.Header>.
                 <Layout.Content id = "SendFormContent">
                     <div id = "SendForm">
@@ -109,13 +119,14 @@ class Send extends React.Component<ISendProps, ISendState> {
                 visible = {this.state.isConfirmVisible}
                 onCancel = {this.onCancel}
                 onOk = {this.onSubmit}
+                closable = {false}
                 footer = {this.state.wasSuccess ? 
                         null : undefined}
                 >
                 {
                     this.state.wasSuccess ?
                     <div id = "sentFormSuccess">
-                        <Icon type="check-circle" theme="twoTone" twoToneColor = "#138520" style = {{fontSize:'100px', margin:'20px'}}/>
+                        <Icon type="check-circle" theme="twoTone" twoToneColor = "#2ac73c" style = {{fontSize:'100px', margin:'20px'}}/>
                         <Link to = {routes.REQUESTER._Dashboard.path}>
                             <Button type = "primary">Back To Dashboard</Button>
                         </Link>
@@ -134,6 +145,23 @@ class Send extends React.Component<ISendProps, ISendState> {
                 }
 
             </Modal>
+            <Drawer
+                visible = {this.state.isInfoVisible}
+                onClose = {this.onCancel}
+                >
+                <div id = "SendFormInfo">
+                    <p>If no documents are shown on the page, upload a pdf</p>
+                    <Link to="/request/create">
+                        <Button> 
+                          Upload
+                        </Button>
+                    </Link>
+                    <Divider/>
+                    <p>Instructions to complete the process of sending the form will be added here when the process is complete</p>
+                </div>
+            
+                
+            </Drawer>
 
             </>
         );
