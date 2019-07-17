@@ -1,9 +1,8 @@
 import * as React from 'react';
 import SendForm from '../../../Components/Form/SendForm';
-
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 import { Layout, Typography, Modal, Form, Input, DatePicker, message, Button, Icon, Drawer, Divider } from 'antd';
-import '../../../Components/LogIn-SignUp/Login-SignUp.css'
+import './Send.css'
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
 import * as routes from '../../Routing/routes'
