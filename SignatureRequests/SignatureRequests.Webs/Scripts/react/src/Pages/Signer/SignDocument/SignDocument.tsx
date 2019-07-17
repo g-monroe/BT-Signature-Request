@@ -13,7 +13,6 @@ export interface ISignDocumentProps {
     userHandler?:IUserHandler
     requestHandler?:IRequestHandler
     userObject:ContextUserObject
-    requestID:number
 }
  
 export interface ISignDocumentState {
@@ -30,8 +29,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     static defaultProps = {
         userHandler: new UserHandler(),
-        requestHandler: new RequestHandler(),
-        requestID:1
+        requestHandler: new RequestHandler()
     }
 
     render() { 
@@ -59,7 +57,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     async componentDidMount(){
        try{
-        const request = await this.props.requestHandler!.getRequestByRequestId(this.props.requestID);
+        const request = await this.props.requestHandler!.getRequestByRequestId(this.props.userObject.requestId);
         const user = await this.props.userHandler!.getUser(request.requestorId);
        
         this.setState({

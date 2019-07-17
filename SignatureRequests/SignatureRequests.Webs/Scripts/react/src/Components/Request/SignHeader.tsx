@@ -55,7 +55,7 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                 <div id = "SignHeaderContent">
                     <Typography.Title level = {3}>{this.props.data.title || "Sign the Document"}</Typography.Title>
                     <Tooltip title = {this.props.numComplete +" out of " + this.props.data.boxes.count + " completed"} placement = 'bottomRight'>
-                        <Progress percent = {numPercent}></Progress>
+                        <Progress percent = {numPercent} style = {{width:'100%'}}></Progress>
                     </Tooltip>
                 </div>
                 <Tooltip title = "Skip to Next Signature" placement = "bottomRight" arrowPointAtCenter>
@@ -80,8 +80,8 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                         <p id = "drawerText">{this.props.data.description}</p>
                     
                         <div id = "drawerDates">
-                            <p><b id = "drawerHeaders">{"Sent on: "}</b>{this.props.data.sentDate.toDateString()}</p>
-                            <p><b id = "drawerHeaders">{"Due Date: "}</b>{this.props.data.dueDate.toDateString()}</p>
+                            <p><b id = "drawerHeaders">{"Sent on: "}</b>{new Date(this.props.data.sentDate).toDateString()}</p>
+                            <p><b id = "drawerHeaders">{"Due Date: "}</b>{new Date(this.props.data.dueDate).toDateString()}</p>
                         </div>
                         <p>{"Contact "+ this.props.sentBy.name + " at " + this.props.sentBy.email + " for more information."}</p>
                     
