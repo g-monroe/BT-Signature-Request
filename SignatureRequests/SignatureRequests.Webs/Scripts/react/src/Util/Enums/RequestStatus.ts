@@ -5,3 +5,9 @@ enum RequestStatus {
 }
 
 export default RequestStatus;
+
+export enum RequestStatusSigning {
+    PENDING = "Pending",
+    COMPLETE = "Complete",
+    NOTSTARTED = "Not started"
+}

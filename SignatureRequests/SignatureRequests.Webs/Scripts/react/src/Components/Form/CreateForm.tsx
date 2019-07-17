@@ -1,12 +1,10 @@
 import React from "react";
 import { Form as AntForm, Button, Input, Upload, Icon, } from 'antd';
 import "antd/dist/antd.css";
-import UserEntity from "../../Entities/UserEntity";
 import { Form, InjectedFormikProps, withFormik } from "formik";
 import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
 import ValidateStatus from "../../Util/Enums/ValidateStatus";
-import { Document } from 'react-pdf';
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;

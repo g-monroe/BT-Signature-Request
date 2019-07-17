@@ -7,12 +7,11 @@ import { RequestHandler, IRequestHandler } from "../../Handlers/RequestHandler";
 import { GroupHandler, IGroupHandler } from "../../Handlers/GroupHandler";
 import UserResponseList from "../../Entities/UserResponseList";
 import RequestRequest from "../../Entities/RequestRequest";
-import { Link } from "react-router-dom";
 import FormProgress from "../../Util/Enums/FormProgress";
 import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-import MainPageUser from "../../Entities/MainPageUser";
+import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 const { Option } = Select;
 const columns = [
     {
@@ -39,6 +38,7 @@ export interface ISendFormProps {
    requestHandler?: IRequestHandler;
    groupHandler?: IGroupHandler;
    userObject: ContextUserObject;
+   onPressSend:(send: (title:string, desc:string, dueDate:Date)=>Promise<boolean>, preTitle:string, preDesc:string )=>void;
 }
 
 export interface ISendFormState {
@@ -59,7 +59,9 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
      groupHandler: new GroupHandler()
      
   };
+
   state: ISendFormState = {};
+
   async componentDidMount() {
     this.setState({
         forms: (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id!)),
@@ -76,8 +78,8 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         data.push({
             filePath: forms.collection[i].filePath,
             title: forms.collection[i].title,
-            description: forms.collection[i].description,
-            createDate: forms.collection[i].createDate
+            description: forms.collection[i].description ? forms.collection[i].description!.substring(0,15): "",
+            createDate: new Date(forms.collection[i].createDate).toDateString()
         });
     }
     return data;
@@ -109,19 +111,44 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     }));
   }
 
-  onSend = async () => {
-    
-    for(let i=0; i<this.state.selectedForms!.length; i++){
-      let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id})));
-      for(let j=0; j<this.state.selectedUsers!.length; j++){ 
-        let request: RequestRequest = ({
-          signerId: this.state.selectedUsers![j], 
-          groupId: group.id,
-          requestorId: this.props.userObject.user.id!, 
-          status: FormProgress.PENDING, 
-          sentDate: new Date() });
-        this.props.requestHandler!.createRequest(request);
+
+  onPressSend = async () => {
+    let title = "";
+    let description = "";
+
+    if(this.state.selectedForms!.length === 1){
+      title = this.state.forms!.collection[(this.state.selectedForms![0] as number)].title || "";
+      description = this.state.forms!.collection[(this.state.selectedForms![0] as number)].description || "";
+    }
+    await this.props.onPressSend(this.onSend, title, description)
+  }
+
+  onSend = async (title:string, desc:string, dueDate:Date) => {
+    const currDate = new Date();
+    try{
+      for(let i=0; i<this.state.selectedForms!.length; i++){
+        let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
+                        FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
+                        Title: title,
+                        Description: desc,
+                        CreateDate: currDate,
+                        DueDate: dueDate,
+                        Status:RequestStatusSigning.NOTSTARTED
+
+                  })));
+        for(let j=0; j<this.state.selectedUsers!.length; j++){ 
+          let request: RequestRequest = ({
+            signerId: this.state.selectedUsers![j], 
+            groupId: group.id,
+            requestorId: this.props.userObject.user.id!, 
+            status: FormProgress.PENDING, 
+            sentDate: currDate });
+          this.props.requestHandler!.createRequest(request);
+        }
       }
+      return true;
+    }catch(e){
+      return false;
     }
   }
 
@@ -137,9 +164,11 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         selectedRowKeys: this.state.selectedForms!,
         onChange : this.onSelectChange
       };
-      
+
+
       return (
         <>
+        
           <Select
             mode="multiple"
             style={{ width: '100%' }}
@@ -149,17 +178,13 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
             {this.createUserOptions()}
           </Select>
 
-          <Link to="/request/create">
-            <Button> 
-              Create
-            </Button>
-          </Link>
+
           
           <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table>
 
           <Button
             type={"primary"}
-            onClick={this.onSend}>
+            onClick={this.onPressSend}>
             Send
           </Button>
          
