@@ -34,9 +34,9 @@ namespace SignatureRequests.Webs.Controllers
 
         [Route("api/Request/GetRequestsById/{id}")]
         [HttpGet]
-        public RequestResponseList GetRequestsById([FromRoute] int id)
+        public RequestResponse GetRequestById([FromRoute] int id)
         {
-            return _requestManager.GetRequestsById(id);
+            return _requestManager.GetRequestById(id);
         }
 
         [Route("api/Request/AddRequest")]
@@ -59,6 +59,13 @@ namespace SignatureRequests.Webs.Controllers
         public void DeleteRequest([FromRoute]int id)
         {
             _requestManager.Delete(id);
+        }
+
+        [Route("api/Request/GetSimplifiedRequestById/{id}")]
+        [HttpGet]
+        public RequestToCompleteResponse GetSimplifiedRequestById([FromRoute] int id)
+        {
+            return _requestManager.GetRequestByRequestId(id);
         }
     }
 }

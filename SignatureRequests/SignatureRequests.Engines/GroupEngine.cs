@@ -62,7 +62,6 @@ namespace SignatureRequests.Engines
                         SignedStatus = box.SignedStatus,
                         Request = RequestToListItem(box.Request),
                         RequestId = box.RequestId,
-                        Signature = _signatureEngine.SignatureToListItem(box.Signature),
                         SignatureId = box.SignatureId,
                         Form = FormToListItem(box.Form),
                         FormId = box.FormId,
@@ -93,6 +92,9 @@ namespace SignatureRequests.Engines
                 FormId = group.FormId,
                 Title = group.Title,
                 Description = group.Description,
+                DueDate = group.DueDate,
+                CreateDate = group.CreateDate,
+                Status = group.Status,
                 RequestEntities = resp
             };
         }
@@ -155,7 +157,7 @@ namespace SignatureRequests.Engines
                     SignedStatus = box.SignedStatus,
                     Request = RequestToListItem(box.Request),
                     RequestId = box.RequestId,
-                    Signature = _signatureEngine.SignatureToListItem(box.Signature),
+
                     SignatureId = box.SignatureId,
                     Form = FormToListItem(box.Form),
                     FormId = box.FormId,

@@ -116,9 +116,9 @@ export const SIGNER = {
         condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     }),
 
-    "_SignDocument":new RouteEntity({
-        path: "/response/sign",
-        link:"/response/sign",
+    "_SignDocument": new RouteEntity({
+        path: `/response/sign/:requestid`,
+        link:  (requestid: number) => `/response/sign/${requestid}`,
         breadcrumbName:"Sign Active Documents",
         component:Pages.SignDocument,
         hasNavBar:true,

@@ -38,7 +38,7 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
 
         const menuObjects = currRoutes.map((e) => e.hasNavBar ? 
             <Menu.Item key={e.path} className="menuItem" style={(location.pathname === e.path) ? {backgroundColor: "#1890ff"} : {backgroundColor: "inherit"}}>
-                <NavLink to={e.link}>
+                <NavLink to={e.path}>
                     {e.breadcrumbName}
                 </NavLink>
             </Menu.Item>
