@@ -167,12 +167,17 @@ namespace SignatureRequests.Managers
                     X = box.X,
                     Y = box.Y,
                     Width = box.Width,
-                    Length = box.Length,
+                    Height = box.Height,
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
                     RequestId = box.RequestId,
                     SignatureId = box.SignatureId,
+                    FormId = box.FormId,
+                    PageNumber = box.PageNumber,
+                    IsModel = box.IsModel,
+                    Text = box.Text,
+                    Date = box.Date
                 };
                 boxResponses.Add(item);
             }

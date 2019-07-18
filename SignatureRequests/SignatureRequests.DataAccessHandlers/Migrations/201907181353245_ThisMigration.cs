@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Migration : DbMigration
+    public partial class ThisMigration : DbMigration
     {
         public override void Up()
         {
@@ -13,20 +13,59 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Width = c.Int(nullable: false),
-                        Length = c.Int(nullable: false),
+                        Height = c.Int(nullable: false),
                         X = c.Int(nullable: false),
                         Y = c.Int(nullable: false),
                         Type = c.String(nullable: false),
                         SignerType = c.String(nullable: false),
                         SignedStatus = c.String(nullable: false),
-                        RequestId = c.Int(nullable: false),
+                        RequestId = c.Int(),
                         SignatureId = c.Int(),
+                        FormId = c.Int(nullable: false),
+                        PageNumber = c.Int(nullable: false),
+                        IsModel = c.Boolean(nullable: false),
+                        Text = c.String(),
+                        Date = c.DateTime(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.RequestEntities", t => t.RequestId, cascadeDelete: true)
+                .ForeignKey("dbo.RequestEntities", t => t.RequestId)
+                .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
                 .ForeignKey("dbo.SignatureEntities", t => t.SignatureId)
                 .Index(t => t.RequestId)
-                .Index(t => t.SignatureId);
+                .Index(t => t.SignatureId)
+                .Index(t => t.FormId);
+            
+            CreateTable(
+                "dbo.FormEntities",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FilePath = c.String(nullable: false),
+                        Title = c.String(nullable: false, maxLength: 255),
+                        Description = c.String(maxLength: 400),
+                        CreateDate = c.DateTime(nullable: false),
+                        UserId = c.Int(nullable: false),
+                        NumPages = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.UserEntities", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.GroupEntities",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FormId = c.Int(nullable: false),
+                        Title = c.String(),
+                        Description = c.String(),
+                        CreateDate = c.DateTime(nullable: false),
+                        DueDate = c.DateTime(nullable: false),
+                        Status = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
+                .Index(t => t.FormId);
             
             CreateTable(
                 "dbo.RequestEntities",
@@ -46,38 +85,6 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                 .Index(t => t.SignerId)
                 .Index(t => t.GroupId)
                 .Index(t => t.RequestorId);
-            
-            CreateTable(
-                "dbo.GroupEntities",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FormId = c.Int(nullable: false),
-                        Title = c.String(),
-                        Description = c.String(),
-                        CreateDate = c.DateTime(nullable: false),
-                        DueDate = c.DateTime(nullable: false),
-                        Status = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)
-                .Index(t => t.FormId);
-            
-            CreateTable(
-                "dbo.FormEntities",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FilePath = c.String(nullable: false),
-                        Title = c.String(nullable: false, maxLength: 255),
-                        Description = c.String(maxLength: 400),
-                        CreateDate = c.DateTime(nullable: false),
-                        UserId = c.Int(nullable: false),
-                        NumPages = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.UserEntities", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.UserEntities",
@@ -121,30 +128,32 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.BoxEntities", "SignatureId", "dbo.SignatureEntities");
-            DropForeignKey("dbo.BoxEntities", "RequestId", "dbo.RequestEntities");
+            DropForeignKey("dbo.BoxEntities", "FormId", "dbo.FormEntities");
+            DropForeignKey("dbo.FormEntities", "UserId", "dbo.UserEntities");
             DropForeignKey("dbo.RequestEntities", "SignerId", "dbo.UserEntities");
             DropForeignKey("dbo.RequestEntities", "RequestorId", "dbo.UserEntities");
-            DropForeignKey("dbo.RequestEntities", "GroupId", "dbo.GroupEntities");
-            DropForeignKey("dbo.GroupEntities", "FormId", "dbo.FormEntities");
-            DropForeignKey("dbo.FormEntities", "UserId", "dbo.UserEntities");
             DropForeignKey("dbo.UserEntities", "SignatureId", "dbo.SignatureEntities");
             DropForeignKey("dbo.UserEntities", "InitialId", "dbo.SignatureEntities");
             DropForeignKey("dbo.SignatureEntities", "UserId", "dbo.UserEntities");
+            DropForeignKey("dbo.RequestEntities", "GroupId", "dbo.GroupEntities");
+            DropForeignKey("dbo.BoxEntities", "RequestId", "dbo.RequestEntities");
+            DropForeignKey("dbo.GroupEntities", "FormId", "dbo.FormEntities");
             DropIndex("dbo.SignatureEntities", new[] { "UserId" });
             DropIndex("dbo.UserEntities", new[] { "InitialId" });
             DropIndex("dbo.UserEntities", new[] { "SignatureId" });
-            DropIndex("dbo.FormEntities", new[] { "UserId" });
-            DropIndex("dbo.GroupEntities", new[] { "FormId" });
             DropIndex("dbo.RequestEntities", new[] { "RequestorId" });
             DropIndex("dbo.RequestEntities", new[] { "GroupId" });
             DropIndex("dbo.RequestEntities", new[] { "SignerId" });
+            DropIndex("dbo.GroupEntities", new[] { "FormId" });
+            DropIndex("dbo.FormEntities", new[] { "UserId" });
+            DropIndex("dbo.BoxEntities", new[] { "FormId" });
             DropIndex("dbo.BoxEntities", new[] { "SignatureId" });
             DropIndex("dbo.BoxEntities", new[] { "RequestId" });
             DropTable("dbo.SignatureEntities");
             DropTable("dbo.UserEntities");
-            DropTable("dbo.FormEntities");
-            DropTable("dbo.GroupEntities");
             DropTable("dbo.RequestEntities");
+            DropTable("dbo.GroupEntities");
+            DropTable("dbo.FormEntities");
             DropTable("dbo.BoxEntities");
         }
     }

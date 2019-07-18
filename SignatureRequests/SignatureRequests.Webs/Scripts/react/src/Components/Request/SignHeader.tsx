@@ -36,7 +36,14 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
     skipToNext = ()=> {
         this.props.toNextSignature && 
         this.props.toNextSignature() 
-     
+    }
+
+    getTagColor = () => {
+        switch(this.props.data.status){
+            case RequestStatusSigning.NOTSTARTED: return "red"
+            case RequestStatusSigning.PENDING: return "gold"
+            case RequestStatusSigning.COMPLETE:return "green"
+        }
     }
 
     render() { 
@@ -67,11 +74,7 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                     <div id = "drawerContents">
                             <Typography.Title level = {4}>{this.props.data.title}
                         
-                            <Tag style = {{marginLeft:'2%'}}color = {
-                                    this.props.data.status === RequestStatusSigning.NOTSTARTED ?
-                                        "red" : this.props.data.status === RequestStatusSigning.PENDING ?
-                                            "gold" : "green"
-                            }>{this.props.data.status}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {this.getTagColor()}>{this.props.data.status}</Tag>
                             </Typography.Title>
                     
                         <b id = "drawerHeaders">Sent by: </b>

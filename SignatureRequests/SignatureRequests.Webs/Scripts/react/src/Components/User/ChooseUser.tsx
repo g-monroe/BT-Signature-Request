@@ -24,7 +24,7 @@ class ChooseUser extends React.Component<IChooseUserProps, IChooseUserState> {
                     <p>id:1, role: "Role here", name: "Max Min", email: "MM@gmail.com"</p>
                     <p>This is not stored in the database</p>
                     <Button  id = 'Button' onClick = {() =>this.props.changeUser(UserType.REGISTERED)}>
-                        <Link to = {routes.REQUESTER._Dashboard.link}> 
+                        <Link to = {routes.REQUESTER._Dashboard.path}> 
                             Select
                         </Link>
                     </Button>
