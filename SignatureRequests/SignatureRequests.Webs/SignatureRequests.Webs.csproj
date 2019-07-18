@@ -18,8 +18,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
     <IISExpressSSLPort>61806</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -248,6 +247,7 @@
     <Compile Include="App_Start\NinjectResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BoxController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
@@ -274,6 +274,7 @@
     <Content Include="Scripts\react\src\Components\Dashboard\placeholder.jpg" />
     <Content Include="Scripts\react\src\Components\Dashboard\SearchHeader.css" />
     <Content Include="Scripts\react\src\Components\LogIn-SignUp\Login-SignUp.css" />
+    <Content Include="Scripts\react\src\Components\Request\Signing.css" />
     <Content Include="Scripts\react\src\Components\Signatures\DrawTest.css" />
     <Content Include="Scripts\react\src\Components\User\ChooseUser.css" />
     <Content Include="Scripts\react\dist\bundle.js" />
@@ -281,6 +282,7 @@
     <Content Include="Scripts\react\scripts\start.js" />
     <Content Include="Scripts\react\scripts\test.js" />
     <Content Include="Scripts\react\src\FakeMaterials\testMadison.jpeg" />
+    <Content Include="Scripts\react\src\Pages\Requester\Send\Send.css" />
     <Content Include="Scripts\react\src\Pages\Signer\AddSignatures\AddSignatures.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -314,6 +316,7 @@
     <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\LoginForm.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpForm.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\LogIn-SignUp\SignUpPage.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\Request\SignHeader.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\ButtonSelect.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\DrawCanvas.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\imageViewModal.tsx" />
@@ -322,6 +325,9 @@
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\SignaturePage.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\Signatures\TypedSignature.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Components\User\ChooseUser.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\WrapperComponents\ContextUserObject.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\WrapperComponents\WithNavigation.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Components\WrapperComponents\WithUser.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Entities\BoxEntity.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Entities\BoxRequest.ts" />
     <TypeScriptCompile Include="Scripts\react\src\Entities\BoxResponseList.ts" />
@@ -351,6 +357,7 @@
     <TypeScriptCompile Include="Scripts\react\src\Pages\Navigation.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Create\Create.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Dashboard\Dashboard.tsx" />
+    <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Edit\Edit.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\Send\Send.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Requester\View\View.tsx" />
     <TypeScriptCompile Include="Scripts\react\src\Pages\Routing\routes.ts" />

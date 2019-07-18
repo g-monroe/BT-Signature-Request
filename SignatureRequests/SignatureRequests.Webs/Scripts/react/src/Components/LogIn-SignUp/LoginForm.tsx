@@ -69,7 +69,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                 <Form.Item>
                     <div id = "SignUpButtons">
                         <Button>
-                            <Link to = {routes.COMMON._Signup.link}>
+                            <Link to = {routes.COMMON._Signup.path}>
                                 New? Signup!
                             </Link>
                             </Button>

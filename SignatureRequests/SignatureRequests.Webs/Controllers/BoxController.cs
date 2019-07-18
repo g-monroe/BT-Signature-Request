@@ -12,9 +12,9 @@ namespace BoxRequests.Controllers
         private readonly IBoxManager _boxManager;
         #endregion
         #region Constructor
-        public BoxController(IBoxManager manager)
+        public BoxController(IBoxManager boxManager)
         {
-            _boxManager = manager;
+            _boxManager = boxManager;
         }
         #endregion
         #region API Methods

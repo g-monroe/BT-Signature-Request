@@ -3,11 +3,13 @@ import UserResponseList from "../Entities/UserResponseList";
 import UserEntity from "../Entities/UserEntity";
 import UserRequest from "../Entities/UserRequest";
 import UserVerificationEntity from '../Entities/UserVerificationEntity';
+import SimpleUser from '../Entities/ToComplete/SimpleUser';
 
 export interface IUserHandler {
     getAll(): Promise<UserResponseList>;
     createUser(newUser:UserRequest) : Promise<UserEntity>;
     verifyUser(info:UserVerificationEntity) : Promise<UserEntity>;
+    getUser(id:number) : Promise<SimpleUser>;
 }
 
 export class UserHandler implements IUserHandler {
@@ -41,6 +43,18 @@ export class UserHandler implements IUserHandler {
             });
         }catch (e){
             return new UserEntity({Id:-1});
+        }
+    }
+
+    async getUser(id:number) : Promise<SimpleUser>{
+        try {
+            return await APIHandler(`api/User/GetUser/${id}`, {
+                headers: {"Content-Type" : "application/json"},
+                method: "GET",
+                responseType: SimpleUser,
+            });
+        }catch (e){
+            return new SimpleUser({Id:-1});
         }
     }
 }
