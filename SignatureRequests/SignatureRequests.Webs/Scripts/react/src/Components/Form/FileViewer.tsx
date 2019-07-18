@@ -8,10 +8,12 @@ import { IFormHandler, FormHandler } from "../../Handlers/FormHandler";
 import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
+import BoxRequest from "../../Entities/BoxRequest";
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userObject:ContextUserObject;
+    handleSave: (boxes: BoxRequest[]) => void;
 }
  
 export interface IFileViewerState {
@@ -20,6 +22,7 @@ export interface IFileViewerState {
     page: number;
     images: JSX.Element[];
     clearPage: boolean;
+    boxesDrawn: BoxRequest[];
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -42,7 +45,8 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         fileUploaded: false,
         page: 0,
         images: [],
-        clearPage: true
+        clearPage: true,
+        boxesDrawn: []
     };
     
     async componentDidMount() {
@@ -51,7 +55,14 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         let form = file.filePath.split('.');
         let formName = form.slice(0, form.length-1);
         for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImage pageNum={i} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
+            let newItem = <FormImage pageNum={i} 
+                                    src={`../../../../../assets/v1/documents/${formName}/${i}.png`} 
+                                    failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
+                                    userObject={this.props.userObject} 
+                                    pageChange={this.pageChange} 
+                                    boxesDrawn={this.state.boxesDrawn} 
+                                    numPages={file!.numPages} 
+                                    handleSave={this.props.handleSave}/>;
             items.push(newItem);
         }
         this.setState({
@@ -61,20 +72,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         });
     };
     
-    onNext = () => {
-        this.setState({
-            page: this.state.page+1,
-            clearPage: true
-        });
-    };
-
-    onPrev = () => {
-        this.setState({
-            page: this.state.page-1,
-            clearPage: true
-        })
-    };
-
     clearPage = () : JSX.Element => {
         return <></>;
     };
@@ -93,40 +90,33 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             }
         }
         return images[0];
+    };
+
+
+    pageChange = (change: number, boxes: BoxRequest[]) => {
+        let boxesDrawn = this.state.boxesDrawn;
+        let i = 0;
+        for(i=0; i<boxes.length; i++){
+            if(!boxesDrawn!.includes(boxes[i])){
+                boxesDrawn.push(boxes[i]);
+            }
+        }
+        this.setState({
+            page: this.state.page+change,
+            boxesDrawn: boxesDrawn,
+            clearPage: true
+        });
     }
 
     render() { 
         if(!this.state.fileUploaded){
-            return <div>Loading...</div>;
+            return <></>;
         } else{
             
         return (
             <> 
             {this.clearPage()}
             {this.renderpage()}
-            <div
-            style={{
-                borderTopLeftRadius: "11px",
-                borderBottomLeftRadius: "11px",
-                padding: "0px",
-                margin: "auto",
-                paddingRight: "5px",
-                display: "block",
-                textAlign: "center"
-            }}
-            >
-                <Button 
-                    disabled={this.state.page==0}
-                    onClick={this.onPrev}>
-                    Prev
-                </Button>
-                  Page {this.state.page+1} of {this.state.file!.numPages}  
-                <Button 
-                    disabled={this.state.page==this.state.file!.numPages-1}
-                    onClick={this.onNext}>
-                    Next
-                </Button>
-            </div>
             </>
          );
         }

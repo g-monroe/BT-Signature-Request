@@ -247,6 +247,7 @@
     <Compile Include="App_Start\NinjectResolver.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BoxController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\GroupController.cs" />

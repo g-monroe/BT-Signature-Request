@@ -51,6 +51,8 @@ namespace SignatureRequests.App_Start
             kernel.Bind<IGroupManager>().To<GroupManager>().InSingletonScope();
             kernel.Bind<IGroupEngine>().To<GroupEngine>().InSingletonScope();
             kernel.Bind<IGroupHandler>().To<GroupHandler>().WithConstructorArgument("context", context);
+            kernel.Bind<IBoxManager>().To<BoxManager>().WithConstructorArgument("context", context);
+            kernel.Bind<IBoxHandler>().To<BoxHandler>().WithConstructorArgument("context", context);
             return kernel;
         }
 

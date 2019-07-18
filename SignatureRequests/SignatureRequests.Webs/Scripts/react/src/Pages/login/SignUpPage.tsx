@@ -55,7 +55,7 @@ class SignupPage extends React.Component<ISignupPageProps, ISignupPageState> {
         >
         <div id = "SignUpModalContent">
                     <Button type = "primary">
-                        <Link to = {routes.COMMON._Login.link}>
+                        <Link to = {routes.COMMON._Login.path}>
                             Go to Login
                         </Link>
                     </Button> 

@@ -56,12 +56,18 @@ namespace SignatureRequests.Engines
                         X = box.X,
                         Y = box.Y,
                         Width = box.Width,
-                        Length = box.Length,
+                        Height = box.Height,
                         Type = box.Type,
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
                         SignatureId = box.SignatureId,
+                        Form = FormToListItem(box.Form),
+                        FormId = box.FormId,
+                        PageNumber = box.PageNumber,
+                        IsModel = box.IsModel,
+                        Text = box.Text,
+                        Date = box.Date
                     };
                     respBoxes.BoxesList.Add(item);
                 }
@@ -128,6 +134,10 @@ namespace SignatureRequests.Engines
                 TotalResults = 0,
                 BoxesList = new List<BoxResponse>()
             };
+            if(request == null)
+            {
+                return new RequestResponse();
+            }
             if (request.BoxEntities == null)
             {
                 request.BoxEntities = new List<BoxEntity>();
@@ -140,13 +150,19 @@ namespace SignatureRequests.Engines
                     X = box.X,
                     Y = box.Y,
                     Width = box.Width,
-                    Length = box.Length,
+                    Height = box.Height,
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
                     RequestId = box.RequestId,
 
                     SignatureId = box.SignatureId,
+                    Form = FormToListItem(box.Form),
+                    FormId = box.FormId,
+                    PageNumber = box.PageNumber,
+                    IsModel = box.IsModel,
+                    Text = box.Text,
+                    Date = box.Date
                 };
                 respBoxes.BoxesList.Add(item);
             }
@@ -183,7 +199,21 @@ namespace SignatureRequests.Engines
             return updating;
         }
 
- 
-
+        public FormEntity FormToEntity(FormRequest form, FormEntity updating = null)
+        {
+            if (updating == null)
+            {
+                updating = new FormEntity();
+            }
+            updating.Id = form.Id;
+            updating.FilePath = form.FilePath;
+            updating.Title = form.Title;
+            updating.Description = form.Description;
+            updating.CreateDate = form.CreateDate;
+            updating.User = _userHandler.GetById(form.UserId);
+            updating.UserId = form.UserId;
+            updating.NumPages = form.NumPages;
+            return updating;
+        }
     }
 }

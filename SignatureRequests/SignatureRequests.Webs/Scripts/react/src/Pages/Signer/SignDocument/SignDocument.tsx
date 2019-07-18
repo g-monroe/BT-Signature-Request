@@ -42,7 +42,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 <>
                  <Typography.Title level = {1}>Sorry, an error occured</Typography.Title>
                  <Button>
-                     <Link to = {routes.REQUESTER._Dashboard.link}>
+                     <Link to = {routes.REQUESTER._Dashboard.path}>
                      Back To Dashboard
                      </Link>
                 </Button>

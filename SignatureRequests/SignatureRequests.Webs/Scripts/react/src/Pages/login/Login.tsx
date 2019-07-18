@@ -66,7 +66,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             footer = {[
                 
                                     <Button type = "primary">
-                                        <Link to = {routes.REQUESTER._Dashboard.link}>
+                                        <Link to = {routes.REQUESTER._Dashboard.path}>
                                             Continue to Dashboard
                                         </Link>
                                     </Button>   
