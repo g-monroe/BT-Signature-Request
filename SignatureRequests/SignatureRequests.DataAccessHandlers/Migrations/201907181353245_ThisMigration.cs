@@ -3,11 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-<<<<<<< HEAD:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907171558244_EditBox.cs
-    public partial class EditBox : DbMigration
-=======
-    public partial class Migration : DbMigration
->>>>>>> d08ba1428226d9e57648f8783d3db5886ddf1cac:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907152144220_Migration.cs
+    public partial class ThisMigration : DbMigration
     {
         public override void Up()
         {
@@ -63,12 +59,9 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                         FormId = c.Int(nullable: false),
                         Title = c.String(),
                         Description = c.String(),
-<<<<<<< HEAD:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907171558244_EditBox.cs
-=======
                         CreateDate = c.DateTime(nullable: false),
                         DueDate = c.DateTime(nullable: false),
                         Status = c.String(),
->>>>>>> d08ba1428226d9e57648f8783d3db5886ddf1cac:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907152144220_Migration.cs
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.FormEntities", t => t.FormId, cascadeDelete: true)

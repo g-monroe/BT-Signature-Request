@@ -17,7 +17,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public string Type { get; set; }
         public string SignerType { get; set; }
         public string SignedStatus { get; set; }
-        public RequestResponse Request { get; set; }
         public int? RequestId { get; set; }
         public SignatureResponse Signature { get; set; }
         public int? SignatureId { get; set; }

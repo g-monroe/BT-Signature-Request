@@ -60,7 +60,6 @@ namespace SignatureRequests.Engines
                         Type = box.Type,
                         SignerType = box.SignerType,
                         SignedStatus = box.SignedStatus,
-                        Request = RequestToListItem(box.Request),
                         RequestId = box.RequestId,
                         SignatureId = box.SignatureId,
                         Form = FormToListItem(box.Form),
@@ -155,7 +154,6 @@ namespace SignatureRequests.Engines
                     Type = box.Type,
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
-                    Request = RequestToListItem(box.Request),
                     RequestId = box.RequestId,
 
                     SignatureId = box.SignatureId,

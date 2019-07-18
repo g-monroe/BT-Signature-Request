@@ -11,7 +11,7 @@ class BoxEntity {
   type: string;
   signerType: string;
   signedStatus: string;
-  request?: RequestEntity;
+  requestId: number;
   signature?: SignatureEntity;
   form: FormEntity;
   pageNumber: number;
@@ -29,7 +29,7 @@ class BoxEntity {
     this.type = data.Type;
     this.signerType = data.SignerType;
     this.signedStatus = data.SignedStatus;
-    this.request = data.Request;
+    this.requestId = data.RequestId;
     this.signature = data.Signature;
     this.form = data.Form;
     this.pageNumber = data.PageNumber;

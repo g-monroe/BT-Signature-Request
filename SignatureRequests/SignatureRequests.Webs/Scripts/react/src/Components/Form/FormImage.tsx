@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import BoxRequest from '../../Entities/BoxRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import SignedStatus from '../../Util/Enums/SignedStatus';
+import SignerType from '../../Util/Enums/SignerType';
+import BoxType from '../../Util/Enums/BoxType';
 import { Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Option } = Select;
+const PictureToWrap = "PictureToWrap";
 
 interface IFormImageProps{
   src: string;
@@ -79,7 +82,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     (await this.setState({
       ctx : this.state.canvasRef.current!.getContext("2d")
     }));
-    let rect = document.getElementById("PictureToWrap")!.getBoundingClientRect();
+    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
     (await this.drawBoxes());
   }
@@ -94,7 +97,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
   }
 
   onMouseDown = (event:any) => {
-    let rect = document.getElementById("PictureToWrap")!.getBoundingClientRect();
+    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(!this.state.isCanvasRendered){
       this.setState({
         isCanvasRendered: true
@@ -139,7 +142,7 @@ onMouseUp = (event:any) => {
 drawBoxes = async () => {
     let i=0;
     for(i=0; i<this.state.boxesDrawn.length; i++){
-        if(this.state.boxesDrawn[i].pageNumber == this.state.pageNumber){
+        if(this.state.boxesDrawn[i].pageNumber === this.state.pageNumber){
             this.state.ctx!.beginPath();
             let ctx = this.state.ctx;
             ctx!.fillStyle = "#E3E1DF";
@@ -153,7 +156,7 @@ drawBoxes = async () => {
 }
 
 onMouseMove = async (event:any) => {
-   let rect = document.getElementById("PictureToWrap")!.getBoundingClientRect();
+   let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(this.state.mouseDown==true){
         let ctx = this.state.ctx;
         ctx!.fillStyle = "#E3E1DF";
@@ -181,31 +184,17 @@ onPrev = () => {
 };
 
 signerTypeChange = (value: any) => {
-  if(value=="None"){
-    this.setState({
-      signerType: value,
-      isSignerTypeSelected: false
-    });
-  }else{
-    this.setState({
-      signerType: value,
-      isSignerTypeSelected: true
-    });
-  }
+  this.setState({
+    signerType: value,
+    isSignerTypeSelected: value !== SignerType.NONE
+  });
 };
 
 typeChange = (value: any) => {
-  if(value=="None"){
-    this.setState({
-      type: value,
-      isTypeSelected: false
-    });
-  }else{
-    this.setState({
-      type: value,
-      isTypeSelected: true
-    });
-  }
+  this.setState({
+    type: value,
+    isTypeSelected: value !== BoxType.NONE
+  });
 };
 
 onSave = async () => {
@@ -262,13 +251,13 @@ onSave = async () => {
         }}
         >
             <Button 
-                    disabled={this.state.pageNumber==0}
+                    disabled={this.state.pageNumber===0}
                     onClick={this.onPrev}>
                     Prev
                 </Button>
                   Page {this.state.pageNumber+1} of {this.props.numPages}  
                 <Button 
-                    disabled={this.state.pageNumber==this.props.numPages-1}
+                    disabled={this.state.pageNumber===this.props.numPages-1}
                     onClick={this.onNext}>
                     Next
                 </Button>
