@@ -30,11 +30,11 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
 
     return (
       <div>
+        <canvas></canvas>
         <img 
           src={src}
           onError={this.onError}
-          style={{width: "35%",
-            height: "35%",
+          style={{width: "80%",
             borderTopLeftRadius: "11px",
             borderBottomLeftRadius: "11px",
             padding: "0px",

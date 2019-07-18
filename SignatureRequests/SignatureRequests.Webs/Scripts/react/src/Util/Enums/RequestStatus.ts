@@ -8,6 +8,6 @@ export default RequestStatus;
 
 export enum RequestStatusSigning {
     PENDING = "pending",
-    COMPLETE = "complete",
-    NOTSTARTED = "not started"
+    COMPLETE = "Complete",
+    NOTSTARTED = "Not Started"
 }

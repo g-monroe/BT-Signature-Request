@@ -17,7 +17,7 @@ export interface IFileViewerState {
     clearPage: boolean;
 }
  
-class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
+class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerState> {
 
     state: IFileViewerState = {
         fileUploaded: false,
@@ -91,19 +91,23 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     padding: "0px",
                     margin: "auto",
                     paddingRight: "5px",
-                    display: "block",
-                    textAlign: "center"
+                    textAlign: "center",
+                    width:"100%",
+                    position:"fixed",
+                    bottom:"1%"
                 }}
                 >
                     <Button 
                         disabled={this.state.page==0}
-                        onClick={this.onPrev}>
+                        onClick={this.onPrev}
+                        style = {{marginRight:"2%"}}>
                         Prev
                     </Button>
                       Page {this.state.page+1} of {this.props.file.numPages}  
                     <Button 
                         disabled={this.state.page==this.props.file.numPages-1}
-                        onClick={this.onNext}>
+                        onClick={this.onNext}
+                        style = {{marginLeft:"2%"}}>
                         Next
                     </Button>
                 </div>
@@ -114,4 +118,4 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     };
 }
  
-export default FileViewer;
+export default FileViewerWBoxes;
