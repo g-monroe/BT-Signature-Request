@@ -117,7 +117,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
 };
 
 onMouseUp = (event:any) => {
-  if(this.state.mouseDown==true){
+  if(this.state.mouseDown){
     let boxes = this.state.boxesDrawn;
     let box = new BoxRequest({
         Width: this.state.width,
@@ -207,17 +207,17 @@ onSave = async () => {
     return (
         <>
         <div>
-          <Select defaultValue="None" style={{width: 120}} onChange={this.signerTypeChange}>
-            <Option value="None">None</Option>
-            <Option value="Requestor">Requestor</Option>
-            <Option value="Signer">Signer</Option>
+          <Select defaultValue={SignerType.NONE} style={{width: 120}} onChange={this.signerTypeChange}>
+            <Option value={SignerType.NONE}>None</Option>
+            <Option value={SignerType.REQUESTOR}>Requestor</Option>
+            <Option value={SignerType.SIGNER}>Signer</Option>
           </Select>
-          <Select defaultValue="None" style={{width:120}} onChange={this.typeChange}>
-            <Option value="None">None</Option>
-            <Option value="Signature">Signature</Option>
-            <Option value="Initial">Initial</Option>
-            <Option value="Date">Date</Option>
-            <Option value="Text">Text</Option>
+          <Select defaultValue={BoxType.NONE} style={{width:120}} onChange={this.typeChange}>
+            <Option value={BoxType.NONE}>None</Option>
+            <Option value={BoxType.SIGNATURE}>Signature</Option>
+            <Option value={BoxType.INITIAL}>Initial</Option>
+            <Option value={BoxType.DATE}>Date</Option>
+            <Option value={BoxType.TEXT}>Text</Option>
           </Select>
         </div>
         <div id = "PictureToWrap"style = {{position:'relative'}}>

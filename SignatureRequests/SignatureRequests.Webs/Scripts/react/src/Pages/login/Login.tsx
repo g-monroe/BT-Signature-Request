@@ -44,16 +44,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         }
     }
 
-    chooseUserButton = (user: UserType) =>{
-        this.props.userObject.update({
-            id: 1,
-            role: "Role here",
-            name: "Max Min",
-            email: "MM@gmail.com",
-            type: user
-        });
-    }
-
     render() { 
         return ( 
                 <Layout>
@@ -69,7 +59,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             </div>
                         </div>
                         <h1 id = 'HeaderText'>Display Testing User Only</h1>
-                        <ChooseUser changeUser={this.chooseUserButton}></ChooseUser>
                             <Modal
                             title = "Login Successful"
                             visible={this.props.userObject.user.id! > 0}

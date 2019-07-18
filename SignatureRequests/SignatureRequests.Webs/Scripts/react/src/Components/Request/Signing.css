@@ -1,0 +1,51 @@
+
+
+#header  {
+    display: flex;
+    width: 100%;
+    height: 16%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: #f0f2f5;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: .5%;
+    padding-bottom: 1%;
+}
+
+#SignHeaderContent {
+    display: flex;
+    height: 100%;
+    width:70%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+    text-align: center;
+    flex-shrink: 2;
+}
+
+#drawerContents {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 8%;
+    justify-content: space-between;
+ 
+}
+
+#drawerDates{
+   justify-self: flex-end;
+}
+
+#drawerHeaders{
+    margin-left: 2%;
+}
+
+#drawerText{
+    margin-left: 5%;
+}

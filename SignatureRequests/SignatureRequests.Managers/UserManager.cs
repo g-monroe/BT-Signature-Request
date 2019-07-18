@@ -68,6 +68,22 @@ namespace SignatureRequests.Managers
             return resp;
         }
 
+        public SimpleUserResponse GetSimpleUser(int id)
+        {
+            SimpleUserResponse user;
+
+            try
+            {
+                user = EntityToSimple(_userHandler.GetById(id));
+            }
+            catch
+            {
+                user = new SimpleUserResponse();
+            }
+      
+            return user;
+        }
+
         public UserResponseList GetUsers()
         {
             var result = _userHandler.GetAllInclude();
@@ -110,6 +126,22 @@ namespace SignatureRequests.Managers
             {
                 return null;
             }
+        }
+
+        public SimpleUserResponse EntityToSimple(UserEntity user)
+        {
+            var _user = new SimpleUserResponse()
+            {
+                Id = user.Id,
+                Role = user.Role,
+                Name = user.Name,
+                Email = user.Email,
+                SignatureId = user.SignatureId,
+                InitialId = user.InitialId
+            };
+            
+
+            return _user;
         }
 
        
