@@ -134,7 +134,7 @@ namespace SignatureRequests.Managers
                 RequestorId = data.RequestorId,
                 Status = data.Status,
                 SentDate = data.Group.CreateDate,
-                DueDate = data.Group.DueDate, //TODO
+                DueDate = data.Group.DueDate,
                 Boxes = BoxEntitiesToResponseList(data.BoxEntities),
                 GroupTitle = data.Group.Title,
                 GroupDescription = data.Group.Description,
