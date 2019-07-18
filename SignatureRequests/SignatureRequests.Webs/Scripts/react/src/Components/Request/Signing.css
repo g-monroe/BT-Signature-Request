@@ -49,3 +49,9 @@
 #drawerText{
     margin-left: 5%;
 }
+
+#FileViewerWBoxes{
+    height:100%;
+    width:100%;
+    margin-top: 5%;
+}

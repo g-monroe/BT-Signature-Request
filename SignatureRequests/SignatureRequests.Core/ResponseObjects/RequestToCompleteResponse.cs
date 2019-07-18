@@ -18,5 +18,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public BoxResponseList Boxes { get; set; }
         public string GroupTitle { get; set; }
         public string GroupDescription { get; set; }
+        public SimpleFormResponse Form { get; set; }
     }
 }

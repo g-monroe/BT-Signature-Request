@@ -8,6 +8,7 @@ import SimpleUser from '../../../Entities/ToComplete/SimpleUser';
 import { Link } from 'react-router-dom';
 import * as routes from '../../Routing/routes';
 import SignHeader from '../../../Components/Request/SignHeader';
+import FileViewerWBoxes from '../../../Components/Request/FileViewerWBoxes';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -50,7 +51,11 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
             )
         }else{
             return(
+                <>
                 <SignHeader data = {this.state.requestData} sentBy = {this.state.sender}/>
+                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form}></FileViewerWBoxes>
+                </>
+
             );
         }
     }
