@@ -5,6 +5,7 @@ import RequestToCompleteEntity from '../Entities/ToComplete/RequestToCompleteEnt
 
 export interface IRequestHandler {
     createRequest(entity: RequestRequest) : Promise<RequestEntity>;
+    getRequestByRequestId(id: number) : Promise<RequestToCompleteEntity>;
 }
 
 export class RequestHandler implements IRequestHandler {
@@ -19,7 +20,7 @@ export class RequestHandler implements IRequestHandler {
     }
 
     async getRequestByRequestId(id: number) : Promise<RequestToCompleteEntity> {
-        return await APIHandler(`api/Request/GetRequestByRequestId/${id}`,{
+        return await APIHandler(`api/Request/GetSimplifiedRequestById/${id}`,{
             headers: {"Content-Type" : "application/json"},
             method:'GET',
             responseType:RequestToCompleteEntity
