@@ -78,7 +78,10 @@ namespace SignatureRequests.Managers
             request.SentDate = newRequest.SentDate;
             _requestHandler.Update(request);
             _requestHandler.SaveChanges();
-            Email("Sent you an email that the request was sent", request.Signer.Email);
+            if (request.Status == "Signed")
+            {
+               Email("Sent you an email that the request was sent.", request.Signer.Email);
+            }
             return request;
         }
         public static void Email(string htmlString, string toEmail)
