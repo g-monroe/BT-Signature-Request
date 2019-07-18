@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class ThisMigration : DbMigration
+    public partial class goaway : DbMigration
     {
         public override void Up()
         {
