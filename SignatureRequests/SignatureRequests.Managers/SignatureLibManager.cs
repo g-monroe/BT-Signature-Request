@@ -168,6 +168,7 @@ namespace SignatureRequests.Managers
             firstPar.Inlines.Add(signatureShape);
             foreach (BoxItem box in boxes)
             {
+              
                 Picture signaturePict = new Picture(dc, signItem.SignPath)
                 {
                     // Signature picture will be positioned:
