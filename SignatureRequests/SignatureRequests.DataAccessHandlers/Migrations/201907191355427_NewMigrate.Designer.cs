@@ -7,13 +7,13 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ThisMigration : IMigrationMetadata
+    public sealed partial class NewMigrate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ThisMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(NewMigrate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201907181353245_ThisMigration"; }
+            get { return "201907191355427_NewMigrate"; }
         }
         
         string IMigrationMetadata.Source

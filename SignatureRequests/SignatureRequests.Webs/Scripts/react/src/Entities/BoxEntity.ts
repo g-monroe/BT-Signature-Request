@@ -13,11 +13,13 @@ class BoxEntity {
   signedStatus: string;
   requestId: number;
   signature?: SignatureEntity;
-  form: FormEntity;
+  form?: FormEntity;
   pageNumber: number;
   isModel: boolean;
   text?: string;
   date?: Date;
+  formHeight: number;
+  formWidth: number;
 
 
   constructor(data: any) {
@@ -36,6 +38,8 @@ class BoxEntity {
     this.isModel = data.IsModel;
     this.text = data.Text;
     this.date = data.Date;
+    this.formHeight = data.FormHeight;
+    this.formWidth = data.FormWidth;
   }
 }
 

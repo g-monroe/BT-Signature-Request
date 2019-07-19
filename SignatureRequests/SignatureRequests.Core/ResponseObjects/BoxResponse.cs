@@ -21,11 +21,13 @@ namespace SignatureRequests.Core.ResponseObjects
         public SignatureResponse Signature { get; set; }
         public int? SignatureId { get; set; }
         public FormResponse Form { get; set; }
-        public int FormId { get; set; }
+        public int? FormId { get; set; }
         public int PageNumber { get; set; }
         public bool IsModel { get; set; }
         public string Text { get; set; }
         public DateTime? Date { get; set; }
+        public int FormHeight { get; set; }
+        public int FormWidth { get; set; }
 
     }
 }

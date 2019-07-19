@@ -39,6 +39,8 @@ interface IFormImageState{
   isSignerTypeSelected: boolean;
   pageNumber: number;
   isCanvasRendered: boolean;
+  formHeight: number;
+  formWidth: number;
 }
 
 class FormImage extends React.Component<IFormImageProps, IFormImageState> {
@@ -68,7 +70,9 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isTypeSelected: false,
     isSignerTypeSelected: false,
     pageNumber: this.props.pageNum,
-    isCanvasRendered: false
+    isCanvasRendered: false,
+    formHeight: 0,
+    formWidth: 0
   };
   
   fitCanvasToContainer = (rect:any) =>{
@@ -84,7 +88,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }));
     let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
-    (await this.drawBoxes());
+    this.drawBoxes();
   }
 
   onError = () => {
@@ -129,7 +133,9 @@ onMouseUp = (event:any) => {
         SignedStatus: SignedStatus.NOTSIGNED,
         FormId: this.props.userObject.formId,
         PageNumber: this.state.pageNumber,
-        IsModel: true
+        IsModel: true,
+        FormHeight: this.state.formHeight,
+        FormWidth: this.state.formWidth
     });
     boxes.push(box);
     this.setState({
@@ -201,6 +207,16 @@ onSave = async () => {
   (await this.props.handleSave(this.state.boxesDrawn));
 };
 
+onLoad = async () => {
+  let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
+  (await this.setState({
+    formHeight: rect.height,
+    formWidth: rect.width
+  }));
+  this.fitCanvasToContainer(rect);
+  this.drawBoxes();
+};
+
   render() {
     const { src } = this.state;
 
@@ -228,6 +244,8 @@ onSave = async () => {
                         onMouseUp={this.onMouseUp}
         />
         <img 
+          id = "loadedImage"
+          onLoad = {this.onLoad}
           src={src}
           onError={this.onError}
           style={{

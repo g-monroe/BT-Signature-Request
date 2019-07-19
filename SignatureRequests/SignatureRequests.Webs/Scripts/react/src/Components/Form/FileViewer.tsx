@@ -10,6 +10,9 @@ import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
 
+import SignerType from '../../Util/Enums/SignerType';
+import BoxType from '../../Util/Enums/BoxType';
+
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userObject:ContextUserObject;

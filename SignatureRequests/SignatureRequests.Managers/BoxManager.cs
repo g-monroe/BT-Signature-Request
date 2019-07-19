@@ -85,6 +85,8 @@ namespace SignatureRequests.Managers
             box.IsModel = reqBox.IsModel;
             box.Text = reqBox.Text;
             box.Date = reqBox.Date;
+            box.FormHeight = reqBox.FormHeight;
+            box.FormWidth = reqBox.FormWidth;
             _boxHandler.Update(box);
             _boxHandler.SaveChanges();
             var resp = BoxToListItem(box);
@@ -117,13 +119,16 @@ namespace SignatureRequests.Managers
                 SignerType = me.SignerType,
                 SignedStatus = me.SignedStatus,
                 RequestId = me.RequestId,
+                Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
                 Form = _groupEngine.FormToListItem(me.Form),
                 FormId = me.FormId,
                 PageNumber = me.PageNumber,
                 IsModel = me.IsModel,
                 Text = me.Text,
-                Date = me.Date
+                Date = me.Date,
+                FormHeight = me.FormHeight,
+                FormWidth = me.FormWidth
             };
         }
         public BoxEntity BoxToDbItem(BoxRequest me, BoxEntity updating = null)
@@ -150,12 +155,17 @@ namespace SignatureRequests.Managers
                 updating.Signature = _signatureHandler.GetById(me.SignatureId.Value);
             }
             updating.SignatureId = me.SignatureId;
-            updating.Form = _formHandler.GetById(me.FormId);
+            if (me.FormId != null)
+            {
+                updating.Form = _formHandler.GetById(me.FormId.Value);
+            }
             updating.FormId = me.FormId;
             updating.PageNumber = me.PageNumber;
             updating.IsModel = me.IsModel;
             updating.Text = me.Text;
-            updating.Date = me.Date; 
+            updating.Date = me.Date;
+            updating.FormHeight = me.FormHeight;
+            updating.FormWidth = me.FormWidth;
             return updating;
         }
     

@@ -100,6 +100,10 @@ namespace SignatureRequests.Engines
 
         public FormResponse FormToListItem(FormEntity form)
         {
+            if(form == null)
+            {
+                return new FormResponse();
+            }
             if (form.GroupEntities == null)
             {
                 form.GroupEntities = new List<GroupEntity>();
