@@ -1,10 +1,13 @@
 import React from 'react';
 import '../Request/Signing.css'
+import ModelBox from '../../Entities/ToComplete/ModelBox';
+import { StackingContext } from 'html2canvas/dist/types/render/stacking-context';
 
 interface IFormImageProps{
     src: string;
     pageNum: number;
     failedSrc:string;
+    boxes:ModelBox[];
 }
 interface IFormImageState{
     src: string;
@@ -36,8 +39,17 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
     this.state.canvasRef.current!.height =  rect.height;
   }
 
-  drawBox = () =>{
+  drawBoxes = () =>{
+    this.props.boxes.forEach((box)=>this.drawBox(box));
+  }
 
+  drawBox = (data: ModelBox) =>{
+    const can = this.state.canvasRef.current;
+    const ctx = can!.getContext('2d');
+    if(ctx){ //Do somemath to scale
+      ctx.rect(data.x, data.y, data.width, data.height);
+      ctx.stroke();
+    }
   }
 
   render() {
@@ -69,6 +81,9 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
     setTimeout(()=>{
       let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
       this.fitCanvasToContainer(rect);
+      if(this.props.boxes.length >0){
+        this.drawBoxes();
+      }
     },100)
   }
 }

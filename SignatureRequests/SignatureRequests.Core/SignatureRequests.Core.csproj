@@ -228,6 +228,8 @@
     <Compile Include="ResponseObjects\GroupResponseList.cs" />
     <Compile Include="ResponseObjects\FormResponseList.cs" />
     <Compile Include="ResponseObjects\GroupResponse.cs" />
+    <Compile Include="ResponseObjects\ModelBoxResponse.cs" />
+    <Compile Include="ResponseObjects\ModelBoxResponseList.cs" />
     <Compile Include="ResponseObjects\RequestResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponseList.cs" />
     <Compile Include="ResponseObjects\RequestToCompleteResponse.cs" />

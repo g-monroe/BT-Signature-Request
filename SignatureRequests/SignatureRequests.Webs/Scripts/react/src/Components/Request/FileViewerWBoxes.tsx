@@ -4,10 +4,14 @@ import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import FormImageWBoxes from "./FormImageWBoxes";
 import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
+import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
+import ModelBox from "../../Entities/ToComplete/ModelBox";
 
 export interface IFileViewerProps {
     userObject:ContextUserObject;
     file:SimpleFormEntity
+    boxes:ModelBoxList
+    NextSig:(toNextSig:()=>void) => void
 }
  
 export interface IFileViewerState {
@@ -15,6 +19,7 @@ export interface IFileViewerState {
     page: number;
     images: JSX.Element[];
     clearPage: boolean;
+    currentSignature:number;
 }
  
 class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -23,22 +28,8 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         fileUploaded: false,
         page: 0,
         images: [],
-        clearPage: true
-    };
-    
-    async componentDidMount() {
-        let file = this.props.file;
-        let items = [];
-        let form = file.filePath.split('.');
-        let formName = form.slice(0, form.length-1);
-        for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImageWBoxes pageNum={i} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
-            items.push(newItem);
-        }
-        this.setState({
-            fileUploaded: true,
-            images: items
-        });
+        clearPage: true,
+        currentSignature:0
     };
     
     onNext = () => {
@@ -75,6 +66,11 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         return images[0];
     }
 
+    toNextSignature = () =>{
+
+    }
+
+
     render() { 
         if(!this.state.fileUploaded){
             return <div>Loading...</div>;
@@ -86,8 +82,6 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                 {this.renderpage()}
                 <div
                 style={{
-                    borderTopLeftRadius: "11px",
-                    borderBottomLeftRadius: "11px",
                     padding: "0px",
                     margin: "auto",
                     paddingRight: "5px",
@@ -115,6 +109,22 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
          );
         }
         
+    };
+
+    async componentDidMount() {
+        let file = this.props.file;
+        let items = [];
+        let form = file.filePath.split('.');
+        let formName = form.slice(0, form.length-1);
+        for(let i = 0; i<file.numPages; i++){
+            let newItem = <FormImageWBoxes pageNum={i} boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === i))} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
+            items.push(newItem);
+        }
+        this.setState({
+            fileUploaded: true,
+            images: items
+        });
+        this.props.NextSig(this.toNextSignature);
     };
 }
  

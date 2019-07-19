@@ -9,17 +9,22 @@ import { Link } from 'react-router-dom';
 import * as routes from '../../Routing/routes';
 import SignHeader from '../../../Components/Request/SignHeader';
 import FileViewerWBoxes from '../../../Components/Request/FileViewerWBoxes';
+import ModelBoxList from '../../../Entities/ToComplete/ModelBoxList';
+import { IBoxHandler, BoxHandler } from '../../../Handlers/BoxHandler';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
     requestHandler?:IRequestHandler
     userObject:ContextUserObject
+    boxHandler:IBoxHandler
 }
  
 export interface ISignDocumentState {
     requestData?:RequestToCompleteEntity,
     sender?: SimpleUser,
-    numViewing?:number
+    numViewing?:number,
+    boxes?:ModelBoxList //This is a temp state. Gavin is working to add the boxes to the requestData
+    skipToNextSignature?:()=>void
 }
  
 class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentState> {
@@ -30,11 +35,18 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     static defaultProps = {
         userHandler: new UserHandler(),
-        requestHandler: new RequestHandler()
+        requestHandler: new RequestHandler(),
+        boxHandler:new BoxHandler()
+    }
+
+    saveToNextSig = (toNextSig:()=>void) =>{
+        this.setState({
+            skipToNextSignature:toNextSig
+        })
     }
 
     render() { 
-        if(!this.state.requestData || !this.state.sender){
+        if(!this.state.requestData || !this.state.sender || ! this.state.boxes){
             return(
                 <Spin size = "large"></Spin>
             );
@@ -52,8 +64,12 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         }else{
             return(
                 <>
-                <SignHeader data = {this.state.requestData} sentBy = {this.state.sender}/>
-                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form}></FileViewerWBoxes>
+                {
+                    this.state.skipToNextSignature && 
+                    <SignHeader data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature}/> 
+
+                }
+                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} NextSig = {this.saveToNextSig}></FileViewerWBoxes>
                 </>
 
             );
@@ -64,15 +80,18 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
        try{
         const request = await this.props.requestHandler!.getRequestByRequestId(this.props.userObject.requestId);
         const user = await this.props.userHandler!.getUser(request.requestorId);
+        const box = await this.props.boxHandler!.getModelBoxes(this.props.userObject.requestId);
        
         this.setState({
             requestData:request,
-            sender:user
+            sender:user,
+            boxes: box
         })
        }catch(e){
         this.setState({
             requestData:undefined,
-            sender:undefined
+            sender:undefined,
+            boxes:undefined
         })
        }
 

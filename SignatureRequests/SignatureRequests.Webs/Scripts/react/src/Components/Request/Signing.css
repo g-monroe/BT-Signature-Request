@@ -51,9 +51,9 @@
 }
 
 #FileViewerWBoxes{
-    height:87%;
+    height:85%;
     width:100%;
-    margin-top: 3%;
+    margin-top: 5%;
     overflow: auto;
     position: relative;
     display: flex;
