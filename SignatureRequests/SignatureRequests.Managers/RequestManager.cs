@@ -177,7 +177,9 @@ namespace SignatureRequests.Managers
                     PageNumber = box.PageNumber,
                     IsModel = box.IsModel,
                     Text = box.Text,
-                    Date = box.Date
+                    Date = box.Date,
+                    FormHeight = box.FormHeight,
+                    FormWidth = box.FormWidth
                 };
                 boxResponses.Add(item);
             }

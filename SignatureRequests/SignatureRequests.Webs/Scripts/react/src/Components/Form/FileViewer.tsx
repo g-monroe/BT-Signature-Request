@@ -1,5 +1,4 @@
 import React from "react";
-import { Form as AntForm, Button, Input, Upload, Icon, } from 'antd';
 import "antd/dist/antd.css";
 import { BoxHandler, IBoxHandler } from "../../Handlers/BoxHandler";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
