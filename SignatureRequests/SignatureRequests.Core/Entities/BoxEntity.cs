@@ -35,10 +35,9 @@ namespace SignatureRequests.Core.Entities
 
         public int? SignatureId { get; set; }
 
-        [Required]
         public virtual FormEntity Form { get; set; }
 
-        public int FormId { get; set; }
+        public int? FormId { get; set; }
 
         public int PageNumber { get; set; }
 
@@ -48,6 +47,10 @@ namespace SignatureRequests.Core.Entities
 
         public DateTime? Date { get; set; }
 
-        
+        public int FormHeight { get; set; }
+
+        public int FormWidth { get; set; }
+
+
     }
 }
