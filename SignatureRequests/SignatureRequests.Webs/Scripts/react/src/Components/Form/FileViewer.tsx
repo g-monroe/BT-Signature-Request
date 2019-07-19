@@ -1,5 +1,4 @@
 import React from "react";
-import { Form as AntForm, Button, Input, Upload, Icon, } from 'antd';
 import "antd/dist/antd.css";
 import { BoxHandler, IBoxHandler } from "../../Handlers/BoxHandler";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
@@ -9,9 +8,6 @@ import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
-
-import SignerType from '../../Util/Enums/SignerType';
-import BoxType from '../../Util/Enums/BoxType';
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
