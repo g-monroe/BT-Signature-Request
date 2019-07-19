@@ -1,4 +1,6 @@
 import React from 'react';
+import '../Request/Signing.css'
+
 interface IFormImageProps{
     src: string;
     pageNum: number;
@@ -7,12 +9,14 @@ interface IFormImageProps{
 interface IFormImageState{
     src: string;
     errored:boolean;
+    canvasRef:React.RefObject<HTMLCanvasElement>
 }
-class FormImage extends React.Component<IFormImageProps, IFormImageState> {
+class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> {
 
     state:IFormImageState = {
       src: this.props.src,
       errored: false,
+      canvasRef: React.createRef()
     };
   
 
@@ -25,29 +29,47 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
   }
 
+  fitCanvasToContainer = (rect:any) =>{
+    this.state.canvasRef.current!.style.width = '100%';
+    this.state.canvasRef.current!.style.height = '100%';
+    this.state.canvasRef.current!.width =  rect.width;
+    this.state.canvasRef.current!.height =  rect.height;
+  }
+
+  drawBox = () =>{
+
+  }
+
   render() {
     const { src } = this.state;
 
     return (
-      <div>
-        <canvas></canvas>
+      <div id = "DivWCanvasAndImage">
+        <canvas id = "SimpleCanvas"
+                ref = {this.state.canvasRef}
+        ></canvas>
         <img 
           src={src}
           onError={this.onError}
-          style={{width: "80%",
-            borderTopLeftRadius: "11px",
-            borderBottomLeftRadius: "11px",
+          style={{
+            borderTopLeftRadius: "5px",
+            borderBottomLeftRadius: "5px",
+            borderBottomRightRadius:'5px',
+            borderTopRightRadius:'5px',
             padding: "0px",
             margin: "auto",
-            paddingRight: "10px",
-            paddingLeft: "10px",
-            paddingTop: "10px",
-            paddingBottom: "10px",
             display: "block"
             }}
         />
       </div>
     );
   }
+
+  componentDidMount(){
+    setTimeout(()=>{
+      let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
+      this.fitCanvasToContainer(rect);
+    },100)
+  }
 }
-export default FormImage;
+export default FormImageWBoxes;

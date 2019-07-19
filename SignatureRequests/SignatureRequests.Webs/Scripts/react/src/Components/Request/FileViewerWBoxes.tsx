@@ -2,7 +2,7 @@ import React from "react";
 import { Button} from 'antd';
 import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-import FormImage from "./FormImageWBoxes";
+import FormImageWBoxes from "./FormImageWBoxes";
 import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 
 export interface IFileViewerProps {
@@ -32,7 +32,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         let form = file.filePath.split('.');
         let formName = form.slice(0, form.length-1);
         for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImage pageNum={i} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
+            let newItem = <FormImageWBoxes pageNum={i} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
             items.push(newItem);
         }
         this.setState({
@@ -94,7 +94,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                     textAlign: "center",
                     width:"100%",
                     position:"fixed",
-                    bottom:"1%"
+                    bottom:"2%"
                 }}
                 >
                     <Button 
