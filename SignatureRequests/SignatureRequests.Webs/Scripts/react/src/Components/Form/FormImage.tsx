@@ -14,14 +14,12 @@ export interface IFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;
-  pageChange: (change: number, boxes: BoxRequest[], signerType: string, boxType: string, isSignerTypeSelected: boolean, isTypeSelected: boolean) => void;
+  pageChange: (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType) => void;
   numPages: number;
   pageNum: number;
   handleSave: (boxes: BoxRequest[]) => void;
-  signerType: string;
-  boxType: string;
-  isTypeSelected: boolean;
-  isSignerTypeSelected: boolean;
+  signerType: SignerType;
+  boxType: BoxType;
   boxesDrawn: BoxRequest[];
 }
 
@@ -36,12 +34,10 @@ interface IFormImageState{
   yVal: number;
   height: number;
   width: number;
-  type: string;
-  signerType: string;
+  type: BoxType;
+  signerType: SignerType;
   canvasRef:React.RefObject<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D | null;
-  isTypeSelected: boolean;
-  isSignerTypeSelected: boolean;
   isBoxSelected: boolean;
   pageNumber: number;
   isCanvasRendered: boolean;
@@ -73,8 +69,6 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     width: 0,
     canvasRef: React.createRef(),
     ctx: null,
-    isTypeSelected: this.props.isTypeSelected,
-    isSignerTypeSelected: this.props.isSignerTypeSelected,
     isBoxSelected: false,
     pageNumber: this.props.pageNum,
     isCanvasRendered: false,
@@ -109,7 +103,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
   }
 
-  boxSelected = (X: number, Y: number) : boolean => {
+  boxSelected = (X: number, Y: number) => {
     let i = 0;
     for(i=0; i<this.state.boxesDrawn.length; i++){
       if( this.state.boxesDrawn[i].pageNumber === this.state.pageNumber && ((X >= this.state.boxesDrawn[i].x && X <= this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width && Y >= this.state.boxesDrawn[i].y && Y <= this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height) ||
@@ -120,13 +114,12 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
               selectedBox: this.state.boxesDrawn[i],
               isBoxSelected: true
             });
-            return true;
+            return;
       }
     }
     this.setState({
       isBoxSelected: false
     });
-    return false;
   }
 
   onMouseDown = (event:any) => {
@@ -138,7 +131,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
       this.fitCanvasToContainer(rect);
     }
     
-    if(this.state.isSignerTypeSelected && this.state.isTypeSelected){
+    if(this.state.signerType !== SignerType.NONE && this.state.type !== BoxType.NONE){
       this.setState({
           xVal: event.clientX-rect.left,
           yVal: event.clientY-rect.top,
@@ -219,25 +212,23 @@ drawBoxes = async () => {
   }
 
   onNext = () => {
-    this.props.pageChange(1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.isSignerTypeSelected, this.state.isTypeSelected);
+    this.props.pageChange(1, this.state.boxesDrawn, this.state.signerType, this.state.type);
 
   };
 
   onPrev = () => {
-    this.props.pageChange(-1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.isSignerTypeSelected, this.state.isTypeSelected);
+    this.props.pageChange(-1, this.state.boxesDrawn, this.state.signerType, this.state.type);
   };
 
   signerTypeChange = (value: any) => {
     this.setState({
-      signerType: value,
-      isSignerTypeSelected: value !== SignerType.NONE
+      signerType: value
     });
   };
 
   typeChange = (value: any) => {
     this.setState({
-      type: value,
-      isTypeSelected: value !== BoxType.NONE
+      type: value
     });
   };
 

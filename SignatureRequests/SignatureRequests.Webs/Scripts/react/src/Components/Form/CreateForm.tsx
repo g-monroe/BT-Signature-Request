@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
 import ValidateStatus from "../../Util/Enums/ValidateStatus";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
 interface ICreateProps {
@@ -29,7 +28,6 @@ interface ICreateFormState {
   loading: boolean;
   numPages?: number;
   pageNumber: number;
-  isUploaded: boolean;
 }
 
 const yupValidation = yup.object().shape<ICreateState>({ 
@@ -54,8 +52,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
   
   state: ICreateFormState = {
     loading: false,
-    pageNumber: 1,
-    isUploaded: false
+    pageNumber: 1
   };
   
   getValidateStatus = (value: any) => {
@@ -81,12 +78,6 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       );
     }
   };
-
-  handleUpload = () => {
-    this.setState({
-      isUploaded: true
-    });
-  }
   
   render() {
 

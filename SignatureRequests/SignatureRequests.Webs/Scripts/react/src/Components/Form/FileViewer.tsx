@@ -23,11 +23,8 @@ export interface IFileViewerState {
     page: number;
     clearPage: boolean;
     boxesDrawn: BoxRequest[];
-    isPopulated: boolean;
-    signerType: string;
-    boxType: string;
-    isSignerTypeSelected: boolean;
-    isTypeSelected: boolean;
+    signerType: SignerType;
+    boxType: BoxType;
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -52,10 +49,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         clearPage: true,
         boxesDrawn: [],
         signerType: SignerType.NONE,
-        boxType: BoxType.NONE,
-        isPopulated: false,
-        isSignerTypeSelected: false,
-        isTypeSelected: false
+        boxType: BoxType.NONE
     };
     
     async componentDidMount() {
@@ -75,50 +69,26 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     return <></>;
         }
 
-        let items = [];
-        let form = this.state.file.filePath.split('.');
-        let formName = form.slice(0, form.length-1);
-        for(let i = 0; i<this.state.file.numPages; i++){
-            let newItem = <FormImage pageNum={i} 
-                                    src={`../../../../../assets/v1/documents/${formName}/${i}.png`} 
-                                    failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
-                                    userObject={this.props.userObject} 
-                                    pageChange={this.pageChange} 
-                                    boxesDrawn={this.state.boxesDrawn}
-                                    numPages={this.state.file!.numPages} 
-                                    handleSave={this.props.handleSave}
-                                    signerType={this.state.signerType}
-                                    boxType={this.state.boxType}
-                                    isSignerTypeSelected={this.state.isSignerTypeSelected}
-                                    isTypeSelected={this.state.isTypeSelected}/>;
-            items.push(newItem);
-        }
-
-        if(!this.state.isPopulated){
-            this.setState({
-                isPopulated: true
-            });
-        }
+        return <FormImage pageNum={this.state.page} 
+        src={`../../../../../assets/v1/documents/${this.state.file.filePath.split('.').slice(0, this.state.file.filePath.split('.').length-1)}/${this.state.page}.png`} 
+        failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
+        userObject={this.props.userObject} 
+        pageChange={this.pageChange} 
+        boxesDrawn={this.state.boxesDrawn}
+        numPages={this.state.file!.numPages} 
+        handleSave={this.props.handleSave}
+        signerType={this.state.signerType}
+        boxType={this.state.boxType}/>;
         
-        const {page} = this.state;
-        for(let i=0; i<items.length; i++){
-            if(items[i].props.pageNum == page){
-                return items[i];
-            }
-        }
-        return items[0];
     }
 
-    pageChange = async (change: number, boxes: BoxRequest[], signerType: string, boxType: string, isSignerTypeSelected: boolean, isTypeSelected: boolean) => {
+    pageChange = async (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType) => {
         (await this.setState({
             page: this.state.page+change,
             boxesDrawn: boxes,
             clearPage: true,
             signerType: signerType,
-            boxType: boxType,
-            isPopulated: false,
-            isSignerTypeSelected: isSignerTypeSelected,
-            isTypeSelected: isTypeSelected
+            boxType: boxType
         }));
     }
 
