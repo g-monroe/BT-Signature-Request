@@ -105,7 +105,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         }
     }
 
-
+    
     render() {   
         return (
             <div id = "FileViewerWBoxes"> 
