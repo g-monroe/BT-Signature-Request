@@ -1,3 +1,6 @@
+import BoxType from "../../Util/Enums/BoxType";
+import SignerType from "../../Util/Enums/SignerType";
+import SignedStatus from "../../Util/Enums/SignedStatus";
 
 class ModelBox {
   id: number;
@@ -5,9 +8,9 @@ class ModelBox {
   height: number;
   x : number;
   y: number;
-  type: string;
-  signerType: string;
-  signedStatus: string;
+  type: BoxType;
+  signerType: SignerType;
+  signedStatus: SignedStatus;
   requestId: number;
   pageNumber: number;
   isModel: boolean;

@@ -2,84 +2,114 @@ import React from "react";
 import { Button} from 'antd';
 import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-import FormImageWBoxes from "./FormImageWBoxes";
+import FormImageWBoxes, { IFormImageWBoxesProps } from "./FormImageWBoxes";
 import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
-import ModelBox from "../../Entities/ToComplete/ModelBox";
+import { REQUESTER } from "../../Pages/Routing/routes";
+import { Link } from "react-router-dom";
 
 export interface IFileViewerProps {
     userObject:ContextUserObject;
     file:SimpleFormEntity
     boxes:ModelBoxList
-    NextSig:(toNextSig:()=>void) => void
+    nextSig:(toNextSig:()=>void) => void
 }
  
 export interface IFileViewerState {
-    fileUploaded: boolean;
     page: number;
-    images: JSX.Element[];
-    clearPage: boolean;
+    images: IFormImageWBoxesProps[];
+    shouldClearPage: boolean;
     currentSignature:number;
+    isPopulated:boolean;
 }
  
 class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerState> {
 
     state: IFileViewerState = {
-        fileUploaded: false,
         page: 0,
         images: [],
-        clearPage: true,
-        currentSignature:0
+        shouldClearPage: true,
+        currentSignature:0,
+        isPopulated:false
     };
     
     onNext = () => {
         this.setState({
             page: this.state.page+1,
-            clearPage: true
+            shouldClearPage: true
         });
     };
 
     onPrev = () => {
         this.setState({
             page: this.state.page-1,
-            clearPage: true
+            shouldClearPage: true
         })
     };
 
-    clearPage = () : JSX.Element => {
-        return <></>;
-    };
-
     renderpage = (): JSX.Element =>{
-        if(this.state.clearPage){
+        if(this.state.shouldClearPage){
             this.setState({
-                clearPage: false
+                shouldClearPage: false
             });
             return <></>;
         }
         const {page, images} = this.state;
         for(let i=0; i<images.length; i++){
-            if(images[i].props.pageNum == page){
-                return images[i];
+            if(images[i].pageNum === page){
+                return <FormImageWBoxes src = {images[i].src} pageNum = {images[i].pageNum} failedSrc ={images[i].failedSrc} boxes = {images[i].boxes}/>
             }
         }
-        return images[0];
+        return ( 
+                <>An Error Occurred
+                <Button type = "primary">
+                    <Link to = {REQUESTER._Dashboard.path}>
+                        Back to Dashboard
+                    </Link>
+                </Button> 
+                </>
+                )
     }
 
     toNextSignature = () =>{
+        console.log("toNextSig"); 
+        const nextSig = (this.state.currentSignature === this.props.boxes.count -1) ? 0 : this.state.currentSignature +1;
+        this.setState({
+            currentSignature: nextSig
+        })
+    }
 
+    populateItems = () => {
+        if(!this.state.isPopulated){
+            let items = [];
+            const form = this.props.file.filePath.split('.');
+            const formName = form.slice(0, form.length-1);
+            for(let i = 0; i<this.props.file.numPages; i++){
+                const newItem : IFormImageWBoxesProps = {
+                        pageNum: i ,
+                        src: `../../../../../assets/v1/documents/${formName}/${i}.png` ,
+                        failedSrc:"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" ,
+                        boxes: this.props.boxes.collection.filter((box)=>(box.pageNumber === i))
+                }
+            items.push(newItem);
+        }
+
+            this.setState({
+                isPopulated: true,
+                images: items
+            });
+        }
     }
 
 
-    render() { 
-        if(!this.state.fileUploaded){
-            return <div>Loading...</div>;
-        } else{
-            
+    render() {   
         return (
             <div id = "FileViewerWBoxes"> 
-                {this.clearPage()}
-                {this.renderpage()}
+                {
+                    !this.state.isPopulated ?
+                        this.populateItems() :
+                        this.renderpage()
+                }
                 <div
                 style={{
                     padding: "0px",
@@ -88,18 +118,18 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                     textAlign: "center",
                     width:"100%",
                     position:"fixed",
-                    bottom:"2%"
+                    bottom:"1%"
                 }}
                 >
                     <Button 
-                        disabled={this.state.page==0}
+                        disabled={this.state.page===0}
                         onClick={this.onPrev}
                         style = {{marginRight:"2%"}}>
                         Prev
                     </Button>
                       Page {this.state.page+1} of {this.props.file.numPages}  
                     <Button 
-                        disabled={this.state.page==this.props.file.numPages-1}
+                        disabled={this.state.page===this.props.file.numPages-1}
                         onClick={this.onNext}
                         style = {{marginLeft:"2%"}}>
                         Next
@@ -107,24 +137,12 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                 </div>
             </div>
          );
-        }
+        
         
     };
 
     async componentDidMount() {
-        let file = this.props.file;
-        let items = [];
-        let form = file.filePath.split('.');
-        let formName = form.slice(0, form.length-1);
-        for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImageWBoxes pageNum={i} boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === i))} src={`../../../../../assets/v1/documents/${formName}/${i}.png`} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>;
-            items.push(newItem);
-        }
-        this.setState({
-            fileUploaded: true,
-            images: items
-        });
-        this.props.NextSig(this.toNextSignature);
+        this.props.nextSig(this.toNextSignature);
     };
 }
  
