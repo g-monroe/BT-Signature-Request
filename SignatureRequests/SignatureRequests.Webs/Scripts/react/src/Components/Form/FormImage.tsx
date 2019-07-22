@@ -14,11 +14,15 @@ interface IFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;
-  pageChange: (change: number, boxes: BoxRequest[]) => void;
-  boxesDrawn: BoxRequest[];
+  pageChange: (change: number, boxes: BoxRequest[], signerType: string, boxType: string, isSignerTypeSelected: boolean, isTypeSelected: boolean) => void;
   numPages: number;
   pageNum: number;
   handleSave: (boxes: BoxRequest[]) => void;
+  signerType: string;
+  boxType: string;
+  isTypeSelected: boolean;
+  isSignerTypeSelected: boolean;
+  boxesDrawn: BoxRequest[];
 }
 
 interface IFormImageState{
@@ -27,16 +31,18 @@ interface IFormImageState{
   mouseDown: boolean;
   boxesDrawn: BoxRequest[];
   drawnBox?: BoxRequest;
+  selectedBox?: BoxRequest;
   xVal: number;
   yVal: number;
   height: number;
   width: number;
-  type?: string;
-  signerType?: string;
+  type: string;
+  signerType: string;
   canvasRef:React.RefObject<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D | null;
   isTypeSelected: boolean;
   isSignerTypeSelected: boolean;
+  isBoxSelected: boolean;
   pageNumber: number;
   isCanvasRendered: boolean;
   formHeight: number;
@@ -67,12 +73,15 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     width: 0,
     canvasRef: React.createRef(),
     ctx: null,
-    isTypeSelected: false,
-    isSignerTypeSelected: false,
+    isTypeSelected: this.props.isTypeSelected,
+    isSignerTypeSelected: this.props.isSignerTypeSelected,
+    isBoxSelected: false,
     pageNumber: this.props.pageNum,
     isCanvasRendered: false,
     formHeight: 0,
-    formWidth: 0
+    formWidth: 0,
+    type: this.props.boxType,
+    signerType: this.props.signerType
   };
   
   fitCanvasToContainer = (rect:any) =>{
@@ -100,6 +109,26 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
   }
 
+  boxSelected = (X: number, Y: number) : boolean => {
+    let i = 0;
+    for(i=0; i<this.state.boxesDrawn.length; i++){
+      if( this.state.boxesDrawn[i].pageNumber === this.state.pageNumber && ((X >= this.state.boxesDrawn[i].x && X <= this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width && Y >= this.state.boxesDrawn[i].y && Y <= this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height) ||
+          (X >= this.state.boxesDrawn[i].x && X <= this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width && Y <= this.state.boxesDrawn[i].y && Y >= this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height) ||
+          (X <= this.state.boxesDrawn[i].x && X >= this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width && Y >= this.state.boxesDrawn[i].y && Y <= this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height) ||
+          (X <= this.state.boxesDrawn[i].x && X >= this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width && Y <= this.state.boxesDrawn[i].y && Y >= this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height) )  ){
+            this.setState({
+              selectedBox: this.state.boxesDrawn[i],
+              isBoxSelected: true
+            });
+            return true;
+      }
+    }
+    this.setState({
+      isBoxSelected: false
+    });
+    return false;
+  }
+
   onMouseDown = (event:any) => {
     let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(!this.state.isCanvasRendered){
@@ -108,7 +137,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
       });
       this.fitCanvasToContainer(rect);
     }
-    this.drawBoxes();
+    
     if(this.state.isSignerTypeSelected && this.state.isTypeSelected){
       this.setState({
           xVal: event.clientX-rect.left,
@@ -117,8 +146,12 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
           width: 0,
           mouseDown: true
       });
+    }else{
+      this.boxSelected(event.clientX-rect.left, event.clientY-rect.top);
     }
-};
+
+    this.drawBoxes();
+  };
 
 onMouseUp = (event:any) => {
   if(this.state.mouseDown){
@@ -146,6 +179,7 @@ onMouseUp = (event:any) => {
 };
 
 drawBoxes = async () => {
+    this.state.ctx!.clearRect(0,0,this.state.canvasRef.current!.width,this.state.canvasRef.current!.height);
     let i=0;
     for(i=0; i<this.state.boxesDrawn.length; i++){
         if(this.state.boxesDrawn[i].pageNumber === this.state.pageNumber){
@@ -154,68 +188,83 @@ drawBoxes = async () => {
             ctx!.fillStyle = "#E3E1DF";
             (await this.setState({
               ctx: ctx
-            }));
+            })); 
+            this.state.ctx!.clearRect(this.state.boxesDrawn[i].x,this.state.boxesDrawn[i].y,this.state.boxesDrawn[i].width,this.state.boxesDrawn[i].height);
             this.state.ctx!.fillRect(this.state.boxesDrawn[i].x, this.state.boxesDrawn[i].y, this.state.boxesDrawn[i].width, this.state.boxesDrawn[i].height);
+            if(this.state.isBoxSelected && this.state.boxesDrawn[i] === this.state.selectedBox){
+              this.state.ctx!.fillStyle = "#5fb2ff";
+              this.state.ctx!.strokeRect(this.state.boxesDrawn[i].x, this.state.boxesDrawn[i].y, this.state.boxesDrawn[i].width, this.state.boxesDrawn[i].height);
+            }
             this.state.ctx!.stroke();
         }
     }
-}
+  }
 
-onMouseMove = async (event:any) => {
-   let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
-    if(this.state.mouseDown==true){
-        let ctx = this.state.ctx;
-        ctx!.fillStyle = "#E3E1DF";
-        this.setState({
-            ctx: ctx,
-            height: (event.clientY - rect.top) - this.state.yVal,
-            width: (event.clientX - rect.left) - this.state.xVal
-        });
-        this.state.ctx!.clearRect(0,0,this.state.canvasRef.current!.width,this.state.canvasRef.current!.height);
-        (await this.drawBoxes());
-        this.state.ctx!.beginPath();
-        this.state.ctx!.fillRect(this.state.xVal, this.state.yVal, this.state.width, this.state.height);
-        this.state.ctx!.stroke();
-    
-    }
-}
+  onMouseMove = async (event:any) => {
+    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+      if(this.state.mouseDown==true){
+          let ctx = this.state.ctx;
+          ctx!.fillStyle = "#E3E1DF";
+          this.setState({
+              ctx: ctx,
+              height: (event.clientY - rect.top) - this.state.yVal,
+              width: (event.clientX - rect.left) - this.state.xVal
+          });
+          (await this.drawBoxes());
+          this.state.ctx!.beginPath();
+          this.state.ctx!.fillRect(this.state.xVal, this.state.yVal, this.state.width, this.state.height);
+          this.state.ctx!.stroke();
+      
+      }
+  }
 
-onNext = () => {
-  this.props.pageChange(1, this.state.boxesDrawn);
+  onNext = () => {
+    this.props.pageChange(1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.isSignerTypeSelected, this.state.isTypeSelected);
 
-};
+  };
 
-onPrev = () => {
-  this.props.pageChange(-1, this.state.boxesDrawn);
-};
+  onPrev = () => {
+    this.props.pageChange(-1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.isSignerTypeSelected, this.state.isTypeSelected);
+  };
 
-signerTypeChange = (value: any) => {
-  this.setState({
-    signerType: value,
-    isSignerTypeSelected: value !== SignerType.NONE
-  });
-};
+  signerTypeChange = (value: any) => {
+    this.setState({
+      signerType: value,
+      isSignerTypeSelected: value !== SignerType.NONE
+    });
+  };
 
-typeChange = (value: any) => {
-  this.setState({
-    type: value,
-    isTypeSelected: value !== BoxType.NONE
-  });
-};
+  typeChange = (value: any) => {
+    this.setState({
+      type: value,
+      isTypeSelected: value !== BoxType.NONE
+    });
+  };
 
-onSave = async () => {
-  (await this.props.handleSave(this.state.boxesDrawn));
-};
+  onSave = async () => {
+    (await this.props.handleSave(this.state.boxesDrawn));
+  };
 
-onLoad = async () => {
-  let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
-  (await this.setState({
-    formHeight: rect.height,
-    formWidth: rect.width
-  }));
-  this.fitCanvasToContainer(rect);
-  this.drawBoxes();
-};
+  onLoad = async () => {
+    let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
+    (await this.setState({
+      formHeight: rect.height,
+      formWidth: rect.width
+    }));
+    this.fitCanvasToContainer(rect);
+    this.drawBoxes();
+  };
+
+  removeBox = async () => {
+    let boxes = this.state.boxesDrawn.filter(box => box !== this.state.selectedBox);
+    (await this.setState({
+      boxesDrawn: boxes,
+      isBoxSelected: false
+    }));
+    let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
+    this.fitCanvasToContainer(rect);
+    this.drawBoxes();
+  }
 
   render() {
     const { src } = this.state;
@@ -223,18 +272,21 @@ onLoad = async () => {
     return (
         <>
         <div>
-          <Select defaultValue={SignerType.NONE} style={{width: 120}} onChange={this.signerTypeChange}>
+          <Select defaultValue={this.state.signerType} style={{width: 120}} onChange={this.signerTypeChange}>
             <Option value={SignerType.NONE}>None</Option>
             <Option value={SignerType.REQUESTOR}>Requestor</Option>
             <Option value={SignerType.SIGNER}>Signer</Option>
           </Select>
-          <Select defaultValue={BoxType.NONE} style={{width:120}} onChange={this.typeChange}>
+          <Select defaultValue={this.state.type} style={{width:120}} onChange={this.typeChange}>
             <Option value={BoxType.NONE}>None</Option>
             <Option value={BoxType.SIGNATURE}>Signature</Option>
             <Option value={BoxType.INITIAL}>Initial</Option>
             <Option value={BoxType.DATE}>Date</Option>
             <Option value={BoxType.TEXT}>Text</Option>
           </Select>
+          <Button type={"danger"} disabled={!this.state.isBoxSelected} onClick={this.removeBox}>
+            Delete
+          </Button>
         </div>
         <div id = "PictureToWrap"style = {{position:'relative'}}>
                 <canvas ref={this.state.canvasRef} 

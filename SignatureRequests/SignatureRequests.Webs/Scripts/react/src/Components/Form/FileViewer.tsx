@@ -8,6 +8,8 @@ import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
+import SignerType from "../../Util/Enums/SignerType";
+import BoxType from "../../Util/Enums/BoxType";
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
@@ -22,6 +24,11 @@ export interface IFileViewerState {
     images: JSX.Element[];
     clearPage: boolean;
     boxesDrawn: BoxRequest[];
+    isPopulated: boolean;
+    signerType: string;
+    boxType: string;
+    isSignerTypeSelected: boolean;
+    isTypeSelected: boolean;
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -45,66 +52,81 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         page: 0,
         images: [],
         clearPage: true,
-        boxesDrawn: []
+        boxesDrawn: [],
+        signerType: SignerType.NONE,
+        boxType: BoxType.NONE,
+        isPopulated: false,
+        isSignerTypeSelected: false,
+        isTypeSelected: false
     };
     
     async componentDidMount() {
         let file = (await this.props.formHandler!.getFormById(this.props.userObject.formId));
+        this.setState({
+            file: file,
+            fileUploaded: true
+        });
+    };
+
+    populateItems = (): JSX.Element => {
+
+        if(this.state.clearPage){
+                    this.setState({
+                        clearPage: false
+                    });
+                    return <></>;
+        }
+
         let items = [];
-        let form = file.filePath.split('.');
+        let form = this.state.file.filePath.split('.');
         let formName = form.slice(0, form.length-1);
-        for(let i = 0; i<file.numPages; i++){
+        for(let i = 0; i<this.state.file.numPages; i++){
             let newItem = <FormImage pageNum={i} 
                                     src={`../../../../../assets/v1/documents/${formName}/${i}.png`} 
                                     failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
                                     userObject={this.props.userObject} 
                                     pageChange={this.pageChange} 
-                                    boxesDrawn={this.state.boxesDrawn} 
-                                    numPages={file!.numPages} 
-                                    handleSave={this.props.handleSave}/>;
+                                    boxesDrawn={this.state.boxesDrawn}
+                                    numPages={this.state.file!.numPages} 
+                                    handleSave={this.props.handleSave}
+                                    signerType={this.state.signerType}
+                                    boxType={this.state.boxType}
+                                    isSignerTypeSelected={this.state.isSignerTypeSelected}
+                                    isTypeSelected={this.state.isTypeSelected}/>;
             items.push(newItem);
         }
-        this.setState({
-            file: file,
-            fileUploaded: true,
-            images: items
-        });
-    };
+
+        if(!this.state.isPopulated){
+            this.setState({
+                isPopulated: true,
+                images: items
+            });
+        }
+        
+        const {page} = this.state;
+        for(let i=0; i<items.length; i++){
+            if(items[i].props.pageNum == page){
+                return items[i];
+            }
+        }
+        return items[0];
+    }
     
     clearPage = () : JSX.Element => {
         return <></>;
     };
 
-    renderpage = (): JSX.Element =>{
-        if(this.state.clearPage){
-            this.setState({
-                clearPage: false
-            });
-            return <></>;
-        }
-        const {page, images} = this.state;
-        for(let i=0; i<images.length; i++){
-            if(images[i].props.pageNum == page){
-                return images[i];
-            }
-        }
-        return images[0];
-    };
-
-
-    pageChange = (change: number, boxes: BoxRequest[]) => {
-        let boxesDrawn = this.state.boxesDrawn;
-        let i = 0;
-        for(i=0; i<boxes.length; i++){
-            if(!boxesDrawn!.includes(boxes[i])){
-                boxesDrawn.push(boxes[i]);
-            }
-        }
-        this.setState({
+    pageChange = async (change: number, boxes: BoxRequest[], signerType: string, boxType: string, isSignerTypeSelected: boolean, isTypeSelected: boolean) => {
+        (await this.setState({
             page: this.state.page+change,
-            boxesDrawn: boxesDrawn,
-            clearPage: true
-        });
+            boxesDrawn: boxes,
+            clearPage: true,
+            signerType: signerType,
+            boxType: boxType,
+            isPopulated: false,
+            isSignerTypeSelected: isSignerTypeSelected,
+            isTypeSelected: isTypeSelected
+        }));
     }
 
     render() { 
@@ -115,7 +137,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         return (
             <> 
             {this.clearPage()}
-            {this.renderpage()}
+            {this.populateItems()}
             </>
          );
         }
