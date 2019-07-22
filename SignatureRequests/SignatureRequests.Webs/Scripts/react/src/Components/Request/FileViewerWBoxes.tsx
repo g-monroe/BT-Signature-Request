@@ -57,7 +57,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         const {page, images} = this.state;
         for(let i=0; i<images.length; i++){
             if(images[i].pageNum === page){
-                return <FormImageWBoxes src = {images[i].src} pageNum = {images[i].pageNum} failedSrc ={images[i].failedSrc} boxes = {images[i].boxes}/>
+                return <FormImageWBoxes src = {images[i].src} pageNum = {images[i].pageNum} failedSrc ={images[i].failedSrc} boxes = {images[i].boxes} selectedBox = {this.props.boxes.collection[this.state.currentSignature].id}/>
             }
         }
         return ( 
@@ -92,7 +92,8 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                         pageNum: i ,
                         src: `../../../../../assets/v1/documents/${formName}/${i}.png` ,
                         failedSrc:"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" ,
-                        boxes: this.props.boxes.collection.filter((box)=>(box.pageNumber === i))
+                        boxes: this.props.boxes.collection.filter((box)=>(box.pageNumber === i)),
+                        selectedBox: 0
                 }
             items.push(newItem);
         }

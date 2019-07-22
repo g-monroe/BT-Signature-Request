@@ -8,6 +8,7 @@ export interface IFormImageWBoxesProps{
     pageNum: number;
     failedSrc:string;
     boxes:ModelBox[];
+    selectedBox:number;
 }
 interface IFormImageWBoxesState{
     src: string;
@@ -50,15 +51,23 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     if(ctx){ 
       const scaleX = canBox.width / data.formWidth;
       const scaleY = canBox.height / data.formHeight;
+      
+      if(data.id === this.props.selectedBox){
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "#f0a202";
+        ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
+        ctx.stroke();
+      }
+        ctx.lineWidth = 3;
+      
       switch(data.type){
         case BoxType.SIGNATURE: ctx.strokeStyle = '#e36414'; break;
         case BoxType.INITIAL: ctx.strokeStyle = '#9a031e'; break;
         case BoxType.DATE: ctx.strokeStyle = '#0f4c5c'; break;
         case BoxType.TEXT: ctx.strokeStyle = '#5f0f40'; break;
-        default: ctx.strokeStyle = '#000000'; break;
-        
+        default: ctx.strokeStyle = '#000000'; break; 
       }
-
+     
       ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();
     }
