@@ -140,9 +140,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                     </Button>
                 </div>
             </div>
-         );
-        
-        
+         );    
     };
 
     async componentDidMount() {
