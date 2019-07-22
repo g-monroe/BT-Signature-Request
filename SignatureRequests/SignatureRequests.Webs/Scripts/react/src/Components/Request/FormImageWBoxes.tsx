@@ -56,7 +56,7 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
   }
 
   boxClicked = (box: ModelBox, event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
-    console.log(box, event, "Box clicked!")
+    //TODO on other branch
   }
 
   canvasClicked = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
