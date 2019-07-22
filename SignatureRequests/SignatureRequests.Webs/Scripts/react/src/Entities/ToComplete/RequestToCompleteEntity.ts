@@ -1,5 +1,6 @@
 
 import BoxResponseList from "../BoxResponseList";
+import SimpleFormEntity from './SimpleFormEntity';
 
 class RequestToCompleteEntity {
   id: number;
@@ -11,6 +12,7 @@ class RequestToCompleteEntity {
   boxes: BoxResponseList;
   title:string;
   description:string;
+  form:SimpleFormEntity;
 
   constructor(data: any) {
     this.id = data.Id;
@@ -22,6 +24,7 @@ class RequestToCompleteEntity {
     this.boxes = new BoxResponseList(data.Boxes);
     this.title = data.GroupTitle;
     this.description = data.GroupDescription;
+    this.form = new SimpleFormEntity(data.Form);
   }
 }
 

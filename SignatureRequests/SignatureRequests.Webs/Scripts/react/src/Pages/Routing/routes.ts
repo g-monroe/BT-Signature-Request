@@ -121,7 +121,7 @@ export const SIGNER = {
         link:  (requestid: number) => `/response/sign/${requestid}`,
         breadcrumbName:"Sign Active Documents",
         component:Pages.SignDocument,
-        hasNavBar:true,
+        hasNavBar:false,
         condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     })
 }

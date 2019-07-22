@@ -3,7 +3,7 @@
 #header  {
     display: flex;
     width: 100%;
-    height: 16%;
+    height: 13%;
     position: fixed;
     top: 0;
     right: 0;
@@ -48,4 +48,26 @@
 
 #drawerText{
     margin-left: 5%;
+}
+
+#FileViewerWBoxes{
+    height:85%;
+    width:100%;
+    margin-top: 5%;
+    overflow: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#DivWCanvasAndImage{
+    position: relative;
+}
+
+#SimpleCanvas{
+    position: absolute;
+    z-index: 20;
+    width:100%;
+    height:100%;
 }

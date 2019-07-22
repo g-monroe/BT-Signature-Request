@@ -133,11 +133,16 @@ namespace SignatureRequests.Managers
                 SignerId = data.SignerId,
                 RequestorId = data.RequestorId,
                 Status = data.Status,
-                SentDate = data.SentDate,
-                DueDate = data.SentDate, //TODO
+                SentDate = data.Group.CreateDate,
+                DueDate = data.Group.DueDate,
                 Boxes = BoxEntitiesToResponseList(data.BoxEntities),
                 GroupTitle = data.Group.Title,
-                GroupDescription = data.Group.Description
+                GroupDescription = data.Group.Description,
+                Form = new SimpleFormResponse(){
+                    Id = data.Group.Form.Id,
+                    FilePath = data.Group.Form.FilePath,
+                    NumPages = data.Group.Form.NumPages
+                }
             };
         }
 

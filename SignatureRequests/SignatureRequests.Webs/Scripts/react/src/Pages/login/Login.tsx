@@ -58,7 +58,6 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                                 {this.state.error}
                             </div>
                         </div>
-                        <h1 id = 'HeaderText'>Display Testing User Only</h1>
                             <Modal
                             title = "Login Successful"
                             visible={this.props.userObject.user.id! > 0}
