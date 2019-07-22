@@ -45,10 +45,14 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
   }
 
   drawBox = (data: ModelBox) =>{
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
-    if(ctx){ //Do somemath to scale
-      ctx.rect(data.x, data.y, data.width, data.height);
+    if(ctx){ 
+      const scaleX = canBox.width / data.formWidth;
+      const scaleY = canBox.height / data.formHeight;
+
+      ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();
     }
   }
