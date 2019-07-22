@@ -38,6 +38,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     this.state.canvasRef.current!.style.height = '100%';
     this.state.canvasRef.current!.width =  rect.width;
     this.state.canvasRef.current!.height =  rect.height;
+    this.state.canvasRef.current!.onselectstart = () => {return false};
   }
 
   drawBoxes = () =>{
@@ -53,13 +54,10 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const scaleY = canBox.height / data.formHeight;
       
       if(data.id === this.props.selectedBox){
-        ctx.lineWidth = 10;
-        ctx.strokeStyle = "#f0a202";
-        ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
-        ctx.stroke();
+        ctx.rect((scaleX * data.x) +5, (scaleY * data.y)+5, (scaleX * data.width)-10, (scaleY * data.height)-10);   
       }
-        ctx.lineWidth = 3;
       
+      ctx.lineWidth = 3;
       switch(data.type){
         case BoxType.SIGNATURE: ctx.strokeStyle = '#e36414'; break;
         case BoxType.INITIAL: ctx.strokeStyle = '#9a031e'; break;
@@ -121,7 +119,9 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
             borderTopRightRadius:'5px',
             padding: "0px",
             margin: "auto",
-            display: "block"
+            display: "block",
+            userSelect: "none",
+            outline: "none"
             }}
         />
       </div>
