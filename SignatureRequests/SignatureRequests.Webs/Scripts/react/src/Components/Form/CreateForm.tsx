@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import TextArea from "antd/lib/input/TextArea";
 import ValidateStatus from "../../Util/Enums/ValidateStatus";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-const FileViewer = require('react-file-viewer');
 const FormItem = AntForm.Item;
 
 interface ICreateProps {
