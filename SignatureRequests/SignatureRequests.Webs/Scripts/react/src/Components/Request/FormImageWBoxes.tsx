@@ -2,20 +2,20 @@ import React from 'react';
 import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
 
-interface IFormImageProps{
+export interface IFormImageWBoxesProps{
     src: string;
     pageNum: number;
     failedSrc:string;
     boxes:ModelBox[];
 }
-interface IFormImageState{
+interface IFormImageWBoxesState{
     src: string;
     errored:boolean;
     canvasRef:React.RefObject<HTMLCanvasElement>
 }
-class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> {
+class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageWBoxesState> {
 
-    state:IFormImageState = {
+    state:IFormImageWBoxesState = {
       src: this.props.src,
       errored: false,
       canvasRef: React.createRef()
@@ -75,6 +75,13 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
       })
 
   }
+  imageLoaded = () =>{
+    let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
+    this.fitCanvasToContainer(rect);
+    if(this.props.boxes.length >0){
+      this.drawBoxes();
+    }
+  }
 
   render() {
     const { src } = this.state;
@@ -88,6 +95,7 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
         <img 
           src={src}
           onError={this.onError}
+          onLoad = {this.imageLoaded}
           style={{
             borderTopLeftRadius: "5px",
             borderBottomLeftRadius: "5px",
@@ -100,16 +108,6 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
         />
       </div>
     );
-  }
-
-  componentDidMount(){
-    setTimeout(()=>{
-      let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
-      this.fitCanvasToContainer(rect);
-      if(this.props.boxes.length >0){
-        this.drawBoxes();
-      }
-    },100)
   }
 }
 export default FormImageWBoxes;

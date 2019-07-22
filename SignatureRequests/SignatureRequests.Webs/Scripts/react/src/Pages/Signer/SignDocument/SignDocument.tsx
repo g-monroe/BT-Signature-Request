@@ -69,7 +69,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                     <SignHeader data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature}/> 
 
                 }
-                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} NextSig = {this.saveToNextSig}></FileViewerWBoxes>
+                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} nextSig = {this.saveToNextSig}></FileViewerWBoxes>
                 </>
 
             );
