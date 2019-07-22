@@ -10,6 +10,8 @@ import FormImage from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
 import SignerType from "../../Util/Enums/SignerType";
 import BoxType from "../../Util/Enums/BoxType";
+import { Modal } from "antd";
+import { Link } from "react-router-dom";
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
@@ -111,10 +113,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         }
         return items[0];
     }
-    
-    clearPage = () : JSX.Element => {
-        return <></>;
-    };
 
     pageChange = async (change: number, boxes: BoxRequest[], signerType: string, boxType: string, isSignerTypeSelected: boolean, isTypeSelected: boolean) => {
         (await this.setState({
@@ -136,7 +134,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             
         return (
             <> 
-            {this.clearPage()}
             {this.populateItems()}
             </>
          );

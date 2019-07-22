@@ -29,7 +29,7 @@ interface IFormImageState{
   src: string;
   errored:boolean;
   mouseDown: boolean;
-  boxesDrawn: BoxRequest[];
+  boxesDrawn: BoxRequest[]; 
   drawnBox?: BoxRequest;
   selectedBox?: BoxRequest;
   xVal: number;

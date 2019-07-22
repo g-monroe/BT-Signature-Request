@@ -29,6 +29,7 @@ interface ICreateFormState {
   loading: boolean;
   numPages?: number;
   pageNumber: number;
+  isUploaded: boolean;
 }
 
 const yupValidation = yup.object().shape<ICreateState>({ 
@@ -53,7 +54,8 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
   
   state: ICreateFormState = {
     loading: false,
-    pageNumber: 1
+    pageNumber: 1,
+    isUploaded: false
   };
   
   getValidateStatus = (value: any) => {
@@ -79,6 +81,12 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
       );
     }
   };
+
+  handleUpload = () => {
+    this.setState({
+      isUploaded: true
+    });
+  }
   
   render() {
 
