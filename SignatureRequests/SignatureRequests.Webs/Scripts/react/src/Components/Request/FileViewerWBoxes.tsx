@@ -72,7 +72,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
     }
 
     toNextSignature = () =>{
-        console.log("toNextSig"); 
+       
         const nextSig = (this.state.currentSignature === this.props.boxes.count -1) ? 0 : this.state.currentSignature +1;
         this.setState({
             currentSignature: nextSig
