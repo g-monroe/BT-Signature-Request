@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { TypesOfBoxes, DropDownState } from '../../Util/Enums/SignatureDropDown';
-import { Menu, Dropdown, Icon, DatePicker, Button, Drawer } from 'antd';
+import {  DropDownState } from '../../Util/Enums/SignatureDropDown';
+import { Menu, Dropdown, Icon, DatePicker, Button, Drawer, Input } from 'antd';
 import SignatureBox from './SignatureBox';
 import {manualInputTypeEnum } from '../../Util/Enums/SelectTypes';
 import { ISignatureHandler, SignatureHandler } from '../../Handlers/SignatureHandler';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import './DrawTest.css'
+import BoxType from '../../Util/Enums/BoxType';
 
 
 export interface ISignatureDropDownProps {
-    type:TypesOfBoxes  
+    type:BoxType  
     sigHandler?:ISignatureHandler
     userObject?:ContextUserObject
     dataAdded?:(data: any) => void
@@ -21,6 +22,7 @@ export interface ISignatureDropDownState {
     modalVisible:boolean
     info:any
     existing?:boolean
+    text:string
 }
  
 class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignatureDropDownState> {
@@ -29,15 +31,14 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         menuVisible:false,
         modalVisible:false,
         info:null,
-        existing:false
+        existing:false,
+        text:""
      }
 
      static defaultProps = {
         sigHandler: new SignatureHandler(),
         userObject: new ContextUserObject()
      }
-
-     
 
     handleVisChange = (bool: boolean) =>{
         this.setState({
@@ -79,49 +80,62 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
     updateHasSig = async () => {
         let isExisting = false;
         if(this.props.userObject!.user.id && this.props.userObject!.user.id > 0){
-            this.props.type === TypesOfBoxes.Signature ? 
+            this.props.type === BoxType.SIGNATURE ? 
                 isExisting = await this.props.sigHandler!.signatureExists(this.props.userObject!.user.id) :
                 isExisting = await this.props.sigHandler!.initialExists(this.props.userObject!.user.id)
         }
-
         this.setState({
             existing:isExisting
+        })
+    }
+
+    
+    handleTextChange = (e : React.ChangeEvent<HTMLTextAreaElement>) =>{
+        this.setState({
+            text:e.target.value
         })
     }
 
     render() { 
         const menu = 
             <Menu>
-                
                     {
-                        this.props.type === TypesOfBoxes.Date ?
+                        this.props.type === BoxType.DATE &&
                             <Menu.Item key = {0} onClick = {()=> this.onClickChangeState(DropDownState.Date,false,true)}>Select the date: {" "}
                                 <DatePicker onChange = {this.handleInfoChange} format = {['DD/MM/YYYY', 'DD/MM/YY']}></DatePicker> {" "}
                                 {this.state.info ?
-                                    <Button onClick = {this.handleSubmitButton}>Submit</Button> :
+                                    <Button onClick = {this.handleSubmitButton}type = "primary">Submit</Button> :
                                     <Button onClick = {this.handleSubmitButton} disabled>Submit</Button>
                                 }
-                            </Menu.Item> : <></>   
+                            </Menu.Item>  
                     }
                     {
-                        this.props.type === TypesOfBoxes.Initial  || this.props.type === TypesOfBoxes.Signature? 
-                        [<Menu.Item key = {0} onClick = {()=> this.props.type === TypesOfBoxes.Initial ?
+                        this.props.type === BoxType.TEXT && 
+                            <Menu.Item key = {0}>
+                                <div id = "TextAreaInMenu">
+                                <Input.TextArea value = {this.state.text} onChange = {this.handleTextChange}></Input.TextArea>
+                                <Button onClick = {this.handleSubmitButton} type = "primary" style = {{marginTop:"5px"}}>Submit</Button>
+                                </div>
+                            </Menu.Item>
+                    }
+                    {
+                        (this.props.type === BoxType.INITIAL  || this.props.type === BoxType.SIGNATURE) && 
+                        [<Menu.Item key = {0} onClick = {()=> this.props.type === BoxType.INITIAL ?
                                 this.onClickChangeState(DropDownState.NewInitial,true,false) : 
                                 this.onClickChangeState(DropDownState.NewSignature,true,false)}> Add new
-                                    {this.props.type === TypesOfBoxes.Initial ? " Initials" : " Signature"}
+                                    {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}
                                 </Menu.Item>,
-                            this.state.existing ? 
+                            this.state.existing && 
                                 <Menu.Item key = {1}> Use previous
-                                    {this.props.type === TypesOfBoxes.Initial ? " Initials" : " Signature"}   
-                                </Menu.Item>: <></>]
-                            : <></>   
-                        }
+                                    {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}   
+                                </Menu.Item>]   
+                    }
             </Menu>
          
         return ( 
             <>
                 <Dropdown overlay = {menu} trigger = {['click']} onVisibleChange = {this.handleVisChange} visible = {this.state.menuVisible}>
-                    <Button href = '#' size = "small"> {TypesOfBoxes[this.props.type]}? {" "}
+                    <Button href = '#' size = "small"> {this.props.type}? {" "}
                         <Icon type="plus-circle"/>
                     </Button>
                 </Dropdown>
