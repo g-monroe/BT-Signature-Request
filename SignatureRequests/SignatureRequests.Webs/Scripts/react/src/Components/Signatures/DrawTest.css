@@ -111,3 +111,8 @@
     position: relative;
     z-index: 20;
 }
+
+#TextAreaInMenu {
+    display: flex;
+    flex-direction: column;
+}
