@@ -1,8 +1,6 @@
 import React from 'react';
 import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
-import { StackingContext } from 'html2canvas/dist/types/render/stacking-context';
-import { element } from 'prop-types';
 
 interface IFormImageProps{
     src: string;
