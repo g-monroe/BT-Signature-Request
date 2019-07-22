@@ -3,7 +3,6 @@ import './Signing.css'
 import { Icon , Typography, Progress, Tooltip, Drawer, Tag} from 'antd';
 import RequestToCompleteEntity from '../../Entities/ToComplete/RequestToCompleteEntity';
 import  { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
-import MainPageUser from '../../Entities/MainPageUser';
 import SimpleUser from '../../Entities/ToComplete/SimpleUser';
 
 

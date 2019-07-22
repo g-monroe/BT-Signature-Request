@@ -2,6 +2,7 @@ import React from 'react';
 import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
 import { StackingContext } from 'html2canvas/dist/types/render/stacking-context';
+import { element } from 'prop-types';
 
 interface IFormImageProps{
     src: string;
@@ -52,6 +53,27 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
     }
   }
 
+  boxClicked = (box: ModelBox, event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
+    console.log(box, event, "Box clicked!")
+  }
+
+  canvasClicked = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
+      const can = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+      const X = event.clientX - can!.left;
+      const Y = event.clientY - can!.top;
+
+      this.props.boxes.forEach((box)=>{
+
+        if( box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+          (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
+          (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+          (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
+            this.boxClicked(box, event);
+          }
+      })
+
+  }
+
   render() {
     const { src } = this.state;
 
@@ -59,6 +81,7 @@ class FormImageWBoxes extends React.Component<IFormImageProps, IFormImageState> 
       <div id = "DivWCanvasAndImage">
         <canvas id = "SimpleCanvas"
                 ref = {this.state.canvasRef}
+                onClick = {this.canvasClicked}
         ></canvas>
         <img 
           src={src}
