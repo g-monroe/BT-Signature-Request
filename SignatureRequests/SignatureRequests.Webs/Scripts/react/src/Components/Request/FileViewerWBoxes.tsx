@@ -17,20 +17,16 @@ export interface IFileViewerProps {
  
 export interface IFileViewerState {
     page: number;
-    images: IFormImageWBoxesProps[];
     shouldClearPage: boolean;
     currentSignature:number;
-    isPopulated:boolean;
 }
  
 class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerState> {
 
     state: IFileViewerState = {
         page: 0,
-        images: [],
         shouldClearPage: true,
-        currentSignature:0,
-        isPopulated:false
+        currentSignature:0
     };
     
     onNext = () => {
@@ -54,13 +50,16 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             });
             return <></>;
         }
-        const {page, images} = this.state;
-        for(let i=0; i<images.length; i++){
-            if(images[i].pageNum === page){
-                return <FormImageWBoxes src = {images[i].src} pageNum = {images[i].pageNum} failedSrc ={images[i].failedSrc} boxes = {images[i].boxes}/>
-            }
-        }
-        return ( 
+        const form = this.props.file.filePath.split('.');
+        const formName = form.slice(0, form.length-1);
+
+        try{
+            return (<FormImageWBoxes    src = {`../../../../../assets/v1/documents/${formName}/${this.state.page}.png`} 
+            pageNum = {this.state.page} failedSrc ={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
+            boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === this.state.page))}/>);
+
+        }catch{
+            return(
                 <>An Error Occurred
                 <Button type = "primary">
                     <Link to = {REQUESTER._Dashboard.path}>
@@ -68,7 +67,8 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                     </Link>
                 </Button> 
                 </>
-                )
+            )
+        }
     }
 
     toNextSignature = () =>{
@@ -79,35 +79,11 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         })
     }
 
-    populateItems = () => {
-        if(!this.state.isPopulated){
-            let items = [];
-            const form = this.props.file.filePath.split('.');
-            const formName = form.slice(0, form.length-1);
-            for(let i = 0; i<this.props.file.numPages; i++){
-                const newItem : IFormImageWBoxesProps = {
-                        pageNum: i ,
-                        src: `../../../../../assets/v1/documents/${formName}/${i}.png` ,
-                        failedSrc:"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg" ,
-                        boxes: this.props.boxes.collection.filter((box)=>(box.pageNumber === i))
-                }
-            items.push(newItem);
-        }
-
-            this.setState({
-                isPopulated: true,
-                images: items
-            });
-        }
-    }
-
 
     render() {   
         return (
             <div id = "FileViewerWBoxes"> 
                 {
-                    !this.state.isPopulated ?
-                        this.populateItems() :
                         this.renderpage()
                 }
                 <div
