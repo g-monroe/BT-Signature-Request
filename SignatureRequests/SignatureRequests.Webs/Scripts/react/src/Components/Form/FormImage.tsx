@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 const { Option } = Select;
 const PictureToWrap = "PictureToWrap";
 
-interface IFormImageProps{
+export interface IFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;

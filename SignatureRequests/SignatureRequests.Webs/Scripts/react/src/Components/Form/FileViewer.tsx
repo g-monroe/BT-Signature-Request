@@ -6,12 +6,10 @@ import FormEntity from "../../Entities/FormEntity";
 import { IFormHandler, FormHandler } from "../../Handlers/FormHandler";
 import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
-import FormImage from "./FormImage";
+import FormImage, { IFormImageProps } from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
 import SignerType from "../../Util/Enums/SignerType";
 import BoxType from "../../Util/Enums/BoxType";
-import { Modal } from "antd";
-import { Link } from "react-router-dom";
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
@@ -23,7 +21,6 @@ export interface IFileViewerState {
     file: FormEntity;
     fileUploaded: boolean;
     page: number;
-    images: JSX.Element[];
     clearPage: boolean;
     boxesDrawn: BoxRequest[];
     isPopulated: boolean;
@@ -52,7 +49,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         }),
         fileUploaded: false,
         page: 0,
-        images: [],
         clearPage: true,
         boxesDrawn: [],
         signerType: SignerType.NONE,
@@ -100,8 +96,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
 
         if(!this.state.isPopulated){
             this.setState({
-                isPopulated: true,
-                images: items
+                isPopulated: true
             });
         }
         
