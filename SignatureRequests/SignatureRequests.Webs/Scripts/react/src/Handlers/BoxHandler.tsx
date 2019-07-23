@@ -2,10 +2,10 @@ import { APIHandler } from "./apiHandler";
 import BoxRequest from "../Entities/BoxRequest";
 import BoxEntity from "../Entities/BoxEntity";
 import BoxResponseList from "../Entities/BoxResponseList";
-
+import ModelBoxList from '../Entities/ToComplete/ModelBoxList';
 export interface IBoxHandler {
     createBox(entity: BoxRequest) : Promise<BoxEntity>;
-    getModalBox(id: number) : Promise<BoxResponseList>;
+    getModelBoxes(id: number) : Promise<ModelBoxList>;
 }
 
 export class BoxHandler implements IBoxHandler {
@@ -18,12 +18,12 @@ export class BoxHandler implements IBoxHandler {
             responseType: BoxEntity
         });
     }
-    async getModalBox(id: number) : Promise<BoxResponseList> {
-        return await APIHandler(`/api/Box/GetBoxesbyFormId//${id}`, {
-            headers: {"Content-Type" : "application/json"},
-            method: "GET",
-            responseType: BoxResponseList
-        });
-        
+
+    async getModelBoxes(id: number) : Promise<ModelBoxList> {
+        return await APIHandler(`/api/Box/GetModelBoxesbyFormId//${id}`, {
+        headers: {"Content-Type" : "application/json"},
+        method: "GET",
+        responseType: ModelBoxList
+        });   
     }
 }

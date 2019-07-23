@@ -8,6 +8,7 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
     public interface IBoxHandler : IBaseHandler<BoxEntity>
     {
         IEnumerable<BoxEntity> GetAllInclude();
-        IEnumerable<BoxEntity> GetBoxesByFormId(int id);
+         IEnumerable<BoxEntity> GetBoxesByFormId(int id);
+
     }
 }

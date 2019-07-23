@@ -242,7 +242,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     }
     async componentDidMount() {
         let file = (await this.props.formHandler!.getFormById(this.props.form));
-        let boxes = (await this.props.boxHandler!.getModalBox(this.props.form));
+        let boxes = (await this.props.boxHandler!.getModelBoxes(this.props.form));
         let requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
         let newBoxes: BoxRequest[] = [];
         boxes.collection.map((box) => {

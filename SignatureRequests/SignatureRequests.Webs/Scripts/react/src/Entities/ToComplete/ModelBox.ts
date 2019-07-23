@@ -1,19 +1,17 @@
-import RequestEntity from "./RequestEntity";
-import SignatureEntity from "./SignatureEntity";
-import FormEntity from "./FormEntity";
+import BoxType from "../../Util/Enums/BoxType";
+import SignerType from "../../Util/Enums/SignerType";
+import SignedStatus from "../../Util/Enums/SignedStatus";
 
-class BoxEntity {
+class ModelBox {
   id: number;
   width: number;
   height: number;
   x : number;
   y: number;
-  type: string;
-  signerType: string;
-  signedStatus: string;
+  type: BoxType;
+  signerType: SignerType;
+  signedStatus: SignedStatus;
   requestId: number;
-  signature?: SignatureEntity;
-  form?: FormEntity;
   pageNumber: number;
   isModel: boolean;
   text?: string;
@@ -32,8 +30,6 @@ class BoxEntity {
     this.signerType = data.SignerType;
     this.signedStatus = data.SignedStatus;
     this.requestId = data.RequestId;
-    this.signature = data.Signature;
-    this.form = data.Form;
     this.pageNumber = data.PageNumber;
     this.isModel = data.IsModel;
     this.text = data.Text;
@@ -43,4 +39,4 @@ class BoxEntity {
   }
 }
 
-export default BoxEntity;
+export default ModelBox;
