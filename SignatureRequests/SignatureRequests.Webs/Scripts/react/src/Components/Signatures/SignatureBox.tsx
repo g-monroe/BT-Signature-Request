@@ -106,7 +106,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     }
 
     saveCanvas = () => {    
-        html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
+        html2canvas(document.getElementById(this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
             canvas.toBlob((blob)=>{
                 if(blob){
                     const init = this.state.type === manualInputTypeEnum.Initial;
