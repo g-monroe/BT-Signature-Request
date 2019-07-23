@@ -10,7 +10,7 @@ import ContextUserObject from '../../../Components/WrapperComponents/ContextUser
 import BoxType from '../../../Util/Enums/BoxType';
 
 export interface IAddSignatuesProps {
-    UserObject:ContextUserObject
+    userObject:ContextUserObject
 }
  
 export interface IAddSignatuesState {
@@ -35,10 +35,10 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                             <Divider></Divider>
                             {HowToSign}
                             <div id = "SigExample">
-                                <SignatureDropDown type = {BoxType.DATE} userObject = {this.props.UserObject}></SignatureDropDown>
-                                <SignatureDropDown type = {BoxType.INITIAL} userObject = {this.props.UserObject}></SignatureDropDown>
-                                <SignatureDropDown type = {BoxType.SIGNATURE} userObject = {this.props.UserObject}></SignatureDropDown>
-                                <SignatureDropDown type = {BoxType.TEXT} userObject = {this.props.UserObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.DATE} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.INITIAL} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.SIGNATURE} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.TEXT} userObject = {this.props.userObject}></SignatureDropDown>
                             </div>
                         </div>
                     </Layout.Sider>
@@ -55,7 +55,7 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                                     <Paragraph id = "SigPara">{SignatureExplanation}</Paragraph>
                                     <h4>{SignatureExplanationfooter}</h4>
                                 </div>
-                                <SignatureBox userObject = {this.props.UserObject}></SignatureBox>
+                                <SignatureBox userObject = {this.props.userObject}></SignatureBox>
                             </div>
                         </Layout.Content>
                     </Layout>
