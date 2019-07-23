@@ -1,12 +1,14 @@
 import React from 'react';
 import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
+import BoxType from '../../Util/Enums/BoxType';
 
 export interface IFormImageWBoxesProps{
     src: string;
     pageNum: number;
     failedSrc:string;
     boxes:ModelBox[];
+    selectedBox:number;
 }
 interface IFormImageWBoxesState{
     src: string;
@@ -36,6 +38,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     this.state.canvasRef.current!.style.height = '100%';
     this.state.canvasRef.current!.width =  rect.width;
     this.state.canvasRef.current!.height =  rect.height;
+    this.state.canvasRef.current!.onselectstart = () => {return false};
   }
 
   drawBoxes = () =>{
@@ -49,7 +52,20 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     if(ctx){ 
       const scaleX = canBox.width / data.formWidth;
       const scaleY = canBox.height / data.formHeight;
-
+      
+      if(data.id === this.props.selectedBox){
+        ctx.rect((scaleX * data.x) +5, (scaleY * data.y)+5, (scaleX * data.width)-10, (scaleY * data.height)-10);   
+      }
+      
+      ctx.lineWidth = 3;
+      switch(data.type){
+        case BoxType.SIGNATURE: ctx.strokeStyle = '#e36414'; break;
+        case BoxType.INITIAL: ctx.strokeStyle = '#9a031e'; break;
+        case BoxType.DATE: ctx.strokeStyle = '#0f4c5c'; break;
+        case BoxType.TEXT: ctx.strokeStyle = '#5f0f40'; break;
+        default: ctx.strokeStyle = '#000000'; break; 
+      }
+     
       ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();
     }
@@ -103,7 +119,9 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
             borderTopRightRadius:'5px',
             padding: "0px",
             margin: "auto",
-            display: "block"
+            display: "block",
+            userSelect: "none",
+            outline: "none"
             }}
         />
       </div>

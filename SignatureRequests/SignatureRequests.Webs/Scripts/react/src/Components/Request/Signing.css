@@ -70,4 +70,18 @@
     z-index: 20;
     width:100%;
     height:100%;
+    user-select: none;
+    outline: none;
+}
+
+#keyTags{
+    display: flex;
+    flex-direction: column;
+    width:80%;
+    height:18vh;
+    margin-top: 4%;
+    margin-bottom: 15%;
+    margin-left: 7%;
+    flex-direction: column;
+    justify-content: space-between;
 }
