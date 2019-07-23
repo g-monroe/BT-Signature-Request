@@ -3,6 +3,7 @@ import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
 import BoxType from '../../Util/Enums/BoxType';
 import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/SignatureDropDown';
+import ContextUserObject from '../WrapperComponents/ContextUserObject';
 
 interface SigDropDownXY extends ISignatureDropDownProps{
   x:number,
@@ -15,6 +16,7 @@ export interface IFormImageWBoxesProps{
     failedSrc:string;
     boxes:ModelBox[];
     selectedBox:number;
+    userObject:ContextUserObject;
 }
 interface IFormImageWBoxesState{
     src: string;
@@ -127,7 +129,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       {
         this.state.dropDown && 
         
-          <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}><SignatureDropDown type = {this.state.dropDown.type} startVisible = {true}/></div>
+          <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}><SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true}/></div>
       }
       <div id = "DivWCanvasAndImage">
         <canvas id = "SimpleCanvas"

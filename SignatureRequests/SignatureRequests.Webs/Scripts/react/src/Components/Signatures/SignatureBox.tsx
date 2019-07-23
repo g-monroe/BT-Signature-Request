@@ -66,34 +66,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
         }
     }
 
-    saveCanvas = () => {    
-            html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
-                canvas.toBlob((blob)=>{
-                    if(blob){
-                        const init = this.state.type === manualInputTypeEnum.Initial;
-                        let request = new SignatureRequest({
-                            isInitial: init,
-                            UserId: this.props.userObject!.user.id,
-                            ImagePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
-                            CertificatePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
-                            CertificatePassword: this.props.userObject!.user.email,
-                            ExpirationDate: new Date()
-
-                        })
-                        console.log(request);
-                        let pic = new FormData();
-                        pic.append('file', new File([blob], this.props.userObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
-                        
-                        this.props.signatureHandler!.createSignature(request);
-                        init ? this.props.signatureHandler!.uploadInitials(pic) : this.props.signatureHandler!.uploadSignature(pic);
-                    }
-                },"image/octet-stream");
-            })
-        
-        setTimeout(()=> {
-            this.success() //Wait allows animation to play before success pops up
-        }, 1000);
-    }
+    
 
     render() { 
         return ( 
@@ -131,6 +104,36 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
             </div>
          );
     }
+
+    saveCanvas = () => {    
+        html2canvas(document.getElementById("ThingToSave")!).then((canvas:HTMLCanvasElement)=>{
+            canvas.toBlob((blob)=>{
+                if(blob){
+                    const init = this.state.type === manualInputTypeEnum.Initial;
+                    let request = new SignatureRequest({
+                        isInitial: init,
+                        UserId: this.props.userObject!.user.id,
+                        ImagePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
+                        CertificatePath: init ? "../assets/v1/images/initials" : "../assets/v1/images/signatures",
+                        CertificatePassword: this.props.userObject!.user.email,
+                        ExpirationDate: new Date()
+
+                    })
+                    console.log(request);
+                    let pic = new FormData();
+                    pic.append('file', new File([blob], this.props.userObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
+                    
+                    this.props.signatureHandler!.createSignature(request);
+                    init ? this.props.signatureHandler!.uploadInitials(pic) : this.props.signatureHandler!.uploadSignature(pic);
+                }
+            },"image/octet-stream");
+        })
+    
+    setTimeout(()=> {
+        this.success() //Wait allows animation to play before success pops up
+    }, 1000);
+}
+
 }
  
 export default SignatureBox;

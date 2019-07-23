@@ -57,7 +57,8 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             return (<FormImageWBoxes    src = {`../../../../../assets/v1/documents/${formName}/${this.state.page}.png`} 
             pageNum = {this.state.page} failedSrc ={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
             boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === this.state.page))}
-            selectedBox = {this.props.boxes.collection[this.state.currentSignature].id}/>);
+            selectedBox = {this.props.boxes.collection[this.state.currentSignature].id}
+            userObject = {this.props.userObject}/>);
 
         }catch{
             return(
