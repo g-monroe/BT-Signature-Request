@@ -20,7 +20,7 @@ export class BoxHandler implements IBoxHandler {
     }
 
     async getModelBoxes(id: number) : Promise<ModelBoxList> {
-        return await APIHandler(`/api/Box/GetModelBoxesbyFormId//${id}`, {
+        return await APIHandler(`/api/Box/GetModelBoxesbyFormId/${id}`, {
         headers: {"Content-Type" : "application/json"},
         method: "GET",
         responseType: ModelBoxList

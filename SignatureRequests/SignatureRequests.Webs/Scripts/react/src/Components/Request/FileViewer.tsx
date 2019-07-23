@@ -23,7 +23,6 @@ import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
 import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
-import { isInteger } from "formik";
 
 const {Option} = Select;
 export interface IFileViewerProps {
