@@ -38,7 +38,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     this.state.canvasRef.current!.style.height = '100%';
     this.state.canvasRef.current!.width =  rect.width;
     this.state.canvasRef.current!.height =  rect.height;
-    this.state.canvasRef.current!.onselectstart = () => {return false};
   }
 
   drawBoxes = () =>{

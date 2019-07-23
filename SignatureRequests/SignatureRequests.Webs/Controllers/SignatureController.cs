@@ -94,15 +94,15 @@ namespace SignatureRequests.Controllers
             return Ok();
         }
 
-        [HttpPost, Route("api/Signature/UploadIntials")]
-        public async Task<IHttpActionResult> UploadIntials()
+        [HttpPost, Route("api/Signature/UploadInitials")]
+        public async Task<IHttpActionResult> UploadInitials()
         {
             if (!Request.Content.IsMimeMultipartContent())
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            await _signatureManager.SaveSignatureAsync(provider, @"\assets\v1\images\intials\");
+            await _signatureManager.SaveSignatureAsync(provider, @"\assets\v1\images\initials\");
             return Ok();
         }
 
