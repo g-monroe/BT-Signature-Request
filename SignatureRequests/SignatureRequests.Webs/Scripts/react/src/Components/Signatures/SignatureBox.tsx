@@ -80,7 +80,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                             ExpirationDate: new Date()
 
                         })
-                        
+                        console.log(request);
                         let pic = new FormData();
                         pic.append('file', new File([blob], this.props.userObject!.user.id + ".png",{type: "image/png", lastModified:Date.now() }))
                         

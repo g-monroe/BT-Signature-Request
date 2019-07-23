@@ -20,6 +20,7 @@ export interface IAddSignatuesState {
 class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesState> {
 
     render() { 
+        console.log(this.props.UserObject)
         return ( 
             <>
                 <Layout style = {{height:'100%'}}>
