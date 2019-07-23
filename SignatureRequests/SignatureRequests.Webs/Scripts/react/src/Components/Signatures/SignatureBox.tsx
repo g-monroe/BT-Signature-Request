@@ -98,7 +98,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                             <Button onClick = {this.resetCanvas} style = {{marginLeft:'2px'}}>Reset {manualInputTypeEnum[this.state.type]}</Button>
                             <Button type = 'primary' onClick = {this.saveCanvas}>Save {manualInputTypeEnum[this.state.type]}</Button>
                         </div> :
-                        <></>
+                        <></> 
                 }
             </div>
             </div>

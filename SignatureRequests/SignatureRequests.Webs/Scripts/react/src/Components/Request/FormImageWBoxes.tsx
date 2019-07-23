@@ -62,19 +62,23 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const scaleY = canBox.height / data.formHeight;
       
       if(data.id === this.props.selectedBox){
-        ctx.rect((scaleX * data.x) +5, (scaleY * data.y)+5, (scaleX * data.width)-10, (scaleY * data.height)-10);   
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#f0a202";
+        ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);   
+        ctx.stroke();
       }
-      
-      ctx.lineWidth = 3;
+
+      ctx.globalAlpha = .2;
       switch(data.type){
-        case BoxType.SIGNATURE: ctx.strokeStyle = '#e36414'; break;
-        case BoxType.INITIAL: ctx.strokeStyle = '#9a031e'; break;
-        case BoxType.DATE: ctx.strokeStyle = '#0f4c5c'; break;
-        case BoxType.TEXT: ctx.strokeStyle = '#5f0f40'; break;
-        default: ctx.strokeStyle = '#000000'; break; 
+        case BoxType.SIGNATURE: ctx.fillStyle = '#e36414'; break;
+        case BoxType.INITIAL: ctx.fillStyle = '#9a031e'; break;
+        case BoxType.DATE: ctx.fillStyle = '#0f4c5c'; break;
+        case BoxType.TEXT: ctx.fillStyle = '#5f0f40'; break;
+        default: ctx.fillStyle = '#000000'; break; 
       }
      
-      ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
+      ctx.fillRect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();
     }
   }
