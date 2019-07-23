@@ -10,6 +10,7 @@ export interface IUserHandler {
     createUser(newUser:UserRequest) : Promise<UserEntity>;
     verifyUser(info:UserVerificationEntity) : Promise<UserEntity>;
     getUser(id:number) : Promise<SimpleUser>;
+    getUserById(id:number) : Promise<UserEntity>;
 }
 
 export class UserHandler implements IUserHandler {
@@ -56,5 +57,12 @@ export class UserHandler implements IUserHandler {
         }catch (e){
             return new SimpleUser({Id:-1});
         }
+    }
+    async getUserById(id:number) : Promise<UserEntity>{
+            return await APIHandler(`api/User/GetUserById/${id}`, {
+                headers: {"Content-Type" : "application/json"},
+                method: "GET",
+                responseType: UserEntity,
+            });
     }
 }

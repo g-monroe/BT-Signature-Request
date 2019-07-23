@@ -26,6 +26,13 @@ namespace BoxRequests.Controllers
             var boxes = _boxManager.GetBoxes();
             return boxes;
         }
+        [Route("api/Box/GetBoxesbyFormId/{id}")]
+        [HttpGet]
+        public BoxResponseList GetBoxesByFormId([FromRoute] int id)
+        {
+            var boxes = _boxManager.GetBoxesByFormId(id);
+            return boxes;
+        }
         [Route("api/Box/AddBox")]
         [HttpPost]
         public BoxResponse AddBox([FromBody]BoxRequest me)

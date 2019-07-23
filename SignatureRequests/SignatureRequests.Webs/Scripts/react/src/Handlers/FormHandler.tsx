@@ -48,8 +48,8 @@ export class FormHandler implements IFormHandler {
         const collection = await APIHandler(`/api/Form/GetFormById/${id}`, {
             headers: {"Content-Type": "application/json"},
             method: "GET",
-            responseType: FormResponseList
+            responseType: FormEntity
         });
-        return collection.collection[0];
+        return collection;
     }
 }

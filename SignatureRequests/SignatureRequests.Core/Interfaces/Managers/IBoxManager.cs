@@ -20,5 +20,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         BoxResponseList BoxToListResponse(IEnumerable<BoxEntity> me);
         BoxEntity BoxToDbItem(BoxRequest me, BoxEntity updating = null);
         BoxResponse BoxToListItem(BoxEntity me);
+        BoxResponseList GetBoxesByFormId(int id);
     }
 }
