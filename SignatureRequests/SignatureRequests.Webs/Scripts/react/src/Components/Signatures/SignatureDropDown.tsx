@@ -14,6 +14,8 @@ export interface ISignatureDropDownProps {
     sigHandler?:ISignatureHandler
     userObject?:ContextUserObject
     dataAdded?:(data: any) => void
+    startVisible?:boolean
+
 }
  
 export interface ISignatureDropDownState {
@@ -28,7 +30,7 @@ export interface ISignatureDropDownState {
 class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignatureDropDownState> {
     state : ISignatureDropDownState= { 
         status: DropDownState.Selecting,
-        menuVisible:false,
+        menuVisible:this.props.startVisible ? true : false,
         modalVisible:false,
         info:null,
         existing:false,
@@ -37,7 +39,8 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
 
      static defaultProps = {
         sigHandler: new SignatureHandler(),
-        userObject: new ContextUserObject()
+        userObject: new ContextUserObject(),
+        startVisible:false
      }
 
     handleVisChange = (bool: boolean) =>{
@@ -131,13 +134,16 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                                 </Menu.Item>]   
                     }
             </Menu>
-         
+      
         return ( 
             <>
                 <Dropdown overlay = {menu} trigger = {['click']} onVisibleChange = {this.handleVisChange} visible = {this.state.menuVisible}>
-                    <Button href = '#' size = "small"> {this.props.type}? {" "}
-                        <Icon type="plus-circle"/>
-                    </Button>
+                    {
+                        this.props.startVisible  ? <div/> :  
+                        <Button href = '#' size = "small"> {this.props.type}? {" "}
+                            <Icon type="plus-circle"/>
+                        </Button>
+                    }
                 </Dropdown>
                 {   
                     this.state.status === DropDownState.NewInitial  || this.state.status === DropDownState.NewSignature ?
