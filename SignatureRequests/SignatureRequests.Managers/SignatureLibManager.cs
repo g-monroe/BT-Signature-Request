@@ -173,9 +173,9 @@ namespace SignatureRequests.Managers
                 {
                     // Signature picture will be positioned:
                    Layout = Layout.Floating(
-                   new HorizontalPosition(box.X, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
-                   new VerticalPosition(box.Y, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
-                   new Size(box.Width, box.Height, LengthUnit.Millimeter)) //Size
+                   new HorizontalPosition(box.y, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
+                   new VerticalPosition(box.x, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
+                   new Size(box.width, box.height, LengthUnit.Millimeter)) //Size
                 };
                 PdfSaveOptions options = new PdfSaveOptions();
 
