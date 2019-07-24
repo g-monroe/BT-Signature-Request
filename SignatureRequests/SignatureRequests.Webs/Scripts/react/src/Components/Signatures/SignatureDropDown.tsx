@@ -55,12 +55,22 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
-    handleSubmitButton = () =>{
-        this.setState({
+    handleSubmitButton = async () =>{
+        await this.setState({
             modalVisible:false,
             menuVisible:false
         })
+        if(this.props.dataAdded){
+            switch(this.props.type){
+                case BoxType.DATE: this.props.dataAdded(this.state.info); break;
+                case BoxType.TEXT: this.props.dataAdded(this.state.text); break;
+                case BoxType.INITIAL: this.props.dataAdded(BoxType.INITIAL); break;
+                case BoxType.SIGNATURE: this.props.dataAdded(BoxType.SIGNATURE); break;
+            }
+        }
+
         this.updateHasSig();
+
     }
 
     handleCancel = () =>{
@@ -129,7 +139,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                                     {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}
                                 </Menu.Item>,
                             this.state.existing && 
-                                <Menu.Item key = {1}> Use previous
+                                <Menu.Item key = {1} onClick = {this.handleSubmitButton}> Use previous
                                     {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}   
                                 </Menu.Item>]   
                     }

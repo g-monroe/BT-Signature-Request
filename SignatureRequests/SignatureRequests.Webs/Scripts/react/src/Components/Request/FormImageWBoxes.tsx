@@ -17,6 +17,7 @@ export interface IFormImageWBoxesProps{
     boxes:ModelBox[];
     selectedBox:number;
     userObject:ContextUserObject;
+    boxFilledOutData: (data:any) =>void;
 }
 interface IFormImageWBoxesState{
     src: string;
@@ -40,6 +41,10 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
         errored: true,
       });
     }
+  }
+
+  selectedBoxSigned = (data: any) =>{
+      this.props.boxFilledOutData(data);
   }
 
   fitCanvasToContainer = (rect:any) =>{
@@ -117,6 +122,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       })
 
   }
+
   imageLoaded = () =>{
     let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
@@ -133,12 +139,14 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       {
         this.state.dropDown && 
         
-          <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}><SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true}/></div>
+          <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}>
+            <SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true} dataAdded = {this.selectedBoxSigned}/>
+          </div>
       }
       <div id = "DivWCanvasAndImage">
         <canvas id = "SimpleCanvas"
                 ref = {this.state.canvasRef}
-                onClick = {(event)=>this.canvasClicked(event)}
+                onClick = {this.canvasClicked}
         ></canvas>
         <img 
           src={src}

@@ -7,12 +7,14 @@ import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
 import { REQUESTER } from "../../Pages/Routing/routes";
 import { Link } from "react-router-dom";
+import ModelBox from "../../Entities/ToComplete/ModelBox";
 
 export interface IFileViewerProps {
     userObject:ContextUserObject;
     file:SimpleFormEntity
     boxes:ModelBoxList
     nextSig:(toNextSig:()=>void) => void
+    boxFilledOut: (box:ModelBox, data:any) =>void
 }
  
 export interface IFileViewerState {
@@ -43,6 +45,10 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
         })
     };
 
+    boxData = (data:any) =>{
+        this.props.boxFilledOut(this.props.boxes.collection[this.state.currentSignature], data);
+    }
+
     renderpage = (): JSX.Element =>{
         if(this.state.shouldClearPage){
             this.setState({
@@ -58,7 +64,8 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             pageNum = {this.state.page} failedSrc ={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
             boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === this.state.page))}
             selectedBox = {this.props.boxes.collection[this.state.currentSignature].id}
-            userObject = {this.props.userObject}/>);
+            userObject = {this.props.userObject}
+            boxFilledOutData = {this.boxData}/>);
 
         }catch{
             return(

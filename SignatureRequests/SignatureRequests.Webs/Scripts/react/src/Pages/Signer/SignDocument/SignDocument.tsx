@@ -11,6 +11,8 @@ import SignHeader from '../../../Components/Request/SignHeader';
 import FileViewerWBoxes from '../../../Components/Request/FileViewerWBoxes';
 import ModelBoxList from '../../../Entities/ToComplete/ModelBoxList';
 import { IBoxHandler, BoxHandler } from '../../../Handlers/BoxHandler';
+import ModelBox from '../../../Entities/ToComplete/ModelBox';
+import BoxType from '../../../Util/Enums/BoxType';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -24,13 +26,14 @@ export interface ISignDocumentState {
     sender?: SimpleUser,
     numViewing?:number,
     boxes?:ModelBoxList //This is a temp state. Gavin is working to add the boxes to the requestData
-    skipToNextSignature?:()=>void
+    skipToNextSignature?:()=>void,
+    numComplete:number
 }
  
 class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentState> {
 
     state : ISignDocumentState = {
-        
+        numComplete:0
     }
 
     static defaultProps = {
@@ -43,6 +46,25 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         this.setState({
             skipToNextSignature:toNextSig
         })
+    }
+
+    connectActionToBox = (box:ModelBox, data:any) =>{
+        console.log(box, data);
+        switch(box.type){
+            case BoxType.DATE:
+            break;
+            case BoxType.INITIAL:
+            break;
+            case BoxType.SIGNATURE:
+            break;
+            case BoxType.TEXT:
+            break;
+        }
+        
+        const newNum = this.state.numComplete + 1;
+        this.setState({
+            numComplete: newNum
+        });
     }
 
     render() { 
@@ -66,10 +88,10 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 <>
                 {
                     this.state.skipToNextSignature && 
-                    <SignHeader data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature}/> 
+                    <SignHeader data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature} numComplete = {this.state.numComplete}/> 
 
                 }
-                <FileViewerWBoxes userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} nextSig = {this.saveToNextSig}></FileViewerWBoxes>
+                <FileViewerWBoxes boxFilledOut = {this.connectActionToBox} userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} nextSig = {this.saveToNextSig}></FileViewerWBoxes>
                 </>
 
             );
