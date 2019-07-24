@@ -4,6 +4,9 @@ import FileViewer from '../../../Components/Form/FileViewer';
 import BoxRequest from '../../../Entities/BoxRequest';
 import '../../../Components/Signatures/DrawTest.css';
 import { BoxHandler, IBoxHandler } from '../../../Handlers/BoxHandler';
+import { Layout } from "antd";
+
+const { Header, Content } = Layout;
 
 export interface IEditProps {
    userObject: ContextUserObject;

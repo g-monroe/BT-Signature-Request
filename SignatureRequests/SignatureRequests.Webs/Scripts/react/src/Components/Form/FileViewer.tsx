@@ -10,6 +10,10 @@ import FormImage, { IFormImageProps } from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
 import SignerType from "../../Util/Enums/SignerType";
 import BoxType from "../../Util/Enums/BoxType";
+import { Layout } from "antd";
+import ActionType from "../../Util/Enums/ActionType";
+
+const { Header, Content } = Layout;
 
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
@@ -25,6 +29,7 @@ export interface IFileViewerState {
     boxesDrawn: BoxRequest[];
     signerType: SignerType;
     boxType: BoxType;
+    actionType: ActionType;
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -49,7 +54,8 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         clearPage: true,
         boxesDrawn: [],
         signerType: SignerType.NONE,
-        boxType: BoxType.NONE
+        boxType: BoxType.NONE,
+        actionType: ActionType.NONE
     };
     
     async componentDidMount() {
@@ -75,20 +81,22 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         userObject={this.props.userObject} 
         pageChange={this.pageChange} 
         boxesDrawn={this.state.boxesDrawn}
-        numPages={this.state.file!.numPages} 
+        numPages={this.state.file!.numPages}  
         handleSave={this.props.handleSave}
         signerType={this.state.signerType}
-        boxType={this.state.boxType}/>;
+        boxType={this.state.boxType}
+        actionType={this.state.actionType}/>;
         
     }
 
-    pageChange = async (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType) => {
+    pageChange = async (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType, actionType: ActionType) => {
         (await this.setState({
             page: this.state.page+change,
             boxesDrawn: boxes,
             clearPage: true,
             signerType: signerType,
-            boxType: boxType
+            boxType: boxType,
+            actionType: actionType
         }));
     }
 
@@ -98,7 +106,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         } else{
             
         return (
-            <> 
+            <>
             {this.populateItems()}
             </>
          );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form as AntForm, Button, Input, Upload, Icon, } from 'antd';
+import { Form as AntForm, Button, Input, Upload, Icon } from 'antd';
 import "antd/dist/antd.css";
 import { Form, InjectedFormikProps, withFormik } from "formik";
 import * as yup from 'yup';
@@ -119,8 +119,8 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
     };
     
       return (
-        <>
-        <Form onSubmitCapture={handleSubmit}>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+        <Form onSubmitCapture={handleSubmit} style={{width: '50%'}}>
             <div className="inline-flex-container">
               
               <FormItem
@@ -175,7 +175,7 @@ export default class Create extends React.PureComponent<InjectedFormikProps<ICre
               </Button>
             </FormItem>
           </Form>
-          </>
+          </div>
       );
     
   }
