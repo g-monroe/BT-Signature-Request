@@ -4,7 +4,7 @@ import UserEntity from '../../../Entities/UserEntity';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import FormRequest from '../../../Entities/FormRequest';
 import FormEntity from '../../../Entities/FormEntity';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { REQUESTER } from "../../../Pages/Routing/routes";
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
@@ -63,6 +63,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
             uploaded: response,
             isUploaded: true
             });
+            message.success('File uploaded successfully', 2);
         });
 
     };
@@ -79,9 +80,11 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                 handleSave={this.handleSave}
                 userObject={this.props.userObject}
                 />
+                <div style={{width: '50%', display:'flex', paddingLeft: '25%'}}>
             <Button disabled={!this.state.isUploaded}>
                 Continue
                 </Button>
+                </div>
             </>
             );
         }  
@@ -93,11 +96,15 @@ class Create extends React.Component<ICreateProps, ICreateState> {
                     handleSave={this.handleSave}
                     userObject={this.props.userObject}
                     />
-                <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
-                <Button disabled={!this.state.isUploaded}>
-                    Continue
-                    </Button>
-                    </Link>
+                    
+                    <Link to = {REQUESTER._Edit.link(this.state.uploaded!.id)}>
+                    <div style={{width: '50%', display:'flex', paddingLeft: '25%'}}>
+                        <Button type={"default"} disabled={!this.state.isUploaded}>
+                            Continue
+                         </Button>
+                         </div>
+                     </Link>
+                     
                 </>
             );
         }
