@@ -232,7 +232,7 @@ drawBoxes = async () => {
 
   onMouseMove = async (event:any) => {
     let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
-      if(this.state.mouseDown==true){
+      if(this.state.mouseDown===true){
           let ctx = this.state.ctx;
           ctx!.globalAlpha = 0.2;
           ctx!.fillStyle = this.determineColor(this.state.type);
