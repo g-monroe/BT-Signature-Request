@@ -101,7 +101,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
   }
 
   onMouseDown = (event:any) => {
-    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+    const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(!this.state.isCanvasRendered){
       this.setState({
         isCanvasRendered: true
@@ -193,7 +193,7 @@ drawBoxes = async () => {
 }
 
 onMouseMove = async (event:any) => {
-   let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+    const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(this.state.mouseDown===true){
         let ctx = this.state.ctx;
         ctx!.fillStyle = "#E3E1DF";

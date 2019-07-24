@@ -10,27 +10,15 @@ import FileViewer from '../../../Components/Request/FileViewer';
 import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
 import { IBoxHandler, BoxHandler } from '../../../Handlers/BoxHandler';
 export interface IStep2Props {
-    formHandler?:IFormHandler;
-    boxHandler?:IBoxHandler;
     form: number;
     users:UserEntity[];
     userObject: ContextUserObject;
 }
  
 export interface IStep2State {
-    loading: boolean;
-    boxes: BoxEntity[];
 }
  
 class Step2 extends React.Component<IStep2Props, IStep2State> {
-    static defaultProps = {
-        boxHandler: new BoxHandler(),
-        formHandler: new FormHandler()
-     };
-    state : IStep2State = {
-        loading:true,
-        boxes: []
-    }
     render() { 
         const { userObject, form, users } = this.props;
         return (  

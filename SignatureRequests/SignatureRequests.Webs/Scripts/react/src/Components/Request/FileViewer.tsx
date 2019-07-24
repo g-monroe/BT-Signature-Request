@@ -19,7 +19,7 @@ import { request } from "https";
 import Step2 from "../../Pages/Requester/Send/Step2";
 import TextArea from "antd/lib/input/TextArea";
 import GroupRequest from "../../Entities/GroupRequest";
-import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
+import { RequestStatusSigning, RequestInfo } from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
 import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
@@ -108,8 +108,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             notFound = false;
         }
         let newBox = this.state.selectedBox;
-        console.log(this.state.selectedBox);
-        let newUser = this.props.users.find(x => x.id == e);
+        let newUser = this.props.users.find(x => x.id === e);
         if (newUser!.id === this.state.requestor!.id && !remove){
             newBox!.signerType = SignerType.REQUESTOR;
         }else{
@@ -137,24 +136,8 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     TotalResults: 0,
                     BoxesList: []
                 },
-                Requestor: {
-                    Id: this.state.requestor!.id,
-                    Email: this.state.requestor!.email,
-                    Name: this.state.requestor!.name,
-                    Password: this.state.requestor!.password,
-                    Initial: this.state.requestor!.initial!,
-                    Role: this.state.requestor!.role,
-                    Signature: this.state.requestor!.signature!
-                },
-                Signer: {
-                    Id: newUser!.id,
-                    Email: newUser!.email,
-                    Name: newUser!.name,
-                    Password: newUser!.password,
-                    Initial: newUser!.initial,
-                    Role: newUser!.role,
-                    Signature: newUser!.signature
-                },
+                Requestor: new UserEntity(this.state.requestor!),
+                Signer: new UserEntity(newUser!),
                 SentDate: new Date(),
                 Status: SignedStatus.NOTSIGNED
             });
@@ -186,7 +169,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         groupItem.description = descript;
         groupItem.createDate = new Date();
         groupItem.dueDate = new Date();
-        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + 21);
+        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + RequestInfo.DUEDATE);
         groupItem.status = RequestStatusSigning.PENDING;
         groupItem.formId = form!.id;
         const groupResult = (await groupHandler!.createGroup(groupItem));
@@ -331,7 +314,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         });
     }
     renderOptions = () =>{
-        console.log("Props: ", this.props);
         return this.props.users.map((user, index) =>
             <Option value={user.id.toString()} key={index + 1}>{user.name}</Option>
         )

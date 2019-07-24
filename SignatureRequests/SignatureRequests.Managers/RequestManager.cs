@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -79,7 +80,7 @@ namespace SignatureRequests.Managers
             request.SentDate = newRequest.SentDate;
             _requestHandler.Update(request);
             _requestHandler.SaveChanges();
-            if (request.Status == "Signed")
+            if (request.Status == SignStatus.Signed)
             {
                Email("Sent you an email that the request was sent.", "Request Signed!", request.Signer.Email);
             }
