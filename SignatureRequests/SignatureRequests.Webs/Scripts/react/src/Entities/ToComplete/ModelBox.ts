@@ -11,6 +11,7 @@ class ModelBox {
   type: BoxType;
   signerType: SignerType;
   signedStatus: SignedStatus;
+  signatureId?: number;
   requestId: number;
   pageNumber: number;
   isModel: boolean;
@@ -29,6 +30,7 @@ class ModelBox {
     this.type = data.Type;
     this.signerType = data.SignerType;
     this.signedStatus = data.SignedStatus;
+    this.signatureId = data.SignatureId;
     this.requestId = data.RequestId;
     this.pageNumber = data.PageNumber;
     this.isModel = data.IsModel;

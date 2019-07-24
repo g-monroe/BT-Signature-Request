@@ -44,8 +44,11 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   }
 
   selectedBoxSigned = (data: any) =>{
+    //Get the signature id of the user
       this.props.boxFilledOutData(data);
   }
+
+  
 
   fitCanvasToContainer = (rect:any) =>{
     this.state.canvasRef.current!.style.width = '100%';
@@ -58,7 +61,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     this.props.boxes.forEach((box)=>this.drawBox(box));
   }
 
-  drawBox = (data: ModelBox) =>{
+  drawBox = (data: ModelBox) =>{ //TODO Check if its signed and if so draw the signature instead 
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
@@ -66,22 +69,23 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const scaleX = canBox.width / data.formWidth;
       const scaleY = canBox.height / data.formHeight;
       
+      switch(data.type){
+        case BoxType.SIGNATURE: ctx.fillStyle = '#e36414'; ctx.strokeStyle = '#e36414';break;
+        case BoxType.INITIAL: ctx.fillStyle = '#9a031e'; ctx.strokeStyle = '#9a031e'; break;
+        case BoxType.DATE: ctx.fillStyle = '#0f4c5c'; ctx.strokeStyle = '#0f4c5c'; break;
+        case BoxType.TEXT: ctx.fillStyle = '#5f0f40'; ctx.strokeStyle = '#5f0f40'; break;
+        default: ctx.fillStyle = '#000000'; ctx.fillStyle = '#000000'; break; 
+      }
+
       if(data.id === this.props.selectedBox){
         ctx.globalAlpha = 1;
         ctx.lineWidth = 5;
-        ctx.strokeStyle = "#f0a202";
         ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);   
         ctx.stroke();
       }
 
       ctx.globalAlpha = .2;
-      switch(data.type){
-        case BoxType.SIGNATURE: ctx.fillStyle = '#e36414'; break;
-        case BoxType.INITIAL: ctx.fillStyle = '#9a031e'; break;
-        case BoxType.DATE: ctx.fillStyle = '#0f4c5c'; break;
-        case BoxType.TEXT: ctx.fillStyle = '#5f0f40'; break;
-        default: ctx.fillStyle = '#000000'; break; 
-      }
+      
      
       ctx.fillRect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();

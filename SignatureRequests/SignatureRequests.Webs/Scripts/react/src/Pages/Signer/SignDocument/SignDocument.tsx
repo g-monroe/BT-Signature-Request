@@ -13,6 +13,7 @@ import ModelBoxList from '../../../Entities/ToComplete/ModelBoxList';
 import { IBoxHandler, BoxHandler } from '../../../Handlers/BoxHandler';
 import ModelBox from '../../../Entities/ToComplete/ModelBox';
 import BoxType from '../../../Util/Enums/BoxType';
+import SignedStatus from '../../../Util/Enums/SignedStatus';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -49,18 +50,24 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
     }
 
     connectActionToBox = (box:ModelBox, data:any) =>{
-        console.log(box, data);
         switch(box.type){
             case BoxType.DATE:
+                box.date = data
+                box.signedStatus = SignedStatus.SIGNED
             break;
             case BoxType.INITIAL:
+                box.signedStatus = SignedStatus.SIGNED
             break;
             case BoxType.SIGNATURE:
+                box.signedStatus = SignedStatus.SIGNED
             break;
             case BoxType.TEXT:
+                box.text = data
+                box.signedStatus = SignedStatus.SIGNED
             break;
         }
-        
+        console.log(box, data);
+
         const newNum = this.state.numComplete + 1;
         this.setState({
             numComplete: newNum

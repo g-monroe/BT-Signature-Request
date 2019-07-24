@@ -8,14 +8,12 @@ import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import './DrawTest.css'
 import BoxType from '../../Util/Enums/BoxType';
 
-
 export interface ISignatureDropDownProps {
     type:BoxType  
     sigHandler?:ISignatureHandler
     userObject?:ContextUserObject
     dataAdded?:(data: any) => void
     startVisible?:boolean
-
 }
  
 export interface ISignatureDropDownState {
@@ -56,6 +54,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
     }
 
     handleSubmitButton = async () =>{
+        
         await this.setState({
             modalVisible:false,
             menuVisible:false
@@ -68,9 +67,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                 case BoxType.SIGNATURE: this.props.dataAdded(BoxType.SIGNATURE); break;
             }
         }
-
         this.updateHasSig();
-
     }
 
     handleCancel = () =>{
@@ -102,6 +99,11 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
+    submitReactMouseEvent = (event: React.MouseEvent<any, MouseEvent>) =>{
+        event.stopPropagation();
+        this.handleSubmitButton();
+    }
+
     
     handleTextChange = (e : React.ChangeEvent<HTMLTextAreaElement>) =>{
         this.setState({
@@ -117,7 +119,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                             <Menu.Item key = {0} onClick = {()=> this.onClickChangeState(DropDownState.Date,false,true)}>Select the date: {" "}
                                 <DatePicker onChange = {this.handleInfoChange} format = {['DD/MM/YYYY', 'DD/MM/YY']}></DatePicker> {" "}
                                 {this.state.info ?
-                                    <Button onClick = {this.handleSubmitButton}type = "primary">Submit</Button> :
+                                    <Button onClick = {this.submitReactMouseEvent}type = "primary">Submit</Button> :
                                     <Button onClick = {this.handleSubmitButton} disabled>Submit</Button>
                                 }
                             </Menu.Item>  
@@ -127,7 +129,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                             <Menu.Item key = {0}>
                                 <div id = "TextAreaInMenu">
                                 <Input.TextArea value = {this.state.text} onChange = {this.handleTextChange}></Input.TextArea>
-                                <Button onClick = {this.handleSubmitButton} type = "primary" style = {{marginTop:"5px"}}>Submit</Button>
+                                <Button onClick = {this.submitReactMouseEvent} type = "primary" style = {{marginTop:"5px"}}>Submit</Button>
                                 </div>
                             </Menu.Item>
                     }
