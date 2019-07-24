@@ -3,8 +3,8 @@ import './Signing.css'
 import { Icon , Typography, Progress, Tooltip, Drawer, Tag} from 'antd';
 import RequestToCompleteEntity from '../../Entities/ToComplete/RequestToCompleteEntity';
 import  { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
-import MainPageUser from '../../Entities/MainPageUser';
 import SimpleUser from '../../Entities/ToComplete/SimpleUser';
+import BoxType from '../../Util/Enums/BoxType';
 
 
 export interface ISignHeaderProps {
@@ -86,6 +86,14 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                             <p><b id = "drawerHeaders">{"Sent on: "}</b>{new Date(this.props.data.sentDate).toDateString()}</p>
                             <p><b id = "drawerHeaders">{"Due Date: "}</b>{new Date(this.props.data.dueDate).toDateString()}</p>
                         </div>
+                        <b id = "drawerHeaders">Key: </b>
+                        <div id = "keyTags">
+                            <Tag style = {{marginLeft:'2%'}}color = {'#e36414'}>{BoxType.SIGNATURE}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {'#9a031e'}>{BoxType.INITIAL}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {'#0f4c5c'}>{BoxType.DATE}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {'#5f0f40'}>{BoxType.TEXT}</Tag>
+                        </div>
+
                         <p>{"Contact "+ this.props.sentBy.name + " at " + this.props.sentBy.email + " for more information."}</p>
                     
                     </div>

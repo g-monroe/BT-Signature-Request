@@ -228,12 +228,15 @@
     <Compile Include="ResponseObjects\GroupResponseList.cs" />
     <Compile Include="ResponseObjects\FormResponseList.cs" />
     <Compile Include="ResponseObjects\GroupResponse.cs" />
+    <Compile Include="ResponseObjects\ModelBoxResponse.cs" />
+    <Compile Include="ResponseObjects\ModelBoxResponseList.cs" />
     <Compile Include="ResponseObjects\RequestResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponseList.cs" />
     <Compile Include="ResponseObjects\RequestToCompleteResponse.cs" />
     <Compile Include="ResponseObjects\SignatureResponse.cs" />
     <Compile Include="ResponseObjects\BoxResponseList.cs" />
     <Compile Include="ResponseObjects\SignatureResponseList.cs" />
+    <Compile Include="ResponseObjects\SimpleFormResponse.cs" />
     <Compile Include="ResponseObjects\SimpleUserResponse.cs" />
     <Compile Include="ResponseObjects\UserResponse.cs" />
     <Compile Include="ResponseObjects\UserResponseList.cs" />

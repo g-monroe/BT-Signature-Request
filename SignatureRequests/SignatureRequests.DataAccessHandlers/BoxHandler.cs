@@ -20,5 +20,10 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return Get(x =>x.RequestId == id);
         }
+
+        public IEnumerable<BoxEntity> GetBoxesByFormId(int id)
+        {
+            return Get(x => x.FormId == id);
+        }
     }
 }

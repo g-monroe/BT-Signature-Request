@@ -51,6 +51,12 @@ namespace SignatureRequests.Managers
             var resp = BoxToListItem(result);
             return resp;
         }
+        public ModelBoxResponseList GetModelBoxesByFormId(int id)
+        {
+            var result = _boxHandler.GetBoxesByFormId(id);
+            var models = BoxesToModelList(result);
+            return models;
+        }
 
         public BoxResponseList GetBoxes()
         {
@@ -168,6 +174,44 @@ namespace SignatureRequests.Managers
             updating.FormWidth = me.FormWidth;
             return updating;
         }
-    
+
+    private ModelBoxResponseList BoxesToModelList(IEnumerable<BoxEntity> boxes)
+        {
+            var resp = new ModelBoxResponseList
+            {
+                TotalResults = boxes.Count(),
+                BoxesList = new List<ModelBoxResponse>()
+            };
+            foreach (BoxEntity box in boxes)
+            {
+                var item = BoxToModelBox(box);
+                resp.BoxesList.Add(item);
+            }
+            return resp;
+        }
+    private ModelBoxResponse BoxToModelBox(BoxEntity me)
+        {
+            return new ModelBoxResponse()
+            {
+                Id = me.Id,
+                X = me.X,
+                Y = me.Y,
+                Width = me.Width,
+                Height = me.Height,
+                Type = me.Type,
+                SignerType = me.SignerType,
+                SignedStatus = me.SignedStatus,
+                RequestId = me.RequestId,
+                SignatureId = me.SignatureId,
+                FormId = me.FormId,
+                PageNumber = me.PageNumber,
+                IsModel = me.IsModel,
+                Text = me.Text,
+                Date = me.Date,
+                FormHeight = me.FormHeight,
+                FormWidth = me.FormWidth
+            };
+        }
+
     }
 }

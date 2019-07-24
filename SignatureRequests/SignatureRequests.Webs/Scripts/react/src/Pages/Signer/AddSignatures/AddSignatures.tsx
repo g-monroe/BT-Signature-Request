@@ -6,8 +6,8 @@ import SignatureBox from '../../../Components/Signatures/SignatureBox';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import ImageViewModal from '../../../Components/Signatures/ImageViewModal';
 import {HowToSign} from '../../../Util/Text';
-import { TypesOfBoxes } from '../../../Util/Enums/SignatureDropDown';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
+import BoxType from '../../../Util/Enums/BoxType';
 
 export interface IAddSignatuesProps {
     userObject:ContextUserObject
@@ -35,9 +35,10 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                             <Divider></Divider>
                             {HowToSign}
                             <div id = "SigExample">
-                                <SignatureDropDown type = {TypesOfBoxes.Date} userObject = {this.props.userObject}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Initial} userObject = {this.props.userObject}></SignatureDropDown>
-                                <SignatureDropDown type = {TypesOfBoxes.Signature} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.DATE} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.INITIAL} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.SIGNATURE} userObject = {this.props.userObject}></SignatureDropDown>
+                                <SignatureDropDown type = {BoxType.TEXT} userObject = {this.props.userObject}></SignatureDropDown>
                             </div>
                         </div>
                     </Layout.Sider>
