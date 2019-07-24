@@ -4,6 +4,7 @@ import ModelBox from '../../Entities/ToComplete/ModelBox';
 import BoxType from '../../Util/Enums/BoxType';
 import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/SignatureDropDown';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
+import { SignatureColors } from '../../Util/Enums/colors';
 
 interface SigDropDownXY extends ISignatureDropDownProps{
   x:number,
@@ -48,8 +49,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       this.props.boxFilledOutData(data);
   }
 
-  
-
   fitCanvasToContainer = (rect:any) =>{
     this.state.canvasRef.current!.style.width = '100%';
     this.state.canvasRef.current!.style.height = '100%';
@@ -70,11 +69,11 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const scaleY = canBox.height / data.formHeight;
       
       switch(data.type){
-        case BoxType.SIGNATURE: ctx.fillStyle = '#e36414'; ctx.strokeStyle = '#e36414';break;
-        case BoxType.INITIAL: ctx.fillStyle = '#9a031e'; ctx.strokeStyle = '#9a031e'; break;
-        case BoxType.DATE: ctx.fillStyle = '#0f4c5c'; ctx.strokeStyle = '#0f4c5c'; break;
-        case BoxType.TEXT: ctx.fillStyle = '#5f0f40'; ctx.strokeStyle = '#5f0f40'; break;
-        default: ctx.fillStyle = '#000000'; ctx.fillStyle = '#000000'; break; 
+        case BoxType.SIGNATURE: ctx.fillStyle = SignatureColors.signature; ctx.strokeStyle = SignatureColors.signature;break;
+        case BoxType.INITIAL: ctx.fillStyle = SignatureColors.initial; ctx.strokeStyle = SignatureColors.initial; break;
+        case BoxType.DATE: ctx.fillStyle = SignatureColors.date; ctx.strokeStyle = SignatureColors.date; break;
+        case BoxType.TEXT: ctx.fillStyle = SignatureColors.text; ctx.strokeStyle = SignatureColors.text; break;
+        default: ctx.fillStyle = SignatureColors.black; ctx.fillStyle = SignatureColors.black; break; 
       }
 
       if(data.id === this.props.selectedBox){

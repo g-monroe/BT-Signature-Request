@@ -5,6 +5,7 @@ import RequestToCompleteEntity from '../../Entities/ToComplete/RequestToComplete
 import  { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
 import SimpleUser from '../../Entities/ToComplete/SimpleUser';
 import BoxType from '../../Util/Enums/BoxType';
+import { SignatureColors } from '../../Util/Enums/colors';
 
 
 export interface ISignHeaderProps {
@@ -88,10 +89,10 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                         </div>
                         <b id = "drawerHeaders">Key: </b>
                         <div id = "keyTags">
-                            <Tag style = {{marginLeft:'2%'}}color = {'#e36414'}>{BoxType.SIGNATURE}</Tag>
-                            <Tag style = {{marginLeft:'2%'}}color = {'#9a031e'}>{BoxType.INITIAL}</Tag>
-                            <Tag style = {{marginLeft:'2%'}}color = {'#0f4c5c'}>{BoxType.DATE}</Tag>
-                            <Tag style = {{marginLeft:'2%'}}color = {'#5f0f40'}>{BoxType.TEXT}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.signature}>{BoxType.SIGNATURE}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.initial}>{BoxType.INITIAL}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.date}>{BoxType.DATE}</Tag>
+                            <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.text}>{BoxType.TEXT}</Tag>
                         </div>
 
                         <p>{"Contact "+ this.props.sentBy.name + " at " + this.props.sentBy.email + " for more information."}</p>
