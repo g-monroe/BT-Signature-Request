@@ -3,9 +3,14 @@ import BoxRequest from '../../Entities/BoxRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import SignedStatus from '../../Util/Enums/SignedStatus';
 import SignerType from '../../Util/Enums/SignerType';
+import { SignatureColors } from '../../Util/Enums/colors';
 import BoxType from '../../Util/Enums/BoxType';
-import { Button, Select } from 'antd';
+import ActionType from '../../Util/Enums/ActionType';
+import { Button, Select, Icon, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
+import { Layout } from "antd";
+
+const { Header, Content } = Layout;
 
 const { Option } = Select;
 const PictureToWrap = "PictureToWrap";
@@ -14,12 +19,13 @@ export interface IFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;
-  pageChange: (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType) => void;
+  pageChange: (change: number, boxes: BoxRequest[], signerType: SignerType, boxType: BoxType, actionType: ActionType) => void;
   numPages: number;
   pageNum: number;
   handleSave: (boxes: BoxRequest[]) => void;
   signerType: SignerType;
   boxType: BoxType;
+  actionType: ActionType;
   boxesDrawn: BoxRequest[];
 }
 
@@ -36,6 +42,7 @@ interface IFormImageState{
   width: number;
   type: BoxType;
   signerType: SignerType;
+  actionType: ActionType;
   canvasRef:React.RefObject<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D | null;
   isBoxSelected: boolean;
@@ -75,7 +82,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     formHeight: 0,
     formWidth: 0,
     type: this.props.boxType,
-    signerType: this.props.signerType
+    signerType: this.props.signerType,
+    actionType: this.props.actionType
   };
   
   fitCanvasToContainer = (rect:any) =>{
@@ -131,15 +139,16 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
       this.fitCanvasToContainer(rect);
     }
     
-    if(this.state.signerType !== SignerType.NONE && this.state.type !== BoxType.NONE){
+    if(this.state.signerType !== SignerType.NONE && this.state.type !== BoxType.NONE && this.state.actionType === ActionType.ADD){
       this.setState({
           xVal: event.clientX-rect.left,
           yVal: event.clientY-rect.top,
           height: 0,
           width: 0,
-          mouseDown: true
+          mouseDown: true,
+          isBoxSelected: false
       });
-    }else{
+    }else if(this.state.actionType === ActionType.EDIT){
       this.boxSelected(event.clientX-rect.left, event.clientY-rect.top);
     }
 
@@ -168,6 +177,7 @@ onMouseUp = (event:any) => {
         boxesDrawn: boxes,
         mouseDown: false
     });
+    this.drawBoxes();
   }
 };
 
@@ -176,16 +186,43 @@ drawBoxes = async () => {
     let i=0;
     for(i=0; i<this.state.boxesDrawn.length; i++){
         if(this.state.boxesDrawn[i].pageNumber === this.state.pageNumber){
+
+            //BOX
             this.state.ctx!.beginPath();
             let ctx = this.state.ctx;
-            ctx!.fillStyle = "#E3E1DF";
+            ctx!.globalAlpha = 0.2;
+            ctx!.fillStyle = this.determineColor(this.state.boxesDrawn[i].type);
             (await this.setState({
               ctx: ctx
             })); 
             this.state.ctx!.clearRect(this.state.boxesDrawn[i].x,this.state.boxesDrawn[i].y,this.state.boxesDrawn[i].width,this.state.boxesDrawn[i].height);
             this.state.ctx!.fillRect(this.state.boxesDrawn[i].x, this.state.boxesDrawn[i].y, this.state.boxesDrawn[i].width, this.state.boxesDrawn[i].height);
-            if(this.state.isBoxSelected && this.state.boxesDrawn[i] === this.state.selectedBox){
-              this.state.ctx!.fillStyle = "#5fb2ff";
+
+            //TEXT
+            ctx!.fillStyle = SignatureColors.labels;
+            ctx!.font = "11px Verdana";
+            ctx!.globalAlpha = 1.0;
+            (await this.setState({
+              ctx: ctx
+            }));
+            this.state.ctx!.fillText(this.state.boxesDrawn[i].signerType, 
+                                     this.state.boxesDrawn[i].x < this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width ?  this.state.boxesDrawn[i].x+2 : this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width+2, 
+                                     this.state.boxesDrawn[i].y < this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height ?  this.state.boxesDrawn[i].y+13 : this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height+13);
+
+            //RESET COLOR
+            ctx!.globalAlpha = 0.2;
+            ctx!.fillStyle = this.determineColor(this.state.type);
+            (await this.setState({
+              ctx: ctx
+            }));
+
+            //BORDER
+            if(this.state.isBoxSelected && this.state.boxesDrawn[i] === this.state.selectedBox && this.state.actionType === ActionType.EDIT){
+              ctx!.globalAlpha = 1.0;
+              ctx!.strokeStyle = this.determineColor(this.state.boxesDrawn[i].type);
+              this.setState({
+                ctx: ctx
+              });
               this.state.ctx!.strokeRect(this.state.boxesDrawn[i].x, this.state.boxesDrawn[i].y, this.state.boxesDrawn[i].width, this.state.boxesDrawn[i].height);
             }
             this.state.ctx!.stroke();
@@ -195,9 +232,10 @@ drawBoxes = async () => {
 
   onMouseMove = async (event:any) => {
     let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
-      if(this.state.mouseDown==true){
+      if(this.state.mouseDown===true){
           let ctx = this.state.ctx;
-          ctx!.fillStyle = "#E3E1DF";
+          ctx!.globalAlpha = 0.2;
+          ctx!.fillStyle = this.determineColor(this.state.type);
           this.setState({
               ctx: ctx,
               height: (event.clientY - rect.top) - this.state.yVal,
@@ -207,17 +245,16 @@ drawBoxes = async () => {
           this.state.ctx!.beginPath();
           this.state.ctx!.fillRect(this.state.xVal, this.state.yVal, this.state.width, this.state.height);
           this.state.ctx!.stroke();
-      
       }
   }
 
   onNext = () => {
-    this.props.pageChange(1, this.state.boxesDrawn, this.state.signerType, this.state.type);
+    this.props.pageChange(1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.actionType);
 
   };
 
   onPrev = () => {
-    this.props.pageChange(-1, this.state.boxesDrawn, this.state.signerType, this.state.type);
+    this.props.pageChange(-1, this.state.boxesDrawn, this.state.signerType, this.state.type, this.state.actionType);
   };
 
   signerTypeChange = (value: any) => {
@@ -257,12 +294,56 @@ drawBoxes = async () => {
     this.drawBoxes();
   }
 
+  addSelected = () => {
+    this.setState({
+      actionType: ActionType.ADD
+    });
+  }
+
+  editSelected = () => {
+    this.setState({
+      actionType: ActionType.EDIT
+    });
+  }
+
+  handleUndo = () => {
+    let lastBox = this.state.boxesDrawn.pop();
+    let boxes = this.state.boxesDrawn.filter(box => box != lastBox);
+    this.setState({
+      boxesDrawn: boxes
+    });
+    this.drawBoxes();
+  }
+
+  determineColor = (boxType: string) => {
+    switch(boxType){
+      case BoxType.SIGNATURE:{
+        return SignatureColors.signature;
+      }
+      case BoxType.INITIAL:{
+        return SignatureColors.initial;
+      }
+      case BoxType.DATE:{
+        return SignatureColors.date;
+      }
+      case BoxType.TEXT:{
+        return SignatureColors.text;
+      }
+      default:{
+        return SignatureColors.default;
+      }
+    }
+  }
+
   render() {
     const { src } = this.state;
 
     return (
         <>
-        <div>
+        <Header style={{width: '100%', display: 'inline-flex' , position: 'relative'}}>
+        <Row style={{width:'100%'}}>
+          <Col span={8} style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start', height: '100%'}}>
+        <div style={{width: '72%',  display: 'flex', justifyContent: 'space-evenly' }}>
           <Select defaultValue={this.state.signerType} style={{width: 120}} onChange={this.signerTypeChange}>
             <Option value={SignerType.NONE}>None</Option>
             <Option value={SignerType.REQUESTOR}>Requestor</Option>
@@ -270,15 +351,30 @@ drawBoxes = async () => {
           </Select>
           <Select defaultValue={this.state.type} style={{width:120}} onChange={this.typeChange}>
             <Option value={BoxType.NONE}>None</Option>
-            <Option value={BoxType.SIGNATURE}>Signature</Option>
-            <Option value={BoxType.INITIAL}>Initial</Option>
-            <Option value={BoxType.DATE}>Date</Option>
-            <Option value={BoxType.TEXT}>Text</Option>
+            <Option value={BoxType.SIGNATURE} style={{color: SignatureColors.signature}}>Signature</Option>
+            <Option value={BoxType.INITIAL} style={{color: SignatureColors.initial}}>Initial</Option>
+            <Option value={BoxType.DATE} style={{color: SignatureColors.date}}>Date</Option>
+            <Option value={BoxType.TEXT} style={{color: SignatureColors.text}}>Text</Option>
           </Select>
-          <Button type={"danger"} disabled={!this.state.isBoxSelected} onClick={this.removeBox}>
-            Delete
-          </Button>
+          <Button onClick={this.addSelected} icon="plus" ghost={this.state.actionType === ActionType.ADD}/>
+          <Button onClick={this.editSelected} icon="edit" ghost={this.state.actionType === ActionType.EDIT}/>
+          <Button type={"danger"} disabled={!this.state.isBoxSelected || (this.state.actionType !== ActionType.EDIT)} onClick={this.removeBox} icon="delete"/>
+          <Button type={"default"} onClick={this.handleUndo} icon="undo"/>
         </div>
+        </Col>
+        <Col span={8} style={{    display: 'flex', justifyContent: 'center'}}>
+        <div style={{color: SignatureColors.white}}>
+          Add Boxes to PDF
+          </div>
+          </Col>
+          <Col span={8} style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+        <div style={{display: 'flex', width: '26%', justifyContent: 'space-evenly', alignItems: 'center'}}>
+          <Link to="/request/dashboard"><Button type="default">Skip</Button></Link>
+          <Button type="primary" onClick={this.onSave}>Save</Button>
+        </div>
+        </Col>
+        </Row>
+        </Header>
         <div id = "PictureToWrap"style = {{position:'relative'}}>
                 <canvas ref={this.state.canvasRef} 
                         style = {{ position: 'absolute', zIndex: 81}} 
@@ -323,10 +419,7 @@ drawBoxes = async () => {
                     Next
                 </Button>
         </div>
-        <div>
-          <Link to="/request/dashboard"><Button type="default">Cancel</Button></Link>
-          <Button type="primary" onClick={this.onSave}>Save</Button>
-        </div>
+        
         </>
     );
   }
