@@ -86,7 +86,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     (await this.setState({
       ctx : this.state.canvasRef.current!.getContext("2d")
     }));
-    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+    const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
     (await this.drawBoxes());
   }

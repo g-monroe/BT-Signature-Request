@@ -228,7 +228,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     async componentDidMount() {
         let file = (await this.props.formHandler!.getFormById(this.props.form));
         let boxes = (await this.props.boxHandler!.getModelBoxes(this.props.form));
-        let requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
+        const requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
         let newBoxes: BoxEntity[] = [];
         boxes.collection.map((box) => {
              let rBox = new BoxEntity(box);
@@ -244,7 +244,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
              newBoxes.push(rBox);
         })
         let items = [];
-        let form = file.filePath.split('.');
+        const form = file.filePath.split('.');
         let formName = form.slice(0, form.length-1);
         for(let i = 0; i<file.numPages; i++){
             let newItem = <FormImage pageNum={i} 
