@@ -23,6 +23,9 @@ import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
 import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
+import BoxType from "../../Util/Enums/BoxType";
+import SignerType from "../../Util/Enums/SignerType";
+import SignedStatus from "../../Util/Enums/SignedStatus";
 
 const {Option} = Select;
 export interface IFileViewerProps {
@@ -42,18 +45,18 @@ export interface IFileViewerState {
     page: number;
     images: JSX.Element[];
     clearPage: boolean;
-    boxesDrawn: BoxRequest[];
+    boxesDrawn: BoxEntity[];
     requests?: RequestEntity[]
     showOptions: boolean;
     form?: FormEntity;
     showX: number;
     showY: number;
     requestor?: UserEntity;
-    finialize: boolean;
+    finalize: boolean;
     descript: string;
     title: string;
     group?: GroupEntity;
-    selectedBox?: BoxRequest;
+    selectedBox?: BoxEntity;
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -77,11 +80,11 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         showY: 0,
         title: "",
         descript: "",
-        finialize: false,
+        finalize: false,
         requests: [],
         
     };
-    showOption = (show: boolean, x:number, y:number, box:BoxRequest) =>{
+    showOption = (show: boolean, x:number, y:number, box:BoxEntity) =>{
         if (show){
             this.setState({
                 showOptions: true,
@@ -100,42 +103,33 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         
         let remove = false;
         let notFound = true;
-        if (e == "none"){
+        if (e === BoxType.NONE){
             remove = true;
             notFound = false;
         }
-        let newBox = new BoxEntity(this.state.selectedBox)
-        newBox.width = this.state.selectedBox!.width;
-        newBox.height = this.state.selectedBox!.height;
-        newBox.x = this.state.selectedBox!.x;
-        newBox.y = this.state.selectedBox!.y;
-        newBox.type = this.state.selectedBox!.type;
-        newBox.pageNumber = this.state.selectedBox!.pageNumber;
-        newBox.text = this.state.selectedBox!.text;
-        newBox.signerType = this.state.selectedBox!.signerType;
-        newBox.signedStatus = this.state.selectedBox!.signedStatus;
-        newBox.isModel = this.state.selectedBox!.isModel;
+        let newBox = this.state.selectedBox;
+        console.log(this.state.selectedBox);
+        let newUser = this.props.users.find(x => x.id == e);
+        if (newUser!.id === this.state.requestor!.id && !remove){
+            newBox!.signerType = SignerType.REQUESTOR;
+        }else{
+            newBox!.signerType = SignerType.SIGNER;
+        }
         this.state.requests!.map((request) =>{
             if (request.signer.id === Number(e)){
                 if (!remove){
-                    request.boxes.collection.push(newBox);
+                    request.boxes.collection.push(newBox!);
                 }
                 notFound = false;
             }else if (remove){
                 request.boxes.collection =
                     request.boxes.collection.filter(function(box) {
-                        if (box.x != newBox.x || box.y != newBox.y || newBox.pageNumber != box.pageNumber){
+                        if (box.x !== newBox!.x || box.y !== newBox!.y || newBox!.pageNumber !== box.pageNumber){
                             return box;
                         }
                     })
             }
         })
-        let newUser = this.props.users.find(x => x.id == e);
-        if (newUser!.id == this.state.requestor!.id){
-            newBox.signerType = "Requestor";
-        }else{
-            newBox.signerType = "Signer";
-        }
         if (notFound){
             let newRequest = new RequestEntity({
                 Id: 0,
@@ -162,10 +156,10 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     Signature: newUser!.signature
                 },
                 SentDate: new Date(),
-                Status: "Not Signed"
+                Status: SignedStatus.NOTSIGNED
             });
 
-            newRequest.boxes.collection.push(newBox);
+            newRequest.boxes.collection.push(newBox!);
             this.state.requests!.push(newRequest);
         }
         for(let i = 0; i<this.state.form!.numPages; i++){
@@ -183,7 +177,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             message.info('Title or Description not big enough!');
             return;
         }//Continue
-        if (requests == null || requests!.length == 0){
+        if (requests === null || requests!.length === 0){
             message.info('Please assign some or all boxes out!');
             return;
         }
@@ -191,7 +185,8 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         groupItem.title = title;
         groupItem.description = descript;
         groupItem.createDate = new Date();
-        groupItem.dueDate = new Date(20);
+        groupItem.dueDate = new Date();
+        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + 21);
         groupItem.status = RequestStatusSigning.PENDING;
         groupItem.formId = form!.id;
         const groupResult = (await groupHandler!.createGroup(groupItem));
@@ -216,19 +211,10 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 request.boxes.collection.map(async (box) =>{
                     let newBox = new BoxRequest(box);
                     newBox.formId = form!.id;
-                    newBox.height = box.height;
-                    newBox.pageNumber = box.pageNumber;
                     newBox.requestId = requestResult.id;
                     newBox.signedStatus = box.signedStatus;
-                    newBox.x = box.x;
                     newBox.date = new Date();
-                    newBox.signerType = box.signerType;
-                    newBox.signedStatus = "Note Signed";
-                    newBox.y = box.y;
-                    newBox.type = box.type;
                     newBox.isModel = false;
-                    newBox.signatureId = undefined;
-                    newBox.text = "";
                     const boxResult = (await boxHandler!.createBox(newBox));
                     if (boxResult === null){//Check if it was created successfully.
                         message.error('Failed to create a box!');
@@ -243,17 +229,17 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         let file = (await this.props.formHandler!.getFormById(this.props.form));
         let boxes = (await this.props.boxHandler!.getModelBoxes(this.props.form));
         let requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
-        let newBoxes: BoxRequest[] = [];
+        let newBoxes: BoxEntity[] = [];
         boxes.collection.map((box) => {
-             let rBox = new BoxRequest(box);
+             let rBox = new BoxEntity(box);
+             rBox.pageNumber = box.pageNumber;
              rBox.width = box.width;
              rBox.height = box.height;
+             rBox.signerType = box.signerType;
              rBox.x = box.x;
              rBox.y = box.y;
              rBox.type = box.type;
-             rBox.pageNumber = box.pageNumber;
-             rBox.text = box.text;
-             rBox.signedStatus = rBox.signedStatus;
+             rBox.signedStatus = box.signedStatus;
              rBox.isModel = box.isModel;
              newBoxes.push(rBox);
         })
@@ -305,11 +291,11 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         });
     };
     
-    clearPage = () : JSX.Element => {
+    clearPageImage = () : JSX.Element => {
         return <></>;
     };
 
-    renderpage = (): JSX.Element =>{
+    renderPage = (): JSX.Element =>{
         if(this.state.clearPage){
             this.setState({
                 clearPage: false
@@ -318,19 +304,19 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         }
         const {page, images} = this.state;
         for(let i=0; i<images.length; i++){
-            if(images[i].props.pageNum == page){
+            if(images[i].props.pageNum === page){
                 return images[i];
             }
         }
-        return images[0];
+        return <><h1>No Page Found</h1></>;
     };
 
     onFinal =() =>{
         this.setState({
-            finialize: true
+            finalize: true
         })
     }
-    pageChange = (change: number, boxes: BoxRequest[]) => {
+    pageChange = (change: number, boxes: BoxEntity[]) => {
         let boxesDrawn = this.state.boxesDrawn;
         let i = 0;
         for(i=0; i<boxes.length; i++){
@@ -345,6 +331,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         });
     }
     renderOptions = () =>{
+        console.log("Props: ", this.props);
         return this.props.users.map((user, index) =>
             <Option value={user.id.toString()} key={index + 1}>{user.name}</Option>
         )
@@ -365,17 +352,17 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         } else{
             let selectOptions = <></>
             if (this.state.showOptions){
-                selectOptions = <Select onChange={this.selectionChanged} style={{position:"absolute", zIndex:90, display:"block", minWidth:"50px", left:this.state.showX + "px", top:this.state.showY +"px"}}><Option value="none" key={0}>None</Option>{this.renderOptions()}</Select>;
+                selectOptions = <Select onChange={this.selectionChanged} style={{position:"absolute", zIndex:90, display:"block", minWidth:"50px", left:this.state.showX + "px", top:this.state.showY +"px"}}><Option value="None" key={0}>None</Option>{this.renderOptions()}</Select>;
             }
             let display =            <> 
-            {this.clearPage()}
-            {this.renderpage()}
+            {this.clearPageImage()}
+            {this.renderPage()}
             {selectOptions}
             <Button onClick={this.onFinal} type={"primary"}>
-                Finaliaze
+                Finalize
             </Button>
             </>;
-            if (this.state.finialize){
+            if (this.state.finalize){
                 display = <>
                     <Input value={this.state.title} onChange={this.onhandleTitleChange} id="title" placeholder="'Winson House Contract'" type="text" name="Title"/>
                     <TextArea value={this.state.descript} onChange={this.onhandleDescrChange} id="description" rows={4} name="Description" placeholder="This contact blah blah blah"/>

@@ -8,6 +8,7 @@ import { Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import FileViewer from './FileViewer';
 import RequestStatus from '../../Util/Enums/RequestStatus';
+import BoxEntity from '../../Entities/BoxEntity';
 
 const { Option } = Select;
 const PictureToWrap = "PictureToWrap";
@@ -16,20 +17,20 @@ interface IFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;
-  pageChange: (change: number, boxes: BoxRequest[]) => void;
-  boxesDrawn: BoxRequest[];
+  pageChange: (change: number, boxes: BoxEntity[]) => void;
+  boxesDrawn: BoxEntity[];
   numPages: number;
   pageNum: number;
   parent: FileViewer;
-  handleSave: (boxes: BoxRequest[]) => void;
+  handleSave: (boxes: BoxEntity[]) => void;
 }
 
 interface IFormImageState{
   src: string;
   errored:boolean;
   mouseDown: boolean;
-  boxesDrawn: BoxRequest[];
-  drawnBox?: BoxRequest;
+  boxesDrawn: BoxEntity[];
+  drawnBox?: BoxEntity;
   xVal: number;
   yVal: number;
   height: number;
@@ -50,7 +51,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     src: this.props.src,
     errored: false,
     boxesDrawn: this.props.boxesDrawn,
-    drawnBox: new BoxRequest({
+    drawnBox: new BoxEntity({
         width: 0,
         height: 0,
         xVal: 0,
@@ -115,7 +116,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
           this.props.parent.showOption(true, box.x + rect.left, box.y, box);
          sent = true;
       }else{
-        if (sent == false){
+        if (!sent){
           this.props.parent.showOption(false, 0, 0, box);
         }
       }
@@ -134,7 +135,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
 onMouseUp = (event:any) => {
   if(this.state.mouseDown){
     let boxes = this.state.boxesDrawn;
-    let box = new BoxRequest({
+    let box = new BoxEntity({
         Width: this.state.width,
         Height: this.state.height,
         X: Math.floor(this.state.xVal),
@@ -166,7 +167,7 @@ drawBoxes = async () => {
             let name = "";
             this.props.parent.state.requests!.map((request) =>{
               request.boxes.collection.map((box) =>{
-                if (box.x == this.state.boxesDrawn[i].x && box.y == this.state.boxesDrawn[i].y){
+                if (box.x === this.state.boxesDrawn[i].x && box.y === this.state.boxesDrawn[i].y){
                   boxX = box.x;
                   boxY = box.y;
                   name = request.signer.name;
@@ -193,7 +194,7 @@ drawBoxes = async () => {
 
 onMouseMove = async (event:any) => {
    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
-    if(this.state.mouseDown==true){
+    if(this.state.mouseDown===true){
         let ctx = this.state.ctx;
         ctx!.fillStyle = "#E3E1DF";
         this.setState({

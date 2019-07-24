@@ -179,7 +179,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
       const {selectedForms, step2 } = this.state;
       const {userObject} = this.props;
       let hide = <><p>Please Select a Form.</p></>;
-      if (selectedForms != null && selectedForms!.length != 0 && selectedForms![0] != null && !step2){
+      if (selectedForms !== null && selectedForms!.length !== 0 && selectedForms![0] !== null && !step2){
         hide = <>
         <Button onClick={this.onStep2} type={"primary"}>
         Send
@@ -191,15 +191,15 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         <Button onClick={this.onStep2} type={"danger"}>
         Back
       </Button></>;
-        let users: UserEntity[] = [];
+        let passUsers: UserEntity[] = [];
         this.state.users.collection.map((user) =>{
           this.state.selectedUsers!.map((index) => {
-            if (user.id == index){
-              users.push(user);
+            if (user.id === Number(index)){
+              passUsers.push(user);
             }
           })
         })
-        display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={users}/></>;
+        display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
       }else{
         display = <>          <Select
         mode="multiple"

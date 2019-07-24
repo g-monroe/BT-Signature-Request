@@ -23,6 +23,7 @@ class BoxEntity {
 
 
   constructor(data: any) {
+    
     this.id = data.Id;
     this.width = data.Width;
     this.height = data.Height;

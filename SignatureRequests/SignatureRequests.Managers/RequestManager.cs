@@ -1,4 +1,5 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -80,26 +81,26 @@ namespace SignatureRequests.Managers
             _requestHandler.SaveChanges();
             if (request.Status == "Signed")
             {
-               Email("Sent you an email that the request was sent.", request.Signer.Email);
+               Email("Sent you an email that the request was sent.", "Request Signed!", request.Signer.Email);
             }
             return request;
         }
-        public static void Email(string htmlString, string toEmail)
+        private static void Email(string htmlString, string subject, string toEmail)
         {
             try
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtp = new SmtpClient();
-                message.From = new MailAddress("btsignacc@gmail.com");
+                message.From = new MailAddress(Constants.EmailAccount);
                 message.To.Add(new MailAddress(toEmail));
-                message.Subject = "Test";
+                message.Subject = subject;
                 message.IsBodyHtml = true; //to make message body as html  
                 message.Body = htmlString;
                 smtp.Port = 587;
                 smtp.Host = "smtp.gmail.com"; //for gmail host  
                 smtp.EnableSsl = true;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("btsignacc@gmail.com", "powell110");
+                smtp.Credentials = new NetworkCredential(Constants.EmailAccount, "powell110");
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.Send(message);
             }

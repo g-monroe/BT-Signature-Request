@@ -5,7 +5,7 @@ class GroupResponseList {
   collection: GroupEntity[];
 
   constructor(data: any) {
-    if (data.TotalResults != undefined){
+    if (data.TotalResults !== undefined){
       this.count = data.TotalResults;
     }else{
       this.count = 0;
