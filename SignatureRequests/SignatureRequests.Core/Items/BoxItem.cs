@@ -13,16 +13,16 @@ namespace SignatureRequests.Core.Items
         public float y { get; set; }
         public int width { get; set; }
         public int height { get; set; }
-        public bool signature { get; set; }
+        public bool isSignature { get; set; }
         public string text { get; set; }
-        public BoxItem(float X, float Y, int Width, int Height, bool Signature, string Text)
+        public BoxItem(float x, float y, int width, int height, bool isSignature, string text)
         {
-            x = X;
-            y = Y;
-            width = Width;
-            height = Height;
-            text = Text;
-            signature = Signature;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.text = text;
+            this.isSignature = isSignature;
         }
     }
 }

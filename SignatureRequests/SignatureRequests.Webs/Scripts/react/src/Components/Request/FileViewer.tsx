@@ -157,7 +157,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 SentDate: new Date(),
                 Status: SignedStatus.NOTSIGNED
             });
-            console.log(newRequest);
             newRequest.boxes.collection.push(newBox!);
             this.state.requests!.push(newRequest);
         }
@@ -172,7 +171,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         //Create Group;
         const {title, descript, group, form, requests} = this.state;
         const {groupHandler, boxHandler, userObject, requestHandler } = this.props;
-        if (title.length < 2 || descript.length < 2){
+        if (title.length > 0 || descript.length > 0){
             message.info('Title or Description not big enough!');
             return;
         }//Continue
@@ -211,7 +210,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     let newBox = new BoxRequest(box);
                     newBox.formId = form!.id;
                     newBox.requestId = requestResult.id;
-                    newBox.signedStatus = box.signedStatus;
                     newBox.date = new Date();
                     newBox.isModel = false;
                     const boxResult = (await boxHandler!.createBox(newBox));
@@ -244,7 +242,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         })
         let items = [];
         const form = file.filePath.split('.');
-        let formName = form.slice(0, form.length-1);
+        const formName = form.slice(0, form.length-1);
         for(let i = 0; i<file.numPages; i++){
             let newItem = <FormImage pageNum={i} 
                                     src={`../../../../../assets/v1/documents/${formName}/${i}.png`} 
