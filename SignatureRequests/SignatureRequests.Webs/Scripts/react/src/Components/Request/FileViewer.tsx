@@ -136,12 +136,28 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     TotalResults: 0,
                     BoxesList: []
                 },
-                Requestor: new UserEntity(this.state.requestor!),
-                Signer: new UserEntity(newUser!),
+                Requestor: {
+                    Id: this.state.requestor!.id,
+                    Email: this.state.requestor!.email,
+                    Name: this.state.requestor!.name,
+                    Password: this.state.requestor!.password,
+                    Initial: this.state.requestor!.initial!,
+                    Role: this.state.requestor!.role,
+                    Signature: this.state.requestor!.signature!
+                },
+                Signer: {
+                    Id: newUser!.id,
+                    Email: newUser!.email,
+                    Name: newUser!.name,
+                    Password: newUser!.password,
+                    Initial: newUser!.initial,
+                    Role: newUser!.role,
+                    Signature: newUser!.signature
+                },
                 SentDate: new Date(),
                 Status: SignedStatus.NOTSIGNED
             });
-
+            console.log(newRequest);
             newRequest.boxes.collection.push(newBox!);
             this.state.requests!.push(newRequest);
         }
