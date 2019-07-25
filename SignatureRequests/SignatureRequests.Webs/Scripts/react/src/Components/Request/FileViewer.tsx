@@ -185,6 +185,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             req.requestorId = userObject.user.id;
             req.sentDate = new Date();
             req.signerId  = request.signer.id;
+            req.status = RequestStatusSigning.PENDING;
             const requestResult = (await requestHandler!.createRequest(req));
             if (requestResult === null){//Check if it was created successfully.
                 message.error('Failed to create Request!');
@@ -206,7 +207,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 })
             }
         })
-        message.success('Success! Redirecting to Dashboard!');
         return true;
     }
     async componentDidMount() {
@@ -296,15 +296,15 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         let description = "";
 
         if (this.state.requests === null || this.state.requests!.length === 0){
-            message.info('Assign one or more box to a user');
+            message.info('Assign one or more boxes to a user');
             return;
         } else if(this.state.form){
           title = this.state.form.title || "";
           description = this.state.form.description || "";
         }
         await this.props.onPressSend(this.onSave, title, description)
-        
     }
+    
     pageChange = (change: number, boxes: BoxEntity[]) => {
         let boxesDrawn = this.state.boxesDrawn;
         let i = 0;
