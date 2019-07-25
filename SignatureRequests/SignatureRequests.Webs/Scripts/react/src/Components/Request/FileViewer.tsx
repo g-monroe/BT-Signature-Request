@@ -1,24 +1,19 @@
 import React from "react";
-import { Form as AntForm, Button, Input, Upload, Icon, Select, message, } from 'antd';
+import { Button, Select, message, } from 'antd';
 import "antd/dist/antd.css";
 import { BoxHandler, IBoxHandler } from "../../Handlers/BoxHandler";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import FormEntity from "../../Entities/FormEntity";
 import { IFormHandler, FormHandler } from "../../Handlers/FormHandler";
-import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
 import BoxRequest from "../../Entities/BoxRequest";
 import UserEntity from "../../Entities/UserEntity";
 import RequestEntity from "../../Entities/RequestEntity";
 import BoxEntity from "../../Entities/BoxEntity";
-import BoxResponseList from "../../Entities/BoxResponseList";
 import RequestResponseList from "../../Entities/RequestResponseList";
 import { IUserHandler, UserHandler } from "../../Handlers/UserHandler";
-import { request } from "https";
 import Step2 from "../../Pages/Requester/Send/Step2";
-import TextArea from "antd/lib/input/TextArea";
-import GroupRequest from "../../Entities/GroupRequest";
 import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
@@ -27,8 +22,10 @@ import BoxType from "../../Util/Enums/BoxType";
 import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
 import { RequestDueDate } from "../../Util/Constants";
+import GroupRequest from "../../Entities/GroupRequest";
 
 const {Option} = Select;
+
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userHandler?: IUserHandler;
@@ -39,6 +36,7 @@ export interface IFileViewerProps {
     users: UserEntity[];
     userObject:ContextUserObject;
     parent: Step2;
+    onPressSend:(send: (title:string, desc:string, dueDate:Date)=>Promise<boolean>, preTitle:string, preDesc:string )=>void;
 }
  
 export interface IFileViewerState {
@@ -53,9 +51,6 @@ export interface IFileViewerState {
     showX: number;
     showY: number;
     requestor?: UserEntity;
-    finalize: boolean;
-    descript: string;
-    title: string;
     group?: GroupEntity;
     selectedBox?: BoxEntity;
 }
@@ -79,9 +74,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         showOptions: false,
         showX: 0,
         showY: 0,
-        title: "",
-        descript: "",
-        finalize: false,
         requests: [],
         
     };
@@ -168,30 +160,22 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             images: this.state.images
         })
     }
-    onSave = async () =>{
+    onSave = async (title:string, desc:string, dueDate:Date) =>{
         //Create Group;
-        const {title, descript, group, form, requests} = this.state;
+        const { group, form, requests} = this.state;
         const {groupHandler, boxHandler, userObject, requestHandler } = this.props;
-        if (title.length > 0 || descript.length > 0){
-            message.info('Title or Description not big enough!');
-            return;
-        }//Continue
-        if (requests === null || requests!.length === 0){
-            message.info('Please assign some or all boxes out!');
-            return;
-        }
+        
         let groupItem = new GroupRequest(group);
         groupItem.title = title;
-        groupItem.description = descript;
+        groupItem.description = desc;
         groupItem.createDate = new Date();
-        groupItem.dueDate = new Date();
-        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + RequestDueDate);
+        groupItem.dueDate = dueDate;
         groupItem.status = RequestStatusSigning.PENDING;
         groupItem.formId = form!.id;
         const groupResult = (await groupHandler!.createGroup(groupItem));
         if (groupResult === null){
             message.error('Failed to create Group!');
-            return;
+            return false;
         }
         //Create Request, get response with ID, use ID to create boxes.
         requests!.map(async (request) => {
@@ -204,7 +188,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             const requestResult = (await requestHandler!.createRequest(req));
             if (requestResult === null){//Check if it was created successfully.
                 message.error('Failed to create Request!');
-                return;
+                return false;
             }else{
                 request.boxes.collection.map(async (box) =>{
                     let newBox = new BoxRequest(box);
@@ -215,12 +199,15 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                     const boxResult = (await boxHandler!.createBox(newBox));
                     if (boxResult === null){//Check if it was created successfully.
                         message.error('Failed to create a box!');
-                        return;
+                        return false;
+                    }else{
+                        return true;
                     }
                 })
             }
         })
         message.success('Success! Redirecting to Dashboard!');
+        return true;
     }
     async componentDidMount() {
         const file = (await this.props.formHandler!.getFormById(this.props.form));
@@ -251,8 +238,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                                     userObject={this.props.userObject} 
                                     pageChange={this.pageChange} 
                                     boxesDrawn={newBoxes} 
-                                    numPages={file!.numPages} 
-                                    handleSave={this.onSave}
+                                    numPages={file!.numPages}
                                     parent={this}/>;
             items.push(newItem);
         }
@@ -305,10 +291,19 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         return <><h1>No Page Found</h1></>;
     };
 
-    onFinal =() =>{
-        this.setState({
-            finalize: true
-        })
+    onFinal = async () =>{
+        let title = "";
+        let description = "";
+
+        if (this.state.requests === null || this.state.requests!.length === 0){
+            message.info('Assign one or more box to a user');
+            return;
+        } else if(this.state.form){
+          title = this.state.form.title || "";
+          description = this.state.form.description || "";
+        }
+        await this.props.onPressSend(this.onSave, title, description)
+        
     }
     pageChange = (change: number, boxes: BoxEntity[]) => {
         let boxesDrawn = this.state.boxesDrawn;
@@ -329,16 +324,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             <Option value={user.id.toString()} key={index + 1}>{user.name}</Option>
         )
     }
-    onhandleTitleChange = (event:any) => {
-        this.setState({
-            title: event.target.value
-        })
-    }
-    onhandleDescrChange = (event:any) => {
-        this.setState({
-            descript: event.target.value
-        })
-    }
+    
     render() { 
         if(!this.state.fileUploaded){
             return <></>;
@@ -354,13 +340,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 Finalize
             </Button>
             </>;
-            if (this.state.finalize){
-                display = <>
-                    <Input value={this.state.title} onChange={this.onhandleTitleChange} id="title" placeholder="'Winson House Contract'" type="text" name="Title"/>
-                    <TextArea value={this.state.descript} onChange={this.onhandleDescrChange} id="description" rows={4} name="Description" placeholder="This contact blah blah blah"/>
-                    <Button onClick={this.onSave}>Finish</Button>
-                </>;
-            }
+            
         return (
             <>
             {

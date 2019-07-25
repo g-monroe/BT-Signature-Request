@@ -12,8 +12,6 @@ import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
-import  * as Routes from "../../Pages/Routing/routes";
-import { Link } from "react-router-dom";
 import Step2 from "../../Pages/Requester/Send/Step2";
 import UserEntity from "../../Entities/UserEntity";
 const { Option } = Select;
@@ -162,6 +160,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
   }
+
   onStep2 = () =>{
     this.setState({
       step2: !this.state.step2
@@ -199,7 +198,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
             }
           })
         })
-        display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
+        display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers} onPressSend = {this.props.onPressSend}/></>;
       }else{
         display = <>          <Select
         mode="multiple"

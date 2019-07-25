@@ -66,6 +66,16 @@ class Send extends React.Component<ISendProps, ISendState> {
         })
     }
 
+    checkTitleAndDescriptionLength = () =>{
+        if (!(this.state.title.length > 0)){
+            message.info('Enter a title');
+        }else if (!(this.state.description.length > 0)){
+            message.info('Enter a description');
+        }else{
+            this.onSubmit();
+        }
+        
+    }
     onInfoClick = () =>{
         this.setState({
             isInfoVisible:true
@@ -117,7 +127,7 @@ class Send extends React.Component<ISendProps, ISendState> {
                 title = "Some Final Information"
                 visible = {this.state.isConfirmVisible}
                 onCancel = {this.onCancel}
-                onOk = {this.onSubmit}
+                onOk = {this.checkTitleAndDescriptionLength}
                 closable = {false}
                 footer = {this.state.wasSuccess ? 
                         null : undefined}

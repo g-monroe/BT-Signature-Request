@@ -22,7 +22,6 @@ interface IFormImageProps{
   numPages: number;
   pageNum: number;
   parent: FileViewer;
-  handleSave: (boxes: BoxEntity[]) => void;
 }
 
 interface IFormImageState{
@@ -231,10 +230,6 @@ typeChange = (value: any) => {
     type: value,
     isTypeSelected: value !== BoxType.NONE
   });
-};
-
-onSave = async () => {
-  (await this.props.handleSave(this.state.boxesDrawn));
 };
 
   render() {
