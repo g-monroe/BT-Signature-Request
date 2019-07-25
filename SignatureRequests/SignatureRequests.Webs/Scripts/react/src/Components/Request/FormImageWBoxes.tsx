@@ -20,6 +20,7 @@ export interface IFormImageWBoxesProps{
     userObject:ContextUserObject;
     boxFilledOutData: (data:any) =>void;
 }
+
 interface IFormImageWBoxesState{
     src: string;
     errored:boolean;
@@ -45,7 +46,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   }
 
   selectedBoxSigned = (data: any) =>{
-    //Get the signature id of the user
       this.props.boxFilledOutData(data);
   }
 
@@ -57,10 +57,10 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   }
 
   drawBoxes = () =>{
-    this.props.boxes.forEach((box)=>this.drawBox(box));
+    this.props.boxes.forEach((box)=>this.drawBox(box)); //TODO Check if its signed and if so draw the signature instead 
   }
 
-  drawBox = (data: ModelBox) =>{ //TODO Check if its signed and if so draw the signature instead 
+  drawBox = (data: ModelBox) =>{ 
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');

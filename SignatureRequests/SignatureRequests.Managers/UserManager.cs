@@ -84,6 +84,42 @@ namespace SignatureRequests.Managers
             return user;
         }
 
+        public NumberResponse GetUserSigId(int UserId)
+        {
+            int id;
+            try
+            {  
+                id = _userHandler.GetById(UserId).SignatureId.GetValueOrDefault(-1);
+            }
+            catch
+            {
+                id = -1;
+            }
+
+            return new NumberResponse()
+            {
+                Num = id
+            };
+        }
+
+        public NumberResponse GetUserInitialId(int UserId)
+        {
+            int id;
+            try
+            {
+                id = _userHandler.GetById(UserId).InitialId.GetValueOrDefault(-1);
+            }
+            catch
+            {
+                id = -1;
+            }
+
+            return new NumberResponse()
+            {
+                Num = id
+            };
+        }
+
         public UserResponseList GetUsers()
         {
             var result = _userHandler.GetAllInclude();

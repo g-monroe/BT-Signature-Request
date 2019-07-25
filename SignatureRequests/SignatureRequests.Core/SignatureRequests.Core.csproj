@@ -230,6 +230,7 @@
     <Compile Include="ResponseObjects\GroupResponse.cs" />
     <Compile Include="ResponseObjects\ModelBoxResponse.cs" />
     <Compile Include="ResponseObjects\ModelBoxResponseList.cs" />
+    <Compile Include="ResponseObjects\NumberResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponseList.cs" />
     <Compile Include="ResponseObjects\RequestToCompleteResponse.cs" />

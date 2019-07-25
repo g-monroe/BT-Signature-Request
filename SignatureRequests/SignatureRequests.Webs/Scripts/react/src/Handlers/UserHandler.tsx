@@ -4,6 +4,7 @@ import UserEntity from "../Entities/UserEntity";
 import UserRequest from "../Entities/UserRequest";
 import UserVerificationEntity from '../Entities/UserVerificationEntity';
 import SimpleUser from '../Entities/ToComplete/SimpleUser';
+import NumberResponse from '../Entities/ToComplete/NumberResponse';
 
 export interface IUserHandler {
     getAll(): Promise<UserResponseList>;
@@ -55,6 +56,30 @@ export class UserHandler implements IUserHandler {
             });
         }catch (e){
             return new SimpleUser({Id:-1});
+        }
+    }
+
+    async getUsersSigId(userId:number) : Promise<NumberResponse>{
+        try{
+            return await APIHandler(`api/User/GetSigId/${userId}`,{
+                headers: {"Content-Type" : "application/json"},
+                method:'GET',
+                responseType: NumberResponse,
+            });
+        }catch(e){
+            return new NumberResponse({Num:-1});
+        }
+    }
+
+    async getUsersInitialId(userId:number) : Promise<NumberResponse>{
+        try{
+            return await APIHandler(`api/User/GetInitialId/${userId}`,{
+                headers: {"Content-Type" : "application/json"},
+                method:'GET',
+                responseType: NumberResponse,
+            });
+        }catch(e){
+            return new NumberResponse({Num:-1});
         }
     }
 }

@@ -41,6 +41,20 @@ namespace SignatureRequests.Controllers
             return users;
         }
 
+        [Route("api/User/GetSigId/{id}")]
+        public NumberResponse GetUsersSigId([FromRoute]int id)
+        {
+            var users = _userManager.GetUserSigId(id);
+            return users;
+        }
+
+        [Route("api/User/GetInitialId/{id}")]
+        public NumberResponse GetUsersInitialId([FromRoute]int id)
+        {
+            var users = _userManager.GetUserInitialId(id);
+            return users;
+        }
+
         [Route("api/User/AddUser")]
         [HttpPost]
         public UserResponse AddUser([FromBody]UserRequest me)
