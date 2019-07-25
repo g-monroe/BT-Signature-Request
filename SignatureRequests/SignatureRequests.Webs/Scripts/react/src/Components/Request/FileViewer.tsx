@@ -110,7 +110,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         }
         let newBox = this.state.selectedBox;
         let newUser = this.props.users.find(x => x.id === Number(e));
-        if (newUser!.id === this.state.requestor!.id && !remove){
+        if (!remove && newUser!.id === this.state.requestor!.id){
             newBox!.signerType = SignerType.REQUESTOR;
         }else{
             newBox!.signerType = SignerType.SIGNER;
@@ -172,7 +172,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         //Create Group;
         const {title, descript, group, form, requests} = this.state;
         const {groupHandler, boxHandler, userObject, requestHandler } = this.props;
-        if (title.length > 0 || descript.length > 0){
+        if (title.length < 0 || descript.length < 0){
             message.info('Title or Description not big enough!');
             return;
         }//Continue
