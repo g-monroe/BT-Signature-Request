@@ -115,10 +115,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
          (box.y <= (event.clientY - rect.top) && (box.y + box.height) >= (event.clientY - rect.top)) && box.pageNumber === this.state.pageNumber){
           this.props.parent.showOption(true, box.x + rect.left, box.y, box);
          sent = true;
-      }else{
-        if (!sent){
+      }else if (!sent){
           this.props.parent.showOption(false, 0, 0, box);
-        }
       }
     });
     if(this.state.isSignerTypeSelected && this.state.isTypeSelected){
@@ -194,7 +192,7 @@ drawBoxes = async () => {
 
 onMouseMove = async (event:any) => {
     const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
-    if(this.state.mouseDown===true){
+    if(this.state.mouseDown){
         let ctx = this.state.ctx;
         ctx!.fillStyle = "#E3E1DF";
         this.setState({

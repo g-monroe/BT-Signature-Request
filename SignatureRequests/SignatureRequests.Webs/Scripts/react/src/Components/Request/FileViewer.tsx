@@ -19,13 +19,14 @@ import { request } from "https";
 import Step2 from "../../Pages/Requester/Send/Step2";
 import TextArea from "antd/lib/input/TextArea";
 import GroupRequest from "../../Entities/GroupRequest";
-import { RequestStatusSigning, RequestDueDate} from "../../Util/Enums/RequestStatus";
+import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
 import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
 import BoxType from "../../Util/Enums/BoxType";
 import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
+import { RequestDueDate } from "../../Util/Text";
 
 const {Option} = Select;
 export interface IFileViewerProps {
@@ -200,7 +201,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             req.requestorId = userObject.user.id;
             req.sentDate = new Date();
             req.signerId  = request.signer.id;
-            req.status = request.status;
             const requestResult = (await requestHandler!.createRequest(req));
             if (requestResult === null){//Check if it was created successfully.
                 message.error('Failed to create Request!');
@@ -223,7 +223,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         message.success('Success! Redirecting to Dashboard!');
     }
     async componentDidMount() {
-        let file = (await this.props.formHandler!.getFormById(this.props.form));
+        const file = (await this.props.formHandler!.getFormById(this.props.form));
         const boxes = (await this.props.boxHandler!.getModelBoxes(this.props.form));
         const requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
         let newBoxes: BoxEntity[] = [];
@@ -288,10 +288,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             }),
         });
     };
-    
-    clearPageImage = () : JSX.Element => {
-        return <></>;
-    };
 
     renderPage = (): JSX.Element =>{
         if(this.state.clearPage){
@@ -352,7 +348,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 selectOptions = <Select onChange={this.selectionChanged} style={{position:"absolute", zIndex:90, display:"block", minWidth:"50px", left:this.state.showX + "px", top:this.state.showY +"px"}}><Option value="None" key={0}>None</Option>{this.renderOptions()}</Select>;
             }
             let display =            <> 
-            {this.clearPageImage()}
             {this.renderPage()}
             {selectOptions}
             <Button onClick={this.onFinal} type={"primary"}>

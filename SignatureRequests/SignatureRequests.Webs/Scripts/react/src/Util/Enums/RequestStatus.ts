@@ -5,7 +5,6 @@ enum RequestStatus {
 }
 
 export default RequestStatus;
-export const RequestDueDate = 21;
 export enum RequestStatusSigning {
     PENDING = "pending",
     COMPLETE = "Complete",
