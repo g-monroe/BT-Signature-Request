@@ -26,7 +26,7 @@ import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
 import BoxType from "../../Util/Enums/BoxType";
 import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
-import { RequestDueDate } from "../../Util/Text";
+import { RequestDueDate } from "../../Util/Constants";
 
 const {Option} = Select;
 export interface IFileViewerProps {

@@ -6,7 +6,6 @@ export class ContextUserObject{
     user:MainPageUser
     formId:number
     requestId:number
-    FormId:number
     update:(data:MainPageUser) => void
 
     constructor(data?:any){
@@ -15,7 +14,6 @@ export class ContextUserObject{
             this.formId = data.formId;
             this.requestId = data.requestId;
             this.update = data.update;
-            this.FormId = data.FormId;
         }else{
             this.user = new MainPageUser({
                 id: -1,
@@ -25,7 +23,6 @@ export class ContextUserObject{
                 type:UserType.UNKNOWN,
             });
             this.formId = -1;
-            this.FormId = -1;
             this.requestId = -1;
             this.update= (data:MainPageUser) =>{
                 this.user = data
