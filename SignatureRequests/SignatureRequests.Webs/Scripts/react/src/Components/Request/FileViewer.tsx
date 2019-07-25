@@ -19,7 +19,7 @@ import { request } from "https";
 import Step2 from "../../Pages/Requester/Send/Step2";
 import TextArea from "antd/lib/input/TextArea";
 import GroupRequest from "../../Entities/GroupRequest";
-import { RequestStatusSigning, RequestInfo } from "../../Util/Enums/RequestStatus";
+import { RequestStatusSigning, RequestDueDate} from "../../Util/Enums/RequestStatus";
 import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
 import RequestRequest from "../../Entities/RequestRequest";
 import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
@@ -184,7 +184,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         groupItem.description = descript;
         groupItem.createDate = new Date();
         groupItem.dueDate = new Date();
-        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + RequestInfo.DUEDATE);
+        groupItem.dueDate.setDate(groupItem.dueDate.getDate() + RequestDueDate);
         groupItem.status = RequestStatusSigning.PENDING;
         groupItem.formId = form!.id;
         const groupResult = (await groupHandler!.createGroup(groupItem));
@@ -229,15 +229,15 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         let newBoxes: BoxEntity[] = [];
         boxes.collection.map((box) => {
              let rBox = new BoxEntity({
-                pageNumber: box.pageNumber,
-                width: box.width,
-                height: box.height,
-                signerType: box.signerType,
-                x: box.x,
-                y: box.y,
-                type:box.type,
-                signedStatus:box.signedStatus,
-                isModel: box.isModel,
+                PageNumber: box.pageNumber,
+                Width: box.width,
+                Height: box.height,
+                SignerType: box.signerType,
+                X: box.x,
+                Y: box.y,
+                Type:box.type,
+                SignedStatus:box.signedStatus,
+                IsModel: box.isModel,
              });
              newBoxes.push(rBox);
         })
