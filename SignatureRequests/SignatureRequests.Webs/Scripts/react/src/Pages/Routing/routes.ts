@@ -92,7 +92,6 @@ export const REQUESTER = {
         hasNavBar:true,
         condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     }),
-
     "_View":new RouteEntity({
         path: "/request/view",
         link:"/request/view",

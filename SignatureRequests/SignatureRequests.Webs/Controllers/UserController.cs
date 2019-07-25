@@ -40,6 +40,12 @@ namespace SignatureRequests.Controllers
             var users = _userManager.GetSimpleUser(id);
             return users;
         }
+        [Route("api/User/GetUserById/{id}")]
+        public UserResponse GetUser([FromRoute]int id)
+        {
+            var users = _userManager.GetUser(id);
+            return users;
+        }
 
         [Route("api/User/AddUser")]
         [HttpPost]

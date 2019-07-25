@@ -12,6 +12,10 @@ import GroupRequest from "../../Entities/GroupRequest";
 import GroupEntity from "../../Entities/GroupEntity";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
+import  * as Routes from "../../Pages/Routing/routes";
+import { Link } from "react-router-dom";
+import Step2 from "../../Pages/Requester/Send/Step2";
+import UserEntity from "../../Entities/UserEntity";
 const { Option } = Select;
 const columns = [
     {
@@ -47,6 +51,7 @@ export interface ISendFormState {
     users?: UserResponseList;
     selectedUsers?: number[]; //A collection of selected user ID's. Backend will use these to assign foreign keys of request objects.
     selectedForms?: number[] | string[]; 
+    step2: boolean;
 }
 
 
@@ -60,7 +65,9 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
      
   };
 
-  state: ISendFormState = {};
+  state: ISendFormState = {
+    step2: false
+  };
 
   async componentDidMount() {
     this.setState({
@@ -155,7 +162,11 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
   }
-
+  onStep2 = () =>{
+    this.setState({
+      step2: !this.state.step2
+    })
+  }
   render() {
     if (!this.state.users) {
       return <div>Loading...</div>;
@@ -165,29 +176,46 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         onChange : this.onSelectChange
       };
 
-
+      const {selectedForms, step2 } = this.state;
+      const {userObject} = this.props;
+      let hide = <><p>Please Select a Form.</p></>;
+      if (selectedForms !== null && selectedForms!.length !== 0 && selectedForms![0] !== null && !step2){
+        hide = <>
+        <Button onClick={this.onStep2} type={"primary"}>
+        Send
+      </Button></>
+      }
+      let display = <></>;
+      if (step2){
+        hide = <>
+        <Button onClick={this.onStep2} type={"danger"}>
+        Back
+      </Button></>;
+        let passUsers: UserEntity[] = [];
+        this.state.users.collection.map((user) =>{
+          this.state.selectedUsers!.map((index) => {
+            if (user.id === Number(index)){
+              passUsers.push(user);
+            }
+          })
+        })
+        display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
+      }else{
+        display = <>          <Select
+        mode="multiple"
+        style={{ width: '100%' }}
+        placeholder="Please select"
+        onSelect={this.onSelect}
+        onDeselect={this.onDeselect}>
+        {this.createUserOptions()}
+      </Select><Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table></>;
+      }
       return (
         <>
-        
-          <Select
-            mode="multiple"
-            style={{ width: '100%' }}
-            placeholder="Please select"
-            onSelect={this.onSelect}
-            onDeselect={this.onDeselect}>
-            {this.createUserOptions()}
-          </Select>
-
-
-          
-          <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table>
-
-          <Button
-            type={"primary"}
-            onClick={this.onPressSend}>
-            Send
-          </Button>
-         
+          {display}
+          {
+            hide
+          }
         </>
       );
     }

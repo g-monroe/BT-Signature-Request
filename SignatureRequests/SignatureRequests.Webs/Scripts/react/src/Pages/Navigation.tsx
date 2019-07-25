@@ -63,7 +63,7 @@ class Navigation extends React.Component<RouteComponentProps<{}> &INavigationPro
                    </Menu> :
                    <div></div>
                }
-                <NavLink to = {userHome.link}> <div id="logo"/></NavLink>
+                <NavLink to = {userHome.path}> <div id="logo"/></NavLink>
             
             </div>
 

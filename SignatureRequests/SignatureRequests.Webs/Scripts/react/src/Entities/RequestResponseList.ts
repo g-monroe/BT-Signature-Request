@@ -6,7 +6,11 @@ class RequestResponseList {
 
   constructor(data: any) {
     this.count = data.TotalResults;
-    this.collection = data.RequestsList.map((d:RequestEntity) => new RequestEntity(d));
+    if(data.RequestsList){
+      this.collection = data.RequestsList.map((d:RequestEntity) => new RequestEntity(d));
+    }else{
+      this.collection = [] as RequestEntity[];
+    }
   }
 }
 

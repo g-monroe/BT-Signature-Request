@@ -34,8 +34,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      };
      async componentDidMount() {
        this.setState({
-           tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
-           requestData: this.getForms((await this.props.formHandler!.getAllRequested(1))),
+           tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.userObject.user.id))),
+           requestData: this.getForms((await this.props.formHandler!.getAllRequested(this.props.userObject.user.id))),
            loading: false
        });
      }
