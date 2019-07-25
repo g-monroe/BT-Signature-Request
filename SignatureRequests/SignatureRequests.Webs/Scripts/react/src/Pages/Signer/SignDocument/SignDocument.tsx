@@ -111,6 +111,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         const user = await this.props.userHandler!.getUser(request.requestorId);
         const box = await this.props.boxHandler!.getModelBoxes(this.props.userObject.requestId);
        
+        console.log(box)
         this.setState({
             requestData:request,
             sender:user,

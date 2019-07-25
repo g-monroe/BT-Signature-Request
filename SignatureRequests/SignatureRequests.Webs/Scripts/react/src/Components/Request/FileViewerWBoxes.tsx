@@ -2,7 +2,7 @@ import React from "react";
 import { Button} from 'antd';
 import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-import FormImageWBoxes, { IFormImageWBoxesProps } from "./FormImageWBoxes";
+import FormImageWBoxes from "./FormImageWBoxes";
 import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
 import { REQUESTER } from "../../Pages/Routing/routes";

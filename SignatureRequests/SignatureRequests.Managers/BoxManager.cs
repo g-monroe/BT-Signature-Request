@@ -53,7 +53,7 @@ namespace SignatureRequests.Managers
         }
         public ModelBoxResponseList GetModelBoxesByFormId(int id)
         {
-            var result = _boxHandler.GetBoxesByFormId(id);
+            var result = _boxHandler.GetModelBoxesByFormId(id);
             var models = BoxesToModelList(result);
             return models;
         }
