@@ -159,18 +159,18 @@ onMouseUp = (event:any) => {
   if(this.state.mouseDown){
     let boxes = this.state.boxesDrawn;
     let box = new BoxRequest({
-        Width: this.state.width,
-        Height: this.state.height,
-        X: Math.floor(this.state.xVal),
-        Y: Math.floor(this.state.yVal),
-        Type: this.state.type!,
-        SignerType: this.state.signerType!,
-        SignedStatus: SignedStatus.NOTSIGNED,
-        FormId: this.props.userObject.formId,
-        PageNumber: this.state.pageNumber,
-        IsModel: true,
-        FormHeight: this.state.formHeight,
-        FormWidth: this.state.formWidth
+        width: this.state.width,
+        height: this.state.height,
+        x: Math.floor(this.state.xVal),
+        y: Math.floor(this.state.yVal),
+        type: this.state.type!,
+        signerType: this.state.signerType!,
+        signedStatus: SignedStatus.NOTSIGNED,
+        formId: this.props.userObject.formId,
+        pageNumber: this.state.pageNumber,
+        isModel: true,
+        formHeight: this.state.formHeight,
+        formWidth: this.state.formWidth
     });
     boxes.push(box);
     this.setState({
