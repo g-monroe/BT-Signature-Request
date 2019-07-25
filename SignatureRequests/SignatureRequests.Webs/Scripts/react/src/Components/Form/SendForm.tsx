@@ -116,47 +116,6 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     }));
   }
 
-
-  onPressSend = async () => {
-    let title = "";
-    let description = "";
-
-    if(this.state.selectedForms!.length === 1){
-      title = this.state.forms!.collection[(this.state.selectedForms![0] as number)].title || "";
-      description = this.state.forms!.collection[(this.state.selectedForms![0] as number)].description || "";
-    }
-    await this.props.onPressSend(this.onSend, title, description)
-  }
-
-  onSend = async (title:string, desc:string, dueDate:Date) => {
-    const currDate = new Date();
-    try{
-      for(let i=0; i<this.state.selectedForms!.length; i++){
-        let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
-                        FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
-                        Title: title,
-                        Description: desc,
-                        CreateDate: currDate,
-                        DueDate: dueDate,
-                        Status:RequestStatusSigning.NOTSTARTED
-
-                  })));
-        for(let j=0; j<this.state.selectedUsers!.length; j++){ 
-          let request: RequestRequest = ({
-            signerId: this.state.selectedUsers![j], 
-            groupId: group.id,
-            requestorId: this.props.userObject.user.id!, 
-            status: FormProgress.PENDING, 
-            sentDate: currDate });
-          this.props.requestHandler!.createRequest(request);
-        }
-      }
-      return true;
-    }catch(e){
-      return false;
-    }
-  }
-
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
   }

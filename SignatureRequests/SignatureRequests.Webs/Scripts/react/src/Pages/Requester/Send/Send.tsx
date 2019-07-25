@@ -54,25 +54,33 @@ class Send extends React.Component<ISendProps, ISendState> {
     }
 
     onSubmit = async () =>{
-        await this.state.sendFunction!(this.state.title, this.state.description, this.state.date).then((isSuccess)=>{
-            if(isSuccess){
-                message.success("Form successfully sent!");
-                this.setState({
-                    wasSuccess:true
-                })
-            }else{
-                message.error("Something went wrong");
-            }
-        })
-    }
-
-    checkTitleAndDescriptionLength = () =>{
-        if (!(this.state.title.length > 0)){
+        if (this.state.title.length <= 0){
             message.info('Enter a title');
-        }else if (!(this.state.description.length > 0)){
+        }else if (this.state.description.length <= 0){
             message.info('Enter a description');
         }else{
-            this.onSubmit();
+            this.state.sendFunction!(this.state.title, this.state.description, this.state.date).then((isSuccess)=>{
+                if(isSuccess){
+                    console.log("This should be 3rd")
+                    message.success("Form successfully sent!");
+                    this.setState({
+                        wasSuccess:true
+                    })
+                }else{
+                    message.error("Something went wrong");
+                }
+            })
+        }
+        
+    }
+
+    checkTitleAndDescriptionLength = async () =>{
+        if (this.state.title.length <= 0){
+            message.info('Enter a title');
+        }else if (this.state.description.length <= 0){
+            message.info('Enter a description');
+        }else{
+            await this.onSubmit();
         }
         
     }
@@ -126,9 +134,10 @@ class Send extends React.Component<ISendProps, ISendState> {
             <Modal
                 title = "Some Final Information"
                 visible = {this.state.isConfirmVisible}
-                onCancel = {this.onCancel}
-                onOk = {this.checkTitleAndDescriptionLength}
+                onCancel = {this.state.wasSuccess ? undefined : this.onCancel}
+                onOk = {this.onSubmit}
                 closable = {false}
+                
                 footer = {this.state.wasSuccess ? 
                         null : undefined}
                 >

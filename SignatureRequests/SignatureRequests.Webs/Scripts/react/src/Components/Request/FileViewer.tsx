@@ -21,8 +21,8 @@ import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
 import BoxType from "../../Util/Enums/BoxType";
 import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
-import { RequestDueDate } from "../../Util/Constants";
 import GroupRequest from "../../Entities/GroupRequest";
+import { boolean } from "yup";
 
 const {Option} = Select;
 
@@ -160,7 +160,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             images: this.state.images
         })
     }
-    onSave = async (title:string, desc:string, dueDate:Date) =>{
+    onSave = async (title:string, desc:string, dueDate:Date) : Promise<boolean> =>{
         //Create Group;
         const { group, form, requests} = this.state;
         const {groupHandler, boxHandler, userObject, requestHandler } = this.props;
@@ -172,41 +172,46 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         groupItem.dueDate = dueDate;
         groupItem.status = RequestStatusSigning.PENDING;
         groupItem.formId = form!.id;
-        const groupResult = (await groupHandler!.createGroup(groupItem));
-        if (groupResult === null){
+        let groupResult : GroupEntity;
+        try{
+            groupResult = (await groupHandler!.createGroup(groupItem));
+        }catch(e){
             message.error('Failed to create Group!');
             return false;
-        }
-        //Create Request, get response with ID, use ID to create boxes.
-        requests!.map(async (request) => {
+        }  
+        //Create request, get response with ID, use ID to create boxes.
+        await requests!.map(async (request) => {
             //Create RequestRequest
             let req = new RequestRequest(request);
             req.groupId = groupResult.id;
             req.requestorId = userObject.user.id;
             req.sentDate = new Date();
             req.signerId  = request.signer.id;
-            req.status = RequestStatusSigning.PENDING;
-            const requestResult = (await requestHandler!.createRequest(req));
-            if (requestResult === null){//Check if it was created successfully.
+            req.status = request.status;
+            let requestResult : RequestEntity;
+            try{
+                requestResult = (await requestHandler!.createRequest(req));
+            }catch(e){
                 message.error('Failed to create Request!');
                 return false;
-            }else{
-                request.boxes.collection.map(async (box) =>{
+            }
+                await request.boxes.collection.map(async (box) =>{
                     let newBox = new BoxRequest(box);
                     newBox.formId = form!.id;
                     newBox.requestId = requestResult.id;
                     newBox.date = new Date();
                     newBox.isModel = false;
-                    const boxResult = (await boxHandler!.createBox(newBox));
-                    if (boxResult === null){//Check if it was created successfully.
+                    
+                    try{
+                        (await boxHandler!.createBox(newBox));
+                        console.log("This should be first")
+                    }catch(e){
                         message.error('Failed to create a box!');
                         return false;
-                    }else{
-                        return true;
-                    }
-                })
-            }
+                    }              
+                })           
         })
+        console.log("This should be 2nd")
         return true;
     }
     async componentDidMount() {
