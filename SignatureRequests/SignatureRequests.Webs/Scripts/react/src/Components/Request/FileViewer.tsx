@@ -110,7 +110,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         }
         let newBox = this.state.selectedBox;
         let newUser = this.props.users.find(x => x.id === Number(e));
-        if (newUser!.id === this.state.requestor!.id && !remove){
+        if (!remove && newUser!.id === this.state.requestor!.id){
             newBox!.signerType = SignerType.REQUESTOR;
         }else{
             newBox!.signerType = SignerType.SIGNER;
