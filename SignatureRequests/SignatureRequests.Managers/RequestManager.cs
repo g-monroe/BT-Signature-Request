@@ -144,11 +144,8 @@ namespace SignatureRequests.Managers
         {
             return new RequestResponse(){
                 Id = data.Id,
-                Signer = _userEngine.UserToListItem(data.Signer),
                 SignerId = data.SignerId,
-                Group = _groupEngine.GroupToListItem(data.Group),
                 GroupId = data.GroupId,
-                Requestor = _userEngine.UserToListItem(data.Requestor),
                 RequestorId = data.RequestorId,
                 Status = data.Status,
                 SentDate = data.SentDate,

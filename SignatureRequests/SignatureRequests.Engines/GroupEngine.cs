@@ -74,9 +74,7 @@ namespace SignatureRequests.Engines
                 resp.RequestsList.Add(new RequestResponse()
                 {
                     Id = request.Id,
-                    Signer = _userEngine.UserToListItem(request.Signer),
                     SignerId = request.SignerId,
-                    Requestor = _userEngine.UserToListItem(request.Requestor),
                     RequestorId = request.RequestorId,
                     Status = request.Status,
                     SentDate = request.SentDate,
@@ -87,7 +85,6 @@ namespace SignatureRequests.Engines
             return new GroupResponse()
             {
                 Id = group.Id,
-                Form = FormToListItem(group.Form),
                 FormId = group.FormId,
                 Title = group.Title,
                 Description = group.Description,
@@ -124,7 +121,6 @@ namespace SignatureRequests.Engines
                 Description = form.Description,
                 FilePath = form.FilePath,
                 Title = form.Title,
-                User = _userEngine.UserToListItem(form.User),
                 UserId = form.UserId,
                 NumPages = form.NumPages,
                 GroupEntities = resp
@@ -159,7 +155,6 @@ namespace SignatureRequests.Engines
                     SignerType = box.SignerType,
                     SignedStatus = box.SignedStatus,
                     RequestId = box.RequestId,
-
                     SignatureId = box.SignatureId,
                     FormId = box.FormId,
                     PageNumber = box.PageNumber,
@@ -172,11 +167,8 @@ namespace SignatureRequests.Engines
             return new RequestResponse()
             {
                 Id = request.Id,
-                Signer = _userEngine.UserToListItem(request.Signer),
                 SignerId = request.SignerId,
-                Group = GroupToListItem(request.Group),
                 GroupId = request.GroupId,
-                Requestor = _userEngine.UserToListItem(request.Requestor),
                 RequestorId = request.RequestorId,
                 Status = request.Status,
                 SentDate = request.SentDate,

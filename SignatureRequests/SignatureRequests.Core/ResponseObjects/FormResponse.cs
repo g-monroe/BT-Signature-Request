@@ -14,7 +14,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public string Title { get; set; } 
         public string Description { get; set; }
         public DateTime CreateDate { get; set; }
-        public virtual UserResponse User { get; set; }
         public int UserId { get; set; }
         public int NumPages { get; set; }
         public GroupResponseList GroupEntities { get; set; }
