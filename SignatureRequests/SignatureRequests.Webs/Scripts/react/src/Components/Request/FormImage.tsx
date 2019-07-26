@@ -435,6 +435,9 @@ drawBoxes = async () => {
          }
      })
      message.success('Success! Redirecting to Dashboard!');
+     this.setState({
+       wasSuccess: true
+     })
   };
 
   onLoad = async () => {
