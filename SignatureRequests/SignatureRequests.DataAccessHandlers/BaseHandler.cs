@@ -72,7 +72,7 @@ namespace SignatureRequests.DataAccessHandlers
 
         public T GetById(int id)
         {
-            return _dbSet.First(e => e.Id == id);
+            return _dbSet.First(e => e.Id == id); 
         }
 
         public IEnumerable<T> GetByIds(IEnumerable<int> ids)

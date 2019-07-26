@@ -13,7 +13,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
     public interface IFormManager
     {
         FormResponseList GetForms();
-        FormResponseList GetFormById(int id);
+        FormResponse GetFormById(int id);
         FormResponseList GetFormsByUserId(int id);
         Task SaveDocumentAsync(MultipartMemoryStreamProvider provider);
         int GetPageCount(MultipartMemoryStreamProvider provider);

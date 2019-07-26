@@ -51,6 +51,12 @@ namespace SignatureRequests.Managers
             var resp = BoxToListItem(result);
             return resp;
         }
+        public BoxResponseList GetBoxesByFormId(int id)
+        {
+            var result = _boxHandler.GetBoxesByFormId(id);
+            var resp = BoxToListResponse(result);
+            return resp;
+        }
         public ModelBoxResponseList GetModelBoxesByFormId(int id)
         {
             var result = _boxHandler.GetModelBoxesByFormId(id);
