@@ -83,6 +83,8 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 Type:box.type,
                 SignedStatus:box.signedStatus,
                 IsModel: box.isModel,
+                FormWidth: box.formWidth,
+                FormHeight: box.formHeight
              });
              newBoxes.push(rBox);
         })
