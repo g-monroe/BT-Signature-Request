@@ -424,6 +424,8 @@ drawBoxes = async () => {
                  newBox.requestId = requestResult.id;
                  newBox.date = new Date();
                  newBox.isModel = false;
+                 newBox.formHeight = box.formHeight;
+                 newBox.formWidth = box.formWidth;
                  const boxResult = (await boxHandler!.createBox(newBox));
                  if (boxResult === null){//Check if it was created successfully.
                      message.error('Failed to create a box!');

@@ -62,7 +62,7 @@ namespace SignatureRequests.Engines
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
                         SignatureId = box.SignatureId,
-                        Form = FormToListItem(box.Form),
+                        Form = null,
                         FormId = box.FormId,
                         PageNumber = box.PageNumber,
                         IsModel = box.IsModel,

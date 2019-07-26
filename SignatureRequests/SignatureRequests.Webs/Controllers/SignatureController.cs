@@ -60,7 +60,7 @@ namespace SignatureRequests.Controllers
         [Route("api/Signature/HasInitial/{id}")]
         [HttpGet]
         public ExistsResponse HasInitialWithID([FromRoute]int id)
-        {
+         {
             return _signatureManager.HasUserInitial(id);
         }
 
