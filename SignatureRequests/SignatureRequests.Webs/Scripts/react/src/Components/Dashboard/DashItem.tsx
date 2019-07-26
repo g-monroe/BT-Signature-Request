@@ -23,6 +23,7 @@ export interface IDashItemProps {
     groupEntity: GroupEntity;
     isOwner: boolean;
     groupHandler?: IGroupHandler;
+    deleteGroup:(id: number) => void;
 }
  
 export interface IDashItemState {
@@ -45,7 +46,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (this.props.isOwner){
       //Send request and get the response
       //Then demount the component
-      this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
+      // this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
+      this.props.deleteGroup(this.props.groupEntity.id);
     }
    }
    componentDidMount(){
@@ -100,7 +102,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
   render() {
     const { groupEntity, isOwner } = this.props;
     let options = <>
-    <Link to={Routes.REQUESTER._Edit.link(this.props.groupEntity.formId)}><button style={{color:'#222'}} className="btn-success action-btn"><FontAwesomeIcon icon={faPencilAlt} /></button></Link>
     <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button></>;
 
     if (!isOwner && this.state.requestSign){
@@ -121,7 +122,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <Tabs defaultActiveKey="1">
           <TabPane tab="Description" key="1">
             <div style={{height: "70px", overflow: "hidden", overflowY:"scroll"}}>
-            <span className="badge budge-success ml">Due: <Moment>{groupEntity.dueDate.toString()}</Moment></span><br/>
+            <span className="badge budge-success ml">Due: <Moment>{groupEntity.dueDate.toLocaleString()}</Moment></span><br/>
           {groupEntity.description}
             </div>
           </TabPane>

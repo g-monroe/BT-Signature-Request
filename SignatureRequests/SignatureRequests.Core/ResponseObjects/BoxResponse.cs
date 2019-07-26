@@ -20,7 +20,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public int? RequestId { get; set; }
         public SignatureResponse Signature { get; set; }
         public int? SignatureId { get; set; }
-        public FormResponse Form { get; set; }
         public int? FormId { get; set; }
         public int PageNumber { get; set; }
         public bool IsModel { get; set; }
