@@ -28,7 +28,7 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return _context.Forms.Include(form => form.User).Include(form => form.GroupEntities.Select(r => r.RequestEntities));
 
-        }
+        } 
         public IEnumerable<FormEntity> GetRequested(int id)
         {
             return _context.Forms.Include(form => form.User).Include(x => x.GroupEntities.Select(r => r.RequestEntities.Select(u =>u.BoxEntities))).Where(g => g.GroupEntities.Where(t => t.RequestEntities.Where(r => r.SignerId == id).Any()).Any());

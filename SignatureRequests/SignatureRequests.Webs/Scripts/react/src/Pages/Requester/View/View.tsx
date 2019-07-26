@@ -1,42 +1,45 @@
  import * as React from 'react';
-import { Table } from 'antd';
+import { Table, Tag, Row, Col, Layout } from 'antd';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 import { IGroupHandler, GroupHandler } from '../../../Handlers/GroupHandler';
 import GroupResponseList from '../../../Entities/GroupResponseList';
 import FormResponseList from '../../../Entities/FormResponseList';
 import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
+import { RequestStatusSigning } from '../../../Util/Enums/RequestStatus';
+import { REQUESTER } from '../../Routing/routes';
+import { Link } from 'react-router-dom';
+import FormEntity from '../../../Entities/FormEntity';
+
+const { Header, Content } = Layout;
 
  const columns  = [
     {
+        title: 'Filepath',
+        dataIndex: 'form',
+        key: 'form',
+        render: (form: FormEntity) => {
+            return <Link to = {REQUESTER._FormView.link(form.id)}>{form.filePath}</Link>
+        }
+    },
+    {
         title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-        //render link to pdf file viewer 
+        dataIndex: 'title'
     },
     {
         title: 'Description',
-        dataIndex: 'description',
-        key: 'description'
+        dataIndex: 'description'
     },
     {
-        title: 'Form',
-        dataIndex: 'form',
-        key: 'form'
+        title: 'Number of Pages',
+        dataIndex: 'numPages',
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status'
+        title: 'Active Copies',
+        dataIndex: 'activeCopies'
     },
     {
         title: 'Creation Date',
-        dataIndex: 'creationDate',
-        key: 'creationDate'
-    },
-    {
-        title: 'Due Date',
-        dataIndex: 'dueDate',
-        key: 'dueDate'
+        dataIndex: 'creationDate'
     }
  ]
 
@@ -49,6 +52,7 @@ import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
  export interface IViewState {
     forms?: FormResponseList;
     tableData?: any[];
+    isLoaded: boolean;
  }
   
  class View extends React.Component<IViewProps, IViewState> {
@@ -57,10 +61,15 @@ import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
         formHandler: new FormHandler()
      };
 
+    state: IViewState = {
+        isLoaded: false
+    };
+
     async componentDidMount() {
         this.setState({
             forms: (await this.props.formHandler!.getAllByUser(this.props.userObject.user.id)),
-            tableData: this.getForms(await this.props.formHandler!.getAllByUser(this.props.userObject.user.id))
+            tableData: this.getForms(await this.props.formHandler!.getAllByUser(this.props.userObject.user.id)),
+            isLoaded: true
         });
     }
 
@@ -68,27 +77,31 @@ import { IFormHandler, FormHandler } from '../../../Handlers/FormHandler';
         const data = [];
 
         for(let i=0; i<forms.count; i++){
-            for(let j=0; j<forms.collection[i].groups.count; j++){
-                data.push({
-                    title: forms.collection[i].groups.collection[j].title,
-                    description: forms.collection[i].groups.collection[j].description ? forms.collection[i].groups.collection[j].description!.substring(0,15): "",
-                    form: forms.collection[i].title,
-                    status: forms.collection[i].groups.collection[j].status,
-                    creationDate: new Date(forms.collection[i].groups.collection[j].createDate).toDateString(),
-                    dueDate: new Date(forms.collection[i].groups.collection[j].dueDate)
-                });
-            }
+            data.push({
+                form: forms.collection[i],
+                title: forms.collection[i].title,
+                description: forms.collection[i].description ? forms.collection[i].description!.substring(0,15): "",
+                numPages: forms.collection[i].numPages,
+                activeCopies: forms.collection[i].groups.collection.filter(group => group.status !== RequestStatusSigning.COMPLETE).length,
+                creationDate: new Date(forms.collection[i].createDate).toDateString()
+            });
         }
         return data;
       }
 
      render() { 
-         return (  
-            <>
-            <h1  id = 'HeaderText'>View a Form</h1>
-            <Table columns={columns} dataSource={this.state.tableData!}/>
-            </>
-         );
+        if (!this.state.isLoaded) {
+            return <div>Loading...</div>;
+        }else{
+            return (  
+                <>
+                <h1  id = 'HeaderText'>View a Form</h1>
+                <div style={{width: '100%', justifyContent: 'center', display: 'flex'}}>
+                <Table style={{width: '80%'}} columns={columns} dataSource={this.state.tableData!}/>
+                </div>
+                </>
+            );
+        }
      }
  }
   
