@@ -201,6 +201,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             req.requestorId = userObject.user.id;
             req.sentDate = new Date();
             req.signerId  = request.signer.id;
+            req.status = request.status;
             const requestResult = (await requestHandler!.createRequest(req));
             if (requestResult === null){//Check if it was created successfully.
                 message.error('Failed to create Request!');

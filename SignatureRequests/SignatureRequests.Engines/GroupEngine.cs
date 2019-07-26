@@ -161,7 +161,6 @@ namespace SignatureRequests.Engines
                     RequestId = box.RequestId,
 
                     SignatureId = box.SignatureId,
-                    Form = FormToListItem(box.Form),
                     FormId = box.FormId,
                     PageNumber = box.PageNumber,
                     IsModel = box.IsModel,
