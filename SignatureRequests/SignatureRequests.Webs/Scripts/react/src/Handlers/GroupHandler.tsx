@@ -16,7 +16,7 @@ export class GroupHandler implements IGroupHandler {
         });
     }
     async deleteGroup(id: number): Promise<GroupEntity>{
-        let collection = await APIHandler(`/api/Group/Delete/${id}`, {
+        const collection = await APIHandler(`/api/Group/Delete/${id}`, {
             headers: {"Content-Type" : "application/json"},
             method: "DELETE",
             responseType: GroupEntity

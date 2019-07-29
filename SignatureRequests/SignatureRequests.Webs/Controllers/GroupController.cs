@@ -66,8 +66,7 @@ namespace SignatureRequests.Webs.Controllers
         [HttpDelete]
         public GroupResponse DeleteGroup([FromRoute]int id)
         {
-            GroupEntity result = _groupManager.Delete(id);
-            GroupResponse response = _groupEngine.GroupToListItem(result);
+            GroupResponse response = _groupManager.Delete(id);
             return response;
         }
     }

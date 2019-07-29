@@ -35,13 +35,14 @@ namespace SignatureRequests.Managers
             return newGroup;
         } 
 
-        public GroupEntity Delete(int id)
+        public GroupResponse Delete(int id)
         {
             var result = _groupHandler.GetById(id);
             _groupHandler.Delete(result);
             _groupHandler.SaveChanges();
             result.Form = _formHandler.GetByFormId(result.FormId);
-            return result;
+            var response = _groupEngine.GroupToListItem(result);
+            return response;
         }
         private void MakeCopy(int id, int groupId)
         {
