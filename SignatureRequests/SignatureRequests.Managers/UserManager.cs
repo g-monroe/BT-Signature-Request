@@ -1,4 +1,5 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -6,6 +7,7 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,9 @@ namespace SignatureRequests.Managers
             _userHandler.Insert(user);
             _userHandler.SaveChanges();
             var result = _userEngine.UserToListItem(user);
+            const string path = Constants.DocumentPath;
+            string fullName = result.Id.ToString();
+            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName);
             return result;
         }
 

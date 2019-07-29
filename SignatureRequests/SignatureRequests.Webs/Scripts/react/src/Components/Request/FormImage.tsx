@@ -363,7 +363,7 @@ drawBoxes = async () => {
       Status: RequestStatusSigning.PENDING,
       FormId: form!.id
      });
-     const groupResult = (await groupHandler!.createGroup(groupItem));
+     const groupResult = (await groupHandler!.createGroup(groupItem, this.props.userObject.user.id));
      if (groupResult === null){
          message.error('Failed to create Group!');
          return;

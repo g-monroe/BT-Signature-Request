@@ -20,7 +20,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup);
         GroupResponse Delete(int id);
         GroupResponseList GroupToListResponse(GroupEntity group);
-        GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
+        GroupResponse AddGroup(GroupRequest group, int id, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
         GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
 

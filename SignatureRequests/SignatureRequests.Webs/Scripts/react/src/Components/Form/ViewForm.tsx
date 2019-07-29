@@ -77,7 +77,7 @@ class ViewForm extends React.Component<IViewFormProps, IViewFormState> {
         }
 
         return <ViewFormImage pageNum={this.state.page} 
-        src={`../../../../../assets/v1/documents/${this.state.file.filePath.split('.').slice(0, this.state.file.filePath.split('.').length-1)}/${this.state.page}.png`} 
+        src={`../../../../../assets/v1/documents/${this.props.userObject.user.id}/${this.state.file.filePath.split('.').slice(0, this.state.file.filePath.split('.').length-1)}/${this.state.page}.png`} 
         failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
         userObject={this.props.userObject} 
         pageChange={this.pageChange} 

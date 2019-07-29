@@ -58,11 +58,11 @@ namespace SignatureRequests.Managers
             _formHandler.SaveChanges();
             return result;
         }
-        public async Task SaveDocumentAsync(MultipartMemoryStreamProvider provider)
+        public async Task SaveDocumentAsync(MultipartMemoryStreamProvider provider, int id)
         {
             
             var file = provider.Contents[0];
-            const string path = Constants.DocumentPath;
+            string path = Constants.DocumentPath + id.ToString() + '\\';
             var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
             var buffer = await file.ReadAsByteArrayAsync();
             string[] fileNameSplit = filename.Split('.');
@@ -77,9 +77,9 @@ namespace SignatureRequests.Managers
             }
            
         }
-        public int GetPageCount(MultipartMemoryStreamProvider provider)
+        public int GetPageCount(MultipartMemoryStreamProvider provider, int id)
         {
-            const string path = Constants.DocumentPath;
+            string path = Constants.DocumentPath + id.ToString() + '\\';
             var filename = provider.Contents[0].Headers.ContentDisposition.FileName.Trim('\"');
             DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filename);
             DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
