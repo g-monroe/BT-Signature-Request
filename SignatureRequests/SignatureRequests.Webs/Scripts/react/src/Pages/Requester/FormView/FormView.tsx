@@ -4,9 +4,10 @@ import FileViewer from '../../../Components/Form/FileViewer';
 import BoxRequest from '../../../Entities/BoxRequest';
 import '../../../Components/Signatures/DrawTest.css';
 import { BoxHandler, IBoxHandler } from '../../../Handlers/BoxHandler';
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
 import ViewFormImage from '../../../Components/Form/ViewFormImage';
 import ViewForm from '../../../Components/Form/ViewForm';
+import { Link } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 
@@ -27,6 +28,9 @@ class FormView extends React.Component<IFormViewProps, IFormViewState> {
     render() { 
         return (  
             <>
+                <div style={{padding: '10px'}}>
+                    <Link to="/request/view"><Button>Back</Button></Link>
+                </div>
                 <div style = {{     display: "flex",
                             position: "relative",
                             border: "5px black",

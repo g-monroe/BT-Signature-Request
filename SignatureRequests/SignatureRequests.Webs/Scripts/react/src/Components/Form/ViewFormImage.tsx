@@ -159,7 +159,7 @@ drawBoxes = async () => {
 
     return (
         <>
-        <Header style={{width: '100%', display: 'inline-flex' , position: 'relative'}}>
+        {/* <Header style={{width: '100%', display: 'inline-flex' , position: 'relative'}}>
         <Row style={{width:'100%'}}>
         <Col span={24} style={{    display: 'flex', justifyContent: 'center'}}>
         <div style={{color: SignatureColors.white}}>
@@ -167,7 +167,7 @@ drawBoxes = async () => {
           </div>
           </Col>
         </Row>
-        </Header>
+        </Header> */}
         <div id = "PictureToWrap"style = {{position:'relative'}}>
                 <canvas ref={this.state.canvasRef} 
                         style = {{ position: 'absolute', zIndex: 81}}
