@@ -159,15 +159,6 @@ drawBoxes = async () => {
 
     return (
         <>
-        <Header style={{width: '100%', display: 'inline-flex' , position: 'relative'}}>
-        <Row style={{width:'100%'}}>
-        <Col span={24} style={{    display: 'flex', justifyContent: 'center'}}>
-        <div style={{color: SignatureColors.white}}>
-          Add Boxes to PDF
-          </div>
-          </Col>
-        </Row>
-        </Header>
         <div id = "PictureToWrap"style = {{position:'relative'}}>
                 <canvas ref={this.state.canvasRef} 
                         style = {{ position: 'absolute', zIndex: 81}}

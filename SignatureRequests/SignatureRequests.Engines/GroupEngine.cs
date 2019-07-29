@@ -28,6 +28,10 @@ namespace SignatureRequests.Engines
         }
         public GroupResponse GroupToListItem(GroupEntity group)
         {
+            if (group == null)
+            {
+                return new GroupResponse();
+            }
             if (group.RequestEntities == null)
             {
                 group.RequestEntities = new List<RequestEntity>();
@@ -62,7 +66,6 @@ namespace SignatureRequests.Engines
                         SignedStatus = box.SignedStatus,
                         RequestId = box.RequestId,
                         SignatureId = box.SignatureId,
-                        Form = null,
                         FormId = box.FormId,
                         PageNumber = box.PageNumber,
                         IsModel = box.IsModel,
@@ -161,7 +164,6 @@ namespace SignatureRequests.Engines
                     RequestId = box.RequestId,
 
                     SignatureId = box.SignatureId,
-                    Form = FormToListItem(box.Form),
                     FormId = box.FormId,
                     PageNumber = box.PageNumber,
                     IsModel = box.IsModel,

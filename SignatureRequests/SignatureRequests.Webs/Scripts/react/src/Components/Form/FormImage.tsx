@@ -370,7 +370,7 @@ drawBoxes = async () => {
           <Col span={8} style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
         <div style={{display: 'flex', width: '26%', justifyContent: 'space-evenly', alignItems: 'center'}}>
           <Link to="/request/dashboard"><Button type="default">Skip</Button></Link>
-          <Button type="primary" onClick={this.onSave}>Save</Button>
+          <Link to="/request/dashboard"><Button type="primary" onClick={this.onSave}>Save</Button></Link>
         </div>
         </Col>
         </Row>

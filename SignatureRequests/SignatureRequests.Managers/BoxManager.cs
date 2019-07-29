@@ -134,7 +134,6 @@ namespace SignatureRequests.Managers
                 RequestId = me.RequestId,
                 Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
-                Form = _groupEngine.FormToListItem(me.Form),
                 FormId = me.FormId,
                 PageNumber = me.PageNumber,
                 IsModel = me.IsModel,

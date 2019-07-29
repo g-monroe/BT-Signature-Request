@@ -34,6 +34,10 @@ namespace SignatureRequests.DataAccessHandlers.Infrastructure
             .HasOptional<SignatureEntity>(b => b.Signature)
             .WithMany().WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<BoxEntity>()
+            .HasOptional<RequestEntity>(b => b.Request)
+            .WithMany().WillCascadeOnDelete(true);
+
         }
     }
 }
