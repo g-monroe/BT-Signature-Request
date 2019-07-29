@@ -96,7 +96,7 @@ class Send extends React.Component<ISendProps, ISendState> {
             <Layout style = {{height:'100%'}}>
                 
                 <Layout.Content id = "SendFormContent">
-                    <div id = "SendForm" style={{margin:"auto"}}>
+                    <div id = "SendForm">
                         <SendForm
                         userObject={this.props.userObject}
                         onPressSend = {this.userPressedSend}

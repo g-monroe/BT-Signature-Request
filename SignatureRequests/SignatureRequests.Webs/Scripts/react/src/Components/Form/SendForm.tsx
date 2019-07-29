@@ -87,6 +87,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     const data = [];
     for(let i=0; i<forms.count; i++){
         data.push({
+            key: i,
             filePath: forms.collection[i].filePath,
             title: forms.collection[i].title,
             description: forms.collection[i].description ? forms.collection[i].description!.substring(0,15): "",
@@ -122,49 +123,9 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
     }));
   }
 
-
-  onPressSend = async () => {
-    let title = "";
-    let description = "";
-
-    if(this.state.selectedForms!.length === 1){
-      title = this.state.forms!.collection[(this.state.selectedForms![0] as number)].title || "";
-      description = this.state.forms!.collection[(this.state.selectedForms![0] as number)].description || "";
-    }
-    await this.props.onPressSend(this.onSend, title, description)
-  }
-
-  onSend = async (title:string, desc:string, dueDate:Date) => {
-    const currDate = new Date();
-    try{
-      for(let i=0; i<this.state.selectedForms!.length; i++){
-        let group: GroupEntity = (await this.props.groupHandler!.createGroup(new GroupRequest({
-                        FormId: this.state.forms!.collection[(this.state.selectedForms![i] as number)].id,
-                        Title: title,
-                        Description: desc,
-                        CreateDate: currDate,
-                        DueDate: dueDate,
-                        Status:RequestStatusSigning.NOTSTARTED
-
-                  })));
-        for(let j=0; j<this.state.selectedUsers!.length; j++){ 
-          let request: RequestRequest = ({
-            signerId: this.state.selectedUsers![j], 
-            groupId: group.id,
-            requestorId: this.props.userObject.user.id!, 
-            status: FormProgress.PENDING, 
-            sentDate: currDate });
-          this.props.requestHandler!.createRequest(request);
-        }
-      }
-      return true;
-    }catch(e){
-      return false;
-    }
-  }
-
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
+    console.log();
   }
   onInfoClick = () =>{
     this.setState({
@@ -213,14 +174,14 @@ onCancel = () =>{
         })
         display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
       }else{
-        display = <><div style={{maxWidth:"980px", margin:"auto"}}>
+        display = <><div style={{maxWidth:"80%", margin:'auto'}}>
         <Layout.Header style = {{background:"inherit"}}>
                     <div id = "SendHeader">
                         <Typography.Title style={{float:"left"}} level = {1}>Request Form Completion</Typography.Title>
                         <Icon  type="info-circle" theme="twoTone" twoToneColor = "#604099" style = {{fontSize:'37px', margin:'5px', float:"right"}} onClick = {this.onInfoClick}/>
                     </div>
 
-                </Layout.Header>.
+                </Layout.Header>
                 <Drawer
                 visible = {this.state.isInfoVisible}
                 onClose = {this.onCancel}
