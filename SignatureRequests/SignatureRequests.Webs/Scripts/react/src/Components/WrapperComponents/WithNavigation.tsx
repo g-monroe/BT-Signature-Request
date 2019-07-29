@@ -23,7 +23,7 @@ const WithNavigation = (Component: any) => {
                             </UserConsumer>
                             
                         </Layout.Header>
-                        <Layout.Content>
+                        <Layout.Content style={{overflow: 'auto'}}>
                             <Component {...this.props}/>
                         </Layout.Content>
                     </Layout>  

@@ -94,13 +94,7 @@ class Send extends React.Component<ISendProps, ISendState> {
         return (  
             <>
             <Layout style = {{height:'100%'}}>
-                <Layout.Header style = {{background:"inherit"}}>
-                    <div id = "SendHeader">
-                        <Typography.Title level = {1}>Request Form Completion</Typography.Title>
-                        <Icon type="info-circle" theme="twoTone" twoToneColor = "#604099" style = {{fontSize:'37px', margin:'5px'}} onClick = {this.onInfoClick}/>
-                    </div>
-
-                </Layout.Header>.
+                
                 <Layout.Content id = "SendFormContent">
                     <div id = "SendForm">
                         <SendForm
@@ -144,23 +138,7 @@ class Send extends React.Component<ISendProps, ISendState> {
                 }
 
             </Modal>
-            <Drawer
-                visible = {this.state.isInfoVisible}
-                onClose = {this.onCancel}
-                >
-                <div id = "SendFormInfo">
-                    <p>If no documents are shown on the page, upload a pdf</p>
-                    <Link to="/request/create">
-                        <Button> 
-                          Upload
-                        </Button>
-                    </Link>
-                    <Divider/>
-                    <p>Instructions to complete the process of sending the form will be added here when the process is complete</p>
-                </div>
             
-                
-            </Drawer>
 
             </>
         );

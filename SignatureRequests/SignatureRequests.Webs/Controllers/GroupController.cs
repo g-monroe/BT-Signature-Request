@@ -1,6 +1,7 @@
 ﻿using MvcCodeRouting.Web.Http;
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -16,12 +17,14 @@ namespace SignatureRequests.Webs.Controllers
     {
         #region GlobalVariables
         private readonly IGroupManager _groupManager;
+        private readonly IGroupEngine _groupEngine;
         #endregion
 
         #region Constructor
-        public GroupController(IGroupManager groupManager)
+        public GroupController(IGroupManager groupManager, IGroupEngine groupEngine)
         {
             _groupManager = groupManager;
+            _groupEngine = groupEngine;
         }
         #endregion
 
@@ -61,9 +64,10 @@ namespace SignatureRequests.Webs.Controllers
         
         [Route("api/Group/Delete/{id}")]
         [HttpDelete]
-        public void DeleteGroup([FromRoute]int id)
+        public GroupResponse DeleteGroup([FromRoute]int id)
         {
-            _groupManager.Delete(id);
+            GroupResponse response = _groupManager.Delete(id);
+            return response;
         }
     }
 }

@@ -3,7 +3,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class NewMigrate : DbMigration
+    public partial class MoreMigrations : DbMigration
     {
         public override void Up()
         {
@@ -28,14 +28,17 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
                         Date = c.DateTime(),
                         FormHeight = c.Int(nullable: false),
                         FormWidth = c.Int(nullable: false),
+                        RequestEntity_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.RequestEntities", t => t.RequestId)
+                .ForeignKey("dbo.RequestEntities", t => t.RequestEntity_Id)
                 .ForeignKey("dbo.FormEntities", t => t.FormId)
+                .ForeignKey("dbo.RequestEntities", t => t.RequestId, cascadeDelete: true)
                 .ForeignKey("dbo.SignatureEntities", t => t.SignatureId)
                 .Index(t => t.RequestId)
                 .Index(t => t.SignatureId)
-                .Index(t => t.FormId);
+                .Index(t => t.FormId)
+                .Index(t => t.RequestEntity_Id);
             
             CreateTable(
                 "dbo.FormEntities",
@@ -130,6 +133,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.BoxEntities", "SignatureId", "dbo.SignatureEntities");
+            DropForeignKey("dbo.BoxEntities", "RequestId", "dbo.RequestEntities");
             DropForeignKey("dbo.BoxEntities", "FormId", "dbo.FormEntities");
             DropForeignKey("dbo.FormEntities", "UserId", "dbo.UserEntities");
             DropForeignKey("dbo.RequestEntities", "SignerId", "dbo.UserEntities");
@@ -138,7 +142,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
             DropForeignKey("dbo.UserEntities", "InitialId", "dbo.SignatureEntities");
             DropForeignKey("dbo.SignatureEntities", "UserId", "dbo.UserEntities");
             DropForeignKey("dbo.RequestEntities", "GroupId", "dbo.GroupEntities");
-            DropForeignKey("dbo.BoxEntities", "RequestId", "dbo.RequestEntities");
+            DropForeignKey("dbo.BoxEntities", "RequestEntity_Id", "dbo.RequestEntities");
             DropForeignKey("dbo.GroupEntities", "FormId", "dbo.FormEntities");
             DropIndex("dbo.SignatureEntities", new[] { "UserId" });
             DropIndex("dbo.UserEntities", new[] { "InitialId" });
@@ -148,6 +152,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
             DropIndex("dbo.RequestEntities", new[] { "SignerId" });
             DropIndex("dbo.GroupEntities", new[] { "FormId" });
             DropIndex("dbo.FormEntities", new[] { "UserId" });
+            DropIndex("dbo.BoxEntities", new[] { "RequestEntity_Id" });
             DropIndex("dbo.BoxEntities", new[] { "FormId" });
             DropIndex("dbo.BoxEntities", new[] { "SignatureId" });
             DropIndex("dbo.BoxEntities", new[] { "RequestId" });

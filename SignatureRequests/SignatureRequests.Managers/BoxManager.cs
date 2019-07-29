@@ -51,9 +51,20 @@ namespace SignatureRequests.Managers
             var resp = BoxToListItem(result);
             return resp;
         }
+        public BoxResponseList GetBoxesByFormId(int id)
+        {
+            var result = _boxHandler.GetBoxesByFormId(id);
+            var resp = BoxToListResponse(result);
+            return resp;
+        }
         public ModelBoxResponseList GetModelBoxesByFormId(int id)
         {
+<<<<<<< HEAD
             var result = _boxHandler.GetModelBoxesByFormId(id);
+=======
+            var result = _boxHandler.GetBoxesByFormId(id);
+            result = result.Where(x => x.IsModel == true);
+>>>>>>> 88045eb0fa270ccb4bdbd97e47bf6891fb7194ce
             var models = BoxesToModelList(result);
             return models;
         }
@@ -161,7 +172,6 @@ namespace SignatureRequests.Managers
                 RequestId = me.RequestId,
                 Signature = _signatureEngine.SignatureToListItem(me.Signature),
                 SignatureId = me.SignatureId,
-                Form = _groupEngine.FormToListItem(me.Form),
                 FormId = me.FormId,
                 PageNumber = me.PageNumber,
                 IsModel = me.IsModel,

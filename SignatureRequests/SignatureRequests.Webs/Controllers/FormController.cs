@@ -38,7 +38,7 @@ namespace SignatureRequests.Controllers
 
         [Route ("api/Form/GetFormById/{id}")]
         [HttpGet]
-        public FormResponseList GetFormById([FromRoute] int id)
+        public FormResponse GetFormById([FromRoute] int id)
         {
             return _formManager.GetFormById(id);
         }

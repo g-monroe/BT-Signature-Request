@@ -1,4 +1,6 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SautinSoft.Document;
+using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -6,6 +8,7 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,13 +35,31 @@ namespace SignatureRequests.Managers
             return newGroup;
         } 
 
-        public void Delete(int id)
+        public GroupResponse Delete(int id)
         {
             var result = _groupHandler.GetById(id);
             _groupHandler.Delete(result);
             _groupHandler.SaveChanges();
+            result.Form = _formHandler.GetByFormId(result.FormId);
+            var response = _groupEngine.GroupToListItem(result);
+            return response;
         }
+        private void MakeCopy(int id, int groupId)
+        {
+            var filePath = _formHandler.GetById(id).FilePath;
+            const string path = Constants.DocumentPath;
+            string[] fileNameSplit = filePath.Split('.');
+            string fullName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
+            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + groupId);
+            File.Copy(AppDomain.CurrentDomain.BaseDirectory + path + filePath, AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + groupId + "\\" + filePath);
+            DocumentCore dc = DocumentCore.Load(AppDomain.CurrentDomain.BaseDirectory + path + filePath);
+            DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+            for (int i = 0; i < dp.Pages.Count(); i++)
+            {
+                dp.Pages[i].Rasterize(72, Color.White).Save(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + groupId + "\\" + i.ToString() + ".png");
+            }
 
+        }
         public GroupResponseList GetGroupByFormId(int id)
         {
             return GroupsToListResponse(_groupHandler.GetAllByFormId(id));
@@ -93,6 +114,7 @@ namespace SignatureRequests.Managers
         {
             var newEntity = RequestToEntity(group, updating);
             var entity = CreateGroupEntity(newEntity);
+            MakeCopy(group.FormId, entity.Id);
             return _groupEngine.GroupToListItem(entity);
         }
 

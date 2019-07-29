@@ -13,6 +13,7 @@ export interface IUserHandler {
     getUser(id:number) : Promise<SimpleUser>;
     getUsersSigId(userId:number) : Promise<NumberResponse>;
     getUsersInitialId(userId:number) : Promise<NumberResponse>;
+    getUserById(id:number) : Promise<UserEntity>;
 }
 
 export class UserHandler implements IUserHandler {
@@ -83,5 +84,13 @@ export class UserHandler implements IUserHandler {
         }catch(e){
             return new NumberResponse({Num:-1});
         }
+    }
+    
+    async getUserById(id:number) : Promise<UserEntity>{
+            return await APIHandler(`api/User/GetUserById/${id}`, {
+                headers: {"Content-Type" : "application/json"},
+                method: "GET",
+                responseType: UserEntity,
+            });
     }
 }

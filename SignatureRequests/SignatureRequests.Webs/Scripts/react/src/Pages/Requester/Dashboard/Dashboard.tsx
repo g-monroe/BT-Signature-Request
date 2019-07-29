@@ -7,13 +7,15 @@ import FormEntity from '../../../Entities/FormEntity';
 import {Select, Tabs, Drawer, Button} from 'antd';
 import Search from 'antd/lib/input/Search';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { GroupHandler } from '../../../Handlers/GroupHandler';
+import { GroupHandler, IGroupHandler } from '../../../Handlers/GroupHandler';
 import RequestEntity from '../../../Entities/RequestEntity';
+import GroupEntity from '../../../Entities/GroupEntity';
 const { Option } = Select;
 const { TabPane } = Tabs;
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userObject: ContextUserObject;
+    groupHandler?: IGroupHandler;
 }
  
 export interface IDashboardState {
@@ -34,8 +36,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      };
      async componentDidMount() {
        this.setState({
-           tableData: this.getForms((await this.props.formHandler!.getAllByUser(1))),
-           requestData: this.getForms((await this.props.formHandler!.getAllRequested(1))),
+           tableData: this.getForms((await this.props.formHandler!.getAllByUser(this.props.userObject.user.id))),
+           requestData: this.getForms((await this.props.formHandler!.getAllRequested(this.props.userObject.user.id))),
            loading: false
        });
      }
@@ -64,7 +66,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                    return <DashItem key={index} groupEntity={group} isOwner={true}/>
+                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
                                 }
                             })
                         }
@@ -74,7 +76,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true}/>
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
                                 }
                             })
                         }
@@ -90,6 +92,26 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
          }
          return false;
      }
+     deleteGroup = async (id: number) => {
+        (await this.props.groupHandler!.deleteGroup(id));
+        let table: FormEntity[] = this.state.tableData!;
+        let groups: GroupEntity[] = [];
+        for(let i = 0; i<this.state.tableData!.length; i++){
+            for(let j = 0; j<this.state.tableData![i].groups.count; j++){
+                if(this.state.tableData![i].groups.collection[j].id === id){
+                    groups = this.state.tableData![i].groups.collection.filter((group) => {
+                        if(group.id !== id){
+                            return group;
+                        }
+                    })
+                    table[i].groups.collection = groups;
+                }
+            }
+        }
+        (await this.setState({
+           tableData: table
+        }));
+     }
      renderRequests = () =>{
         const {requestData, loading, searchTerm} = this.state;
         if (loading){
@@ -103,7 +125,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true}/>
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
                                 }
                             })
                         }
@@ -115,7 +137,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                 if (group.requests.count !== 0){
                                    let items = group.requests.collection.some(this.isNotDone);
                                     if (items){
-                                        return <DashItem key={index} groupEntity={group} isOwner={false}/> 
+                                        return <DashItem key={index} groupEntity={group} isOwner={false} deleteGroup={this.deleteGroup}/> 
                                     }
                                 } 
                             })
@@ -152,7 +174,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 <img className="logo" src={require("../../../../src/Components/Dashboard/Logo2.png")} alt = "logo"/>
                 <div className="bar">
                 <div style={{ marginBottom: 16 }}>
-                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton defaultValue="mysite" />
+                    <Search onSearch={value => this.save(value)} style={{maxWidth: "none", width:"100%"}} addonBefore={selectBefore} enterButton />
                     </div>
                </div>
                 </div>

@@ -1,4 +1,6 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -7,6 +9,8 @@ using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,7 +80,32 @@ namespace SignatureRequests.Managers
             request.SentDate = newRequest.SentDate;
             _requestHandler.Update(request);
             _requestHandler.SaveChanges();
+            if (request.Status == SignStatus.Signed)
+            {
+               Email("Sent you an email that the request was sent.", "Request Signed!", request.Signer.Email);
+            }
             return request;
+        }
+        private static void Email(string htmlString, string subject, string toEmail)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtp = new SmtpClient();
+                message.From = new MailAddress(Constants.EmailAccount);
+                message.To.Add(new MailAddress(toEmail));
+                message.Subject = subject;
+                message.IsBodyHtml = true; //to make message body as html  
+                message.Body = htmlString;
+                smtp.Port = 587;
+                smtp.Host = "smtp.gmail.com"; //for gmail host  
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(Constants.EmailAccount, "powell110");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(message);
+            }
+            catch (Exception) { }
         }
         public void Delete(int id)
         {

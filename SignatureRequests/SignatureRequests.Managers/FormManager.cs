@@ -33,10 +33,10 @@ namespace SignatureRequests.Managers
             var forms = _formHandler.GetAllInclude();
             return FormsToListResponse(forms);
         }
-        public FormResponseList GetFormById(int id)
+        public FormResponse GetFormById(int id)
         {
             var form = _formHandler.GetByFormId(id);
-            return FormToListResponse(form);
+            return _groupEngine.FormToListItem(form);
         }
         public FormResponseList GetRequested(int id)
         {

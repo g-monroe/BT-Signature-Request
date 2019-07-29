@@ -1,10 +1,4 @@
 
-#SendForm{
-    margin-left: 5%;
-    margin-right: 5%;
-
-}
-
 #SendFormContent{
     display: flex;
     flex-direction: column;
