@@ -17,7 +17,7 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public RequestEntity GetById(int id)
         {
-            return First(s => s.Id == id);
+            return _context.Requests.Include("BoxEntities").First(s => s.Id == id);
         }
         public IEnumerable<RequestEntity> GetAllByFormId(int id)
         {
