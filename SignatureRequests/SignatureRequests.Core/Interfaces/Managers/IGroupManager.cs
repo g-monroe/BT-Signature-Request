@@ -18,7 +18,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupResponseList GetGroupById(int id);
         GroupEntity CreateGroupEntity(GroupEntity newGroup);
         GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup);
-        void Delete(int id);
+        GroupEntity Delete(int id);
         GroupResponseList GroupToListResponse(GroupEntity group);
         GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);

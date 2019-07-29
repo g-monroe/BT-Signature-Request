@@ -125,7 +125,6 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
 
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
-    console.log();
   }
   onInfoClick = () =>{
     this.setState({

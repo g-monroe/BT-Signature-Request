@@ -46,7 +46,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     if (this.props.isOwner){
       //Send request and get the response
       //Then demount the component
-      // this.props.groupHandler!.deleteGroup(this.props.groupEntity.id);
       this.props.deleteGroup(this.props.groupEntity.id);
     }
    }

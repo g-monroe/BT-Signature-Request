@@ -3,7 +3,7 @@ import GroupRequest from "../Entities/GroupRequest";
 import GroupEntity from "../Entities/GroupEntity";
 export interface IGroupHandler {
     createGroup(entity: GroupRequest) : Promise<GroupEntity>;
-    deleteGroup(id: number) : Promise<String>;
+    deleteGroup(id: number) : Promise<GroupEntity>;
 }
 
 export class GroupHandler implements IGroupHandler {
@@ -15,11 +15,11 @@ export class GroupHandler implements IGroupHandler {
             responseType: GroupEntity
         });
     }
-    async deleteGroup(id: number): Promise<String>{
-        const collection = await APIHandler(`/api/Group/Delete/${id}`, {
+    async deleteGroup(id: number): Promise<GroupEntity>{
+        let collection = await APIHandler(`/api/Group/Delete/${id}`, {
             headers: {"Content-Type" : "application/json"},
             method: "DELETE",
-            responseType: String
+            responseType: GroupEntity
         });
         return collection;
     }
