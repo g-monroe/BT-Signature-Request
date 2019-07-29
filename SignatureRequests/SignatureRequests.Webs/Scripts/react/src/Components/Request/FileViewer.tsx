@@ -28,6 +28,7 @@ import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
 import { RequestDueDate } from "../../Util/Constants";
 import ActionType from "../../Util/Enums/ActionType";
+import { thisTypeAnnotation } from "@babel/types";
 
 const {Option} = Select;
 export interface IFileViewerProps {
@@ -45,6 +46,11 @@ export interface IFileViewerState {
     page: number;
     boxesDrawn: BoxEntity[];
     images: JSX.Element[];
+    requestor?: UserEntity;
+    formName: string;
+    clearPage: boolean;
+    fileForm?: FormEntity;
+    requests: RequestEntity[];
 }
  
 class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -52,21 +58,25 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     static defaultProps = {
         formHandler: new FormHandler(),
         userHandler: new UserHandler(),
-        boxHandler: new BoxHandler()
+        boxHandler: new BoxHandler(),
      };
 
     state: IFileViewerState = {
         fileUploaded: false,
         page: 0,
         images: [],
-        boxesDrawn: []
+        boxesDrawn: [],
+        formName: "",
+        clearPage: false,
+        requests: [],
     };
-    
     async componentDidMount() {
         const file = (await this.props.formHandler!.getFormById(this.props.form));
         const boxes = (await this.props.boxHandler!.getModelBoxes(this.props.form));
         const requestor =  (await this.props.userHandler!.getUserById(this.props.userObject.user.id));
         let newBoxes: BoxEntity[] = [];
+        let newRequests: RequestEntity[] = [];
+
         boxes.collection.map((box) => {
             
              let rBox = new BoxEntity({
@@ -82,21 +92,74 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 FormWidth: box.formWidth,
                 FormHeight: box.formHeight
              });
+             if (rBox.signerType === SignerType.REQUESTOR){
+                if (newRequests.length === 0 ){
+                    let req = new RequestEntity({
+                        Id: 0,
+                        Boxes: {
+                            TotalResults: 0,
+                            BoxesList: []
+                        },
+                        Requestor: {
+                            Id: requestor.id,
+                            Email: requestor.email,
+                            Name: requestor.name,
+                            Password: requestor.password,
+                            Initial: requestor.initial!,
+                            Role: requestor.role,
+                            Signature: requestor.signature!
+                        },
+                        Signer: {
+                            Id: requestor.id,
+                            Email: requestor.email,
+                            Name: requestor.name,
+                            Password: requestor.password,
+                            Initial: requestor.initial!,
+                            Role: requestor.role,
+                            Signature: requestor.signature!
+                        },
+                        SentDate: new Date(),
+                        Status: SignedStatus.NOTSIGNED
+                    });
+                    req.boxes.collection.push(rBox);
+                    newRequests.push(req);
+                }else{
+                    newRequests[0].boxes.collection.push(rBox);
+                }
+             }
              newBoxes.push(rBox);
         })
-        let items = [];
+        
         const form = file.filePath.split('.');
         const formName = form.slice(0, form.length-1);
+        this.setState({
+            fileUploaded: true,
+            boxesDrawn: newBoxes,
+            requestor:requestor,
+            fileForm: file,
+            requests: newRequests,
+            formName: formName[0]
+        });
+    };
+
+    populateItems = (): JSX.Element => {
+
+        if(this.state.clearPage){
+                    this.setState({
+                        clearPage: false
+                    });
+                    return <></>;
+        }
         let groupObj = new GroupEntity({
             Id: 0,
             Form: {
-                Id: file.id,
-                FilePath: file.filePath,
-                Title: file.title,
-                Description: file.description,
-                CreateDate: file.createDate,
-                User: file.user,
-                NumPages: file.numPages,
+                Id: this.state.fileForm!.id,
+                FilePath: this.state.fileForm!.filePath,
+                Title: this.state.fileForm!.title,
+                Description: this.state.fileForm!.description,
+                CreateDate: this.state.fileForm!.createDate,
+                User: this.state.fileForm!.user,
+                NumPages: this.state.fileForm!.numPages,
                 GroupEntities: {
                     TotalResults: 0,
                     GroupList:[] as GroupEntity[]
@@ -112,43 +175,27 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
                 RequestList: [] as RequestEntity[]
             })
         });
-        for(let i = 0; i<file.numPages; i++){
-            let newItem = <FormImage pageNum={i} 
-                                    src={`../../../../../assets/v1/documents/${formName}/${i}.png`} 
-                                    failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
-                                    userObject={this.props.userObject} 
-                                    pageChange={this.pageChange} 
-                                    boxesDrawn={newBoxes} 
-                                    numPages={file!.numPages}
-                                    parent={this}
-                                    users={this.props.users}
-                                    requestor={requestor}
-                                    form={file}
-                                    group={groupObj}/>;
-            items.push(newItem);
-        }
-
-        this.setState({
-            fileUploaded: true,
-            images: items,
-            boxesDrawn: newBoxes
-        });
-    };
-
-    renderPage = (): JSX.Element =>{
-        const {page, images} = this.state;
-        for(let i=0; i<images.length; i++){
-            if(images[i].props.pageNum === page){
-                return images[i];
-            }
-        }
-        return <><h1>No Page Found</h1></>;
-    };
+        return <FormImage pageNum={this.state.page} 
+        src={`../../../../../assets/v1/documents/${this.state.formName}/${this.state.page}.png`} 
+        failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
+        userObject={this.props.userObject} 
+        pageChange={this.pageChange} 
+        boxesDrawn={this.state.boxesDrawn} 
+        numPages={this.state.fileForm!.numPages}
+        parent={this}
+        users={this.props.users}
+        requestor={this.state.requestor!}
+        form={this.state.fileForm!}
+        group={groupObj}
+        requests={this.state.requests!}/>;
+        
+    }
 
     pageChange = async (change: number, boxes: BoxEntity[]) => {
         (await this.setState({
             page: this.state.page+change,
             boxesDrawn: boxes,
+            clearPage: true,
         }));
     }
   
@@ -156,16 +203,11 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
         if(!this.state.fileUploaded){
             return <></>;
         } else{
-            let display =            <> 
-            {this.renderPage()}
-            </>;
-        return (
-            <>
-            {
-                display
-            }
-            </>
-         );
+            return (
+                <>
+                {this.populateItems()}
+                </>
+             );
         }
         
     };

@@ -174,7 +174,7 @@ onCancel = () =>{
         })
         display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
       }else{
-        display = <><div style={{maxWidth:"80%", margin:'auto'}}>
+        display = <><div style={{maxWidth:"80%", margin:"auto"}}>
         <Layout.Header style = {{background:"inherit"}}>
                     <div id = "SendHeader">
                         <Typography.Title style={{float:"left"}} level = {1}>Request Form Completion</Typography.Title>

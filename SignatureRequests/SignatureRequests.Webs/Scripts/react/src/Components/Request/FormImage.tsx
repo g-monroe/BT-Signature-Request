@@ -27,6 +27,7 @@ import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import { IRequestHandler, RequestHandler } from '../../Handlers/RequestHandler';
 import { BoxHandler, IBoxHandler } from '../../Handlers/BoxHandler';
 import GroupEntity from '../../Entities/GroupEntity';
+import { request } from 'http';
 const { Header, Content } = Layout;
 
 const { Option } = Select;
@@ -50,6 +51,7 @@ export interface IFormImageProps{
   requestHandler?: IRequestHandler;
   boxHandler?: IBoxHandler;
   group: GroupEntity;
+  requests: RequestEntity[];
 }
 
 interface IFormImageState{
@@ -72,7 +74,6 @@ interface IFormImageState{
   formWidth: number;
   isConfirmVisible:boolean;
   selectedUser: string;
-  requests: RequestEntity[];
   title:string;
   description:string;
   date:Date;
@@ -116,7 +117,6 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isCanvasRendered: false,
     formHeight: 0,
     formWidth: 0,
-    requests: [],
     title:"",
     description:"",
     date: new Date(),
@@ -171,8 +171,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     });
   }
   boxClicked = (box: BoxEntity) =>{
-    const {users, requestor, form } = this.props;
-    const {selectedUser, requests, } = this.state;
+    const {users, requestor, form, requests } = this.props;
+    const {selectedUser } = this.state;
     let remove = false;
     let notFound = true;
     if (this.state.selectedUser === BoxType.NONE){
@@ -181,6 +181,9 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
     let newBox = box;
     let newUser = users.find(x => x.id === Number(selectedUser));
+    if (!remove && newUser!.id !== requestor!.id && newBox.signerType === SignerType.REQUESTOR){
+      return;
+    }
     if (!remove && newUser!.id === requestor!.id){
         newBox!.signerType = SignerType.REQUESTOR;
     }else{
@@ -316,7 +319,7 @@ drawBoxes = async () => {
               ctx: ctx
             }));
             this.state.ctx!.stroke();
-            this.state.requests.map((request) =>{
+            this.props.requests.map((request) =>{
               request.boxes.collection.map((box) => {
                  if (box === this.state.boxesDrawn[i]){
                   this.state.ctx!.fillText(request.signer.name, 
@@ -342,8 +345,8 @@ drawBoxes = async () => {
 
   onSave = async () => {
      //Create Group;
-     const {title, description, date, requests} = this.state;
-     const {groupHandler, boxHandler, form, userObject, requestHandler, group } = this.props;
+     const {title, description, date} = this.state;
+     const {groupHandler, boxHandler, form, userObject, requestHandler, group, requests } = this.props;
      if (title.length < 0 || description.length < 0){
          message.info('Title or Description not big enough!');
          return;
@@ -536,7 +539,7 @@ handleDateChange = (date: moment.Moment, dateString: string) =>{
           </Col>
           <Col span={8} style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
         <div style={{display: 'flex', width: '26%', justifyContent: 'space-evenly', alignItems: 'center'}}>
-          <Link to="/request/send"><Button type="danger">Back</Button></Link>
+          <Link to="/request/dashboard"><Button type="danger">Back</Button></Link>
           <Button type="primary" onClick={this.onFinal}>Finalize</Button>
         </div>
         </Col>
