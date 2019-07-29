@@ -98,6 +98,40 @@ namespace SignatureRequests.Managers
             var resp = BoxToListItem(box);
             return resp;
         }
+
+        public NumberResponse AddDataToBox(SignedBoxRequest NewBox)
+        {
+            //if (NewBox.IsModel)
+            //{
+            //    return new NumberResponse()
+            //    {
+            //        Num = -1
+            //    };
+            //}
+            try
+            {
+                var box = _boxHandler.GetById(NewBox.Id);
+                box.SignedStatus = NewBox.SignedStatus;
+                box.SignatureId = NewBox.SignatureId;
+                box.Text = NewBox.Text;
+                box.Date = NewBox.Date;
+
+                _boxHandler.Update(box);
+                _boxHandler.SaveChanges();
+
+                return new NumberResponse()
+                {
+                    Num = 1
+                };
+            }
+            catch (Exception e){
+                return new NumberResponse()
+                {
+                    Num = -1
+                };
+            }
+           
+        }
         public BoxResponseList BoxToListResponse(IEnumerable<BoxEntity> me)
         {
             var resp = new BoxResponseList

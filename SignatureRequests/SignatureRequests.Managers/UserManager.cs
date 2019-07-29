@@ -91,8 +91,9 @@ namespace SignatureRequests.Managers
             {  
                 id = _userHandler.GetById(UserId).SignatureId.GetValueOrDefault(-1);
             }
-            catch
+            catch (Exception e)
             {
+                throw e;
                 id = -1;
             }
 
@@ -109,8 +110,9 @@ namespace SignatureRequests.Managers
             {
                 id = _userHandler.GetById(UserId).InitialId.GetValueOrDefault(-1);
             }
-            catch
+            catch(Exception e)
             {
+                throw e;
                 id = -1;
             }
 

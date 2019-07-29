@@ -5,6 +5,7 @@ import BoxType from '../../Util/Enums/BoxType';
 import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/SignatureDropDown';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import { SignatureColors } from '../../Util/Enums/colors';
+import SignedStatus from '../../Util/Enums/SignedStatus';
 
 interface SigDropDownXY extends ISignatureDropDownProps{
   x:number,
@@ -16,9 +17,9 @@ export interface IFormImageWBoxesProps{
     pageNum: number;
     failedSrc:string;
     boxes:ModelBox[];
-    selectedBox:number;
+    selectedBox?:number; //The id of the selected box
     userObject:ContextUserObject;
-    boxFilledOutData: (data:any) =>void;
+    boxFilledOutData: (box:ModelBox, data:any) =>void;
 }
 
 interface IFormImageWBoxesState{
@@ -26,6 +27,7 @@ interface IFormImageWBoxesState{
     errored:boolean;
     canvasRef:React.RefObject<HTMLCanvasElement>
     dropDown?:SigDropDownXY
+    boxClicked?:ModelBox
 }
 
 class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageWBoxesState> {
@@ -33,7 +35,8 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     state:IFormImageWBoxesState = {
       src: this.props.src,
       errored: false,
-      canvasRef: React.createRef()
+      canvasRef: React.createRef(),
+      boxClicked:undefined
     };
 
   onError = () => {
@@ -45,8 +48,20 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     }
   }
 
-  selectedBoxSigned = (data: any) =>{
-      this.props.boxFilledOutData(data);
+  clickedBoxSigned = (data: any) =>{
+    const can = this.state.canvasRef.current;
+    const ctx = can!.getContext('2d');
+    if(ctx){
+      ctx.clearRect(this.state.boxClicked!.x-5,this.state.boxClicked!.y-5,this.state.boxClicked!.width+10,this.state.boxClicked!.height+10)
+      switch(this.state.boxClicked!.type){
+        case BoxType.INITIAL: 
+        case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
+        case BoxType.DATE:
+        case BoxType.TEXT: this.drawText(this.state.boxClicked!);break;
+
+      }
+    }
+    this.props.boxFilledOutData(this.state.boxClicked!, data);
   }
 
   fitCanvasToContainer = (rect:any) =>{
@@ -57,7 +72,42 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   }
 
   drawBoxes = () =>{
-    this.props.boxes.forEach((box)=>this.drawBox(box)); //TODO Check if its signed and if so draw the signature instead 
+    this.props.boxes.forEach((box)=>{
+      if(box.signedStatus !== SignedStatus.SIGNED){
+        this.drawBox(box);
+      }else if(box.type === BoxType.SIGNATURE || box.type === BoxType.INITIAL){
+        this.drawImage(box);
+      }else{
+        this.drawText(box);
+      }
+      
+      //else draw the sig/date/initial/text where the box would be
+     
+    
+    }); //TODO Check if its signed and if so draw the signature instead 
+  }
+  drawText = (data: ModelBox) =>{
+    const can = this.state.canvasRef.current;
+    const ctx = can!.getContext('2d');
+    if(ctx){
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.globalAlpha = 1;
+      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
+    }
+  }
+
+  drawImage = (data: ModelBox) =>{
+    const image = new Image();
+    image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
+    image.onload = () =>{
+      const can = this.state.canvasRef.current;
+      const ctx = can!.getContext('2d');
+      if(ctx){
+        ctx.globalAlpha = 1;
+        ctx.drawImage(image, data.x, data.y, data.width, data.height)
+      }
+    }
   }
 
   drawBox = (data: ModelBox) =>{ 
@@ -76,7 +126,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
         default: ctx.fillStyle = SignatureColors.black; ctx.fillStyle = SignatureColors.black; break; 
       }
 
-      if(data.id === this.props.selectedBox){
+      if(this.props.selectedBox && data.id === this.props.selectedBox){
         ctx.globalAlpha = 1;
         ctx.lineWidth = 5;
         ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);   
@@ -93,7 +143,8 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
 
   boxClicked = async (box: ModelBox, event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
     await this.setState({
-      dropDown: undefined
+      dropDown: undefined,
+      boxClicked:box
     })
 
     this.setState({
@@ -112,7 +163,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       event.persist()
       
       this.props.boxes.forEach((box)=>{
-        if( box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
           (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
           (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
           (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
@@ -143,7 +194,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
         this.state.dropDown && 
         
           <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}>
-            <SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true} dataAdded = {this.selectedBoxSigned}/>
+            <SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true} dataAdded = {this.clickedBoxSigned}/>
           </div>
       }
       <div id = "DivWCanvasAndImage">

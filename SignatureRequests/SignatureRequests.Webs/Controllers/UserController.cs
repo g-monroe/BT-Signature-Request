@@ -41,17 +41,17 @@ namespace SignatureRequests.Controllers
             return users;
         }
 
-        [Route("api/User/GetSigId/{id}")]
-        public NumberResponse GetUsersSigId([FromRoute]int id)
+        [Route("api/User/GetSigId/{userId}")]
+        public NumberResponse GetUsersSigId([FromRoute]int userId)
         {
-            var users = _userManager.GetUserSigId(id);
+            var users = _userManager.GetUserSigId(userId);
             return users;
         }
 
-        [Route("api/User/GetInitialId/{id}")]
-        public NumberResponse GetUsersInitialId([FromRoute]int id)
+        [Route("api/User/GetInitialId/{userId}")]
+        public NumberResponse GetUsersInitialId([FromRoute]int userId)
         {
-            var users = _userManager.GetUserInitialId(id);
+            var users = _userManager.GetUserInitialId(userId);
             return users;
         }
 

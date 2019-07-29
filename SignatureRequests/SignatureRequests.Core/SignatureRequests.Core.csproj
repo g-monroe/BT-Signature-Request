@@ -217,6 +217,7 @@
     <Compile Include="Items\SignatureLibItem.cs" />
     <Compile Include="RequestObjects\BoxRequest.cs" />
     <Compile Include="RequestObjects\GroupRequest.cs" />
+    <Compile Include="RequestObjects\SignedBoxRequest.cs" />
     <Compile Include="RequestObjects\UserVerificationRequest.cs" />
     <Compile Include="ResponseObjects\BoxResponse.cs" />
     <Compile Include="RequestObjects\FormRequest.cs" />

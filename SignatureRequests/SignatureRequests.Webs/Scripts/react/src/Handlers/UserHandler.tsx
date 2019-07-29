@@ -11,6 +11,8 @@ export interface IUserHandler {
     createUser(newUser:UserRequest) : Promise<UserEntity>;
     verifyUser(info:UserVerificationEntity) : Promise<UserEntity>;
     getUser(id:number) : Promise<SimpleUser>;
+    getUsersSigId(userId:number) : Promise<NumberResponse>;
+    getUsersInitialId(userId:number) : Promise<NumberResponse>;
 }
 
 export class UserHandler implements IUserHandler {

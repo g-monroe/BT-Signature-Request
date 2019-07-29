@@ -6,11 +6,13 @@ import  { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
 import SimpleUser from '../../Entities/ToComplete/SimpleUser';
 import BoxType from '../../Util/Enums/BoxType';
 import { SignatureColors } from '../../Util/Enums/colors';
+import ModelBox from '../../Entities/ToComplete/ModelBox';
+import SignedStatus from '../../Util/Enums/SignedStatus';
 
 
 export interface ISignHeaderProps {
     data:RequestToCompleteEntity
-    numComplete?:number
+    boxes:ModelBox[]//Temp untill gavin crates boxes with the requests
     sentBy:SimpleUser
     toNextSignature?:() => void
 }
@@ -35,7 +37,7 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
     } 
 
     skipToNext = ()=> {
-        this.props.toNextSignature && 
+        this.props.toNextSignature && this.props.boxes.filter((x)=> x.signedStatus === SignedStatus.NOTSIGNED).length > 0 && 
         this.props.toNextSignature() 
     }
 
@@ -48,11 +50,13 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
     }
 
     render() { 
-
+        const moreToSign = this.props.boxes.filter((x)=> x.signedStatus === SignedStatus.NOTSIGNED).length > 0;
         let numPercent = 0;
-        this.props.data.boxes.count === 0 || !this.props.data.boxes ?
+        let numComplete = this.props.boxes.filter((box)=>box.signedStatus === SignedStatus.SIGNED).length;
+
+        !this.props.boxes || this.props.boxes.length === 0 ?
             numPercent = 100 : 
-            numPercent = (this.props.data.boxes.count/this.props.numComplete!)*100;
+            numPercent = Math.floor((numComplete/this.props.boxes.length)*100);
 
         return ( 
             <>
@@ -62,12 +66,12 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                 </Tooltip>
                 <div id = "SignHeaderContent">
                     <Typography.Title level = {3}>{this.props.data.title || "Sign the Document"}</Typography.Title>
-                    <Tooltip title = {this.props.numComplete +" out of " + this.props.data.boxes.count + " completed"} placement = 'bottomRight'>
+                    <Tooltip title = {numComplete +" out of " + this.props.boxes.length + " completed"} placement = 'bottomRight'>
                         <Progress percent = {numPercent} style = {{width:'100%'}}></Progress>
                     </Tooltip>
                 </div>
-                <Tooltip title = "Skip to Next Signature" placement = "bottomRight" arrowPointAtCenter>
-                    <Icon type="right-circle" theme="twoTone" twoToneColor = "#604099" style = {{fontSize:'25px'}} onClick = {this.skipToNext}/>
+                <Tooltip title = {moreToSign ? "Skip to Next Signature" : "No More Signatures"} placement = "bottomRight" arrowPointAtCenter>
+                    <Icon type="right-circle" theme="twoTone" twoToneColor = {moreToSign ? "#604099" : "#808080"} style = {{fontSize:'25px'}} onClick = {this.skipToNext}/>
                 </Tooltip>
                 
             </div>
@@ -94,6 +98,12 @@ class SignHeader extends React.Component<ISignHeaderProps, ISignHeaderState> {
                             <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.date}>{BoxType.DATE}</Tag>
                             <Tag style = {{marginLeft:'2%'}}color = {SignatureColors.text}>{BoxType.TEXT}</Tag>
                         </div>
+                        
+                        <b id = "drawerHeaders" style = {{marginBottom:"5%"}}>Requested Information: </b>
+                        <p id = "drawerText"><b id = "drawerHeaders">{"Signatures: "}</b>{this.props.boxes.filter((x)=>x.type === BoxType.SIGNATURE).length}</p>
+                        <p id = "drawerText"><b id = "drawerHeaders">{"Initials: "}</b>{this.props.boxes.filter((x)=>x.type === BoxType.INITIAL).length}</p>
+                        <p id = "drawerText"><b id = "drawerHeaders">{"Dates: "}</b>{this.props.boxes.filter((x)=>x.type === BoxType.DATE).length}</p>
+                        <p id = "drawerText"><b id = "drawerHeaders">{"Text: "}</b>{this.props.boxes.filter((x)=>x.type === BoxType.TEXT).length}</p>
 
                         <p>{"Contact "+ this.props.sentBy.name + " at " + this.props.sentBy.email + " for more information."}</p>
                     
