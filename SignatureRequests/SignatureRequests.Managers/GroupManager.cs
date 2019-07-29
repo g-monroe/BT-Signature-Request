@@ -41,7 +41,7 @@ namespace SignatureRequests.Managers
             _groupHandler.Delete(result);
             _groupHandler.SaveChanges();
         }
-        public void MakeCopy(int id, int groupId)
+        private void MakeCopy(int id, int groupId)
         {
             var filePath = _formHandler.GetById(id).FilePath;
             const string path = Constants.DocumentPath;

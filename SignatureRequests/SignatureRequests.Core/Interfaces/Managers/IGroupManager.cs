@@ -23,7 +23,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
         GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
-        void MakeCopy(int id, int groupId);
 
     }
 }
