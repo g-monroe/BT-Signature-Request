@@ -7,6 +7,7 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
+<<<<<<< HEAD:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907261825592_Migration.Designer.cs
     public sealed partial class Migration : IMigrationMetadata
     {
         private readonly ResourceManager Resources = new ResourceManager(typeof(Migration));
@@ -14,6 +15,15 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
         string IMigrationMetadata.Id
         {
             get { return "201907261825592_Migration"; }
+=======
+    public sealed partial class AnotherMigrate : IMigrationMetadata
+    {
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AnotherMigrate));
+        
+        string IMigrationMetadata.Id
+        {
+            get { return "201907251939152_AnotherMigrate"; }
+>>>>>>> 05caf400104b2b8f8c1bbabd57f6261d9c0cb6c6:SignatureRequests/SignatureRequests.DataAccessHandlers/Migrations/201907251939152_AnotherMigrate.Designer.cs
         }
         
         string IMigrationMetadata.Source
