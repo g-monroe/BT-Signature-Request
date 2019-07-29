@@ -107,13 +107,6 @@ namespace SignatureRequests.Managers
 
         public NumberResponse AddDataToBox(SignedBoxRequest NewBox)
         {
-            //if (NewBox.IsModel)
-            //{
-            //    return new NumberResponse()
-            //    {
-            //        Num = -1
-            //    };
-            //}
             try
             {
                 var box = _boxHandler.GetById(NewBox.Id);

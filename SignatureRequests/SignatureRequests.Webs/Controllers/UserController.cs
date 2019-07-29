@@ -35,12 +35,14 @@ namespace SignatureRequests.Controllers
         }
 
         [Route("api/User/GetUser/{id}")]
+        [HttpGet]
         public SimpleUserResponse GetUserById([FromRoute]int id)
         {
             var users = _userManager.GetSimpleUser(id);
             return users;
         }
         [Route("api/User/GetUserById/{id}")]
+        [HttpGet]
         public UserResponse GetUser([FromRoute]int id)
         {
             var users = _userManager.GetUser(id);
@@ -48,6 +50,7 @@ namespace SignatureRequests.Controllers
         }
 
         [Route("api/User/GetSigId/{userId}")]
+        [HttpGet]
         public NumberResponse GetUsersSigId([FromRoute]int userId)
         {
             var users = _userManager.GetUserSigId(userId);
@@ -55,6 +58,7 @@ namespace SignatureRequests.Controllers
         }
 
         [Route("api/User/GetInitialId/{userId}")]
+        [HttpGet]
         public NumberResponse GetUsersInitialId([FromRoute]int userId)
         {
             var users = _userManager.GetUserInitialId(userId);
