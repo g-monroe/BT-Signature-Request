@@ -31,7 +31,8 @@ class Step2 extends React.Component<IStep2Props, IStep2State> {
                             width:'100%',
                             flexDirection:'column',
                             justifyContent:'space-around',
-                            alignItems:'center'}}>
+                            alignItems:'center',
+                            overflow:"auto"}}>
                 <FileViewer parent={this}
                  userObject={userObject} form={form} users={users}/>
                  </div>
