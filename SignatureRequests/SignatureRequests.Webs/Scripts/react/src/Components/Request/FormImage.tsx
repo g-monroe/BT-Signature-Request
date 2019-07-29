@@ -352,13 +352,14 @@ drawBoxes = async () => {
          message.info('Please assign some or all boxes out!');
          return;
      }
-     let groupItem = new GroupRequest(group);
-     groupItem.title = title;
-     groupItem.description = description;
-     groupItem.createDate = new Date();
-     groupItem.dueDate = this.state.date;
-     groupItem.status = RequestStatusSigning.PENDING;
-     groupItem.formId = form!.id;
+     let groupItem = new GroupRequest({
+      Title: title,
+      Description:description,
+      CreateDate: new Date(),
+      DueDate: this.state.date,
+      Status: RequestStatusSigning.PENDING,
+      FormId: form!.id
+     });
      const groupResult = (await groupHandler!.createGroup(groupItem));
      if (groupResult === null){
          message.error('Failed to create Group!');
@@ -367,12 +368,13 @@ drawBoxes = async () => {
      //Create Request, get response with ID, use ID to create boxes.
      requests!.map(async (request) => {
          //Create RequestRequest
-         let req = new RequestRequest(request);
-         req.groupId = groupResult.id;
-         req.requestorId = userObject.user.id;
-         req.sentDate = new Date();
-         req.signerId  = request.signer.id;
-         req.status = request.status;
+         let req = new RequestRequest({
+          GroupId: groupResult.id,
+          RequestorId:userObject.user.id,
+          SentDate: new Date(),
+          SignerId: request.signer.id,
+          Status: request.status
+         });
          const requestResult = (await requestHandler!.createRequest(req));
          if (requestResult === null){//Check if it was created successfully.
              message.error('Failed to create Request!');
