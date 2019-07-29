@@ -111,6 +111,7 @@ namespace SignatureRequests.Managers
         {
             var newEntity = RequestToEntity(group, updating);
             var entity = CreateGroupEntity(newEntity);
+            MakeCopy(group.FormId, entity.Id);
             return _groupEngine.GroupToListItem(entity);
         }
 

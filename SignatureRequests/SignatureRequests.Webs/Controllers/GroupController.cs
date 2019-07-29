@@ -48,9 +48,7 @@ namespace SignatureRequests.Webs.Controllers
         [HttpPost]
         public GroupResponse AddGroup([FromBody]GroupRequest group)
         {
-            var resp = _groupManager.AddGroup(group);
-            _groupManager.MakeCopy(group.FormId, resp.Id);
-            return resp;
+            return _groupManager.AddGroup(group);
         }
 
         [Route("api/Group/UpdateGroup/{id}")]
