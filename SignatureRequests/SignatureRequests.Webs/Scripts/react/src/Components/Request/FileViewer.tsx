@@ -33,8 +33,6 @@ const {Option} = Select;
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userHandler?: IUserHandler;
-    groupHandler?: IGroupHandler;
-    requestHandler?: IRequestHandler;
     boxHandler?: IBoxHandler;
     form: number;
     users: UserEntity[];
@@ -54,8 +52,6 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
     static defaultProps = {
         formHandler: new FormHandler(),
         userHandler: new UserHandler(),
-        groupHandler: new GroupHandler(),
-        requestHandler: new RequestHandler(),
         boxHandler: new BoxHandler()
      };
 

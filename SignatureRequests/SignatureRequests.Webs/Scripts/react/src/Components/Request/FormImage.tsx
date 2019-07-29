@@ -105,7 +105,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isConfirmVisible: false,
     mouseDown: false,
     xVal: 0,
-    selectedUser: "None",
+    selectedUser: SignerType.NONE,
     yVal: 0,
     height: 0,
     width: 0,
@@ -134,7 +134,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     (await this.setState({
       ctx : this.state.canvasRef.current!.getContext("2d")
     }));
-    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+    const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
     this.drawBoxes();
   }
@@ -242,7 +242,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
   }
   onMouseDown = (event:any) => {
-    let rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
+    const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     if(!this.state.isCanvasRendered){
       this.setState({
         isCanvasRendered: true
@@ -281,7 +281,6 @@ onMouseUp = (event:any) => {
         mouseDown: false
     });
     this.drawBoxes();
-    //this.drawText();
   }
 };
 
@@ -328,46 +327,7 @@ drawBoxes = async () => {
               })
             })
             
-            // //BORDER
-            // if(this.state.isBoxSelected && this.state.boxesDrawn[i] === this.state.selectedBox){
-            //   ctx!.globalAlpha = 1.0;
-            //   ctx!.strokeStyle = this.determineColor(this.state.boxesDrawn[i].type);
-            //   this.setState({
-            //     ctx: ctx
-            //   });
-            //   this.state.ctx!.strokeRect(this.state.boxesDrawn[i].x, this.state.boxesDrawn[i].y, this.state.boxesDrawn[i].width, this.state.boxesDrawn[i].height);
-            // }
-             
              this.state.ctx!.closePath();
-        }
-    }
-  }
-  drawText = async () => {
-    let i=0;
-    for(i=0; i<this.state.boxesDrawn.length; i++){
-        if(this.state.boxesDrawn[i].pageNumber === this.state.pageNumber){
-            
-            //BOX
-            this.state.ctx!.beginPath();
-            let ctx = this.state.ctx;
-            ctx!.globalCompositeOperation = 'source-atop';
-            //TEXT
-            ctx!.fillStyle = SignatureColors.labels;
-            ctx!.font = "11px Verdana";
-            ctx!.globalAlpha = 1.0;
-            (await this.setState({
-              ctx: ctx
-            }));
-            this.state.requests.map((request) =>{
-              request.boxes.collection.map((box) => {
-                 if (box === this.state.boxesDrawn[i]){
-                  this.state.ctx!.fillText(request.signer.name, 
-                    this.state.boxesDrawn[i].x < this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width ?  this.state.boxesDrawn[i].x+2 : this.state.boxesDrawn[i].x+this.state.boxesDrawn[i].width+2, 
-                    this.state.boxesDrawn[i].y < this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height ?  this.state.boxesDrawn[i].y+13 : this.state.boxesDrawn[i].y+this.state.boxesDrawn[i].height+13);
-                 }
-              })
-            })
-            this.state.ctx!.closePath();
         }
     }
   }
@@ -420,7 +380,7 @@ drawBoxes = async () => {
          }else{
              request.boxes.collection.map(async (box) =>{
                  let newBox = new BoxRequest(box);
-                 newBox.formId = form!.id;
+                 newBox.formId = form!.id; 
                  newBox.requestId = requestResult.id;
                  newBox.date = new Date();
                  newBox.isModel = false;
