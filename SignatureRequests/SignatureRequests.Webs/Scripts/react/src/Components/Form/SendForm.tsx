@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Select, Table, Button } from 'antd';
+import { Select, Table, Button, Layout, Typography, Icon, Divider, Drawer } from 'antd';
 import { IFormHandler, FormHandler} from "../../Handlers/FormHandler";
 import FormResponseList from "../../Entities/FormResponseList";
 import { UserHandler, IUserHandler } from "../../Handlers/UserHandler";
@@ -52,6 +52,8 @@ export interface ISendFormState {
     selectedUsers?: number[]; //A collection of selected user ID's. Backend will use these to assign foreign keys of request objects.
     selectedForms?: number[] | string[]; 
     step2: boolean;
+    isInfoVisible:boolean;
+    isConfirmVisible:boolean;
 }
 
 
@@ -66,7 +68,9 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   };
 
   state: ISendFormState = {
-    step2: false
+    step2: false,
+    isInfoVisible: false,
+    isConfirmVisible: false
   };
 
   async componentDidMount() {
@@ -162,6 +166,17 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
   onSelectChange = async (selectedForms: number[] | string[]) => {
     this.setState({selectedForms: selectedForms});
   }
+  onInfoClick = () =>{
+    this.setState({
+        isInfoVisible:true
+    })
+}
+onCancel = () =>{
+  this.setState({
+      isConfirmVisible:false,
+      isInfoVisible:false
+  })
+}
   onStep2 = () =>{
     this.setState({
       step2: !this.state.step2
@@ -187,10 +202,7 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
       }
       let display = <></>;
       if (step2){
-        hide = <>
-        <Button onClick={this.onStep2} type={"danger"}>
-        Back
-      </Button></>;
+        hide = <></>;
         let passUsers: UserEntity[] = [];
         this.state.users.collection.map((user) =>{
           this.state.selectedUsers!.map((index) => {
@@ -201,21 +213,43 @@ export default class SendForm extends React.PureComponent<ISendFormProps, ISendF
         })
         display = <><Step2 userObject={userObject} form={this.state.forms!.collection[(this.state.selectedForms![0] as number)].id} users={passUsers}/></>;
       }else{
-        display = <>          <Select
+        display = <><div style={{maxWidth:"980px", margin:"auto"}}>
+        <Layout.Header style = {{background:"inherit"}}>
+                    <div id = "SendHeader">
+                        <Typography.Title style={{float:"left"}} level = {1}>Request Form Completion</Typography.Title>
+                        <Icon  type="info-circle" theme="twoTone" twoToneColor = "#604099" style = {{fontSize:'37px', margin:'5px', float:"right"}} onClick = {this.onInfoClick}/>
+                    </div>
+
+                </Layout.Header>.
+                <Drawer
+                visible = {this.state.isInfoVisible}
+                onClose = {this.onCancel}
+                >
+                <div id = "SendFormInfo">
+                    <p>If no documents are shown on the page, upload a pdf</p>
+                    <Link to="/request/create">
+                        <Button> 
+                          Upload
+                        </Button>
+                    </Link>
+                    <Divider/>
+                    <p>Instructions to complete the process of sending the form will be added here when the process is complete</p>
+                </div>
+            
+                
+            </Drawer>     
+        <Select
         mode="multiple"
         style={{ width: '100%' }}
         placeholder="Please select"
         onSelect={this.onSelect}
         onDeselect={this.onDeselect}>
         {this.createUserOptions()}
-      </Select><Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table></>;
+      </Select><Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tableData}></Table>{hide}</div></>;
       }
       return (
         <>
           {display}
-          {
-            hide
-          }
         </>
       );
     }
