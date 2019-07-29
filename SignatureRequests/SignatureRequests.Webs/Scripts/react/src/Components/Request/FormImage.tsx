@@ -131,8 +131,13 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
   }
 
   async componentDidMount(){
+
+    const oneWeekFromNow = new Date();
+    oneWeekFromNow.setDate(oneWeekFromNow.getDate()+7);
+
     (await this.setState({
-      ctx : this.state.canvasRef.current!.getContext("2d")
+      ctx : this.state.canvasRef.current!.getContext("2d"),
+      date: oneWeekFromNow
     }));
     const rect = document.getElementById(PictureToWrap)!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
