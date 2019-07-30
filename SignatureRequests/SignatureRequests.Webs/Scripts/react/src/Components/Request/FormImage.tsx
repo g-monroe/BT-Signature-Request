@@ -185,6 +185,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     let newUser = users.find(x => x.id === Number(selectedUser));
     if (!remove && newUser!.id !== requestor!.id && newBox.signerType === SignerType.REQUESTOR){
       return;
+    }else if (remove && newBox.signerType === SignerType.REQUESTOR){
+      return;
     }
     if (!remove && newUser!.id === requestor!.id){
         newBox!.signerType = SignerType.REQUESTOR;
@@ -400,7 +402,7 @@ drawBoxes = async () => {
              })
          }
      })
-     message.success('Success! Redirecting to Dashboard!');
+     message.success('Success!');
      this.setState({
        wasSuccess: true
      })
