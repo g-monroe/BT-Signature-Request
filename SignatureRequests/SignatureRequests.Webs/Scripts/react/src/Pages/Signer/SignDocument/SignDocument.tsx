@@ -112,7 +112,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
     }
     updateBoxes = async () =>{
         try{
-            const box = await this.props.boxHandler!.getModelBoxes(this.state.requestData!.form.id);
+            const box = await this.props.boxHandler!.getBoxesOfRequest(this.state.requestData!.id);
             const notFinishedBoxes = box.collection.filter((b) => b.signedStatus !== SignedStatus.SIGNED);
            
     
@@ -164,7 +164,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
        try{
         const request = await this.props.requestHandler!.getRequestByRequestId(this.props.userObject.requestId);
         const user = await this.props.userHandler!.getUser(request.requestorId);
-        const box = await this.props.boxHandler!.getModelBoxes(request.form.id);
+        const box = await this.props.boxHandler!.getBoxesOfRequest(request.id);
         const notFinishedBoxes = box.collection.filter((b) => b.signedStatus !== SignedStatus.SIGNED);
        
         this.setState({

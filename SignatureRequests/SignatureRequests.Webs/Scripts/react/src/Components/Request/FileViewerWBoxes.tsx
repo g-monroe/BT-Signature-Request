@@ -111,7 +111,9 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
 
                             <Tooltip title = "All Progress is Saved" placement = "topLeft" >
                                 <Button >
-                                    Back to Dashboard
+                                        <Link to = {REQUESTER._Dashboard.path}>
+                                            Back to Dashboard
+                                        </Link>
                                 </Button>
                             </Tooltip>
   
