@@ -24,8 +24,9 @@ namespace SignatureRequests.Managers
         private readonly IGroupEngine _groupEngine;
         private readonly IGroupHandler _groupHandler;
         private readonly IUserEngine _userEngine;
+        private readonly IBoxHandler _boxHandler;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine, IBoxHandler boxHandler)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
@@ -33,6 +34,7 @@ namespace SignatureRequests.Managers
             _groupEngine = groupEngine;
             _groupHandler = groupHandler;
             _userEngine = userEngine;
+            _boxHandler = boxHandler;
         }
 
         public RequestResponseList GetRequests()
@@ -64,7 +66,8 @@ namespace SignatureRequests.Managers
         public NumberResponse FinalizeRequest(int id)
         {
             var request = _requestHandler.GetById(id);
-            bool isRequestNotComplete = request.BoxEntities.Any(box => box.SignedStatus == SignStatus.NotSigned);
+            var boxes = _boxHandler.GetBoxesByRequestId(id);
+            bool isRequestNotComplete = boxes.Any(box => box.SignedStatus == SignStatus.NotSigned);
             if (!isRequestNotComplete)
             {
                 request.Status = RequestStatusEnum.DONE;
@@ -84,6 +87,7 @@ namespace SignatureRequests.Managers
                     group.Status = GroupStatusEnum.COMPLETE;
                     _groupHandler.Update(group);
                     _groupHandler.SaveChanges();
+                    return new NumberResponse() { Num = 2 };
                 }
                 return new NumberResponse() { Num = 1 };
             }
