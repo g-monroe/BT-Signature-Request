@@ -169,7 +169,14 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                     <SignHeader  boxes = {this.state.boxes.collection} data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature}/> 
 
                 }
-                <FileViewerWBoxes  finalizeRequest = {this.finalizeRequest} unCompleteBoxes = {this.state.boxesToFinish} boxFilledOut = {this.connectActionToBox} userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} nextSig = {this.saveToNextSig}></FileViewerWBoxes>
+                <FileViewerWBoxes  
+                    finalizeRequest = {this.finalizeRequest} 
+                    unCompleteBoxes = {this.state.boxesToFinish} 
+                    boxFilledOut = {this.connectActionToBox} 
+                    userObject = {this.props.userObject} 
+                    requestData = {this.state.requestData} 
+                    boxes = {this.state.boxes} 
+                    nextSig = {this.saveToNextSig}></FileViewerWBoxes>
                 <Modal
                 title = "Finalize"
                 visible = {this.state.isSuccessVisible}
