@@ -74,7 +74,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
               requestNum = request.id;
             }
           }
-          
+          console.log(request.boxes);
           if (request.boxes.count !== 0){
             let signedBoxes = 0;
             request.boxes.collection.map((box) => {
@@ -116,7 +116,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-          <Image src={"../../../../../assets/v1/documents/" + groupEntity.form.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
+          <Image src={"../../../../../assets/v1/documents/" + this.props.userObject!.user.id +"/" + groupEntity.form.filePath.split('.')[0] + "/" + "0.png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
         <label className="ribbon right success"><span>{groupEntity.status}</span></label>
