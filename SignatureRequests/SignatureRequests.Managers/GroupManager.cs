@@ -44,10 +44,10 @@ namespace SignatureRequests.Managers
             var response = _groupEngine.GroupToListItem(result);
             return response;
         }
-        private void MakeCopy(int id, int groupId)
+        private void MakeCopy(int id, int groupId, int userId)
         {
             var filePath = _formHandler.GetById(id).FilePath;
-            const string path = Constants.DocumentPath;
+            string path = Constants.DocumentPath + userId.ToString() + '\\';
             string[] fileNameSplit = filePath.Split('.');
             string fullName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
             Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + path + fullName + "\\" + groupId);
@@ -110,11 +110,11 @@ namespace SignatureRequests.Managers
             return GroupsToListResponse(_groupHandler.GetAllInclude());
         }
 
-        public GroupResponse AddGroup(GroupRequest group, GroupEntity updating = null)
+        public GroupResponse AddGroup(GroupRequest group, int id, GroupEntity updating = null)
         {
             var newEntity = RequestToEntity(group, updating);
             var entity = CreateGroupEntity(newEntity);
-            MakeCopy(group.FormId, entity.Id);
+            MakeCopy(group.FormId, entity.Id, id);
             return _groupEngine.GroupToListItem(entity);
         }
 

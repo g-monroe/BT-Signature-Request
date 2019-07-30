@@ -55,7 +55,7 @@ class Create extends React.Component<ICreateProps, ICreateState> {
         let form = new FormData();
         form.append('file', new File([data.FileList.originFileObj], data.FileList.name, {type: "application/pdf"}) );
         
-        let uploadRequest = this.props.formHandler!.uploadForm(form);
+        let uploadRequest = this.props.formHandler!.uploadForm(form, this.props.userObject.user.id);
         uploadRequest.addEventListener("load", async () => {
             request.numPages = parseInt(uploadRequest.response);
             let response = (await this.props.formHandler!.createForm(request));

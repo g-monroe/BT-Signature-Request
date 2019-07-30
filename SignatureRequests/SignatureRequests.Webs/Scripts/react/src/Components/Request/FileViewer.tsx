@@ -160,7 +160,7 @@ class FileViewer extends React.Component<IFileViewerProps, IFileViewerState> {
             })
         });
         return <FormImage pageNum={this.state.page} 
-        src={`../../../../../assets/v1/documents/${this.state.formName}/${this.state.page}.png`} 
+        src={`../../../../../assets/v1/documents/${this.props.userObject.user.id}/${this.state.formName}/${this.state.page}.png`} 
         failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
         userObject={this.props.userObject} 
         pageChange={this.pageChange} 

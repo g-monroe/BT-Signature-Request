@@ -7,7 +7,7 @@ export interface IFormHandler {
     getAllByUser(id: number): Promise<FormResponseList>;
     getAllRequested(id: number): Promise<FormResponseList>;
     createForm(entity: FormRequest) : Promise<FormEntity>;
-    uploadForm(file: FormData) : XMLHttpRequest;
+    uploadForm(file: FormData, id: number) : XMLHttpRequest;
     getFormById(id: number) : Promise<FormEntity>;
 }
 
@@ -37,9 +37,9 @@ export class FormHandler implements IFormHandler {
         });
     }
     
-    uploadForm(file: FormData) : XMLHttpRequest {
+    uploadForm(file: FormData, id: number) : XMLHttpRequest {
         const req = new XMLHttpRequest();
-        (req.open("POST", "http://localhost:64445/api/Form/Upload"));
+        (req.open("POST", `http://localhost:64445/api/Form/Upload/${id}`));
         (req.send(file));
         return req;
       }

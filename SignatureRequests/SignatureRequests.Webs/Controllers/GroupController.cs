@@ -47,11 +47,11 @@ namespace SignatureRequests.Webs.Controllers
         {
             return _groupManager.GetGroupByFormId(id);
         }
-        [Route("api/Group/AddGroup")]
+        [Route("api/Group/AddGroup/{id}")]
         [HttpPost]
-        public GroupResponse AddGroup([FromBody]GroupRequest group)
+        public GroupResponse AddGroup([FromBody]GroupRequest group, [FromRoute] int id)
         {
-            return _groupManager.AddGroup(group);
+            return _groupManager.AddGroup(group, id);
         }
 
         [Route("api/Group/UpdateGroup/{id}")]

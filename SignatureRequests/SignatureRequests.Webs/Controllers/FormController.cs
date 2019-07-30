@@ -68,16 +68,16 @@ namespace SignatureRequests.Controllers
             return _formManager.EditForm(id, form);
             
         }
-        [HttpPost, Route("api/Form/Upload")]
-        public async Task<int> Upload()
+        [HttpPost, Route("api/Form/Upload/{id}")]
+        public async Task<int> Upload([FromRoute] int id)
         {
             if (!Request.Content.IsMimeMultipartContent())
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
-            await _formManager.SaveDocumentAsync(provider);
-            var numPages = _formManager.GetPageCount(provider);
+            await _formManager.SaveDocumentAsync(provider, id);
+            var numPages = _formManager.GetPageCount(provider, id);
             return numPages;
         }
         [Route("api/Form/DeleteForm/{id}")]
