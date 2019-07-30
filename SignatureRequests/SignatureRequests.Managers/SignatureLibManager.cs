@@ -10,6 +10,7 @@ using Org.BouncyCastle.X509;
 using SautinSoft.Document;
 using SautinSoft.Document.Drawing;
 using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.Items;
@@ -154,7 +155,7 @@ namespace SignatureRequests.Managers
                 return null;
             }
         }
-        public void SignDocument(BoxItem[] boxes, SignatureItem signItem)
+        public void SignDocument(BoxEntity[] boxes, SignatureItem signItem)
         {
             //Signature add to document part.
             DocumentCore dc = DocumentCore.Load(signItem.LoadPath);
@@ -166,16 +167,16 @@ namespace SignatureRequests.Managers
             // Find a first paragraph and insert our Shape inside it.
             Paragraph firstPar = dc.GetChildElements(true).OfType<Paragraph>().FirstOrDefault();
             firstPar.Inlines.Add(signatureShape);
-            foreach (BoxItem box in boxes)
+            foreach (BoxEntity box in boxes)
             {
               
                 Picture signaturePict = new Picture(dc, signItem.SignPath)
                 {
                     // Signature picture will be positioned:
                    Layout = Layout.Floating(
-                   new HorizontalPosition(box.y, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
-                   new VerticalPosition(box.x, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
-                   new Size(box.width, box.height, LengthUnit.Millimeter)) //Size
+                   new HorizontalPosition(box.Y, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
+                   new VerticalPosition(box.X, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
+                   new Size(box.Width, box.Height, LengthUnit.Millimeter)) //Size
                 };
                 PdfSaveOptions options = new PdfSaveOptions();
 

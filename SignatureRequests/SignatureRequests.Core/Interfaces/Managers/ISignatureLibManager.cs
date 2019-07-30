@@ -1,5 +1,6 @@
 ﻿using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Items;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         
         SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item);
         MemoryStream CreateCertificate(SignatureLibItem result, SignatureItem signItem);
-        void SignDocument(BoxItem[] boxes, SignatureItem signItem);
+        void SignDocument(BoxEntity[] boxes, SignatureItem signItem);
         bool SaveCertificate(SignatureLibItem resultm, SignatureItem signItem);
     }
 }

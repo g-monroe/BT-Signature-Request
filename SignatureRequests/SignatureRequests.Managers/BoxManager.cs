@@ -1,7 +1,9 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
+using SignatureRequests.Core.Items;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
@@ -18,15 +20,17 @@ namespace SignatureRequests.Managers
         private readonly IRequestHandler _requestHandler;
         private readonly ISignatureHandler _signatureHandler;
         private readonly IFormHandler _formHandler;
-        private readonly IGroupEngine _groupEngine;
+        private readonly IUserHandler _userHandler;
+        private readonly ISignatureLibManager _signatureLibManager;
         private readonly ISignatureEngine _signatureEngine;
-        public BoxManager(IBoxHandler boxHandler, IRequestHandler requestHandler, ISignatureHandler signatureHandler, IFormHandler formHandler, IGroupEngine groupEngine, ISignatureEngine signatureEngine)
+        public BoxManager(IBoxHandler boxHandler, IRequestHandler requestHandler, ISignatureHandler signatureHandler, IFormHandler formHandler, IGroupEngine groupEngine, ISignatureEngine signatureEngine, IUserHandler userHandler, ISignatureLibManager signatureLibManager)
         {
             _boxHandler = boxHandler;
             _requestHandler = requestHandler;
             _signatureHandler = signatureHandler;
             _formHandler = formHandler;
-            _groupEngine = groupEngine;
+            _userHandler = userHandler;
+            _signatureLibManager = signatureLibManager;
             _signatureEngine = signatureEngine;
         }
         public BoxResponse CreateBoxEntity(BoxRequest newBox)
@@ -122,7 +126,18 @@ namespace SignatureRequests.Managers
                 box.SignatureId = NewBox.SignatureId;
                 box.Text = NewBox.Text;
                 box.Date = NewBox.Date;
-
+                RequestEntity request = _requestHandler.First(x => x.Id == box.RequestId);
+                UserEntity user = _userHandler.First(x => x.Id == request.SignerId);
+                SignatureEntity sig = _signatureHandler.First(x => x.Id == NewBox.SignatureId);
+                X509Item x509Item = new X509Item(X509Item.Country.US,
+                 X509Item.Country.US, X509Item.Country.US,
+                 user.Name, DateTime.Now, user.Email, "M", "GM", "IA", "123123", "Test", "builderTrend");
+                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath + "2", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx");
+                BoxEntity box2 = _boxHandler.First(x => x.Id == NewBox.Id);
+                BoxEntity[] Boxes = new BoxEntity[] { box2 };
+                SignatureLibItem sigLib = _signatureLibManager.InitializeCertification(sigItem, x509Item);
+                _signatureLibManager.SaveCertificate(sigLib, sigItem);
+                _signatureLibManager.SignDocument(Boxes, sigItem);    
                 _boxHandler.Update(box);
                 _boxHandler.SaveChanges();
 

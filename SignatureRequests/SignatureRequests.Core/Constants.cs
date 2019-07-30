@@ -9,6 +9,7 @@ namespace SignatureRequests.Core
     public class Constants
     {
         public const string DocumentPath = @"\assets\v1\documents\";
+        public const string SignaturePath = @"\assets\v1\images\signatures\";
         public const string EmailAccount = "btsignacc@gmail.com";
     }
 }
