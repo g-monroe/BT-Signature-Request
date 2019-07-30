@@ -23,7 +23,7 @@
     display: flex;
     height: 25vh;
     width: 40vw;
-    background: whitesmoke;
+    background: white;
     justify-content: center;
     align-items: center;
     font-family: 'Pinyon Script', cursive;
@@ -62,8 +62,8 @@
 
 #text {
     border-width: 0px;
-    border-color: whitesmoke;
-    background: whitesmoke;
+    border-color: white;
+    background: white;
     text-align: center;
     outline: none;
     width: 530px;

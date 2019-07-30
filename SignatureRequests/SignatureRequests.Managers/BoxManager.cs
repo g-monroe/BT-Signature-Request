@@ -64,6 +64,14 @@ namespace SignatureRequests.Managers
             return models;
         }
 
+        public ModelBoxResponseList GetBoxesByRequestId(int id)
+        {
+            var result = _boxHandler.GetBoxesByRequestId(id);
+            var models = BoxesToModelList(result);
+            return models;
+        }
+        
+
         public BoxResponseList GetBoxes()
         {
             var result = _boxHandler.GetAll();

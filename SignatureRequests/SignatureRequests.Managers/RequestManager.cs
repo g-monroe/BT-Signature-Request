@@ -167,6 +167,7 @@ namespace SignatureRequests.Managers
                 Boxes = BoxEntitiesToResponseList(data.BoxEntities),
                 GroupTitle = data.Group.Title,
                 GroupDescription = data.Group.Description,
+                GroupId = data.GroupId,
                 Form = new SimpleFormResponse(){
                     Id = data.Group.Form.Id,
                     FilePath = data.Group.Form.FilePath,

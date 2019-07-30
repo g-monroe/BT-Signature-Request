@@ -13,6 +13,7 @@ class RequestToCompleteEntity {
   title:string;
   description:string;
   form:SimpleFormEntity;
+  groupId:number;
 
   constructor(data: any) {
     this.id = data.Id;
@@ -25,6 +26,7 @@ class RequestToCompleteEntity {
     this.title = data.GroupTitle;
     this.description = data.GroupDescription;
     this.form = new SimpleFormEntity(data.Form);
+    this.groupId = data.GroupId;
   }
 }
 
