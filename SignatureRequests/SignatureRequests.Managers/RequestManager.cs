@@ -59,6 +59,38 @@ namespace SignatureRequests.Managers
         {
             var request = _requestHandler.GetById(id);
             return RequestEntityToComplete(request);
+        }
+
+        public NumberResponse FinalizeRequest(int id)
+        {
+            var request = _requestHandler.GetById(id);
+            bool isRequestNotComplete = request.BoxEntities.Any(box => box.SignedStatus == SignStatus.NotSigned);
+            if (!isRequestNotComplete)
+            {
+                request.Status = RequestStatusEnum.DONE;
+                _requestHandler.Update(request);
+                _requestHandler.SaveChanges();
+
+                var group = _groupHandler.GetById(request.GroupId);
+                bool IsGroupNotComplete = group.RequestEntities.Any(req => req.Status == RequestStatusEnum.NOTSIGNED);
+                if (IsGroupNotComplete)
+                {
+                    group.Status = GroupStatusEnum.PENDING;
+                    _groupHandler.Update(group);
+                    _groupHandler.SaveChanges();
+                }
+                else
+                {
+                    group.Status = GroupStatusEnum.COMPLETE;
+                    _groupHandler.Update(group);
+                    _groupHandler.SaveChanges();
+                }
+                return new NumberResponse() { Num = 1 };
+            }
+            else
+            {
+                return new NumberResponse() { Num = -1 };
+            }
 
         }
 
