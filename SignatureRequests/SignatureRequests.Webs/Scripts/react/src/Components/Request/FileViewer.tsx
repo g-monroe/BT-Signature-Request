@@ -1,36 +1,20 @@
 import React from "react";
-import { Form as AntForm, Button, Input, Upload, Icon, Select, message, } from 'antd';
 import "antd/dist/antd.css";
 import { BoxHandler, IBoxHandler } from "../../Handlers/BoxHandler";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import FormEntity from "../../Entities/FormEntity";
 import { IFormHandler, FormHandler } from "../../Handlers/FormHandler";
-import GroupResponseList from "../../Entities/GroupResponseList";
 import GroupEntity from "../../Entities/GroupEntity";
 import FormImage from "./FormImage";
-import BoxRequest from "../../Entities/BoxRequest";
 import UserEntity from "../../Entities/UserEntity";
 import RequestEntity from "../../Entities/RequestEntity";
 import BoxEntity from "../../Entities/BoxEntity";
-import BoxResponseList from "../../Entities/BoxResponseList";
 import RequestResponseList from "../../Entities/RequestResponseList";
 import { IUserHandler, UserHandler } from "../../Handlers/UserHandler";
-import { request } from "https";
 import Step2 from "../../Pages/Requester/Send/Step2";
-import TextArea from "antd/lib/input/TextArea";
-import GroupRequest from "../../Entities/GroupRequest";
-import { RequestStatusSigning } from "../../Util/Enums/RequestStatus";
-import { IGroupHandler, GroupHandler } from "../../Handlers/GroupHandler";
-import RequestRequest from "../../Entities/RequestRequest";
-import { IRequestHandler, RequestHandler } from "../../Handlers/RequestHandler";
-import BoxType from "../../Util/Enums/BoxType";
 import SignerType from "../../Util/Enums/SignerType";
 import SignedStatus from "../../Util/Enums/SignedStatus";
-import { RequestDueDate } from "../../Util/Constants";
-import ActionType from "../../Util/Enums/ActionType";
-import { thisTypeAnnotation } from "@babel/types";
 
-const {Option} = Select;
 export interface IFileViewerProps {
     formHandler?: IFormHandler;
     userHandler?: IUserHandler;

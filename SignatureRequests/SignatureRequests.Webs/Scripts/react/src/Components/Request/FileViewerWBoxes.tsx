@@ -1,24 +1,27 @@
 import React from "react";
-import { Button} from 'antd';
+import { Button, Tooltip} from 'antd';
 import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
-import FormImageWBoxes, { IFormImageWBoxesProps } from "./FormImageWBoxes";
+import FormImageWBoxes from "./FormImageWBoxes";
 import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
 import { REQUESTER } from "../../Pages/Routing/routes";
 import { Link } from "react-router-dom";
+import ModelBox from "../../Entities/ToComplete/ModelBox";
 
 export interface IFileViewerProps {
     userObject:ContextUserObject;
     file:SimpleFormEntity
     boxes:ModelBoxList
+    unCompleteBoxes:ModelBox[]
     nextSig:(toNextSig:()=>void) => void
+    boxFilledOut: (box:ModelBox, data:any) =>void
 }
  
 export interface IFileViewerState {
     page: number;
     shouldClearPage: boolean;
-    currentSignature:number;
+    currentSignature:number; //The index of the current signature
 }
  
 class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerState> {
@@ -42,7 +45,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             shouldClearPage: true
         })
     };
-
+    
     renderpage = (): JSX.Element =>{
         if(this.state.shouldClearPage){
             this.setState({
@@ -57,7 +60,9 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             return (<FormImageWBoxes    src = {`../../../../../assets/v1/documents/${formName}/${this.state.page}.png`} 
             pageNum = {this.state.page} failedSrc ={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
             boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === this.state.page))}
-            selectedBox = {this.props.boxes.collection[this.state.currentSignature].id}/>);
+            selectedBox = {this.props.unCompleteBoxes[this.state.currentSignature] ? this.props.unCompleteBoxes[this.state.currentSignature].id : undefined}
+            userObject = {this.props.userObject}
+            boxFilledOutData = {this.props.boxFilledOut}/>);
 
         }catch{
             return(
@@ -73,9 +78,11 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
     }
 
     toNextSignature = () =>{
-        const nextSig = (this.state.currentSignature === this.props.boxes.count -1) ? 0 : this.state.currentSignature +1;
-        const newPageNum = this.props.boxes.collection[nextSig].pageNumber
 
+        const nextSig = (this.state.currentSignature >= this.props.unCompleteBoxes.length -1) ? 0 : this.state.currentSignature +1;
+        const newPageNum = this.props.unCompleteBoxes[nextSig].pageNumber
+        
+        
         this.setState({
             currentSignature: nextSig,
             page: newPageNum,
@@ -97,22 +104,37 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                     textAlign: "center",
                     width:"100%",
                     position:"fixed",
-                    bottom:"1%"
+                    bottom:"1%",
+                    display:"flex"
                 }}
                 >
-                    <Button 
-                        disabled={this.state.page===0}
-                        onClick={this.onPrev}
-                        style = {{marginRight:"2%"}}>
-                        Prev
-                    </Button>
-                      Page {this.state.page+1} of {this.props.file.numPages}  
-                    <Button 
-                        disabled={this.state.page===this.props.file.numPages-1}
-                        onClick={this.onNext}
-                        style = {{marginLeft:"2%"}}>
-                        Next
-                    </Button>
+
+                            <Tooltip title = "All Progress is Saved" placement = "topLeft" >
+                                <Button >
+                                    Back to Dashboard
+                                </Button>
+                            </Tooltip>
+  
+                            <Button 
+                                disabled={this.state.page===0}
+                                onClick={this.onPrev}
+                                style = {{marginRight:"2%"}}>
+                                Prev
+                            </Button>
+                              Page {this.state.page+1} of {this.props.file.numPages}  
+                            <Button 
+                                disabled={this.state.page===this.props.file.numPages-1}
+                                onClick={this.onNext}
+                                style = {{marginLeft:"2%"}}>
+                                Next
+                            </Button>
+
+                            <Tooltip title = {this.props.unCompleteBoxes.length !== 0 ? "Not all boxes are complete":"Finish document"}placement = "topRight" >
+                                <Button disabled = {this.props.unCompleteBoxes.length !== 0} type = "primary">
+                                    Finalize
+                                </Button>
+                            </Tooltip>
+
                 </div>
             </div>
          );    

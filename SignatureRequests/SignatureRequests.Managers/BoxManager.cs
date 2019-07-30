@@ -59,8 +59,7 @@ namespace SignatureRequests.Managers
         }
         public ModelBoxResponseList GetModelBoxesByFormId(int id)
         {
-            var result = _boxHandler.GetBoxesByFormId(id);
-            result = result.Where(x => x.IsModel == true);
+            var result = _boxHandler.GetModelBoxesByFormId(id);
             var models = BoxesToModelList(result);
             return models;
         }
@@ -104,6 +103,33 @@ namespace SignatureRequests.Managers
             _boxHandler.SaveChanges();
             var resp = BoxToListItem(box);
             return resp;
+        }
+
+        public NumberResponse AddDataToBox(SignedBoxRequest NewBox)
+        {
+            try
+            {
+                var box = _boxHandler.GetById(NewBox.Id);
+                box.SignedStatus = NewBox.SignedStatus;
+                box.SignatureId = NewBox.SignatureId;
+                box.Text = NewBox.Text;
+                box.Date = NewBox.Date;
+
+                _boxHandler.Update(box);
+                _boxHandler.SaveChanges();
+
+                return new NumberResponse()
+                {
+                    Num = 1
+                };
+            }
+            catch (Exception e){
+                return new NumberResponse()
+                {
+                    Num = -1
+                };
+            }
+           
         }
         public BoxResponseList BoxToListResponse(IEnumerable<BoxEntity> me)
         {

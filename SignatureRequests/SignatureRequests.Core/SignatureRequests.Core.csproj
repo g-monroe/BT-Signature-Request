@@ -218,6 +218,7 @@
     <Compile Include="Items\SignatureLibItem.cs" />
     <Compile Include="RequestObjects\BoxRequest.cs" />
     <Compile Include="RequestObjects\GroupRequest.cs" />
+    <Compile Include="RequestObjects\SignedBoxRequest.cs" />
     <Compile Include="RequestObjects\UserVerificationRequest.cs" />
     <Compile Include="ResponseObjects\BoxResponse.cs" />
     <Compile Include="RequestObjects\FormRequest.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="ResponseObjects\GroupResponse.cs" />
     <Compile Include="ResponseObjects\ModelBoxResponse.cs" />
     <Compile Include="ResponseObjects\ModelBoxResponseList.cs" />
+    <Compile Include="ResponseObjects\NumberResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponse.cs" />
     <Compile Include="ResponseObjects\RequestResponseList.cs" />
     <Compile Include="ResponseObjects\RequestToCompleteResponse.cs" />

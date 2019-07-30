@@ -18,6 +18,8 @@ namespace SignatureRequests.Core.Interfaces.Managers
         UserResponse UpdateUser(int id, UserRequest newUser);
         string GetName(int id);
         string GetEmail(int id);
+        NumberResponse GetUserInitialId(int UserId);
+        NumberResponse GetUserSigId(int UserId);
         string GetRole(int id);
         void Delete(int id);
         UserResponseList GetAllInclude();

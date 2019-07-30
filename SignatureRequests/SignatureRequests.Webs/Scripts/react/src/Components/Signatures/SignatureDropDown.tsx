@@ -8,12 +8,12 @@ import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import './DrawTest.css'
 import BoxType from '../../Util/Enums/BoxType';
 
-
 export interface ISignatureDropDownProps {
     type:BoxType  
     sigHandler?:ISignatureHandler
     userObject?:ContextUserObject
     dataAdded?:(data: any) => void
+    startVisible?:boolean
 }
  
 export interface ISignatureDropDownState {
@@ -28,7 +28,7 @@ export interface ISignatureDropDownState {
 class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignatureDropDownState> {
     state : ISignatureDropDownState= { 
         status: DropDownState.Selecting,
-        menuVisible:false,
+        menuVisible:this.props.startVisible ? true : false,
         modalVisible:false,
         info:null,
         existing:false,
@@ -37,7 +37,8 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
 
      static defaultProps = {
         sigHandler: new SignatureHandler(),
-        userObject: new ContextUserObject()
+        userObject: new ContextUserObject(),
+        startVisible:false
      }
 
     handleVisChange = (bool: boolean) =>{
@@ -52,11 +53,20 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
-    handleSubmitButton = () =>{
-        this.setState({
+    handleSubmitButton = async () =>{
+        
+        await this.setState({
             modalVisible:false,
             menuVisible:false
         })
+        if(this.props.dataAdded){
+            switch(this.props.type){
+                case BoxType.DATE: this.props.dataAdded(this.state.info); break;
+                case BoxType.TEXT: this.props.dataAdded(this.state.text); break;
+                case BoxType.INITIAL: this.props.dataAdded(BoxType.INITIAL); break;
+                case BoxType.SIGNATURE: this.props.dataAdded(BoxType.SIGNATURE); break;
+            }
+        }
         this.updateHasSig();
     }
 
@@ -89,6 +99,11 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
         })
     }
 
+    submitReactMouseEvent = (event: React.MouseEvent<any, MouseEvent>) =>{
+        event.stopPropagation();
+        this.handleSubmitButton();
+    }
+
     
     handleTextChange = (e : React.ChangeEvent<HTMLTextAreaElement>) =>{
         this.setState({
@@ -104,7 +119,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                             <Menu.Item key = {0} onClick = {()=> this.onClickChangeState(DropDownState.Date,false,true)}>Select the date: {" "}
                                 <DatePicker onChange = {this.handleInfoChange} format = {['DD/MM/YYYY', 'DD/MM/YY']}></DatePicker> {" "}
                                 {this.state.info ?
-                                    <Button onClick = {this.handleSubmitButton}type = "primary">Submit</Button> :
+                                    <Button onClick = {this.submitReactMouseEvent}type = "primary">Submit</Button> :
                                     <Button onClick = {this.handleSubmitButton} disabled>Submit</Button>
                                 }
                             </Menu.Item>  
@@ -114,7 +129,7 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                             <Menu.Item key = {0}>
                                 <div id = "TextAreaInMenu">
                                 <Input.TextArea value = {this.state.text} onChange = {this.handleTextChange}></Input.TextArea>
-                                <Button onClick = {this.handleSubmitButton} type = "primary" style = {{marginTop:"5px"}}>Submit</Button>
+                                <Button onClick = {this.submitReactMouseEvent} type = "primary" style = {{marginTop:"5px"}}>Submit</Button>
                                 </div>
                             </Menu.Item>
                     }
@@ -126,18 +141,21 @@ class SignatureDropDown extends React.Component<ISignatureDropDownProps, ISignat
                                     {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}
                                 </Menu.Item>,
                             this.state.existing && 
-                                <Menu.Item key = {1}> Use previous
+                                <Menu.Item key = {1} onClick = {this.handleSubmitButton}> Use previous
                                     {this.props.type === BoxType.INITIAL ? " Initials" : " Signature"}   
                                 </Menu.Item>]   
                     }
             </Menu>
-         
+      
         return ( 
             <>
                 <Dropdown overlay = {menu} trigger = {['click']} onVisibleChange = {this.handleVisChange} visible = {this.state.menuVisible}>
-                    <Button href = '#' size = "small"> {this.props.type}? {" "}
-                        <Icon type="plus-circle"/>
-                    </Button>
+                    {
+                        this.props.startVisible  ? <div/> :  
+                        <Button href = '#' size = "small"> {this.props.type}? {" "}
+                            <Icon type="plus-circle"/>
+                        </Button>
+                    }
                 </Dropdown>
                 {   
                     this.state.status === DropDownState.NewInitial  || this.state.status === DropDownState.NewSignature ?

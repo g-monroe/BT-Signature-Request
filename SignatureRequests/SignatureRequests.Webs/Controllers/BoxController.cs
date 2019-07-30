@@ -57,6 +57,15 @@ namespace BoxRequests.Controllers
             var result = _boxManager.UpdateBox(id, me);
             return result;
         }
+
+        [Route("api/Box/AddDataToBox")]
+        [HttpPut]
+        public NumberResponse AddDataToBox([FromBody]SignedBoxRequest me)
+        {
+            var result = _boxManager.AddDataToBox(me);
+            return result;
+        }
+
         //// DELETE api/<controller>/5
         [Route("api/Box/DeleteBox/{id}")]
         [HttpDelete]

@@ -15,6 +15,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         BoxResponse GetBox(int id);
         BoxResponse CreateBoxEntity(BoxRequest newBox);
         BoxResponse UpdateBox(int id, BoxRequest newBox);
+        NumberResponse AddDataToBox(SignedBoxRequest NewBox);
         void Delete(int id);
         BoxResponseList GetAllInclude();
         BoxResponseList BoxToListResponse(IEnumerable<BoxEntity> me);

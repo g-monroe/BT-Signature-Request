@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BoxRequest from '../../Entities/BoxRequest';
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import SignedStatus from '../../Util/Enums/SignedStatus';
 import SignerType from '../../Util/Enums/SignerType';
 import { SignatureColors } from '../../Util/Enums/colors';
 import BoxType from '../../Util/Enums/BoxType';
-import ActionType from '../../Util/Enums/ActionType';
 import { Button, Select, Icon, Row, Col, Form, Input, DatePicker, Modal, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { Layout } from "antd";
@@ -17,7 +16,6 @@ import FormEntity from '../../Entities/FormEntity';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
 import * as routes from '../../Pages/Routing/routes';
-import Paragraph from 'antd/lib/typography/Paragraph';
 import GroupRequest from '../../Entities/GroupRequest';
 import { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
 import RequestRequest from '../../Entities/RequestRequest';
@@ -27,8 +25,7 @@ import { IGroupHandler, GroupHandler } from '../../Handlers/GroupHandler';
 import { IRequestHandler, RequestHandler } from '../../Handlers/RequestHandler';
 import { BoxHandler, IBoxHandler } from '../../Handlers/BoxHandler';
 import GroupEntity from '../../Entities/GroupEntity';
-import { request } from 'http';
-const { Header, Content } = Layout;
+const { Header } = Layout;
 
 const { Option } = Select;
 const PictureToWrap = "PictureToWrap";
@@ -392,7 +389,6 @@ drawBoxes = async () => {
                  let newBox = new BoxRequest(box);
                  newBox.formId = form!.id; 
                  newBox.requestId = requestResult.id;
-                 newBox.date = new Date();
                  newBox.isModel = false;
                  newBox.formHeight = box.formHeight;
                  newBox.formWidth = box.formWidth;

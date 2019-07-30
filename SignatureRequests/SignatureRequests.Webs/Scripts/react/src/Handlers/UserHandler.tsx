@@ -4,12 +4,15 @@ import UserEntity from "../Entities/UserEntity";
 import UserRequest from "../Entities/UserRequest";
 import UserVerificationEntity from '../Entities/UserVerificationEntity';
 import SimpleUser from '../Entities/ToComplete/SimpleUser';
+import NumberResponse from '../Entities/ToComplete/NumberResponse';
 
 export interface IUserHandler {
     getAll(): Promise<UserResponseList>;
     createUser(newUser:UserRequest) : Promise<UserEntity>;
     verifyUser(info:UserVerificationEntity) : Promise<UserEntity>;
     getUser(id:number) : Promise<SimpleUser>;
+    getUsersSigId(userId:number) : Promise<NumberResponse>;
+    getUsersInitialId(userId:number) : Promise<NumberResponse>;
     getUserById(id:number) : Promise<UserEntity>;
 }
 
@@ -58,6 +61,31 @@ export class UserHandler implements IUserHandler {
             return new SimpleUser({Id:-1});
         }
     }
+
+    async getUsersSigId(userId:number) : Promise<NumberResponse>{
+        try{
+            return await APIHandler(`api/User/GetSigId/${userId}`,{
+                headers: {"Content-Type" : "application/json"},
+                method:'GET',
+                responseType: NumberResponse,
+            });
+        }catch(e){
+            return new NumberResponse({Num:-1});
+        }
+    }
+
+    async getUsersInitialId(userId:number) : Promise<NumberResponse>{
+        try{
+            return await APIHandler(`api/User/GetInitialId/${userId}`,{
+                headers: {"Content-Type" : "application/json"},
+                method:'GET',
+                responseType: NumberResponse,
+            });
+        }catch(e){
+            return new NumberResponse({Num:-1});
+        }
+    }
+    
     async getUserById(id:number) : Promise<UserEntity>{
             return await APIHandler(`api/User/GetUserById/${id}`, {
                 headers: {"Content-Type" : "application/json"},

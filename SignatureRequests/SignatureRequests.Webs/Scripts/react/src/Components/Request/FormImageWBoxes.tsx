@@ -2,27 +2,42 @@ import React from 'react';
 import '../Request/Signing.css'
 import ModelBox from '../../Entities/ToComplete/ModelBox';
 import BoxType from '../../Util/Enums/BoxType';
+import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/SignatureDropDown';
+import ContextUserObject from '../WrapperComponents/ContextUserObject';
+import { SignatureColors } from '../../Util/Enums/colors';
+import SignedStatus from '../../Util/Enums/SignedStatus';
+
+interface SigDropDownXY extends ISignatureDropDownProps{
+  x:number,
+  y:number
+}
 
 export interface IFormImageWBoxesProps{
     src: string;
     pageNum: number;
     failedSrc:string;
     boxes:ModelBox[];
-    selectedBox:number;
+    selectedBox?:number; //The id of the selected box
+    userObject:ContextUserObject;
+    boxFilledOutData: (box:ModelBox, data:any) =>void;
 }
+
 interface IFormImageWBoxesState{
     src: string;
     errored:boolean;
     canvasRef:React.RefObject<HTMLCanvasElement>
+    dropDown?:SigDropDownXY
+    boxClicked?:ModelBox
 }
+
 class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageWBoxesState> {
 
     state:IFormImageWBoxesState = {
       src: this.props.src,
       errored: false,
-      canvasRef: React.createRef()
+      canvasRef: React.createRef(),
+      boxClicked:undefined
     };
-  
 
   onError = () => {
     if (!this.state.errored) {
@@ -33,6 +48,22 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     }
   }
 
+  clickedBoxSigned = (data: any) =>{
+    const can = this.state.canvasRef.current;
+    const ctx = can!.getContext('2d');
+    if(ctx){
+      ctx.clearRect(this.state.boxClicked!.x-5,this.state.boxClicked!.y-5,this.state.boxClicked!.width+10,this.state.boxClicked!.height+10)
+      switch(this.state.boxClicked!.type){
+        case BoxType.INITIAL: 
+        case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
+        case BoxType.DATE:
+        case BoxType.TEXT: this.drawText(this.state.boxClicked!);break;
+
+      }
+    }
+    this.props.boxFilledOutData(this.state.boxClicked!, data);
+  }
+
   fitCanvasToContainer = (rect:any) =>{
     this.state.canvasRef.current!.style.width = '100%';
     this.state.canvasRef.current!.style.height = '100%';
@@ -41,10 +72,45 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   }
 
   drawBoxes = () =>{
-    this.props.boxes.forEach((box)=>this.drawBox(box));
+    this.props.boxes.forEach((box)=>{
+      if(box.signedStatus !== SignedStatus.SIGNED){
+        this.drawBox(box);
+      }else if(box.type === BoxType.SIGNATURE || box.type === BoxType.INITIAL){
+        this.drawImage(box);
+      }else{
+        this.drawText(box);
+      }
+      
+      //else draw the sig/date/initial/text where the box would be
+     
+    
+    }); //TODO Check if its signed and if so draw the signature instead 
+  }
+  drawText = (data: ModelBox) =>{
+    const can = this.state.canvasRef.current;
+    const ctx = can!.getContext('2d');
+    if(ctx){
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.globalAlpha = 1;
+      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
+    }
   }
 
-  drawBox = (data: ModelBox) =>{
+  drawImage = (data: ModelBox) =>{
+    const image = new Image();
+    image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
+    image.onload = () =>{
+      const can = this.state.canvasRef.current;
+      const ctx = can!.getContext('2d');
+      if(ctx){
+        ctx.globalAlpha = 1;
+        ctx.drawImage(image, data.x, data.y, data.width, data.height)
+      }
+    }
+  }
+
+  drawBox = (data: ModelBox) =>{ 
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
@@ -52,44 +118,65 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const scaleX = canBox.width / data.formWidth;
       const scaleY = canBox.height / data.formHeight;
       
-      if(data.id === this.props.selectedBox){
-        ctx.rect((scaleX * data.x) +5, (scaleY * data.y)+5, (scaleX * data.width)-10, (scaleY * data.height)-10);   
-      }
-      
-      ctx.lineWidth = 3;
       switch(data.type){
-        case BoxType.SIGNATURE: ctx.strokeStyle = '#e36414'; break;
-        case BoxType.INITIAL: ctx.strokeStyle = '#9a031e'; break;
-        case BoxType.DATE: ctx.strokeStyle = '#0f4c5c'; break;
-        case BoxType.TEXT: ctx.strokeStyle = '#5f0f40'; break;
-        default: ctx.strokeStyle = '#000000'; break; 
+        case BoxType.SIGNATURE: ctx.fillStyle = SignatureColors.signature; ctx.strokeStyle = SignatureColors.signature;break;
+        case BoxType.INITIAL: ctx.fillStyle = SignatureColors.initial; ctx.strokeStyle = SignatureColors.initial; break;
+        case BoxType.DATE: ctx.fillStyle = SignatureColors.date; ctx.strokeStyle = SignatureColors.date; break;
+        case BoxType.TEXT: ctx.fillStyle = SignatureColors.text; ctx.strokeStyle = SignatureColors.text; break;
+        default: ctx.fillStyle = SignatureColors.black; ctx.fillStyle = SignatureColors.black; break; 
       }
+
+      if(this.props.selectedBox && data.id === this.props.selectedBox){
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 5;
+        ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);   
+        ctx.stroke();
+      }
+
+      ctx.globalAlpha = .2;
+      
      
-      ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
+      ctx.fillRect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
       ctx.stroke();
     }
   }
 
-  boxClicked = (box: ModelBox, event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
-    //TODO on other branch
+  boxClicked = async (box: ModelBox, event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
+    await this.setState({
+      dropDown: undefined,
+      boxClicked:box
+    })
+
+    this.setState({
+      dropDown: {
+        type:box.type,
+        x:event.pageX,
+        y:event.pageY
+      }
+    })
   }
 
   canvasClicked = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) =>{
       const can = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
       const X = event.clientX - can!.left;
       const Y = event.clientY - can!.top;
-
+      event.persist()
+      
       this.props.boxes.forEach((box)=>{
-
-        if( box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
           (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
           (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
           (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
             this.boxClicked(box, event);
+          }else{
+            this.setState({
+              dropDown: undefined
+            })
           }
       })
 
   }
+
   imageLoaded = () =>{
     let rect = document.getElementById('DivWCanvasAndImage')!.getBoundingClientRect();
     this.fitCanvasToContainer(rect);
@@ -102,6 +189,14 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const { src } = this.state;
 
     return (
+      <>
+      {
+        this.state.dropDown && 
+        
+          <div id = 'this'style = {{position: "fixed",top:`${this.state.dropDown.y}px`, left:`${this.state.dropDown.x}px`, zIndex:85}}>
+            <SignatureDropDown userObject = {this.props.userObject} type = {this.state.dropDown.type} startVisible = {true} dataAdded = {this.clickedBoxSigned}/>
+          </div>
+      }
       <div id = "DivWCanvasAndImage">
         <canvas id = "SimpleCanvas"
                 ref = {this.state.canvasRef}
@@ -124,6 +219,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
             }}
         />
       </div>
+      </>
     );
   }
 }
