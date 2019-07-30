@@ -87,7 +87,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         } 
      }
      isNotDone = (request:RequestEntity) =>{
-         if (request.status !== "Done"){
+         if (request.status !== "Done" && request.signer.id === this.props.userObject.user.id){
              return true;
          }
          return false;

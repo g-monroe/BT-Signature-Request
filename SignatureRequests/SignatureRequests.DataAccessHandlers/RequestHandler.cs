@@ -25,7 +25,7 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public IEnumerable<RequestEntity> GetAllInclude()
         {
-            return GetIncludes("BoxEntities");
+            return _context.Requests.Include("BoxEntities");
         }
         
     }
