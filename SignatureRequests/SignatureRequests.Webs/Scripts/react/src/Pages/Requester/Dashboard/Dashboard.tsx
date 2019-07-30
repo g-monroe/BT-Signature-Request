@@ -13,6 +13,7 @@ import GroupEntity from '../../../Entities/GroupEntity';
 import RequestStatus, { RequestStatusSigning } from '../../../Util/Enums/RequestStatus';
 const { Option } = Select;
 const { TabPane } = Tabs;
+const filterAll = "All";
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userObject: ContextUserObject;
@@ -35,7 +36,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      state: IDashboardState = {
          loading: true,
          searchTerm: "",
-         filter:"All"
+         filter:filterAll
      };
      async componentDidMount() {
        this.setState({
@@ -65,7 +66,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 if (count === 0){
                     return <><h1>Nothing found!</h1></>
                 }
-                if ((searchTerm.length > 1 || filter !== "All") && !loading){//Searching
+                if ((searchTerm.length > 1 || filter !== filterAll) && !loading){//Searching
                     return tableData!.map((form) => {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
@@ -124,7 +125,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             if (requestData!.length === 0 || requestData === null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
             }else{ 
-                if ((searchTerm.length > 1 || filter !== "All") && !loading ){//Searching
+                if ((searchTerm.length > 1 || filter !== filterAll) && !loading ){//Searching
                     
                    return requestData!.map((form) => {
                         if (form.groups.count !== 0){
@@ -171,8 +172,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      }
     render() { 
         const selectBefore = (
-            <Select onChange={this.handleFilter} defaultValue="All">
-                <Option value={"All"}>All</Option>
+            <Select onChange={this.handleFilter} defaultValue={filterAll}>
+                <Option value={filterAll}>All</Option>
               <Option value={RequestStatusSigning.COMPLETE}>Completed</Option>
               <Option value={RequestStatusSigning.PENDING}>Pending</Option>
               <Option value={RequestStatusSigning.NOTSTARTED}>Not Started</Option>

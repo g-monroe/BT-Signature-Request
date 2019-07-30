@@ -86,10 +86,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
     if(ctx){
-<<<<<<< HEAD
-
-=======
->>>>>>> 8d34fc95d094f6d4f66e42fc08f4fb369b6aa097
       ctx.globalAlpha = 1;
       ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
     }
