@@ -16,6 +16,7 @@ export interface IFileViewerProps {
     unCompleteBoxes:ModelBox[]
     nextSig:(toNextSig:()=>void) => void
     boxFilledOut: (box:ModelBox, data:any) =>void
+    finalizeRequest: () => void
 }
  
 export interface IFileViewerState {
@@ -132,7 +133,7 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                             </Button>
 
                             <Tooltip title = {this.props.unCompleteBoxes.length !== 0 ? "Not all boxes are complete":"Finish document"}placement = "topRight" >
-                                <Button disabled = {this.props.unCompleteBoxes.length !== 0} type = "primary">
+                                <Button disabled = {this.props.unCompleteBoxes.length !== 0} type = "primary" onClick = {this.props.finalizeRequest}>
                                     Finalize
                                 </Button>
                             </Tooltip>
