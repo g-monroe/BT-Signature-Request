@@ -16,6 +16,7 @@ import Moment from 'react-moment';
 import GroupEntity from '../../Entities/GroupEntity';
 import * as Routes from '../../Pages/Routing/routes';
 import { Link } from 'react-router-dom';
+import ContextUserObject from '../WrapperComponents/ContextUserObject';
 
 const TabPane = Tabs.TabPane;
 
@@ -23,6 +24,7 @@ export interface IDashItemProps {
     groupEntity: GroupEntity;
     isOwner: boolean;
     groupHandler?: IGroupHandler;
+    userObject?: ContextUserObject;
     deleteGroup:(id: number) => void;
 }
  
@@ -68,7 +70,9 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
             color = "#3CB371";
             totalDoneRequests += 1;
           }else{
-            requestNum = request.id;
+            if (request.signer.id === this.props.userObject!.user.id){
+              requestNum = request.id;
+            }
           }
           
           if (request.boxes.count !== 0){

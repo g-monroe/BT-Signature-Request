@@ -66,7 +66,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
+                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
                             })
                         }
@@ -76,7 +76,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
                             })
                         }
@@ -125,7 +125,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups.count !== 0){
                             return form.groups.collection.map((group, index) =>{
                                 if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
                             })
                         }
@@ -137,7 +137,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                 if (group.requests.count !== 0){
                                    let items = group.requests.collection.some(this.isNotDone);
                                     if (items){
-                                        return <DashItem key={index} groupEntity={group} isOwner={false} deleteGroup={this.deleteGroup}/> 
+                                        return <DashItem key={index} groupEntity={group} isOwner={false} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/> 
                                     }
                                 } 
                             })
