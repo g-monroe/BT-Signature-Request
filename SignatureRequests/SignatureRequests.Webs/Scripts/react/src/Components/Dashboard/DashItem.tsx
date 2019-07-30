@@ -2,7 +2,7 @@ import * as React from 'react';
 import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 
 import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
