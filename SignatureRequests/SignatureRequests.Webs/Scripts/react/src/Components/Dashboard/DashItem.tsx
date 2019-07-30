@@ -74,7 +74,6 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
               requestNum = request.id;
             }
           }
-          console.log(request.boxes);
           if (request.boxes.count !== 0){
             let signedBoxes = 0;
             request.boxes.collection.map((box) => {

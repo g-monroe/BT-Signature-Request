@@ -43,6 +43,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
            requestData: this.getForms((await this.props.formHandler!.getAllRequested(this.props.userObject.user.id))),
            loading: false
        });
+       
      }
      getForms = (forms: FormResponseList) : any[] => {
        return forms.collection;
