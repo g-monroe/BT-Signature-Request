@@ -10,5 +10,6 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         IEnumerable<BoxEntity> GetAllInclude();
          IEnumerable<BoxEntity> GetBoxesByFormId(int id);
         IEnumerable<BoxEntity> GetModelBoxesByFormId(int id);
+        IEnumerable<BoxEntity> GetBoxesByRequestId(int id);
     }
 }

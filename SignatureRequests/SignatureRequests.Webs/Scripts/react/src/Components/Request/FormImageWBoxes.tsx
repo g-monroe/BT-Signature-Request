@@ -80,18 +80,12 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       }else{
         this.drawText(box);
       }
-      
-      //else draw the sig/date/initial/text where the box would be
-     
-    
-    }); //TODO Check if its signed and if so draw the signature instead 
+    });
   }
   drawText = (data: ModelBox) =>{
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
     if(ctx){
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
       ctx.globalAlpha = 1;
       ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
     }
