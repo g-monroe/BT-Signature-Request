@@ -145,6 +145,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
     }
 
     render() { 
+        
         if(!this.state.requestData || !this.state.sender || ! this.state.boxes || !this.state.boxesToFinish){
             return(
                 <Spin size = "large"></Spin>

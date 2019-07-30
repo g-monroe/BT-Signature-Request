@@ -24,7 +24,6 @@ const yupValidation = yup.object().shape<ILoginFormState>({
     userName: yup.string().required("You must provide a username").label("Username").typeError("This is a required field") ,
     password: yup.string().required().label("Password").typeError("This is a required field"),
 });
- 
 class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILoginFormState>> {
     state : ILoginFormState = {
         userName: "",
@@ -34,7 +33,11 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
     getValidateStatus = (Value:boolean)=>{
         return !! Value ?  ValidateStatus.error : ValidateStatus.success
     }
-    
+    handleKeyPress = (event:any) => {
+        if(event.key === 'Enter'){
+          this.props.handleSubmit();
+        }
+      }
     render() { 
 
         const {values,errors,handleChange,handleSubmit,isSubmitting,touched} = this.props;
@@ -57,6 +60,7 @@ class LoginForm extends React.Component<InjectedFormikProps<ILoginFormProps, ILo
                 <Form.Item required hasFeedback help = {errors.password}
                 validateStatus = {this.getValidateStatus((!!touched.password) && (!!errors.password))}>
                     <Input.Password
+                    onKeyDownCapture={this.handleKeyPress}
                     name = "password"
                     placeholder = "Password"
                     prefix = {<Icon type = "lock" className = "loginFormIcons"/>}
