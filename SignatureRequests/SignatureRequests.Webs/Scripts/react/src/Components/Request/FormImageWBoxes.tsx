@@ -51,8 +51,12 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   clickedBoxSigned = (data: any) =>{
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const scaleX = canBox.width / data.formWidth;
+    const scaleY = canBox.height / data.formHeight;
+
     if(ctx){
-      ctx.clearRect(this.state.boxClicked!.x-5,this.state.boxClicked!.y-5,this.state.boxClicked!.width+10,this.state.boxClicked!.height+10)
+      ctx.clearRect(scaleX*(this.state.boxClicked!.x)-5,scaleY*(this.state.boxClicked!.y)-5,scaleX*(this.state.boxClicked!.width)+10,scaleY*(this.state.boxClicked!.height)+10)
       switch(this.state.boxClicked!.type){
         case BoxType.INITIAL: 
         case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
@@ -83,15 +87,23 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     });
   }
   drawText = (data: ModelBox) =>{
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const scaleX = canBox.width / data.formWidth;
+    const scaleY = canBox.height / data.formHeight;
+
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
     if(ctx){
       ctx.globalAlpha = 1;
-      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
+      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", scaleX * (data.x + (.5 * data.width)), scaleY * (data.y + (.5 * data.height), data.width))
     }
   }
 
   drawImage = (data: ModelBox) =>{
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const scaleX = canBox.width / data.formWidth;
+    const scaleY = canBox.height / data.formHeight;
+
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
@@ -99,7 +111,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       const ctx = can!.getContext('2d');
       if(ctx){
         ctx.globalAlpha = 1;
-        ctx.drawImage(image, data.x, data.y, data.width, data.height)
+        ctx.drawImage(image, scaleX * data.x, scaleY* data.y, scaleX * data.width, scaleY * data.height)
       }
     }
   }
@@ -157,10 +169,18 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       event.persist()
       
       this.props.boxes.forEach((box)=>{
-        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
-          (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
-          (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
-          (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
+        const scaleX = can.width / box.formWidth;
+        const scaleY = can.height / box.formHeight;
+
+        const scaledX = box.x * scaleX;
+        const scaledY = box.y * scaleY;
+        const scaledWidth = box.width * scaleX;
+        const scaledHeight = box.height * scaleY;
+
+        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= scaledX && X <= scaledX+scaledWidth && Y >= scaledY && Y <= scaledY+scaledHeight) ||
+          (X >= scaledX && X <= scaledX+scaledWidth && Y <= scaledY && Y >= scaledY+scaledHeight) ||
+          (X <= scaledX && X >= scaledX+scaledWidth && Y >= scaledY && Y <= scaledY+scaledHeight) ||
+          (X <= scaledX && X >= scaledX+scaledWidth && Y <= scaledY && Y >= scaledY+scaledHeight) ) ){
             this.boxClicked(box, event);
           }else{
             this.setState({
