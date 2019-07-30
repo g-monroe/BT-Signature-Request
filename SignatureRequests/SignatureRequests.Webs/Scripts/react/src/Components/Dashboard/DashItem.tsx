@@ -53,7 +53,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     const {groupEntity} = this.props;
     const { tags } = this.state;
     if (groupEntity.requests.count === 0){
-      const newTag = new TagItem("#000", "#fff", "Nothing found!");
+      const newTag = new TagItem("#000", "#fff", "Nothing found!", new Date());
       tags.push(newTag);
     }else{
       let totalRequests = 0;
@@ -61,7 +61,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         totalRequests = groupEntity.requests.count;
         let requestNum = undefined;
         groupEntity.requests.collection.map((request) => {
-          let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
+          let tagText = `${request.signer.name}: ${request.status}`;
           let color = "#CDCDCD";
           
           if (request.status === RequestStatus.DONE){
@@ -80,7 +80,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
             })
             tagText = `${request.signer.name}: ${signedBoxes}/${request.boxes.count} - ${request.status} (${request.sentDate.toString()})`
           }
-          const newTag = new TagItem("#000", color, tagText);
+          const newTag = new TagItem("#000", color, tagText, request.sentDate);
           tags.push(newTag);
         })
       this.setState({
@@ -93,7 +93,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     return e.map((tag, index) =>
       (<li key={index}>
         <span style={{color:tag.color, backgroundColor:tag.backgroundColor, display:"block",float:"left"}} className="badge badge-success ml">
-          {tag.text}
+          {tag.text + " -"}
+          <Moment>{tag.date.toString()}</Moment>
         </span>
       </li>)
     );
