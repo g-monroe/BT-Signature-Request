@@ -10,6 +10,6 @@ namespace SignatureRequests.Core.Enums
     {
         public static string DONE = "Done";
         public static string SIGNED = "Signed";
-        public static string NOTSIGNED = "Not Signed";
+        public static string NOTSIGNED = "NotSigned";
     }
 }
