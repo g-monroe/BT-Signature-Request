@@ -5,8 +5,8 @@ enum RequestStatus { //Request
 }
 
 export default RequestStatus;
-export enum RequestStatusSigning { //Groups
-    PENDING = "pending",
+export enum RequestStatusSigning {
+    PENDING = "Pending",
     COMPLETE = "Complete",
     NOTSTARTED = "Not Started"
 }
