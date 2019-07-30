@@ -19,5 +19,6 @@ namespace SignatureRequests.Core.ResponseObjects
         public string GroupTitle { get; set; }
         public string GroupDescription { get; set; }
         public SimpleFormResponse Form { get; set; }
+        public int GroupId { get; set; }
     }
 }

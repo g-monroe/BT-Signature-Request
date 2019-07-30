@@ -93,7 +93,10 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 newBox.signedStatus = SignedStatus.SIGNED
             break;
         }
+        const form = this.state.requestData!.form.filePath.split('.');
+        const formName = form.slice(0, form.length-1);
 
+        newBox.filePath = `${this.state.requestData!.requestorId}\\${formName}\\${this.state.requestData!.groupId}\\${formName}.pdf`
         const num = await this.props.boxHandler.addSignatureToBox(newBox);
 
         if(num.num < 0){
