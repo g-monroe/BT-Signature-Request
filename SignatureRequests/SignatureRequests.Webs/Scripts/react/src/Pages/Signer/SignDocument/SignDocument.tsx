@@ -65,7 +65,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 try{
                     const newId = (await this.props.userHandler!.getUsersInitialId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId ===  NumberToSuccessStatus.FAILURE){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
@@ -81,7 +81,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                   
                     const newId = (await this.props.userHandler!.getUsersSigId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId === NumberToSuccessStatus.FAILURE ){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
