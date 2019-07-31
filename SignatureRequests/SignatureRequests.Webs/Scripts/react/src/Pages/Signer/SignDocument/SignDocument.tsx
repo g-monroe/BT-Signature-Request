@@ -116,7 +116,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     finalizeRequest = async () =>{
         await this.props.requestHandler!.finalizeRequestByRequestId(this.state.requestData!.id).then((number) => {
-            if(number.num > 0){
+            if(number.num !== NumberToSuccessStatus.FAILURE){
                 this.setState({
                     isSuccessVisible:true
                 })
