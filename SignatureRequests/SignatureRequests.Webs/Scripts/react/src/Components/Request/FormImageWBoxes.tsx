@@ -56,7 +56,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const scaleY = canBox.height / data.formHeight;
 
     if(ctx){
-      ctx.clearRect(scaleX*(this.state.boxClicked!.x)-5,scaleY*(this.state.boxClicked!.y)-5,scaleX*(this.state.boxClicked!.width)+10,scaleY*(this.state.boxClicked!.height)+10)
+      //ctx.clearRect(scaleX*(this.state.boxClicked!.x)-5,scaleY*(this.state.boxClicked!.y)-5,scaleX*(this.state.boxClicked!.width)+10,scaleY*(this.state.boxClicked!.height)+10)
       switch(this.state.boxClicked!.type){
         case BoxType.INITIAL: 
         case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
@@ -103,29 +103,52 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const scaleX = canBox.width / data.formWidth;
     const scaleY = canBox.height / data.formHeight;
+    const boxWidth = scaleX * data.width;
+    const boxHeight = scaleY * data.height;
 
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
-      const diffHeight = scaleY * data.height - image.height;
-      const diffWidth =  scaleX * data.width - image.width;
 
-      const heightWidthratio = image.height / image.width;
+      const diffHeight = (boxHeight / image.height);
+      const diffWidth =  (boxWidth / image.width);
+ 
+      const imageHeightWidthratio = image.height / image.width;
       let newWidth;
       let newHeight;
-      let newX;
-      let newY;
+      let newX = data.x *scaleX;
+      let newY = data.y *scaleY;
+      
+      
+      if(diffHeight > 1 && diffWidth > 1){ //Image is too small
+        if(diffWidth< diffHeight){ //Grow to box width
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
+        }else{ //Grow to box height
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+        }
+      }else if (diffHeight > 1 && diffWidth < 1){ //Image is too wide
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
+      }else if (diffHeight < 1 && diffWidth > 1) { // Image is too tall
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+      }else { //Image is too big overall
+        if(diffHeight < diffWidth){
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+        }else {
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
 
-      if(diffWidth > diffHeight){ //Cut width to match box
-        newWidth = scaleX * data.width;
-        newHeight = heightWidthratio * newWidth;
-        newX = scaleX * data.x;
-        newY = scaleY* data.y + (.5 * (scaleY * data.height - newHeight))
-      }else{
-        newHeight = scaleY * data.height;
-        newWidth = (1/heightWidthratio) * newHeight;
-        newY = scaleY* data.y;
-        newX = scaleX * data.x + (.5 * (scaleX * data.width - newWidth))
+        }
       }
 
       const can = this.state.canvasRef.current;

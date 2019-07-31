@@ -53,7 +53,7 @@ class DrawCanvas extends React.Component<IDrawCanvasProps, IDrawCanvasState> {
                     brushRadius = {1}
                     brushColor = {this.props.color}
                     catenaryColor = '#FFFFFF'
-                    canvasWidth = {this.determineWidth()}
+                    canvasWidth = {'100%'}
                     canvasHeight = {'25vh'}
                     hideGrid = {true}
                     >
