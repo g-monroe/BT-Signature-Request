@@ -107,11 +107,32 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
+      const diffHeight = image.height - scaleY * data.height;
+      const diffWidth = image.width - scaleX * data.width;
+
+      const heightWidthratio = image.height / image.width;
+      let newWidth;
+      let newHeight;
+      let newX;
+      let newY;
+
+      if(diffWidth > diffHeight){ //Cut width to match box
+        newWidth = scaleX * data.width;
+        newHeight = heightWidthratio * newWidth;
+        newX = scaleX * data.x;
+        newY = scaleY* data.y + (.5 * (scaleY * data.height - newHeight))
+      }else{
+        newHeight = scaleY * data.height;
+        newWidth = (1/heightWidthratio) * newHeight;
+        newY = scaleY* data.y;
+        newX = scaleX * data.x + (.5 * (scaleX * data.width - newWidth))
+      }
+
       const can = this.state.canvasRef.current;
       const ctx = can!.getContext('2d');
       if(ctx){
         ctx.globalAlpha = 1;
-        ctx.drawImage(image, scaleX * data.x, scaleY* data.y, scaleX * data.width, scaleY * data.height)
+        ctx.drawImage(image, newX, newY, newWidth, newHeight)
       }
     }
   }
