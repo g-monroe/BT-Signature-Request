@@ -6,6 +6,7 @@ import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/Signat
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import { SignatureColors } from '../../Util/Enums/colors';
 import SignedStatus from '../../Util/Enums/SignedStatus';
+import moment from 'moment';
 
 interface SigDropDownXY extends ISignatureDropDownProps{
   x:number,
@@ -62,7 +63,7 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
         case BoxType.INITIAL: 
         case BoxType.SIGNATURE: this.drawImage(normalizedBox);break;
         case BoxType.DATE:
-        case BoxType.TEXT: this.drawText(normalizedBox);break;
+        case BoxType.TEXT: this.drawText(normalizedBox, data);break;
 
       }
     }
@@ -89,16 +90,31 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       }
     });
   }
-  drawText = (data: ModelBox) =>{
+
+  drawText = (data: ModelBox, text?: string) =>{
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const scaleX = canBox.width / data.formWidth;
     const scaleY = canBox.height / data.formHeight;
-
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
+
     if(ctx){
+      ctx.font = "15px Arial"
       ctx.globalAlpha = 1;
-      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", scaleX * (data.x + (.5 * data.width)), scaleY * (data.y + (.5 * data.height), data.width))
+      ctx.strokeStyle = "white"
+      ctx.fillStyle = "black"
+      const writtenText = (data.type === BoxType.TEXT ? (data.text || text) :  moment(data.date || new Date()).format("MMM Do YYYY")) || " ";
+      const numCharactersPerLine = Math.floor((data.width * scaleX)/8)
+      const re = new RegExp(`.{1,${numCharactersPerLine}}`,'g');
+      const lines = writtenText.match(re);
+      let start = ((scaleY *data.y) + .5* data.height) - 15 * Math.floor(lines!.length/2);
+
+      lines!.forEach((line, index)=>{
+        ctx.strokeText(line || "", (scaleX * data.x) + .1 * data.width, start + 15 * (index+ 1), data.width *.8)
+        ctx.fillText(line || "", (scaleX * data.x) + .1 * data.width, start + 15 * (index+1), data.width *.8)
+      })
+      ctx.fill();
+      ctx.stroke();
     }
   }
 

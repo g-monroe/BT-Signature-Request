@@ -27,10 +27,8 @@ class AddSignatues extends React.Component<IAddSignatuesProps, IAddSignatuesStat
                         <div id = "signaturePageSider">
                         View your:
                             <div id = "ViewSigButtons">
-                                <ImageViewModal title = "Your Signature" button = "Signature" content = {
-                                        <img src = {"../../../FakeMaterials/testMadison.jpeg"} alt = "Signature"></img>
-                                }></ImageViewModal>
-                                <ImageViewModal title = "Your Initials" button = "Initials"></ImageViewModal>
+                                <ImageViewModal title = "Your Signature" button = "Signature" isSignature = {true} userId = {this.props.userObject.user.id}></ImageViewModal>
+                                <ImageViewModal title = "Your Initials" button = "Initials" isSignature = {false} userId = {this.props.userObject.user.id}></ImageViewModal>
                             </div>
                             <Divider></Divider>
                             {HowToSign}
