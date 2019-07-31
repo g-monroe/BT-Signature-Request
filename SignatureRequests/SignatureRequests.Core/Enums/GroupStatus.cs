@@ -8,9 +8,9 @@ namespace SignatureRequests.Core.Enums
 {
     public class GroupStatusEnum
     {
-        public static string PENDING = "pending";
+        public static string PENDING = "Pending";
         public static string COMPLETE = "Complete";
-        public static string NOTSTARTED = "Not Started";
+        public static string NOTSTARTED = "NotStarted";
         
     }
 }
