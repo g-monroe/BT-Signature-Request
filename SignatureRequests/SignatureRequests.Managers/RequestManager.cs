@@ -87,13 +87,13 @@ namespace SignatureRequests.Managers
                     group.Status = GroupStatusEnum.COMPLETE;
                     _groupHandler.Update(group);
                     _groupHandler.SaveChanges();
-                    return new NumberResponse() { Num = 2 };
+                    return new NumberResponse() { Num = NumberToBooleanEnum.Success };
                 }
-                return new NumberResponse() { Num = 1 };
+                return new NumberResponse() { Num = NumberToBooleanEnum.Success };
             }
             else
             {
-                return new NumberResponse() { Num = -1 };
+                return new NumberResponse() { Num = NumberToBooleanEnum.Failure };
             }
 
         }
