@@ -52,20 +52,21 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
-    const scaleX = canBox.width / data.formWidth;
-    const scaleY = canBox.height / data.formHeight;
-
+    const normalizedBox = this.normalizeBoxCoords(this.state.boxClicked!);
+    const scaleX = canBox.width / normalizedBox.formWidth;
+    const scaleY = canBox.height / normalizedBox.formHeight;
+   
     if(ctx){
-      //ctx.clearRect(scaleX*(this.state.boxClicked!.x)-5,scaleY*(this.state.boxClicked!.y)-5,scaleX*(this.state.boxClicked!.width)+10,scaleY*(this.state.boxClicked!.height)+10)
-      switch(this.state.boxClicked!.type){
+      ctx.clearRect(scaleX*(normalizedBox.x)-5,scaleY*(normalizedBox.y)-5,scaleX*(normalizedBox.width)+10,scaleY*(normalizedBox.height)+10)
+      switch(normalizedBox.type){
         case BoxType.INITIAL: 
-        case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
+        case BoxType.SIGNATURE: this.drawImage(normalizedBox);break;
         case BoxType.DATE:
-        case BoxType.TEXT: this.drawText(this.state.boxClicked!);break;
+        case BoxType.TEXT: this.drawText(normalizedBox);break;
 
       }
     }
-    this.props.boxFilledOutData(this.state.boxClicked!, data);
+    this.props.boxFilledOutData(normalizedBox, data);
   }
 
   fitCanvasToContainer = (rect:any) =>{
@@ -77,12 +78,14 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
 
   drawBoxes = () =>{
     this.props.boxes.forEach((box)=>{
+      const normalizedBox = this.normalizeBoxCoords(box);
+  
       if(box.signedStatus !== SignedStatus.SIGNED){
-        this.drawBox(box);
+        this.drawBox(normalizedBox);
       }else if(box.type === BoxType.SIGNATURE || box.type === BoxType.INITIAL){
-        this.drawImage(box);
+        this.drawImage(normalizedBox);
       }else{
-        this.drawText(box);
+        this.drawText(normalizedBox);
       }
     });
   }
@@ -99,6 +102,18 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     }
   }
 
+  normalizeBoxCoords = (data: ModelBox) =>{
+    if(data.width < 0){
+      data.x = data.x + data.width;
+      data.width = -1 * data.width;
+    }
+    if(data.height < 0){
+      data.y = data.y + data.height;
+      data.height = -1 * data.height;
+    }
+    return data;
+  }
+
   drawImage = (data: ModelBox) =>{
     const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
     const scaleX = canBox.width / data.formWidth;
@@ -109,7 +124,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
-
       const diffHeight = (boxHeight / image.height);
       const diffWidth =  (boxWidth / image.width);
  
@@ -118,7 +132,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       let newHeight;
       let newX = data.x *scaleX;
       let newY = data.y *scaleY;
-      
       
       if(diffHeight > 1 && diffWidth > 1){ //Image is too small
         if(diffWidth< diffHeight){ //Grow to box width
