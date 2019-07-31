@@ -15,6 +15,7 @@ import ModelBox from '../../../Entities/ToComplete/ModelBox';
 import BoxType from '../../../Util/Enums/BoxType';
 import SignedStatus from '../../../Util/Enums/SignedStatus';
 import SignedBoxRequest from '../../../Entities/SignedBoxRequest';
+import NumberToSuccessStatus from '../../../Util/Enums/NumberToSuccessStatus';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -101,7 +102,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         newBox.filePath = `${this.state.requestData!.requestorId}\\${formName}\\${this.state.requestData!.groupId}\\${formName}.pdf`
         const num = await this.props.boxHandler.addSignatureToBox(newBox);
 
-        if(num.num < 0){
+        if(num.num === NumberToSuccessStatus.FAILURE){
             message.error("Something went wrong");
         }
 
