@@ -15,6 +15,7 @@ import ModelBox from '../../../Entities/ToComplete/ModelBox';
 import BoxType from '../../../Util/Enums/BoxType';
 import SignedStatus from '../../../Util/Enums/SignedStatus';
 import SignedBoxRequest from '../../../Entities/SignedBoxRequest';
+import NumberToSuccessStatus from '../../../Util/Enums/NumberToSuccessStatus';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -64,7 +65,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 try{
                     const newId = (await this.props.userHandler!.getUsersInitialId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId ===  NumberToSuccessStatus.FAILURE){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
@@ -80,7 +81,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                   
                     const newId = (await this.props.userHandler!.getUsersSigId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId === NumberToSuccessStatus.FAILURE ){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
@@ -101,7 +102,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         newBox.filePath = `${this.state.requestData!.requestorId}\\${formName}\\${this.state.requestData!.groupId}\\${formName}.pdf`
         const num = await this.props.boxHandler.addSignatureToBox(newBox);
 
-        if(num.num < 0){
+        if(num.num === NumberToSuccessStatus.FAILURE){
             message.error("Something went wrong");
         }
 
@@ -115,7 +116,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
 
     finalizeRequest = async () =>{
         await this.props.requestHandler!.finalizeRequestByRequestId(this.state.requestData!.id).then((number) => {
-            if(number.num > 0){
+            if(number.num !== NumberToSuccessStatus.FAILURE){
                 this.setState({
                     isSuccessVisible:true
                 })

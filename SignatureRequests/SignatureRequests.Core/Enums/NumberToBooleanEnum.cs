@@ -10,5 +10,5 @@ namespace SignatureRequests.Core.Enums
     {
         public static int Success = 1;
         public static int Failure = -1;
-}
+    }
 }
