@@ -107,8 +107,8 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
-      const diffHeight = image.height - scaleY * data.height;
-      const diffWidth = image.width - scaleX * data.width;
+      const diffHeight = scaleY * data.height - image.height;
+      const diffWidth =  scaleX * data.width - image.width;
 
       const heightWidthratio = image.height / image.width;
       let newWidth;
