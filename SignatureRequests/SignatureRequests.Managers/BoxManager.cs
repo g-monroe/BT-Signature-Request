@@ -1,4 +1,5 @@
 ﻿using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -128,13 +129,13 @@ namespace SignatureRequests.Managers
 
                 return new NumberResponse()
                 {
-                    Num = 1
+                    Num = NumberToBooleanEnum.Success
                 };
             }
             catch (Exception e){
                 return new NumberResponse()
                 {
-                    Num = -1
+                    Num = NumberToBooleanEnum.Failure
                 };
             }
            

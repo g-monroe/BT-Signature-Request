@@ -24,8 +24,9 @@ namespace SignatureRequests.Managers
         private readonly IGroupEngine _groupEngine;
         private readonly IGroupHandler _groupHandler;
         private readonly IUserEngine _userEngine;
+        private readonly IBoxHandler _boxHandler;
 
-        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine)
+        public RequestManager(IRequestHandler requestHandler, IUserHandler userHandler, IFormHandler formHandler, IGroupEngine groupEngine, IGroupHandler groupHandler, IUserEngine userEngine, IBoxHandler boxHandler)
         {
             _requestHandler = requestHandler;
             _userHandler = userHandler;
@@ -33,6 +34,7 @@ namespace SignatureRequests.Managers
             _groupEngine = groupEngine;
             _groupHandler = groupHandler;
             _userEngine = userEngine;
+            _boxHandler = boxHandler;
         }
 
         public RequestResponseList GetRequests()
@@ -59,6 +61,39 @@ namespace SignatureRequests.Managers
         {
             var request = _requestHandler.GetById(id);
             return RequestEntityToComplete(request);
+        }
+
+        public NumberResponse FinalizeRequest(int id)
+        {
+            var request = _requestHandler.GetById(id);
+            var boxes = _boxHandler.GetBoxesByRequestId(id);
+            bool isRequestNotComplete = boxes.Any(box => box.SignedStatus == SignStatus.NotSigned);
+            if (!isRequestNotComplete)
+            {
+                request.Status = RequestStatusEnum.DONE;
+                _requestHandler.Update(request);
+                _requestHandler.SaveChanges();
+
+                var group = _groupHandler.GetById(request.GroupId);
+                bool IsGroupNotComplete = group.RequestEntities.Any(req => req.Status == RequestStatusEnum.NOTSIGNED);
+                if (IsGroupNotComplete)
+                {
+                    group.Status = GroupStatusEnum.PENDING;
+                    _groupHandler.Update(group);
+                    _groupHandler.SaveChanges();
+                }
+                else
+                {
+                    group.Status = GroupStatusEnum.COMPLETE;
+                    _groupHandler.Update(group);
+                    _groupHandler.SaveChanges();
+                }
+                return new NumberResponse() { Num = NumberToBooleanEnum.Success };
+            }
+            else
+            {
+                return new NumberResponse() { Num = NumberToBooleanEnum.Failure };
+            }
 
         }
 

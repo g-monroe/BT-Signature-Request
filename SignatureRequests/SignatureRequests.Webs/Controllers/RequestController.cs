@@ -67,5 +67,12 @@ namespace SignatureRequests.Webs.Controllers
         {
             return _requestManager.GetRequestByRequestId(id);
         }
+
+        [Route("api/Request/FinalizeRequest/{id}")]
+        [HttpPut]
+        public NumberResponse FinalizeRequest([FromRoute] int id)
+        {
+            return _requestManager.FinalizeRequest(id);
+        }
     }
 }
