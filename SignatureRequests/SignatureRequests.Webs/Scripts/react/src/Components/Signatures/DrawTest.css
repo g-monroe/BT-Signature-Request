@@ -22,14 +22,15 @@
 #TypedSignature {
     display: flex;
     height: 25vh;
-    width: 40vw;
-    background: whitesmoke;
+    width: 100%;
+    background: white;
     justify-content: center;
     align-items: center;
     font-family: 'Pinyon Script', cursive;
     font-stretch: expanded;
-    font-size: 30px;
-    border: none
+    font-size: 44px;
+    border: none;
+    max-width: 500px;
 }
 
 #SignatureHeader{
@@ -62,8 +63,8 @@
 
 #text {
     border-width: 0px;
-    border-color: whitesmoke;
-    background: whitesmoke;
+    border-color: white;
+    background: white;
     text-align: center;
     outline: none;
     width: 530px;

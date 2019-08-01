@@ -14,6 +14,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         RequestResponseList GetRequests();
         RequestResponse GetRequestById(int id);
         RequestEntity GetRequest(int id);
+        NumberResponse FinalizeRequest(int id);
         RequestEntity CreateRequestEntity(RequestEntity newRequest);
         RequestEntity UpdateRequest(RequestEntity request, RequestEntity newRequest);
         void Delete(int id);

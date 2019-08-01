@@ -3,11 +3,13 @@ import RequestRequest from "../Entities/RequestRequest";
 import RequestEntity from "../Entities/RequestEntity";
 import RequestToCompleteEntity from '../Entities/ToComplete/RequestToCompleteEntity';
 import RequestResponseList from "../Entities/RequestResponseList";
+import NumberResponse from "../Entities/ToComplete/NumberResponse";
 
 export interface IRequestHandler {
     createRequest(entity: RequestRequest) : Promise<RequestEntity>;
     getRequestByRequestId(id: number) : Promise<RequestToCompleteEntity>;
     getRequestBySignerId(id: number) : Promise<RequestResponseList>;
+    finalizeRequestByRequestId(id: number) : Promise<NumberResponse>;
 }
 
 export class RequestHandler implements IRequestHandler {
@@ -35,5 +37,12 @@ export class RequestHandler implements IRequestHandler {
             method: "GET",
             responseType: RequestResponseList
         })
+    }
+    async finalizeRequestByRequestId(id: number) : Promise<NumberResponse> {
+        return await APIHandler(`api/Request/FinalizeRequest/${id}`,{
+            headers: {"Content-Type" : "application/json"},
+            method:'PUT',
+            responseType:NumberResponse
+        });
     }
 }

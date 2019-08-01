@@ -49,6 +49,13 @@ namespace BoxRequests.Controllers
             var boxes = _boxManager.GetCopyBoxes(id);
             return boxes;
         }
+        [Route("api/Box/GetBoxesbyRequestId/{id}")]
+        [HttpGet]
+        public ModelBoxResponseList GetBoxesByRequestId([FromRoute] int id)
+        {
+            var boxes = _boxManager.GetBoxesByRequestId(id);
+            return boxes;
+        }
 
         [Route("api/Box/AddBox")]
         [HttpPost]

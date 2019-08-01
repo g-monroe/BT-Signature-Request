@@ -6,6 +6,7 @@ import SignatureDropDown, { ISignatureDropDownProps } from '../Signatures/Signat
 import ContextUserObject from '../WrapperComponents/ContextUserObject';
 import { SignatureColors } from '../../Util/Enums/colors';
 import SignedStatus from '../../Util/Enums/SignedStatus';
+import moment from 'moment';
 
 interface SigDropDownXY extends ISignatureDropDownProps{
   x:number,
@@ -51,17 +52,22 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
   clickedBoxSigned = (data: any) =>{
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const normalizedBox = this.normalizeBoxCoords(this.state.boxClicked!);
+    const scaleX = canBox.width / normalizedBox.formWidth;
+    const scaleY = canBox.height / normalizedBox.formHeight;
+   
     if(ctx){
-      ctx.clearRect(this.state.boxClicked!.x-5,this.state.boxClicked!.y-5,this.state.boxClicked!.width+10,this.state.boxClicked!.height+10)
-      switch(this.state.boxClicked!.type){
+      ctx.clearRect(scaleX*(normalizedBox.x)-5,scaleY*(normalizedBox.y)-5,scaleX*(normalizedBox.width)+10,scaleY*(normalizedBox.height)+10)
+      switch(normalizedBox.type){
         case BoxType.INITIAL: 
-        case BoxType.SIGNATURE: this.drawImage(this.state.boxClicked!);break;
+        case BoxType.SIGNATURE: this.drawImage(normalizedBox);break;
         case BoxType.DATE:
-        case BoxType.TEXT: this.drawText(this.state.boxClicked!);break;
+        case BoxType.TEXT: this.drawText(normalizedBox, data);break;
 
       }
     }
-    this.props.boxFilledOutData(this.state.boxClicked!, data);
+    this.props.boxFilledOutData(normalizedBox, data);
   }
 
   fitCanvasToContainer = (rect:any) =>{
@@ -73,39 +79,115 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
 
   drawBoxes = () =>{
     this.props.boxes.forEach((box)=>{
+      const normalizedBox = this.normalizeBoxCoords(box);
+  
       if(box.signedStatus !== SignedStatus.SIGNED){
-        this.drawBox(box);
+        this.drawBox(normalizedBox);
       }else if(box.type === BoxType.SIGNATURE || box.type === BoxType.INITIAL){
-        this.drawImage(box);
+        this.drawImage(normalizedBox);
       }else{
-        this.drawText(box);
+        this.drawText(normalizedBox);
       }
-      
-      //else draw the sig/date/initial/text where the box would be
-     
-    
-    }); //TODO Check if its signed and if so draw the signature instead 
+    });
   }
-  drawText = (data: ModelBox) =>{
+
+  drawText = (data: ModelBox, text?: string) =>{
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const scaleX = canBox.width / data.formWidth;
+    const scaleY = canBox.height / data.formHeight;
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
+    const widthOfText = 8;
+    const heightOfText = 15;
+    const textMargin = .1;
+
     if(ctx){
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.font = "15px Arial"
       ctx.globalAlpha = 1;
-      ctx.fillText(data.text || (data.date && new Date(data.date!).toDateString()) || "", data.x + (.5 * data.width), data.y + (.5 * data.height), data.width)
+      ctx.strokeStyle = "white"
+      ctx.fillStyle = "black"
+      const writtenText = (data.type === BoxType.TEXT ? (data.text || text) :  moment(data.date || new Date()).format("MMM Do YYYY")) || " ";
+      const numCharactersPerLine = Math.floor((data.width * scaleX)/widthOfText)
+      const re = new RegExp(`.{1,${numCharactersPerLine}}`,'g');
+      const lines = writtenText.match(re);
+      let start = ((scaleY *data.y) + .5* data.height) - heightOfText * Math.floor(lines!.length/2);
+
+      lines!.forEach((line, index)=>{
+        ctx.strokeText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
+        ctx.fillText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
+      })
+      ctx.fill();
+      ctx.stroke();
     }
   }
 
+  normalizeBoxCoords = (data: ModelBox) =>{
+    if(data.width < 0){
+      data.x = data.x + data.width;
+      data.width = -1 * data.width;
+    }
+    if(data.height < 0){
+      data.y = data.y + data.height;
+      data.height = -1 * data.height;
+    }
+    return data;
+  }
+
   drawImage = (data: ModelBox) =>{
+    const canBox = document.getElementById('SimpleCanvas')!.getBoundingClientRect();
+    const scaleX = canBox.width / data.formWidth;
+    const scaleY = canBox.height / data.formHeight;
+    const boxWidth = scaleX * data.width;
+    const boxHeight = scaleY * data.height;
+
     const image = new Image();
     image.src = `../../../../../assets/v1/images/${data.type === BoxType.SIGNATURE ? "signatures" : "initials"}/${this.props.userObject.user.id}.png`;
     image.onload = () =>{
+      const diffHeight = (boxHeight / image.height);
+      const diffWidth =  (boxWidth / image.width);
+ 
+      const imageHeightWidthratio = image.height / image.width;
+      let newWidth;
+      let newHeight;
+      let newX = data.x *scaleX;
+      let newY = data.y *scaleY;
+      
+      if(diffHeight > 1 && diffWidth > 1){ //Image is too small
+        if(diffWidth< diffHeight){ //Grow to box width
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
+        }else{ //Grow to box height
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+        }
+      }else if (diffHeight > 1 && diffWidth < 1){ //Image is too wide
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
+      }else if (diffHeight < 1 && diffWidth > 1) { // Image is too tall
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+      }else { //Image is too big overall
+        if(diffHeight < diffWidth){
+          newHeight = boxHeight;
+          newWidth = (1.0/imageHeightWidthratio) * newHeight;
+          newX = newX + (.5*(boxWidth - newWidth))
+        }else {
+          newWidth = boxWidth;
+          newHeight = imageHeightWidthratio * newWidth;
+          newY = newY + (.5 * (boxHeight - newHeight));
+
+        }
+      }
+
       const can = this.state.canvasRef.current;
       const ctx = can!.getContext('2d');
       if(ctx){
         ctx.globalAlpha = 1;
-        ctx.drawImage(image, data.x, data.y, data.width, data.height)
+        ctx.drawImage(image, newX, newY, newWidth, newHeight)
       }
     }
   }
@@ -163,10 +245,18 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       event.persist()
       
       this.props.boxes.forEach((box)=>{
-        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
-          (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
-          (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
-          (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
+        const scaleX = can.width / box.formWidth;
+        const scaleY = can.height / box.formHeight;
+
+        const scaledX = box.x * scaleX;
+        const scaledY = box.y * scaleY;
+        const scaledWidth = box.width * scaleX;
+        const scaledHeight = box.height * scaleY;
+
+        if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && ((X >= scaledX && X <= scaledX+scaledWidth && Y >= scaledY && Y <= scaledY+scaledHeight) ||
+          (X >= scaledX && X <= scaledX+scaledWidth && Y <= scaledY && Y >= scaledY+scaledHeight) ||
+          (X <= scaledX && X >= scaledX+scaledWidth && Y >= scaledY && Y <= scaledY+scaledHeight) ||
+          (X <= scaledX && X >= scaledX+scaledWidth && Y <= scaledY && Y >= scaledY+scaledHeight) ) ){
             this.boxClicked(box, event);
           }else{
             this.setState({

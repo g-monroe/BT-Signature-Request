@@ -3,19 +3,20 @@ import { Button, Tooltip} from 'antd';
 import "antd/dist/antd.css";
 import ContextUserObject from "../WrapperComponents/ContextUserObject";
 import FormImageWBoxes from "./FormImageWBoxes";
-import SimpleFormEntity from '../../Entities/ToComplete/SimpleFormEntity';
 import ModelBoxList from "../../Entities/ToComplete/ModelBoxList";
 import { REQUESTER } from "../../Pages/Routing/routes";
 import { Link } from "react-router-dom";
 import ModelBox from "../../Entities/ToComplete/ModelBox";
+import RequestToCompleteEntity from "../../Entities/ToComplete/RequestToCompleteEntity";
 
 export interface IFileViewerProps {
     userObject:ContextUserObject;
-    file:SimpleFormEntity
+    requestData:RequestToCompleteEntity
     boxes:ModelBoxList
     unCompleteBoxes:ModelBox[]
     nextSig:(toNextSig:()=>void) => void
     boxFilledOut: (box:ModelBox, data:any) =>void
+    finalizeRequest: () => void
 }
  
 export interface IFileViewerState {
@@ -53,11 +54,11 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
             });
             return <></>;
         }
-        const form = this.props.file.filePath.split('.');
+        const form = this.props.requestData.form.filePath.split('.');
         const formName = form.slice(0, form.length-1);
 
         try{
-            return (<FormImageWBoxes    src = {`../../../../../assets/v1/documents/${this.props.userObject.user.id}/${formName}/${this.state.page}.png`} 
+            return (<FormImageWBoxes    src = {`../../../../../assets/v1/documents/${this.props.requestData.requestorId}/${formName}/${this.props.requestData.groupId}/${this.state.page}.png`} 
             pageNum = {this.state.page} failedSrc ={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"} 
             boxes = {this.props.boxes.collection.filter((box)=>(box.pageNumber === this.state.page))}
             selectedBox = {this.props.unCompleteBoxes[this.state.currentSignature] ? this.props.unCompleteBoxes[this.state.currentSignature].id : undefined}
@@ -111,7 +112,9 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
 
                             <Tooltip title = "All Progress is Saved" placement = "topLeft" >
                                 <Button >
-                                    Back to Dashboard
+                                        <Link to = {REQUESTER._Dashboard.path}>
+                                            Back to Dashboard
+                                        </Link>
                                 </Button>
                             </Tooltip>
   
@@ -121,16 +124,16 @@ class FileViewerWBoxes extends React.Component<IFileViewerProps, IFileViewerStat
                                 style = {{marginRight:"2%"}}>
                                 Prev
                             </Button>
-                              Page {this.state.page+1} of {this.props.file.numPages}  
+                              Page {this.state.page+1} of {this.props.requestData.form.numPages}  
                             <Button 
-                                disabled={this.state.page===this.props.file.numPages-1}
+                                disabled={this.state.page===this.props.requestData.form.numPages-1}
                                 onClick={this.onNext}
                                 style = {{marginLeft:"2%"}}>
                                 Next
                             </Button>
 
                             <Tooltip title = {this.props.unCompleteBoxes.length !== 0 ? "Not all boxes are complete":"Finish document"}placement = "topRight" >
-                                <Button disabled = {this.props.unCompleteBoxes.length !== 0} type = "primary">
+                                <Button disabled = {this.props.unCompleteBoxes.length !== 0} type = "primary" onClick = {this.props.finalizeRequest}>
                                     Finalize
                                 </Button>
                             </Tooltip>

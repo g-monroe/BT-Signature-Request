@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SignatureRequests.Core.Enums
 {
-   public class SignStatus
+   public class BoxType
     {
-        public static string Signed = "Signed";
-        public static string NotSigned = "NotSigned";
+        public static string Initial = "Initial";
+        public static string Signature = "Signature";
     }
 }

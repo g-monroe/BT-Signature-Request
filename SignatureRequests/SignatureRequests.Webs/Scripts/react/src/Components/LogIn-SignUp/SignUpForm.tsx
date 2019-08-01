@@ -7,6 +7,8 @@ import "./Login-SignUp.css"
 import { IUserHandler } from '../../Handlers/UserHandler';
 import UserEntity from '../../Entities/UserEntity';
 import ValidateStatus from '../../Util/Enums/ValidateStatus';
+import { Link } from 'react-router-dom';
+import {COMMON} from '../../Pages/Routing/routes';
 
 export interface ISignUpFormProps {
     handler:IUserHandler
@@ -122,7 +124,7 @@ class SignUpForm extends React.Component<InjectedFormikProps<ISignUpFormProps, I
                 </Form.Item>
                 <Form.Item>
                     <div id = "SignUpButtons">
-                        <Button htmlType = "reset" type = "ghost">Back</Button>
+                        <Button htmlType = "reset" type = "ghost"><Link to = {COMMON._Login.path}>Back</Link></Button>
                         <Button htmlType = "submit" loading = {isSubmitting} type = "primary">Sign Up</Button>
                     </div>
                 </Form.Item>

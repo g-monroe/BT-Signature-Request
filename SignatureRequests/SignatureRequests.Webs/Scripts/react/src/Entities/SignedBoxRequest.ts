@@ -6,6 +6,7 @@ class SignedBoxRequest {
   isModel: boolean;
   text?: string;
   date?: Date;
+  filePath:string;
 
 
   constructor(data: any) {
@@ -15,6 +16,7 @@ class SignedBoxRequest {
     this.isModel = data.isModel;
     this.text = data.text;
     this.date = data.date;
+    this.filePath = data.filePath;
   }
 }
 
