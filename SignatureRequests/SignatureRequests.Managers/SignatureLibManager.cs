@@ -20,6 +20,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Org.BouncyCastle.Crypto.Parameters;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.security;
 
 namespace SignatureRequests.Managers
 {
@@ -130,6 +134,10 @@ namespace SignatureRequests.Managers
             try
             {
                 var stream = CreateCertificate(result, signItem);
+                if (File.Exists(signItem.PfxPath))
+                {
+                    File.Delete(signItem.PfxPath);
+                }
                 result.Store.Save(stream, signItem.Password.ToCharArray(), result.Random);
                 File.WriteAllBytes(signItem.PfxPath, stream.ToArray());
             }
@@ -155,51 +163,67 @@ namespace SignatureRequests.Managers
                 return null;
             }
         }
-        public void SignDocument(BoxEntity[] boxes, SignatureItem signItem)
+        private void Sign(String src, String dest, ICollection<X509Certificate> chain, ICipherParameters pk,
+                       String digestAlgorithm, CryptoStandard subfilter, String reason, String location, Image image, BoxEntity box)
         {
-            //Signature add to document part.
-            DocumentCore dc = DocumentCore.Load(signItem.LoadPath);
-            Shape signatureShape = new Shape(dc, Layout.Floating(new HorizontalPosition(0f, LengthUnit.Millimeter, HorizontalPositionAnchor.LeftMargin),
-                            new VerticalPosition(0f, LengthUnit.Millimeter, VerticalPositionAnchor.TopMargin), new Size(1, 1)));
-            ((FloatingLayout)signatureShape.Layout).WrappingStyle = WrappingStyle.InFrontOfText;
-            signatureShape.Outline.Fill.SetEmpty();
-
-            // Find a first paragraph and insert our Shape inside it.
-            Paragraph firstPar = dc.GetChildElements(true).OfType<Paragraph>().FirstOrDefault();
-            firstPar.Inlines.Add(signatureShape);
-            foreach (BoxEntity box in boxes)
+            // Creating the reader and the stamper
+            PdfReader reader = new PdfReader(src);
+            FileStream os = new FileStream(dest, FileMode.Create);
+            PdfStamper stamper = PdfStamper.CreateSignature(reader, os, '\0');
+            
+            // Creating the appearance
+            PdfSignatureAppearance appearance = stamper.SignatureAppearance;
+            appearance.Reason = reason;
+            appearance.Location = location;
+            var x = (float)box.X;
+            var y = (float)(box.FormHeight - (box.Y + box.Height));
+            var w = (float)(box.X + box.Width);
+            var h = (float)(box.FormHeight - box.Y );
+            appearance.SetVisibleSignature(new iTextSharp.text.Rectangle(x, y, w, h), box.PageNumber + 1, box.RequestId.ToString() +":" + h + ":" + y + ":" + box.SignatureId + ":" + box.Id);
+            if (box.Type == "Signature")
             {
-              
-                Picture signaturePict = new Picture(dc, signItem.SignPath)
-                {
-                    // Signature picture will be positioned:
-                   Layout = Layout.Floating(
-                   new HorizontalPosition(box.Y, LengthUnit.Centimeter, HorizontalPositionAnchor.Page),// 4.5 cm from Left of the Shape.
-                   new VerticalPosition(box.X, LengthUnit.Centimeter, VerticalPositionAnchor.Page),// 14.5 cm from Top of the Shape.
-                   new Size(box.Width, box.Height, LengthUnit.Millimeter)) //Size
-                };
-                PdfSaveOptions options = new PdfSaveOptions();
-
-                // Path to the certificate (*.pfx).
-                options.DigitalSignature.CertificatePath = signItem.PfxPath;
-
-                // The password for the certificate.
-                // Each certificate is protected by a password.
-                // The reason is to prevent unauthorized the using of the certificate.
-                options.DigitalSignature.CertificatePassword = signItem.Password;
-
-                // Additional information about the certificate.
-                options.DigitalSignature.Location = signItem.Location;
-                options.DigitalSignature.Reason = signItem.Reason;
-                options.DigitalSignature.ContactInfo = signItem.ContactInfo;
-
-                // Placeholder where signature should be visualized.
-                options.DigitalSignature.SignatureLine = signatureShape;
-                // Visual representation of digital signature.
-                options.DigitalSignature.Signature = signaturePict;
-
-                dc.Save(signItem.SavePath, options);
+                appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.GRAPHIC;
+                appearance.SignatureGraphic = image;
             }
+            else
+            {
+                appearance.Layer2Text = box.Text;
+                appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.DESCRIPTION;
+            }
+            // Creating the signature
+            appearance.SignDate = new DateTime();
+            IExternalSignature pks = new PrivateKeySignature(pk, digestAlgorithm);
+            MakeSignature.SignDetached(appearance, pks, chain, null, null, null, 0, subfilter);
+        }
+
+        public void SignDocument(BoxEntity box, SignatureItem signItem, SignatureLibItem signLib, string alias)
+        {
+            
+            var SRC = signItem.LoadPath;
+            var DEST = signItem.SavePath + "Temp";
+            Pkcs12Store store = signLib.Store;
+            ICollection<X509Certificate> chain = new List<X509Certificate>();
+            // searching for private key
+
+            foreach (string al in store.Aliases)
+                if (store.IsKeyEntry(al) && store.GetKey(al).Key.IsPrivate)
+                {
+                    alias = al;
+                    break;
+                }
+
+            AsymmetricKeyEntry pk = store.GetKey(alias);
+            foreach (X509CertificateEntry c in store.GetCertificateChain(alias))
+                chain.Add(c.Certificate);
+            RsaPrivateCrtKeyParameters parameters = pk.Key as RsaPrivateCrtKeyParameters;
+                Image image = Image.GetInstance(signItem.SignPath);
+                Sign(SRC, String.Format(DEST, 1), chain, parameters, DigestAlgorithms.SHA256,
+                    CryptoStandard.CMS, signItem.Reason, signItem.Location, image, box);
+            if (File.Exists(SRC))
+            {
+                File.Delete(SRC);
+            }
+            File.Move(DEST, DEST.Substring(0, DEST.Length - 4));
         }
     }
 }

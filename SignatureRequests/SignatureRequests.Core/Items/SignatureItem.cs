@@ -20,11 +20,12 @@ namespace SignatureRequests.Core.Items
         public string Location { get; set; }
         public string Reason { get; set; }
         public string ContactInfo { get; set; }
+        public string TempPath { get; set; }
         public SignatureItem()
         {
 
         }
-        public SignatureItem(string password, string signatureAlgorithm = "SHA256WithRSA", int strength = 2048, string loadPath = "", string savePath = "", string signPath = "", string pfxPath = "", DateTime notBefore = new DateTime(), DateTime notAfter = new DateTime(), string location = "", string reason = "", string contactInfo = "")
+        public SignatureItem(string password, string signatureAlgorithm = "SHA256WithRSA", int strength = 2048, string loadPath = "", string savePath = "", string signPath = "", string pfxPath = "", string tempPath ="", DateTime notBefore = new DateTime(), DateTime notAfter = new DateTime(), string location = "", string reason = "", string contactInfo = "")
         {
             SignatureAlgorithm = signatureAlgorithm;
             Password = password;
@@ -37,6 +38,7 @@ namespace SignatureRequests.Core.Items
             NotAfter = notAfter;
             Location = location;
             Reason = reason;
+            TempPath = tempPath;
             ContactInfo = contactInfo;
         }
     }

@@ -16,7 +16,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         
         SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item);
         MemoryStream CreateCertificate(SignatureLibItem result, SignatureItem signItem);
-        void SignDocument(BoxEntity[] boxes, SignatureItem signItem);
+        void SignDocument(BoxEntity box, SignatureItem signItem, SignatureLibItem signLib, string alias);
         bool SaveCertificate(SignatureLibItem resultm, SignatureItem signItem);
     }
 }

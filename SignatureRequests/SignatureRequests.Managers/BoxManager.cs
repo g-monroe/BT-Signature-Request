@@ -1,4 +1,5 @@
-﻿using SignatureRequests.Core;
+﻿using SautinSoft.Document;
+using SignatureRequests.Core;
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
@@ -8,6 +9,8 @@ using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,18 +129,31 @@ namespace SignatureRequests.Managers
                 box.SignatureId = NewBox.SignatureId;
                 box.Text = NewBox.Text;
                 box.Date = NewBox.Date;
+                //Grab Required Data for information to fill out the certification
                 RequestEntity request = _requestHandler.First(x => x.Id == box.RequestId);
                 UserEntity user = _userHandler.First(x => x.Id == request.SignerId);
-                SignatureEntity sig = _signatureHandler.First(x => x.Id == NewBox.SignatureId);
                 X509Item x509Item = new X509Item(X509Item.Country.US,
                  X509Item.Country.US, X509Item.Country.US,
                  user.Name, DateTime.Now, user.Email, "M", "GM", "IA", "123123", "Test", "builderTrend");
-                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath + "2", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx");
-                BoxEntity box2 = _boxHandler.First(x => x.Id == NewBox.Id);
-                BoxEntity[] Boxes = new BoxEntity[] { box2 };
+                string tempDir = AppDomain.CurrentDomain.BaseDirectory + Constants.DocumentPath + NewBox.FilePath.Split('.')[0] + "Temp";
+                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx", tempDir);
                 SignatureLibItem sigLib = _signatureLibManager.InitializeCertification(sigItem, x509Item);
                 _signatureLibManager.SaveCertificate(sigLib, sigItem);
-                _signatureLibManager.SignDocument(Boxes, sigItem);    
+                _signatureLibManager.SignDocument(box, sigItem, sigLib, user.Name);
+                string src = AppDomain.CurrentDomain.BaseDirectory + Constants.DocumentPath + NewBox.FilePath;
+                //Save New Images
+                DocumentCore dc = DocumentCore.Load(src);
+                DocumentPaginator dp = dc.GetPaginator(new PaginatorOptions());
+                src = src.Replace(Path.GetFileName(src), "");
+                for (int i = 0; i < dp.Pages.Count(); i++)
+                {
+                    if (File.Exists(src + i.ToString() + ".png"))
+                    {
+                        File.Delete(src + i.ToString() + ".png");
+                    }
+                    dp.Pages[i].Rasterize(72, Color.White).Save(src + i.ToString() + ".png");
+                }
+                //Take Pictures
                 _boxHandler.Update(box);
                 _boxHandler.SaveChanges();
 
@@ -149,7 +165,7 @@ namespace SignatureRequests.Managers
             catch (Exception e){
                 return new NumberResponse()
                 {
-                    Num = -1
+                Num = -1
                 };
             }
            
