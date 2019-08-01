@@ -107,7 +107,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
                         <ButtonSelect options = {manualInputTypeEnum} onChange = {this.manualInputTypeChanged}></ButtonSelect>
                     </div>
                 } 
-                <div id = {this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave"} style = {{maxWidth:"500px", width:width}}>
+                <div id = {this.props.signType !== undefined ? manualInputTypeEnum[this.props.signType] : "ThingToSave"} style = {{maxWidth:"600px", width:width}}>
                 
                     {
                     this.state.method === inputMethodEnum.Draw ? 
