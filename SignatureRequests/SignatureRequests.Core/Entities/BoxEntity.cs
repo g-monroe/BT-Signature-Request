@@ -35,8 +35,6 @@ namespace SignatureRequests.Core.Entities
 
         public int? SignatureId { get; set; }
 
-        public virtual FormEntity Form { get; set; }
-
         public int? FormId { get; set; }
 
         public int PageNumber { get; set; }

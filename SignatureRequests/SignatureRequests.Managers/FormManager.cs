@@ -77,6 +77,17 @@ namespace SignatureRequests.Managers
             }
            
         }
+        public void DeleteDocument(int id, string file)
+        {
+            string path = Constants.DocumentPath + id.ToString() + '\\';
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + path + file;
+            string[] fileNameSplit = file.Split('.');
+            string directoryName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
+            string directoryPath = AppDomain.CurrentDomain.BaseDirectory + path + directoryName;
+            Directory.Delete(directoryPath, true);
+            File.Delete(filepath);
+        }
+
         public int GetPageCount(MultipartMemoryStreamProvider provider, int id)
         {
             string path = Constants.DocumentPath + id.ToString() + '\\';
