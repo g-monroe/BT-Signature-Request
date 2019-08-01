@@ -1,14 +1,8 @@
 import * as React from 'react';
-import SendForm from '../../../Components/Form/SendForm';
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
-import { Layout, Typography, Modal, Form, Input, DatePicker, message, Button, Icon, Drawer, Divider } from 'antd';
 import './Send.css'
-import FormEntity from '../../../Entities/FormEntity';
 import UserEntity from '../../../Entities/UserEntity';
-import BoxEntity from '../../../Entities/BoxEntity';
 import FileViewer from '../../../Components/Request/FileViewer';
-import { FormHandler, IFormHandler } from '../../../Handlers/FormHandler';
-import { IBoxHandler, BoxHandler } from '../../../Handlers/BoxHandler';
 export interface IStep2Props {
     form: number;
     users:UserEntity[];
