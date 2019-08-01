@@ -20,12 +20,14 @@ namespace SignatureRequests.Controllers
     {
         #region GlobalVariables
         private readonly IFormManager _formManager;
+        private readonly IBoxManager _boxManager;
         #endregion
 
         #region Constructor
-        public FormController(IFormManager formManager)
+        public FormController(IFormManager formManager, IBoxManager boxManager)
         {
             _formManager = formManager;
+            _boxManager = boxManager;
         }
         #endregion
 
@@ -82,9 +84,12 @@ namespace SignatureRequests.Controllers
         }
         [Route("api/Form/DeleteForm/{id}")]
         [HttpDelete]
-        public void DeleteForm([FromRoute]int id)
+        public FormResponse DeleteForm([FromRoute]int id)
         {
-            _formManager.Delete(id);
+            _formManager.DeleteDocument(id);
+
+            return new FormResponse();
         }
+
     }
 }

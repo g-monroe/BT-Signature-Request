@@ -61,7 +61,7 @@ namespace SignatureRequests.Webs.Controllers
             return _groupManager.EditGroup(id, group);
 
         }
-        
+
         [Route("api/Group/Delete/{id}")]
         [HttpDelete]
         public GroupResponse DeleteGroup([FromRoute]int id)
@@ -69,5 +69,6 @@ namespace SignatureRequests.Webs.Controllers
             GroupResponse response = _groupManager.Delete(id);
             return response;
         }
+
     }
 }

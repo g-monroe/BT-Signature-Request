@@ -24,5 +24,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         RequestResponse AddRequest(RequestRequest request, RequestEntity updating = null);
 
         RequestToCompleteResponse GetRequestByRequestId(int id );
+        RequestResponseList GetRequestsBySignerId(int id);
     }
 }

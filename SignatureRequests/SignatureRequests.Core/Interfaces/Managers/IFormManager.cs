@@ -25,5 +25,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         FormResponse EditForm(int id, FormRequest form, FormEntity updating = null);
         FormResponse AddForm(FormRequest form, FormEntity updating = null);
         FormResponseList GetRequested(int id);
+        void DeleteDocument(int formId);
     }
 }

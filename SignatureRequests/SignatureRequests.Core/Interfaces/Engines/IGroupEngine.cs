@@ -17,5 +17,6 @@ namespace SignatureRequests.Core.Interfaces.Engines
         RequestResponse RequestToListItem(RequestEntity request);
         RequestEntity RequestToEntity(RequestRequest request, RequestEntity updating = null);
         FormEntity FormToEntity(FormRequest form, FormEntity updating = null);
+        string GetDirectoryPath(int id, string fileName);
     }
 }

@@ -74,5 +74,13 @@ namespace SignatureRequests.Webs.Controllers
         {
             return _requestManager.FinalizeRequest(id);
         }
+        [Route("api/Request/GetRequestsBySignerId/{id}")]
+        [HttpGet]
+        public RequestResponseList GetRequestsBySignerId([FromRoute] int id)
+        {
+            return _requestManager.GetRequestsBySignerId(id);
+        }
+
+
     }
 }

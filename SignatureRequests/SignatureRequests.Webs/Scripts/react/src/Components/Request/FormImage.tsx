@@ -367,7 +367,7 @@ drawBoxes = async () => {
       Description:description,
       CreateDate: new Date(),
       DueDate: this.state.date,
-      Status: RequestStatusSigning.PENDING,
+      Status: RequestStatusSigning.NOTSTARTED,
       FormId: form!.id
      });
      const groupResult = (await groupHandler!.createGroup(groupItem, this.props.userObject.user.id));

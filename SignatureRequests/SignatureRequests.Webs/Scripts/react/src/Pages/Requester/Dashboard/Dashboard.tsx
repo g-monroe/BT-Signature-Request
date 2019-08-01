@@ -59,7 +59,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
             }else{//Found forms
                 let count = 0;
                 tableData!.map((form) => {
-                    if (form.groups.count !== 0){
+                    if (form.groups!.count !== 0){
                         count++;
                     }
                 });
@@ -68,8 +68,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 }
                 if ((searchTerm.length > 1 || filter !== filterAll) && !loading){//Searching
                     return tableData!.map((form) => {
-                        if (form.groups.count !== 0){
-                            return form.groups.collection.map((group, index) =>{
+                        if (form.groups!.count !== 0){
+                            return form.groups!.collection.map((group, index) =>{
                                 if ((group.title.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || (group.description!.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || group.status === filter){
                                     return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
@@ -78,8 +78,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     });
                 }else{//Not searching.
                     return tableData!.map((form) => {
-                        if (form.groups.count !== 0){
-                            return form.groups.collection.map((group, index) =>{
+                        if (form.groups!.count !== 0){
+                            return form.groups!.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
@@ -102,14 +102,14 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         let table: FormEntity[] = this.state.tableData!;
         let groups: GroupEntity[] = [];
         for(let i = 0; i<this.state.tableData!.length; i++){
-            for(let j = 0; j<this.state.tableData![i].groups.count; j++){
-                if(this.state.tableData![i].groups.collection[j].id === id){
-                    groups = this.state.tableData![i].groups.collection.filter((group) => {
+            for(let j = 0; j<this.state.tableData![i].groups!.count; j++){
+                if(this.state.tableData![i].groups!.collection[j].id === id){
+                    groups = this.state.tableData![i].groups!.collection.filter((group) => {
                         if(group.id !== id){
                             return group;
                         }
                     })
-                    table[i].groups.collection = groups;
+                    table[i].groups!.collection = groups;
                 }
             }
         }
@@ -128,8 +128,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 if ((searchTerm.length > 1 || filter !== filterAll) && !loading ){//Searching
                     
                    return requestData!.map((form) => {
-                        if (form.groups.count !== 0){
-                            return form.groups.collection.map((group, index) =>{
+                        if (form.groups!.count !== 0){
+                            return form.groups!.collection.map((group, index) =>{
                                     if ((group.title.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || (group.description!.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || group.status === filter){
                                         return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                     }
@@ -138,8 +138,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                     });
                 }else{//Not Searching 
                     return requestData!.map((form) => {
-                        if (form.groups.count !== 0){
-                            return form.groups.collection.map((group, index) =>{
+                        if (form.groups!.count !== 0){
+                            return form.groups!.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
                                    let items = group.requests.collection.some(this.isNotDone);
                                     if (items){

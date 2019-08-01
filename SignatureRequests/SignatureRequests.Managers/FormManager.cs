@@ -22,11 +22,13 @@ namespace SignatureRequests.Managers
         private readonly IFormHandler _formHandler;
         private readonly IUserHandler _userHandler;
         private readonly IGroupEngine _groupEngine;
-        public FormManager(IFormHandler formHandler, IUserHandler userHandler, IGroupEngine groupEngine)
+        private readonly IBoxHandler _boxHandler;
+        public FormManager(IFormHandler formHandler, IUserHandler userHandler, IGroupEngine groupEngine, IBoxHandler boxHandler)
         {
             _formHandler = formHandler;
             _userHandler = userHandler;
             _groupEngine = groupEngine;
+            _boxHandler = boxHandler;
         }
         public FormResponseList GetForms()
         {
@@ -77,6 +79,20 @@ namespace SignatureRequests.Managers
             }
            
         }
+        public void DeleteDocument(int formId)
+        {
+            FormEntity form = GetForm(formId);
+            int id = form.UserId;
+            string file = form.FilePath;
+            IEnumerable<BoxEntity> boxes = _boxHandler.GetModelBoxesByFormId(id);
+            _boxHandler.RemoveCollection(boxes);
+            Delete(form.Id);
+            string filepath = AppDomain.CurrentDomain.BaseDirectory + Constants.DocumentPath + id.ToString() + '\\' + file;
+            string directoryPath = _groupEngine.GetDirectoryPath(id, file);
+            Directory.Delete(directoryPath, true);
+            File.Delete(filepath);
+        }
+
         public int GetPageCount(MultipartMemoryStreamProvider provider, int id)
         {
             string path = Constants.DocumentPath + id.ToString() + '\\';
