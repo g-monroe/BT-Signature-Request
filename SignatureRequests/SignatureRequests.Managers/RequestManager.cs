@@ -56,6 +56,12 @@ namespace SignatureRequests.Managers
         {
             return _requestHandler.GetById(id);
         }
+        public RequestResponseList GetRequestsBySignerId(int id)
+        {
+            var requests = _requestHandler.GetAllBySignerId(id);
+            return RequestToListResponse(requests);
+        }
+
 
         public RequestToCompleteResponse GetRequestByRequestId(int id )
         {
