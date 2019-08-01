@@ -96,7 +96,7 @@ label{
     background: #ffba00;
     background: -moz-linear-gradient(left, #252d47 10%, #ffba00 100%, #fc9244 0%,);
     background: -webkit-linear-gradient(left, #252d47 10%, #ffba00 100%, #fc9244 0%,);
-    background: linear-gradient(to right,  #252d47 0%, #ffba00 100%, #fc9244 0%);
+    background: linear-gradient(to right,  #252d47 10%, #ffba00 100%, #fc9244 0%);
     color: #fff;
 }
 .success {
