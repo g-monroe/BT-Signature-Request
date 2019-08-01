@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SignatureRequests.Core.Enums
 {
-   public class BoxType
+    public class BoxType
     {
         public static string Initial = "Initial";
         public static string Signature = "Signature";
