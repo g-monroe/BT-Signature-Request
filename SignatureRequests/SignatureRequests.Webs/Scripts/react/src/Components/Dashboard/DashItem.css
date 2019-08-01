@@ -69,7 +69,7 @@
     border-left: 15px solid transparent;
     position: absolute;
     top: 0;
-    border-top: 16px solid #2dc1c9;
+    border-top: 16px solid  #252d47;
     left: -15px;
 }
 .ribbon.right:after {
@@ -77,7 +77,7 @@
     height: 22px;
     border-left: 0px solid transparent;
     border-left: 15px solid transparent;
-    border-bottom: 15px solid #2dc1c9;
+    border-bottom: 15px solid  #252d47;
     position: absolute;
     bottom: 0;
     left: -15px;
@@ -87,23 +87,23 @@ label{
 }
 .danger {
     background: #e47c64;
-    background: -moz-linear-gradient(left, #e47c64 0%, #e36481 30%, #252d47 100%);
-    background: -webkit-linear-gradient(left, #e47c64 0%, #e36481 30%, #252d47 100%);
-    background: linear-gradient(to right, #e47c64 0%, #e36481 30%, #252d47 100%);
+    background: -moz-linear-gradient(left, #252d47 10%, #e47c64 100%, #e36481 0%);
+    background: -webkit-linear-gradient(left,  #252d47 10%, #e47c64 100%, #e36481 0%);
+    background: linear-gradient(to right,  #252d47 10%, #e47c64 100%, #e36481 0%);
     color: #fff;
 }
 .warning {
     background: #ffba00;
-    background: -moz-linear-gradient(left, #ffba00 0%, #fc9244 30%, #252d47 100%);
-    background: -webkit-linear-gradient(left, #ffba00 0%, #fc9244 30%, #252d47 100%);
-    background: linear-gradient(to right, #ffba00 0%, #fc9244 30%, #252d47 100%);
+    background: -moz-linear-gradient(left, #252d47 10%, #ffba00 100%, #fc9244 0%,);
+    background: -webkit-linear-gradient(left, #252d47 10%, #ffba00 100%, #fc9244 0%,);
+    background: linear-gradient(to right,  #252d47 0%, #ffba00 100%, #fc9244 0%);
     color: #fff;
 }
 .success {
   background: #2dc1c9;
-  background: -moz-linear-gradient(left, #2dc1c9 0%, #2194c1 30%, #252d47 100%);
-  background: -webkit-linear-gradient(left, #2dc1c9 0%, #2194c1 30%, #252d47 100%);
-  background: linear-gradient(to right, #2dc1c9 0%, #2194c1 30%, #252d47 100%);
+  background: -moz-linear-gradient(left, #252d47 10%, #2dc1c9 100%, #2194c1 0%);
+  background: -webkit-linear-gradient(left, #252d47 10%, #2dc1c9 100%, #2194c1 0%);
+  background: linear-gradient(to right, #252d47 10%, #2dc1c9 100%, #2194c1 0%);
   color: #fff;
 }
 .media {
