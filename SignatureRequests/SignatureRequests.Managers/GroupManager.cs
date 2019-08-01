@@ -143,5 +143,21 @@ namespace SignatureRequests.Managers
             return updating;
         }
 
+        public GroupEntity GetGroup(int id)
+        {
+            return _groupHandler.GetById(id);
+        }
+
+        public void DeleteGroup(int id, string fileName, int groupId)
+        {
+            string path = Constants.DocumentPath + id.ToString() + '\\';
+            string[] fileNameSplit = fileName.Split('.');
+            string directoryName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
+            string directoryPath = AppDomain.CurrentDomain.BaseDirectory + path + directoryName + '\\' + groupId.ToString();
+            Directory.Delete(directoryPath, true);
+        }
+
+
+
     }
 }

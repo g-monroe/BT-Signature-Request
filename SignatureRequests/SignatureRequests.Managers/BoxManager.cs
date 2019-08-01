@@ -125,7 +125,6 @@ namespace SignatureRequests.Managers
             box.RequestId = reqBox.RequestId;
             box.Signature = reqBox.Signature;
             box.SignatureId = reqBox.SignatureId;
-            box.Form = reqBox.Form;
             box.FormId = reqBox.FormId;
             box.PageNumber = reqBox.PageNumber;
             box.IsModel = reqBox.IsModel;
@@ -257,10 +256,6 @@ namespace SignatureRequests.Managers
                 updating.Signature = _signatureHandler.GetById(me.SignatureId.Value);
             }
             updating.SignatureId = me.SignatureId;
-            if (me.FormId != null)
-            {
-                updating.Form = _formHandler.GetById(me.FormId.Value);
-            }
             updating.FormId = me.FormId;
             updating.PageNumber = me.PageNumber;
             updating.IsModel = me.IsModel;
