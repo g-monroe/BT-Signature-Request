@@ -185,6 +185,7 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\BoxEntity.cs" />
+    <Compile Include="Enums\BoxType.cs" />
     <Compile Include="Enums\GroupStatus.cs" />
     <Compile Include="Enums\InitializeCertifcation.cs" />
     <Compile Include="Enums\NumberToBooleanEnum.cs" />

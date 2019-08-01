@@ -116,8 +116,6 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
         ctx.strokeText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
         ctx.fillText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
       })
-      ctx.fill();
-      ctx.stroke();
     }
   }
 
@@ -199,27 +197,23 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     if(ctx){ 
       const scaleX = canBox.width / data.formWidth;
       const scaleY = canBox.height / data.formHeight;
-      
+      ctx.globalAlpha = 1;
       switch(data.type){
         case BoxType.SIGNATURE: ctx.fillStyle = SignatureColors.signature; ctx.strokeStyle = SignatureColors.signature;break;
         case BoxType.INITIAL: ctx.fillStyle = SignatureColors.initial; ctx.strokeStyle = SignatureColors.initial; break;
         case BoxType.DATE: ctx.fillStyle = SignatureColors.date; ctx.strokeStyle = SignatureColors.date; break;
         case BoxType.TEXT: ctx.fillStyle = SignatureColors.text; ctx.strokeStyle = SignatureColors.text; break;
-        default: ctx.fillStyle = SignatureColors.black; ctx.fillStyle = SignatureColors.black; break; 
+        default: ctx.fillStyle = SignatureColors.black; ctx.strokeStyle = SignatureColors.black; break; 
       }
-
       if(this.props.selectedBox && data.id === this.props.selectedBox){
-        ctx.globalAlpha = 1;
+        
         ctx.lineWidth = 5;
         ctx.rect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);   
         ctx.stroke();
       }
 
       ctx.globalAlpha = .2;
-      
-     
       ctx.fillRect(scaleX * data.x, scaleY * data.y, scaleX * data.width, scaleY * data.height);
-      ctx.stroke();
     }
   }
 
