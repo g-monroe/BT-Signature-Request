@@ -6,7 +6,7 @@ import { faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 
 import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
-import RequestStatus from '../../Util/Enums/RequestStatus';
+import RequestStatus, { RequestStatusSigning } from '../../Util/Enums/RequestStatus';
 import '../../../node_modules/antd/dist/antd.css';
 import Image from './Image';
 
@@ -104,6 +104,14 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
   }
   render() {
     const { groupEntity, isOwner } = this.props;
+    let color = "ribbon right danger";
+    if (groupEntity.status === RequestStatusSigning.PENDING){
+      color = "ribbon right warning";
+    }else if (groupEntity.status === RequestStatusSigning.NOTSTARTED){
+      color = "ribbon right danger"
+    }else if (groupEntity.status === RequestStatusSigning.COMPLETE){
+      color = "ribbon right success"
+    }
     let options = <>
     <button style={{color:'#222'}} onClick={this.handleDelete} className="btn-danger action-btn"><FontAwesomeIcon icon={faTrashAlt} /></button></>;
 
@@ -118,7 +126,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
           <Image src={"../../../../../assets/v1/documents/" + this.props.userObject!.user.id +"/" + groupEntity.form.filePath.split('.')[0] + "/" + "0.png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
-        <label className="ribbon right success"><span>{groupEntity.status}</span></label>
+        <label className={color}><span>{groupEntity.status}</span></label>
         <h5 style={{marginBottom:"0px"}} className="block-head">{groupEntity.title}</h5>
         <div className="content-left">
 
