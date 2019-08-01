@@ -114,8 +114,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isCanvasRendered: false,
     formHeight: 0,
     formWidth: 0,
-    title:"",
-    description:"",
+    title:this.props.form.title || "",
+    description:this.props.form.description || "",
     date: new Date(),
     wasSuccess:false
   };
@@ -350,7 +350,7 @@ drawBoxes = async () => {
      const {title, description, date} = this.state;
      const {groupHandler, boxHandler, form, userObject, requestHandler, group, requests } = this.props;
      if (title.length < 0 || description.length < 0){
-         message.info('Title or Description not big enough!');
+         message.info('Enter a title or description');
          return;
      }//Continue
      if (requests === null || requests!.length === 0){

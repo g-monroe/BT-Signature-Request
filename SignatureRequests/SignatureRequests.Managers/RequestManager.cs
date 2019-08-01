@@ -88,7 +88,7 @@ namespace SignatureRequests.Managers
                     _groupHandler.Update(group);
                     _groupHandler.SaveChanges();
                 }
-                return new NumberResponse() { Num = NumberToBooleanEnum.Success };
+            return new NumberResponse() { Num = NumberToBooleanEnum.Success };
             }
             else
             {
