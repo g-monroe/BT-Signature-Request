@@ -96,7 +96,7 @@ class SignatureBox extends React.Component<ISignatureBoxProps, ISignatureBoxStat
     }
 
     render() { 
-        const width = this.props.signType === manualInputTypeEnum.Signature? '70vw' : '25vw'
+        const width = this.state.type === manualInputTypeEnum.Signature? '70vw' : '25vw'
         return ( 
             <div id = 'SignatureBox'>
             <div id = 'SignatureButtons'>

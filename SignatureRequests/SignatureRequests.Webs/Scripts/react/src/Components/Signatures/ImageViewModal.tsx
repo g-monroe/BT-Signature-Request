@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Popover, Button } from 'antd';
+import BoxType from '../../Util/Enums/BoxType';
 
 export interface IImageViewModalProps {
     title?:string,
@@ -24,8 +25,8 @@ class ImageViewModal extends React.Component<IImageViewModalProps, IImageViewMod
     }
 
     render() { 
-        const image = <img src = {`../../../../../assets/v1/images/${this.props.isSignature ? "signatures" : "initials"}/${this.props.userId}.png`} 
-                alt = {this.props.isSignature ? "signature" : "initial"} 
+        const image = <img src = {`../../../../../assets/v1/images/${this.props.isSignature ? BoxType.SIGNATURE.toLowerCase() + "s" : BoxType.INITIAL.toLowerCase() + "s"}/${this.props.userId}.png`} 
+                alt = {this.props.isSignature ? BoxType.SIGNATURE : BoxType.INITIAL} 
                 onError = {this.handleImageFailedtoLoad}
                 ></img>
         return (

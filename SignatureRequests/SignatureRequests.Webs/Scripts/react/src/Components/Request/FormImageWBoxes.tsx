@@ -97,6 +97,9 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
     const scaleY = canBox.height / data.formHeight;
     const can = this.state.canvasRef.current;
     const ctx = can!.getContext('2d');
+    const widthOfText = 8;
+    const heightOfText = 15;
+    const textMargin = .1;
 
     if(ctx){
       ctx.font = "15px Arial"
@@ -104,14 +107,14 @@ class FormImageWBoxes extends React.Component<IFormImageWBoxesProps, IFormImageW
       ctx.strokeStyle = "white"
       ctx.fillStyle = "black"
       const writtenText = (data.type === BoxType.TEXT ? (data.text || text) :  moment(data.date || new Date()).format("MMM Do YYYY")) || " ";
-      const numCharactersPerLine = Math.floor((data.width * scaleX)/8)
+      const numCharactersPerLine = Math.floor((data.width * scaleX)/widthOfText)
       const re = new RegExp(`.{1,${numCharactersPerLine}}`,'g');
       const lines = writtenText.match(re);
-      let start = ((scaleY *data.y) + .5* data.height) - 15 * Math.floor(lines!.length/2);
+      let start = ((scaleY *data.y) + .5* data.height) - heightOfText * Math.floor(lines!.length/2);
 
       lines!.forEach((line, index)=>{
-        ctx.strokeText(line || "", (scaleX * data.x) + .1 * data.width, start + 15 * (index+ 1), data.width *.8)
-        ctx.fillText(line || "", (scaleX * data.x) + .1 * data.width, start + 15 * (index+1), data.width *.8)
+        ctx.strokeText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
+        ctx.fillText(line || "", (scaleX * data.x) + textMargin * data.width, start + heightOfText * (index + 1), data.width * (1 - 2 * textMargin))
       })
       ctx.fill();
       ctx.stroke();
