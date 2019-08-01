@@ -9,6 +9,7 @@ export interface IFormHandler {
     createForm(entity: FormRequest) : Promise<FormEntity>;
     uploadForm(file: FormData, id: number) : XMLHttpRequest;
     getFormById(id: number) : Promise<FormEntity>;
+    deleteForm(id: number) : Promise<FormEntity>;
 }
 
 export class FormHandler implements IFormHandler {
@@ -52,4 +53,14 @@ export class FormHandler implements IFormHandler {
         });
         return collection;
     }
+
+    async deleteForm(id: number) : Promise<FormEntity> {
+        const collection = await APIHandler(`/api/Form/DeleteForm/${id}`, {
+            headers: {"Content-Type": "application/json"},
+            method: "DELETE",
+            responseType: FormEntity
+        });
+        return collection;
+    }
+
 }
