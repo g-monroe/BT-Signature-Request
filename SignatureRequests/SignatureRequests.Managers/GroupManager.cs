@@ -37,6 +37,8 @@ namespace SignatureRequests.Managers
 
         public GroupResponse Delete(int id)
         {
+            GroupEntity group = GetGroup(id);
+            DeleteGroup(group.Form.User.Id, group.Form.FilePath, id);
             var result = _groupHandler.GetById(id);
             _groupHandler.Delete(result);
             _groupHandler.SaveChanges();
@@ -150,10 +152,7 @@ namespace SignatureRequests.Managers
 
         public void DeleteGroup(int id, string fileName, int groupId)
         {
-            string path = Constants.DocumentPath + id.ToString() + '\\';
-            string[] fileNameSplit = fileName.Split('.');
-            string directoryName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
-            string directoryPath = AppDomain.CurrentDomain.BaseDirectory + path + directoryName + '\\' + groupId.ToString();
+            string directoryPath = _groupEngine.GetDirectoryPath(id, fileName) + '\\' + groupId.ToString();
             Directory.Delete(directoryPath, true);
         }
 

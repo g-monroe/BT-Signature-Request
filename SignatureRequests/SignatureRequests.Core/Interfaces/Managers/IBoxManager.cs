@@ -24,7 +24,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         BoxResponse BoxToListItem(BoxEntity me);
         BoxResponseList GetBoxesByFormId(int id);
         ModelBoxResponseList GetModelBoxesByFormId(int id);
-        void DeleteModelBoxes(int id);
 
     }
 }

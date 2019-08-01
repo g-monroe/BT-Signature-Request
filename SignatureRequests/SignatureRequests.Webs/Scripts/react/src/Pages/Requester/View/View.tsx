@@ -145,11 +145,12 @@ const { TabPane } = Tabs;
     };
 
     async componentDidMount() {
+        let data = (await this.props.requestHandler!.getRequestBySignerId(this.props.userObject.user.id));
         this.setState({
             
             tableData: this.getForms(await this.props.formHandler!.getAllByUser(this.props.userObject.user.id)),
-            signedData: this.getSigned(await this.props.requestHandler!.getRequestBySignerId(this.props.userObject.user.id)),
-            requestData: this.getRequests(await this.props.requestHandler!.getRequestBySignerId(this.props.userObject.user.id)),
+            signedData: this.getSigned(data),
+            requestData: this.getRequests(data),
             isLoaded: true
         });
     }

@@ -83,12 +83,6 @@ namespace SignatureRequests.Managers
             return models;
         }
 
-        public void DeleteModelBoxes(int id)
-        {
-            IEnumerable<BoxEntity> boxes = _boxHandler.GetModelBoxesByFormId(id);
-            _boxHandler.RemoveCollection(boxes);
-        }
-
 
         public ModelBoxResponseList GetBoxesByRequestId(int id)
         {

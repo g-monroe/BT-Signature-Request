@@ -86,10 +86,7 @@ namespace SignatureRequests.Controllers
         [HttpDelete]
         public FormResponse DeleteForm([FromRoute]int id)
         {
-            FormEntity form = _formManager.GetForm(id);
-            _boxManager.DeleteModelBoxes(form.Id);
-            _formManager.Delete(form.Id);
-            _formManager.DeleteDocument(form.UserId, form.FilePath);
+            _formManager.DeleteDocument(id);
 
             return new FormResponse();
         }
