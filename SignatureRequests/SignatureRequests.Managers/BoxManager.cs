@@ -148,7 +148,14 @@ namespace SignatureRequests.Managers
                  X509Item.Country.US, X509Item.Country.US,
                  user.Name, DateTime.Now, user.Email, "", "", "", "" ,"" ,"");
                 string src = AppDomain.CurrentDomain.BaseDirectory + Constants.DocumentPath + NewBox.FilePath;
-                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, src, src, AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx");
+                string imgPath = AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png";
+                string pfxPath = AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx";
+                if (box.Type == BoxType.Initial)
+                {
+                    imgPath = AppDomain.CurrentDomain.BaseDirectory + Constants.InitialsPath + user.Id + ".png";
+                    pfxPath = AppDomain.CurrentDomain.BaseDirectory + Constants.InitialsPath + user.Id + ".pfx";
+                }
+                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, src, src, imgPath,  pfxPath);
                 SignatureLibItem sigLib = InitializeCertification(sigItem, x509Item);
                 SaveCertificate(sigLib, sigItem);
                 SignDocument(box, sigItem, sigLib, user.Name);
@@ -422,7 +429,7 @@ namespace SignatureRequests.Managers
             var w = (float)(box.X + box.Width);
             var h = (float)(box.FormHeight - box.Y);
             appearance.SetVisibleSignature(new iTextSharp.text.Rectangle(x, y, w, h), box.PageNumber + 1, box.RequestId.ToString() + ":" + h + ":" + y + ":" + box.SignatureId + ":" + box.Id);
-            if (box.Type == "Signature")
+            if (box.Type == BoxType.Signature || box.Type == BoxType.Initial)
             {
                 appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.GRAPHIC;
                 appearance.SignatureGraphic = image;
