@@ -45,6 +45,12 @@ namespace SignatureRequests.Managers
             _boxHandler.SaveChanges();
         }
 
+        public void DeleteModelBoxes(int id)
+        {
+            IEnumerable<BoxEntity> boxes = _boxHandler.GetModelBoxesByFormId(id);
+            _boxHandler.RemoveCollection(boxes);
+        }
+
         public BoxResponse GetBox(int id)
         {
             var result = _boxHandler.GetById(id);
@@ -62,6 +68,13 @@ namespace SignatureRequests.Managers
             var result = _boxHandler.GetModelBoxesByFormId(id);
             var models = BoxesToModelList(result);
             return models;
+        }
+
+        public BoxResponseList GetCopyBoxes(int id)
+        {
+            var result = _boxHandler.GetCopyBoxes(id);
+            var boxes = BoxToListResponse(result);
+            return boxes;
         }
 
         public BoxResponseList GetBoxes()
@@ -91,7 +104,6 @@ namespace SignatureRequests.Managers
             box.RequestId = reqBox.RequestId;
             box.Signature = reqBox.Signature;
             box.SignatureId = reqBox.SignatureId;
-            box.Form = reqBox.Form;
             box.FormId = reqBox.FormId;
             box.PageNumber = reqBox.PageNumber;
             box.IsModel = reqBox.IsModel;
@@ -193,10 +205,10 @@ namespace SignatureRequests.Managers
                 updating.Signature = _signatureHandler.GetById(me.SignatureId.Value);
             }
             updating.SignatureId = me.SignatureId;
-            if (me.FormId != null)
+            /*if (me.FormId != null)
             {
                 updating.Form = _formHandler.GetById(me.FormId.Value);
-            }
+            }*/
             updating.FormId = me.FormId;
             updating.PageNumber = me.PageNumber;
             updating.IsModel = me.IsModel;

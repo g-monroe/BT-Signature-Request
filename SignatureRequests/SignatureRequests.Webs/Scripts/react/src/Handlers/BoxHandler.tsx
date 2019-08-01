@@ -4,11 +4,13 @@ import BoxEntity from "../Entities/BoxEntity";
 import ModelBoxList from '../Entities/ToComplete/ModelBoxList';
 import SignedBoxRequest from '../Entities/SignedBoxRequest';
 import NumberResponse from "../Entities/ToComplete/NumberResponse";
+import BoxResponseList from "../Entities/BoxResponseList";
 
 export interface IBoxHandler {
     createBox(entity: BoxRequest) : Promise<BoxEntity>;
     getModelBoxes(id: number) : Promise<ModelBoxList>;
     addSignatureToBox(updatedBox: SignedBoxRequest) : Promise<NumberResponse>;
+    getCopyBoxes(id: number) : Promise<BoxResponseList>;
 }
 
 export class BoxHandler implements IBoxHandler {
@@ -37,5 +39,13 @@ export class BoxHandler implements IBoxHandler {
         data:updatedBox,
         responseType: NumberResponse
         });   
+    }
+
+    async getCopyBoxes(id: number) : Promise<BoxResponseList> {
+        return await APIHandler(`/api/Box/GetCopyBoxes/${id}`, {
+            headers: {"Content-Type" : "application/json"},
+            method: "GET",
+            responseType: BoxResponseList
+        });
     }
 }

@@ -30,7 +30,7 @@ namespace SignatureRequests.Core.Entities
 
         [Required]
         public DateTime SentDate { get; set; }
-        public ICollection<BoxEntity> BoxEntities { get; set; }
+        public virtual ICollection<BoxEntity> BoxEntities { get; set; }
 
     }
 }

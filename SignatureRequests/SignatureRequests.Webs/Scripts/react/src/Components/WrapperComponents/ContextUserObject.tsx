@@ -5,6 +5,7 @@ import UserType from '../../Util/Enums/UserTypes';
 export class ContextUserObject{
     user:MainPageUser
     formId:number
+    groupId:number
     requestId:number
     update:(data:MainPageUser) => void
 
@@ -12,6 +13,7 @@ export class ContextUserObject{
         if(data){
             this.user = data.user;
             this.formId = data.formId;
+            this.groupId = data.groupId;
             this.requestId = data.requestId;
             this.update = data.update;
         }else{
@@ -22,6 +24,7 @@ export class ContextUserObject{
                 email:"" ,
                 type:UserType.UNKNOWN,
             });
+            this.groupId = -1;
             this.formId = -1;
             this.requestId = -1;
             this.update= (data:MainPageUser) =>{

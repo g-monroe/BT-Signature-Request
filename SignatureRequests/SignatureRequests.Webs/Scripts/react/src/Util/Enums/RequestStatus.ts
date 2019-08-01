@@ -1,12 +1,12 @@
 enum RequestStatus {
     DONE = "Done",
     SIGNED ="Signed",
-    NOTSIGNED ="Not Signed"
+    NOTSIGNED ="NotSigned"
 }
 
 export default RequestStatus;
 export enum RequestStatusSigning {
-    PENDING = "pending",
+    PENDING = "Pending",
     COMPLETE = "Complete",
-    NOTSTARTED = "Not Started"
+    NOTSTARTED = "NotStarted"
 }

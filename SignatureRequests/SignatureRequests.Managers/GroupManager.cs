@@ -44,6 +44,16 @@ namespace SignatureRequests.Managers
             var response = _groupEngine.GroupToListItem(result);
             return response;
         }
+
+        public void DeleteGroup(int id, string fileName, int groupId)
+        {
+            string path = Constants.DocumentPath + id.ToString() + '\\';
+            string[] fileNameSplit = fileName.Split('.');
+            string directoryName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
+            string directoryPath = AppDomain.CurrentDomain.BaseDirectory + path + directoryName + '\\' + groupId.ToString();
+            Directory.Delete(directoryPath, true);
+        }
+
         private void MakeCopy(int id, int groupId, int userId)
         {
             var filePath = _formHandler.GetById(id).FilePath;
@@ -68,6 +78,11 @@ namespace SignatureRequests.Managers
         public GroupResponseList GetGroupById(int id)
         {
             return GroupsToListResponse(_groupHandler.GetGroupById(id));
+        }
+
+        public GroupEntity GetGroup(int id)
+        {
+            return _groupHandler.GetById(id);
         }
 
         public GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup)

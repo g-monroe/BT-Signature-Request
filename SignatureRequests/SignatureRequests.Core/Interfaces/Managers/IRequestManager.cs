@@ -13,7 +13,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
     {
         RequestResponseList GetRequests();
         RequestResponse GetRequestById(int id);
-        RequestResponseList GetRequestsByFormId(int id);
         RequestEntity GetRequest(int id);
         RequestEntity CreateRequestEntity(RequestEntity newRequest);
         RequestEntity UpdateRequest(RequestEntity request, RequestEntity newRequest);
@@ -23,5 +22,6 @@ namespace SignatureRequests.Core.Interfaces.Managers
         RequestResponse AddRequest(RequestRequest request, RequestEntity updating = null);
 
         RequestToCompleteResponse GetRequestByRequestId(int id );
+        RequestResponseList GetRequestsBySignerId(int id);
     }
 }

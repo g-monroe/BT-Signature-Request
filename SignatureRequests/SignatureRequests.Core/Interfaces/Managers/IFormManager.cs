@@ -16,6 +16,7 @@ namespace SignatureRequests.Core.Interfaces.Managers
         FormResponse GetFormById(int id);
         FormResponseList GetFormsByUserId(int id);
         Task SaveDocumentAsync(MultipartMemoryStreamProvider provider, int id);
+        void DeleteDocument(int id, string file);
         int GetPageCount(MultipartMemoryStreamProvider provider, int id);
         FormEntity GetForm(int id);
         FormEntity CreateFormEntity(FormEntity newForm);

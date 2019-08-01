@@ -7,13 +7,13 @@ namespace SignatureRequests.DataAccessHandlers.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class MoreMigrations : IMigrationMetadata
+    public sealed partial class ForDeletingBox : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MoreMigrations));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ForDeletingBox));
         
         string IMigrationMetadata.Id
         {
-            get { return "201907291349279_MoreMigrations"; }
+            get { return "201907312129190_ForDeletingBox"; }
         }
         
         string IMigrationMetadata.Source

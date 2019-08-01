@@ -1,6 +1,7 @@
 ﻿using MvcCodeRouting.Web.Http;
 using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
+using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
 using SignatureRequests.Core.RequestObjects;
 using SignatureRequests.Core.ResponseObjects;
@@ -20,12 +21,14 @@ namespace SignatureRequests.Controllers
     {
         #region GlobalVariables
         private readonly IFormManager _formManager;
+        private readonly IBoxManager _boxManager;
         #endregion
 
         #region Constructor
-        public FormController(IFormManager formManager)
+        public FormController(IFormManager formManager, IBoxManager boxManager)
         {
             _formManager = formManager;
+            _boxManager = boxManager;
         }
         #endregion
 
@@ -82,9 +85,14 @@ namespace SignatureRequests.Controllers
         }
         [Route("api/Form/DeleteForm/{id}")]
         [HttpDelete]
-        public void DeleteForm([FromRoute]int id)
+        public FormResponse DeleteForm([FromRoute]int id)
         {
-            _formManager.Delete(id);
+            FormEntity form = _formManager.GetForm(id);
+            _boxManager.DeleteModelBoxes(form.Id);
+            _formManager.Delete(form.Id);
+            _formManager.DeleteDocument(form.UserId, form.FilePath);
+
+            return new FormResponse();
         }
     }
 }

@@ -19,10 +19,12 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupEntity CreateGroupEntity(GroupEntity newGroup);
         GroupEntity UpdateGroup(GroupEntity group, GroupEntity newGroup);
         GroupResponse Delete(int id);
+        void DeleteGroup(int id, string fileName, int groupId);
         GroupResponseList GroupToListResponse(GroupEntity group);
         GroupResponse AddGroup(GroupRequest group, int id, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
         GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
+        GroupEntity GetGroup(int id);
 
     }
 }

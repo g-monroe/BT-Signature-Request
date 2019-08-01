@@ -15,17 +15,17 @@ namespace SignatureRequests.DataAccessHandlers
         public RequestHandler(SignatureRequestsContext context) : base(context)
         {
         }
-        public RequestEntity GetById(int id)
+        public RequestEntity GetRequestById(int id)
         {
-            return _context.Requests.Include("BoxEntities").First(s => s.Id == id);
-        }
-        public IEnumerable<RequestEntity> GetAllByFormId(int id)
-        {
-            return GetSelectIncludes(s => s.Id == id, "BoxEntities");
+            return _context.Requests.Include(r => r.BoxEntities).First();
         }
         public IEnumerable<RequestEntity> GetAllInclude()
         {
             return GetIncludes("BoxEntities");
+        }
+        public IEnumerable<RequestEntity> GetAllBySignerId(int id)
+        {
+            return Get(s => s.SignerId == id);
         }
         
     }

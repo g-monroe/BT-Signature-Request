@@ -4,6 +4,7 @@ import GroupEntity from "../Entities/GroupEntity";
 export interface IGroupHandler {
     createGroup(entity: GroupRequest, id: number) : Promise<GroupEntity>;
     deleteGroup(id: number) : Promise<GroupEntity>;
+    getGroup(id: number): Promise<GroupEntity>;
 }
 
 export class GroupHandler implements IGroupHandler {
@@ -19,6 +20,14 @@ export class GroupHandler implements IGroupHandler {
         const collection = await APIHandler(`/api/Group/Delete/${id}`, {
             headers: {"Content-Type" : "application/json"},
             method: "DELETE",
+            responseType: GroupEntity
+        });
+        return collection;
+    }
+    async getGroup(id: number): Promise<GroupEntity>{
+        const collection = await APIHandler(`/api/Group/GetGroupById/${id}`, {
+            headers: {"Content-Type" : "application/json"},
+            method: "GET",
             responseType: GroupEntity
         });
         return collection;

@@ -110,6 +110,14 @@ export const REQUESTER = {
         hasNavBar: false,
         condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
 
+    }),
+    "_FormCopyView": new RouteEntity({
+        path: `/request/view/copy/:groupId`,
+        link: (groupId: number) => `/request/view/copy/${groupId}`,
+        breadcrumbName: "View Copy Form",
+        component: Pages.CopyView,
+        hasNavBar: false,
+        condition:(User: UserType | null) => !!User && !!(User === UserType.REGISTERED)
     })
 }
 

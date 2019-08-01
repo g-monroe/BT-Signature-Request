@@ -42,12 +42,12 @@ namespace SignatureRequests.Managers
         }
         public RequestResponse GetRequestById(int id)
         {
-            var requests = _requestHandler.GetById(id);
+            var requests = _requestHandler.GetRequestById(id);
             return RequestToResponse(requests);
         }
-        public RequestResponseList GetRequestsByFormId(int id)
+        public RequestResponseList GetRequestsBySignerId(int id)
         {
-            var requests = _requestHandler.GetAllByFormId(id);
+            var requests = _requestHandler.GetAllBySignerId(id);
             return RequestToListResponse(requests);
         }
         public RequestEntity GetRequest(int id)

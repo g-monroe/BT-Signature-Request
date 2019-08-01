@@ -10,6 +10,7 @@ import { Button, Select, Icon, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { Layout } from "antd";
 import ModelBox from '../../Entities/ToComplete/ModelBox';
+import BoxEntity from '../../Entities/BoxEntity';
 
 const { Header, Content } = Layout;
 
@@ -20,17 +21,17 @@ export interface IViewFormImageProps{
   src: string;
   failedSrc:string;
   userObject: ContextUserObject;
-  pageChange: (change: number, boxes: ModelBox[]) => void;
+  pageChange: (change: number, boxes: ModelBox[] | BoxEntity[]) => void;
   numPages: number;
   pageNum: number;
-  boxesDrawn: ModelBox[];
+  boxesDrawn: ModelBox[] | BoxEntity[];
 }
 
 interface IViewFormImageState{
   src: string;
   errored:boolean;
   mouseDown: boolean;
-  boxesDrawn: ModelBox[];
+  boxesDrawn: ModelBox[] | BoxEntity[];
   selectedBox?: BoxRequest;
   canvasRef:React.RefObject<HTMLCanvasElement>;
   ctx: CanvasRenderingContext2D | null;

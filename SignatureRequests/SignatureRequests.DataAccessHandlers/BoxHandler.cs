@@ -26,7 +26,17 @@ namespace SignatureRequests.DataAccessHandlers
         }
         public IEnumerable<BoxEntity> GetModelBoxesByFormId(int id)
         {
+            
             return Get(x => ((x.FormId == id) && (x.IsModel)));
+        }
+        public IEnumerable<BoxEntity> GetCopyBoxes(int id)
+        {
+            return Get(x => ((!x.IsModel && x.Request.GroupId == id)));
+        }
+        public void RemoveCollection(IEnumerable<BoxEntity> boxes)
+        {
+            _context.Boxes.RemoveRange(boxes);
+            SaveChanges();
         }
     }
 }
