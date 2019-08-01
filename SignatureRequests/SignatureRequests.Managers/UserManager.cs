@@ -1,5 +1,6 @@
 ﻿using SignatureRequests.Core;
 using SignatureRequests.Core.Entities;
+using SignatureRequests.Core.Enums;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -98,7 +99,7 @@ namespace SignatureRequests.Managers
             }
             catch
             {
-                id = -1;
+                id = NumberToBooleanEnum.Failure;
             }
 
             return new NumberResponse()
@@ -116,7 +117,7 @@ namespace SignatureRequests.Managers
             }
             catch
             {
-                id = -1;
+                id = NumberToBooleanEnum.Failure;
             }
 
             return new NumberResponse()

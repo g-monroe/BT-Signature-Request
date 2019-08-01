@@ -2,7 +2,7 @@ import * as React from 'react';
 import './DashItem.css';
 import './bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faTrashAlt, faCheckSquare, faSquare} from '@fortawesome/free-solid-svg-icons'
+import { faPencilAlt, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 
 import TagItem from './TagItem';
 import { Tabs, Progress } from 'antd';
@@ -16,6 +16,7 @@ import Moment from 'react-moment';
 import GroupEntity from '../../Entities/GroupEntity';
 import * as Routes from '../../Pages/Routing/routes';
 import { Link } from 'react-router-dom';
+import ContextUserObject from '../WrapperComponents/ContextUserObject';
 
 const TabPane = Tabs.TabPane;
 
@@ -23,6 +24,7 @@ export interface IDashItemProps {
     groupEntity: GroupEntity;
     isOwner: boolean;
     groupHandler?: IGroupHandler;
+    userObject?: ContextUserObject;
     deleteGroup:(id: number) => void;
 }
  
@@ -53,7 +55,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     const {groupEntity} = this.props;
     const { tags } = this.state;
     if (groupEntity.requests.count === 0){
-      const newTag = new TagItem("#000", "#fff", "Nothing found!");
+      const newTag = new TagItem("#000", "#fff", "Nothing found!", new Date());
       tags.push(newTag);
     }else{
       let totalRequests = 0;
@@ -61,16 +63,17 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         totalRequests = groupEntity.requests.count;
         let requestNum = undefined;
         groupEntity.requests.collection.map((request) => {
-          let tagText = `${request.signer.name}: ${request.status}(${request.sentDate.toString()})`;
+          let tagText = `${request.signer.name}: ${request.status}`;
           let color = "#CDCDCD";
           
           if (request.status === RequestStatus.DONE){
             color = "#3CB371";
             totalDoneRequests += 1;
           }else{
-            requestNum = request.id;
+            if (request.signer.id === this.props.userObject!.user.id){
+              requestNum = request.id;
+            }
           }
-          
           if (request.boxes.count !== 0){
             let signedBoxes = 0;
             request.boxes.collection.map((box) => {
@@ -80,7 +83,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
             })
             tagText = `${request.signer.name}: ${signedBoxes}/${request.boxes.count} - ${request.status} (${request.sentDate.toString()})`
           }
-          const newTag = new TagItem("#000", color, tagText);
+          const newTag = new TagItem("#000", color, tagText, request.sentDate);
           tags.push(newTag);
         })
       this.setState({
@@ -93,7 +96,8 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
     return e.map((tag, index) =>
       (<li key={index}>
         <span style={{color:tag.color, backgroundColor:tag.backgroundColor, display:"block",float:"left"}} className="badge badge-success ml">
-          {tag.text}
+          {tag.text + " -"}
+          <Moment>{tag.date.toString()}</Moment>
         </span>
       </li>)
     );
@@ -111,7 +115,7 @@ class DashItem extends React.Component<IDashItemProps, IDashItemState> {
         <div className="activity-block">
         
         <div className="preview">
-          <Image src={"../../../../../assets/v1/documents/" + groupEntity.form.filePath + ".png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
+          <Image src={"../../../../../assets/v1/documents/" + this.props.userObject!.user.id +"/" + groupEntity.form.filePath.split('.')[0] + "/" + "0.png"} failedSrc={"https://assets.cdn.thewebconsole.com/ZWEB5519/product-item/591a517c5057d.jpg"}/>
         </div>
         <div className="activity-content header-item">
         <label className="ribbon right success"><span>{groupEntity.status}</span></label>

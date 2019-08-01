@@ -11,6 +11,7 @@ export interface IBoxHandler {
     getModelBoxes(id: number) : Promise<ModelBoxList>;
     addSignatureToBox(updatedBox: SignedBoxRequest) : Promise<NumberResponse>;
     getCopyBoxes(id: number) : Promise<BoxResponseList>;
+    getBoxesOfRequest(id: number) : Promise<ModelBoxList>;
 }
 
 export class BoxHandler implements IBoxHandler {
@@ -26,6 +27,15 @@ export class BoxHandler implements IBoxHandler {
 
     async getModelBoxes(id: number) : Promise<ModelBoxList> {
         return await APIHandler(`/api/Box/GetModelBoxesbyFormId/${id}`, {
+        headers: {"Content-Type" : "application/json"},
+        method: "GET",
+        responseType: ModelBoxList
+        });   
+    }
+
+    
+    async getBoxesOfRequest(id: number) : Promise<ModelBoxList> {
+        return await APIHandler(`/api/Box/GetBoxesbyRequestId/${id}`, {
         headers: {"Content-Type" : "application/json"},
         method: "GET",
         responseType: ModelBoxList

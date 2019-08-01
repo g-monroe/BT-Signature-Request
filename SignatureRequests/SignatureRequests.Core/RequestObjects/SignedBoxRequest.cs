@@ -14,6 +14,7 @@ namespace SignatureRequests.Core.RequestObjects
         public bool IsModel { get; set; }
         public string Text { get; set; }
         public DateTime? Date { get; set; }
+        public string FilePath { get; set; }
 
     }
 }

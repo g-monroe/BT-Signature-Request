@@ -10,8 +10,10 @@ import ContextUserObject from '../../../Components/WrapperComponents/ContextUser
 import { GroupHandler, IGroupHandler } from '../../../Handlers/GroupHandler';
 import RequestEntity from '../../../Entities/RequestEntity';
 import GroupEntity from '../../../Entities/GroupEntity';
+import RequestStatus, { RequestStatusSigning } from '../../../Util/Enums/RequestStatus';
 const { Option } = Select;
 const { TabPane } = Tabs;
+const filterAll = "All";
 export interface IDashboardProps {
     formHandler?: IFormHandler; 
     userObject: ContextUserObject;
@@ -22,6 +24,7 @@ export interface IDashboardState {
     tableData?: FormEntity[];
     requestData?: FormEntity[];
     loading: boolean;
+    filter:string;
     searchTerm: string;
 }
  
@@ -32,7 +35,8 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
      };
      state: IDashboardState = {
          loading: true,
-         searchTerm: ""
+         searchTerm: "",
+         filter:filterAll
      };
      async componentDidMount() {
        this.setState({
@@ -40,12 +44,13 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
            requestData: this.getForms((await this.props.formHandler!.getAllRequested(this.props.userObject.user.id))),
            loading: false
        });
+       
      }
      getForms = (forms: FormResponseList) : any[] => {
        return forms.collection;
      }
      renderForms = () =>{
-         const {tableData, loading, searchTerm} = this.state;
+         const {tableData, loading, searchTerm, filter} = this.state;
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
@@ -61,12 +66,12 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                 if (count === 0){
                     return <><h1>Nothing found!</h1></>
                 }
-                if (searchTerm.length > 2 && !loading){//Searching
+                if ((searchTerm.length > 1 || filter !== filterAll) && !loading){//Searching
                     return tableData!.map((form) => {
                         if (form.groups!.count !== 0){
                             return form.groups!.collection.map((group, index) =>{
-                                if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
+                                if ((group.title.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || (group.description!.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || group.status === filter){
+                                    return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
                             })
                         }
@@ -76,7 +81,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                         if (form.groups!.count !== 0){
                             return form.groups!.collection.map((group, index) =>{
                                 if (group.requests.count !== 0){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
+                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
                                 }
                             })
                         }
@@ -87,7 +92,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         } 
      }
      isNotDone = (request:RequestEntity) =>{
-         if (request.status !== "Done"){
+         if (request.status !== RequestStatus.DONE && request.signer.id === this.props.userObject.user.id){
              return true;
          }
          return false;
@@ -113,20 +118,21 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         }));
      }
      renderRequests = () =>{
-        const {requestData, loading, searchTerm} = this.state;
+        const {requestData, loading, searchTerm, filter} = this.state;
         if (loading){
             return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Loading!</h1></>);
         }else{
             if (requestData!.length === 0 || requestData === null){
                 return (<><h1 style={{margin:"auto", width:"100%", height:"100%", display:"block"}}>Nothing found!</h1></>);
             }else{ 
-                if (searchTerm.length > 2 && !loading){//Searching
+                if ((searchTerm.length > 1 || filter !== filterAll) && !loading ){//Searching
+                    
                    return requestData!.map((form) => {
                         if (form.groups!.count !== 0){
                             return form.groups!.collection.map((group, index) =>{
-                                if (group.title.toLowerCase().includes(searchTerm) || group.description!.toLowerCase().includes(searchTerm)){
-                                   return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup}/>
-                                }
+                                    if ((group.title.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || (group.description!.toLowerCase().includes(searchTerm) && searchTerm.length !== 0) || group.status === filter){
+                                        return <DashItem key={index} groupEntity={group} isOwner={true} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/>
+                                    }
                             })
                         }
                     });
@@ -137,7 +143,7 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
                                 if (group.requests.count !== 0){
                                    let items = group.requests.collection.some(this.isNotDone);
                                     if (items){
-                                        return <DashItem key={index} groupEntity={group} isOwner={false} deleteGroup={this.deleteGroup}/> 
+                                        return <DashItem key={index} groupEntity={group} isOwner={false} deleteGroup={this.deleteGroup} userObject={this.props.userObject}/> 
                                     }
                                 } 
                             })
@@ -159,12 +165,18 @@ class Dashboard extends React.Component<IDashboardProps, IDashboardState> {
         }
         
      }
+     handleFilter = (e:any) =>{
+         this.setState({
+             filter: e
+         })
+     }
     render() { 
         const selectBefore = (
-            <Select defaultValue="completed">
-              <Option value="completed">Completed</Option>
-              <Option value="pending">Pending</Option>
-              <Option value="refused">Refused</Option>
+            <Select onChange={this.handleFilter} defaultValue={filterAll}>
+                <Option value={filterAll}>All</Option>
+              <Option value={RequestStatusSigning.COMPLETE}>Completed</Option>
+              <Option value={RequestStatusSigning.PENDING}>Pending</Option>
+              <Option value={RequestStatusSigning.NOTSTARTED}>Not Started</Option>
             </Select>
           );
         return ( 

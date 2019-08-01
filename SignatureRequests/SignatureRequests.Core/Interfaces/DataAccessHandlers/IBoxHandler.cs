@@ -12,5 +12,6 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         IEnumerable<BoxEntity> GetModelBoxesByFormId(int id);
         void RemoveCollection(IEnumerable<BoxEntity> boxes);
         IEnumerable<BoxEntity> GetCopyBoxes(int id);
+        IEnumerable<BoxEntity> GetBoxesByRequestId(int id);
     }
 }

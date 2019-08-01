@@ -1,4 +1,4 @@
-enum RequestStatus {
+enum RequestStatus { //Request
     DONE = "Done",
     SIGNED ="Signed",
     NOTSIGNED ="NotSigned"

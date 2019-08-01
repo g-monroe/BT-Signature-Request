@@ -12,7 +12,7 @@ import SignedStatus from '../../Util/Enums/SignedStatus';
 
 export interface ISignHeaderProps {
     data:RequestToCompleteEntity
-    boxes:ModelBox[]//Temp untill gavin crates boxes with the requests
+    boxes:ModelBox[]
     sentBy:SimpleUser
     toNextSignature?:() => void
 }

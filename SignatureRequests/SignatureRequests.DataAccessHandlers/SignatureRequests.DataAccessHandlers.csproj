@@ -182,9 +182,15 @@
     <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
+<<<<<<< HEAD
     <Compile Include="Migrations\201907312129190_ForDeletingBox.cs" />
     <Compile Include="Migrations\201907312129190_ForDeletingBox.Designer.cs">
       <DependentUpon>201907312129190_ForDeletingBox.cs</DependentUpon>
+=======
+    <Compile Include="Migrations\201908011513577_new.cs" />
+    <Compile Include="Migrations\201908011513577_new.Designer.cs">
+      <DependentUpon>201908011513577_new.cs</DependentUpon>
+>>>>>>> 8f728441dfa3aacfedb955df2993d90fdb35dbc4
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -207,8 +213,13 @@
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201907312129190_ForDeletingBox.resx">
       <DependentUpon>201907312129190_ForDeletingBox.cs</DependentUpon>
+=======
+    <EmbeddedResource Include="Migrations\201908011513577_new.resx">
+      <DependentUpon>201908011513577_new.cs</DependentUpon>
+>>>>>>> 8f728441dfa3aacfedb955df2993d90fdb35dbc4
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

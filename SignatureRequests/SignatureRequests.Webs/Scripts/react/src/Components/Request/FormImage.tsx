@@ -114,8 +114,8 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isCanvasRendered: false,
     formHeight: 0,
     formWidth: 0,
-    title:"",
-    description:"",
+    title:this.props.form.title || "",
+    description:this.props.form.description || "",
     date: new Date(),
     wasSuccess:false
   };
@@ -183,7 +183,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     }
     let newBox = box;
     let newUser = users.find(x => x.id === Number(selectedUser));
-    if (!remove && newUser!.id !== requestor!.id && newBox.signerType === SignerType.REQUESTOR){
+    if (newBox.signerType === SignerType.REQUESTOR){
       return;
     }
     if (!remove && newUser!.id === requestor!.id){
@@ -255,13 +255,18 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
       this.fitCanvasToContainer(rect);
     }
     let sent = false;
-    this.props.boxesDrawn.map((box) =>{
-      if ((box.x <= (event.clientX - rect.left) && (box.x + box.width) >= (event.clientX - rect.left)) &&
-         (box.y <= (event.clientY - rect.top) && (box.y + box.height) >= (event.clientY - rect.top)) && box.pageNumber === this.state.pageNumber && !sent){
+    const X = event.clientX - rect!.left;
+    const Y = event.clientY - rect!.top;
+          
+    this.props.boxesDrawn.forEach((box)=>{
+      if( box.signedStatus !== SignedStatus.SIGNED && box.pageNumber === this.props.pageNum && !sent &&((X >= box.x && X <= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+        (X >= box.x && X <= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ||
+        (X <= box.x && X >= box.x+box.width && Y >= box.y && Y <= box.y+box.height) ||
+        (X <= box.x && X >= box.x+box.width && Y <= box.y && Y >= box.y+box.height) ) ){
           this.boxClicked(box);
           sent = true;
-      }
-    });
+        }
+    })
     this.drawBoxes();
   };
 
@@ -350,7 +355,7 @@ drawBoxes = async () => {
      const {title, description, date} = this.state;
      const {groupHandler, boxHandler, form, userObject, requestHandler, group, requests } = this.props;
      if (title.length < 0 || description.length < 0){
-         message.info('Title or Description not big enough!');
+         message.info('Enter a title or description');
          return;
      }//Continue
      if (requests === null || requests!.length === 0){
@@ -400,7 +405,7 @@ drawBoxes = async () => {
              })
          }
      })
-     message.success('Success! Redirecting to Dashboard!');
+     message.success('Success!');
      this.setState({
        wasSuccess: true
      })

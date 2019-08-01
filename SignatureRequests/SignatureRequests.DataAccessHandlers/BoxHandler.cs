@@ -38,5 +38,6 @@ namespace SignatureRequests.DataAccessHandlers
             _context.Boxes.RemoveRange(boxes);
             SaveChanges();
         }
+       
     }
 }
