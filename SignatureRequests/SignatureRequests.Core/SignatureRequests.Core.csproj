@@ -202,11 +202,9 @@
     <Compile Include="Interfaces\Managers\IGroupManager.cs" />
     <Compile Include="Interfaces\Managers\IFormManager.cs" />
     <Compile Include="Interfaces\Managers\IRequestManager.cs" />
-    <Compile Include="Interfaces\Managers\ISignatureLibManager.cs" />
     <Compile Include="Interfaces\Managers\IBoxManager.cs" />
     <Compile Include="Interfaces\Managers\ISignatureManager.cs" />
     <Compile Include="Interfaces\Managers\IUserManager.cs" />
-    <Compile Include="Items\BoxItem.cs" />
     <Compile Include="Entities\FormEntity.cs" />
     <Compile Include="Entities\IBaseEntity.cs" />
     <Compile Include="Entities\RequestEntity.cs" />
