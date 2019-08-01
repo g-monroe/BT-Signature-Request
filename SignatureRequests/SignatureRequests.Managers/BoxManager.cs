@@ -295,7 +295,7 @@ namespace SignatureRequests.Managers
             };
         }
         #region LibraryFunctions
-        public SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item)
+        private SignatureLibItem InitializeCertification(SignatureItem signItem, X509Item x509Item)
         {
             var certificateGenerator = new X509V3CertificateGenerator();
             SignatureLibItem result = new SignatureLibItem();
