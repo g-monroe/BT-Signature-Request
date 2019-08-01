@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SignatureRequests.Core.Enums
 {
-   public class SignStatus
+    public class NumberToBooleanEnum
     {
-        public static string Signed = "Signed";
-        public static string NotSigned = "NotSigned";
+        public static int Success = 1;
+        public static int Failure = -1;
     }
 }

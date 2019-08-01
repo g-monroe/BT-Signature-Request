@@ -48,8 +48,6 @@ interface IFormImageState{
   isBoxSelected: boolean;
   pageNumber: number;
   isCanvasRendered: boolean;
-  formHeight: number;
-  formWidth: number;
 }
 
 class FormImage extends React.Component<IFormImageProps, IFormImageState> {
@@ -79,8 +77,6 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
     isBoxSelected: false,
     pageNumber: this.props.pageNum,
     isCanvasRendered: false,
-    formHeight: 0,
-    formWidth: 0,
     type: this.props.boxType,
     signerType: this.props.signerType,
     actionType: this.props.actionType
@@ -157,6 +153,7 @@ class FormImage extends React.Component<IFormImageProps, IFormImageState> {
 
 onMouseUp = (event:any) => {
   if(this.state.mouseDown){
+    let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
     let boxes = this.state.boxesDrawn;
     let box = new BoxRequest({
         width: this.state.width,
@@ -169,8 +166,8 @@ onMouseUp = (event:any) => {
         formId: this.props.userObject.formId,
         pageNumber: this.state.pageNumber,
         isModel: true,
-        formHeight: this.state.formHeight,
-        formWidth: this.state.formWidth
+        formHeight: Math.floor(rect.height),
+        formWidth: Math.floor(rect.width)
     });
     boxes.push(box);
     this.setState({
@@ -275,10 +272,6 @@ drawBoxes = async () => {
 
   onLoad = async () => {
     let rect = document.getElementById("loadedImage")!.getBoundingClientRect();
-    (await this.setState({
-      formHeight: rect.height,
-      formWidth: rect.width
-    }));
     this.fitCanvasToContainer(rect);
     this.drawBoxes();
   };

@@ -3,7 +3,7 @@ import RequestToCompleteEntity from '../../../Entities/ToComplete/RequestToCompl
 import ContextUserObject from '../../../Components/WrapperComponents/ContextUserObject';
 import { IUserHandler, UserHandler } from '../../../Handlers/UserHandler';
 import { IRequestHandler, RequestHandler } from '../../../Handlers/RequestHandler';
-import { Spin, Typography, Button, message } from 'antd';
+import { Spin, Typography, Button, message, Modal, Icon } from 'antd';
 import SimpleUser from '../../../Entities/ToComplete/SimpleUser';
 import { Link } from 'react-router-dom';
 import * as routes from '../../Routing/routes';
@@ -15,6 +15,7 @@ import ModelBox from '../../../Entities/ToComplete/ModelBox';
 import BoxType from '../../../Util/Enums/BoxType';
 import SignedStatus from '../../../Util/Enums/SignedStatus';
 import SignedBoxRequest from '../../../Entities/SignedBoxRequest';
+import NumberToSuccessStatus from '../../../Util/Enums/NumberToSuccessStatus';
 
 export interface ISignDocumentProps {
     userHandler?:IUserHandler
@@ -30,13 +31,15 @@ export interface ISignDocumentState {
     boxes?:ModelBoxList //This is a temp state. Gavin is working to add the boxes to the requestData
     boxesToFinish?:ModelBox[],
     skipToNextSignature?:()=>void,
-    numComplete:number
+    numComplete:number,
+    isSuccessVisible:boolean
 }
  
 class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentState> {
 
     state : ISignDocumentState = {
-        numComplete:0
+        numComplete:0,
+        isSuccessVisible:false
     }
 
     static defaultProps = {
@@ -62,7 +65,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                 try{
                     const newId = (await this.props.userHandler!.getUsersInitialId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId ===  NumberToSuccessStatus.FAILURE){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
@@ -78,7 +81,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                   
                     const newId = (await this.props.userHandler!.getUsersSigId(this.props.userObject.user.id)).num
 
-                    if (newId <=0 ){
+                    if (newId === NumberToSuccessStatus.FAILURE ){
                          message.error("Something went wrong");
                     }else{
                         newBox.signatureId = newId
@@ -99,7 +102,7 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
         newBox.filePath = `${this.state.requestData!.requestorId}\\${formName}\\${this.state.requestData!.groupId}\\${formName}.pdf`
         const num = await this.props.boxHandler.addSignatureToBox(newBox);
 
-        if(num.num < 0){
+        if(num.num === NumberToSuccessStatus.FAILURE){
             message.error("Something went wrong");
         }
 
@@ -110,6 +113,19 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
             numComplete: newNum,
         });
     }
+
+    finalizeRequest = async () =>{
+        await this.props.requestHandler!.finalizeRequestByRequestId(this.state.requestData!.id).then((number) => {
+            if(number.num !== NumberToSuccessStatus.FAILURE){
+                this.setState({
+                    isSuccessVisible:true
+                })
+            }else{
+                message.error("Document is not complete");
+            }
+        });
+    }
+
     updateBoxes = async () =>{
         try{
             const box = await this.props.boxHandler!.getBoxesOfRequest(this.state.requestData!.id);
@@ -154,7 +170,27 @@ class SignDocument extends React.Component<ISignDocumentProps, ISignDocumentStat
                     <SignHeader  boxes = {this.state.boxes.collection} data = {this.state.requestData} sentBy = {this.state.sender} toNextSignature = {this.state.skipToNextSignature}/> 
 
                 }
-                <FileViewerWBoxes unCompleteBoxes = {this.state.boxesToFinish} boxFilledOut = {this.connectActionToBox} userObject = {this.props.userObject} file = {this.state.requestData.form} boxes = {this.state.boxes} nextSig = {this.saveToNextSig}></FileViewerWBoxes>
+                <FileViewerWBoxes  
+                    finalizeRequest = {this.finalizeRequest} 
+                    unCompleteBoxes = {this.state.boxesToFinish} 
+                    boxFilledOut = {this.connectActionToBox} 
+                    userObject = {this.props.userObject} 
+                    requestData = {this.state.requestData} 
+                    boxes = {this.state.boxes} 
+                    nextSig = {this.saveToNextSig}></FileViewerWBoxes>
+                <Modal
+                title = "Finalize"
+                visible = {this.state.isSuccessVisible}
+                closable = {false}
+                footer = {null}
+                >
+                    <div id = "sentFormSuccess">
+                        <Icon type="check-circle" theme="twoTone" twoToneColor = "#2ac73c" style = {{fontSize:'100px', margin:'20px'}}/>
+                        <Link to = {routes.REQUESTER._Dashboard.path}>
+                            <Button type = "primary">Back To Dashboard</Button>
+                        </Link>
+                    </div>
+            </Modal>
                 </>
 
             );

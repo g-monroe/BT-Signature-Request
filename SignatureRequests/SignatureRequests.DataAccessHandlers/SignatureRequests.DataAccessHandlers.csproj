@@ -182,9 +182,9 @@
     <Compile Include="GroupHandler.cs" />
     <Compile Include="FormHandler.cs" />
     <Compile Include="Infrastructure\SignatureRequestsContext.cs" />
-    <Compile Include="Migrations\201907301258452_test.cs" />
-    <Compile Include="Migrations\201907301258452_test.Designer.cs">
-      <DependentUpon>201907301258452_test.cs</DependentUpon>
+    <Compile Include="Migrations\201907301954461_NextMigration.cs" />
+    <Compile Include="Migrations\201907301954461_NextMigration.Designer.cs">
+      <DependentUpon>201907301954461_NextMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -207,8 +207,8 @@
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201907301258452_test.resx">
-      <DependentUpon>201907301258452_test.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201907301954461_NextMigration.resx">
+      <DependentUpon>201907301954461_NextMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
