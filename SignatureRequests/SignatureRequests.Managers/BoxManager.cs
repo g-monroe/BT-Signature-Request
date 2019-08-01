@@ -136,8 +136,7 @@ namespace SignatureRequests.Managers
                 X509Item x509Item = new X509Item(X509Item.Country.US,
                  X509Item.Country.US, X509Item.Country.US,
                  user.Name, DateTime.Now, user.Email, "M", "GM", "IA", "123123", "Test", "builderTrend");
-                string tempDir = AppDomain.CurrentDomain.BaseDirectory + Constants.DocumentPath + NewBox.FilePath.Split('.')[0] + "Temp";
-                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx", tempDir);
+                SignatureItem sigItem = new SignatureItem(user.Password, "SHA256WithRSA", 2048, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory  + Constants.DocumentPath + NewBox.FilePath, AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".png", AppDomain.CurrentDomain.BaseDirectory + Constants.SignaturePath + user.Id + ".pfx");
                 SignatureLibItem sigLib = _signatureLibManager.InitializeCertification(sigItem, x509Item);
                 _signatureLibManager.SaveCertificate(sigLib, sigItem);
                 _signatureLibManager.SignDocument(box, sigItem, sigLib, user.Name);
