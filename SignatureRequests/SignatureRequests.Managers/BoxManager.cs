@@ -439,17 +439,12 @@ namespace SignatureRequests.Managers
                 if (box.Text == "" || box.Text == null)
                 {
                     box.Text = box.Date.ToString();
-                    appearance.SignDate = DateTime.Now;
-                }
-                else
-                {
-                    appearance.SignDate = DateTime.Now;
                 }
                 appearance.Layer2Text = box.Text;
                 appearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.DESCRIPTION;
             }
             // Creating the signature
-            
+            appearance.SignDate = DateTime.Now;
             IExternalSignature pks = new PrivateKeySignature(pk, digestAlgorithm);
             MakeSignature.SignDetached(appearance, pks, chain, null, null, null, 0, subfilter);
         }
