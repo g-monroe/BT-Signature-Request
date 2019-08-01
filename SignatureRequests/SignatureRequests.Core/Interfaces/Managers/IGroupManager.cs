@@ -23,6 +23,8 @@ namespace SignatureRequests.Core.Interfaces.Managers
         GroupResponse AddGroup(GroupRequest group, int id, GroupEntity updating = null);
         GroupResponse EditGroup(int id, GroupRequest group, GroupEntity updating = null);
         GroupEntity RequestToEntity(GroupRequest group, [Optional] GroupEntity updating);
+        GroupEntity GetGroup(int id);
+        void DeleteGroup(int id, string fileName, int groupId);
 
     }
 }

@@ -12,5 +12,6 @@ namespace SignatureRequests.Core.Interfaces.DataAccessHandlers
         RequestEntity GetById(int id);
         IEnumerable<RequestEntity> GetAllByFormId(int id);
         IEnumerable<RequestEntity> GetAllInclude();
+        IEnumerable<RequestEntity> GetAllBySignerId(int id);
     }
 }

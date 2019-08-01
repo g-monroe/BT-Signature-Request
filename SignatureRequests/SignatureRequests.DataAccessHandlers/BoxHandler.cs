@@ -28,6 +28,11 @@ namespace SignatureRequests.DataAccessHandlers
         {
             return Get(x => ((x.FormId == id) && (x.IsModel)));
         }
-       
+        public void RemoveCollection(IEnumerable<BoxEntity> boxes)
+        {
+            _context.Boxes.RemoveRange(boxes);
+            SaveChanges();
+        }
+
     }
 }

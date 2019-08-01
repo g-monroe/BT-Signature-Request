@@ -1,4 +1,5 @@
-﻿using SignatureRequests.Core.Entities;
+﻿using SignatureRequests.Core;
+using SignatureRequests.Core.Entities;
 using SignatureRequests.Core.Interfaces.DataAccessHandlers;
 using SignatureRequests.Core.Interfaces.Engines;
 using SignatureRequests.Core.Interfaces.Managers;
@@ -220,6 +221,15 @@ namespace SignatureRequests.Engines
             updating.UserId = form.UserId;
             updating.NumPages = form.NumPages;
             return updating;
+        }
+
+        public string GetDirectoryPath(int id, string fileName)
+        {
+            string path = Constants.DocumentPath + id.ToString() + '\\';
+            string[] fileNameSplit = fileName.Split('.');
+            string directoryName = string.Join("", fileNameSplit.Take(fileNameSplit.Length - 1));
+            return AppDomain.CurrentDomain.BaseDirectory + path + directoryName;
+
         }
     }
 }

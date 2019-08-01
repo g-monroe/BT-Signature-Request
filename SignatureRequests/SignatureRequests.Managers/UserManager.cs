@@ -38,6 +38,7 @@ namespace SignatureRequests.Managers
             return result;
         }
 
+
         public void Delete(int id)
         {
             var user = _userHandler.GetById(id);
