@@ -190,7 +190,6 @@
     <Compile Include="Enums\InitializeCertifcation.cs" />
     <Compile Include="Enums\NumberToBooleanEnum.cs" />
     <Compile Include="Enums\RequestStatus.cs" />
-    <Compile Include="Enums\BoxType.cs" />
     <Compile Include="Enums\SignStatus.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IGroupHandler.cs" />
     <Compile Include="Interfaces\DataAccessHandlers\IFormHandler.cs" />
